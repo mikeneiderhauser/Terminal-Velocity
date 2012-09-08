@@ -1,0 +1,7 @@
+//Created 9/8/2012
+//Mike Neiderhauser
+
+
+Bug Tracking Doc
+
+Terminal-Velocity will be using the built in issue tracker on the GitHub CMS for bug tracking.

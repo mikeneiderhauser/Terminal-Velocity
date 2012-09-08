@@ -1,0 +1,6 @@
+//Created 9/8/2012
+//Mike Neiderhauser
+
+Terminal-Velocity will be using the C# coding standard outlined by Microsoft MSDN C# Coding Conventions Guideline as seen at http://msdn.microsoft.com/en-us/library/ff926074.aspx.
+
+See the file Standard.cs for examples of this coding standard.
