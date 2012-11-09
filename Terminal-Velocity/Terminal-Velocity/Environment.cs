@@ -25,7 +25,7 @@ namespace TerminalVelocity
         }
 
         /// <summary>
-        /// 
+        /// The on tick event.  Fires every time a clock interval elapses.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnTick(TickEventArgs e)
