@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITesting.cs" />
     <Compile Include="IBlock.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IRequest.cs" />
