@@ -7,5 +7,6 @@ namespace Interfaces
 {
     interface IEnvironment
     {
+        event EventHandler OnTick;
     }
 }
