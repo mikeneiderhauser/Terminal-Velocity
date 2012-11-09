@@ -49,8 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
-      <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
+      <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
       <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

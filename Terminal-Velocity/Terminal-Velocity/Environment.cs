@@ -5,7 +5,7 @@ using System.Text;
 
 using Interfaces;
 
-namespace Terminal_Velocity
+namespace TerminalVelocity
 {
     public class Environment
     {
