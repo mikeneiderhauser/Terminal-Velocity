@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface ITesting
+    public interface ITesting
     {
         bool DoTest(out int pass, out int fail, out List<string> messages);
     }
