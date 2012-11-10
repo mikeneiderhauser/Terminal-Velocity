@@ -8,19 +8,19 @@ using Utility;
 
 namespace Testing
 {
-    public class EnvironmentTest : ITesting
+    public class EnvironmentTest
     {
-        public bool DoTest(out int pass, out int fail, out string[] message)
-        {
-            TerminalVelocity.Environment e = new TerminalVelocity.Environment();
-            e.Tick += e_Tick;
+        //public bool DoTest(out int pass, out int fail, out List<string> message)
+        //{
+        //    TerminalVelocity.Environment e = new TerminalVelocity.Environment();
+        //    e.Tick += e_Tick;
 
-            while (true) ;
-        }
+        //    while (true) ;
+        //}
 
-        static void e_Tick(object sender, TickEventArgs e)
-        {
-            Console.WriteLine("Ticks " + e.Ticks);
-        }
+        //static void e_Tick(object sender, TickEventArgs e)
+        //{
+        //    Console.WriteLine("Ticks " + e.Ticks);
+        //}
     }
 }
