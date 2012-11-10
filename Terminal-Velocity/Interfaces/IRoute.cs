@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface IRequest
+    public interface IRoute
     {
     }
 }

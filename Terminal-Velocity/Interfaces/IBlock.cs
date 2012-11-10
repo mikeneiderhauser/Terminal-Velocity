@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface IBlock
+    public interface IBlock
     {
     }
 }
