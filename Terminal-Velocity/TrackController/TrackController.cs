@@ -8,7 +8,7 @@ using Utility;
 
 namespace TrackController
 {
-    public class TrackController
+    public class TrackController : ITrackController
     {
         private PLC _plc;
         private IEnvironment _env;
