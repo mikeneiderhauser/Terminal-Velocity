@@ -43,6 +43,7 @@
     <Compile Include="IBlock.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IRequest.cs" />
+    <Compile Include="IRoute.cs" />
     <Compile Include="ISystemScheduler.cs" />
     <Compile Include="ITesting.cs" />
     <Compile Include="ITrackController.cs" />
