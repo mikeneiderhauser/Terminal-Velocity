@@ -46,6 +46,7 @@
     <Compile Include="IRoute.cs" />
     <Compile Include="ISystemScheduler.cs" />
     <Compile Include="ITesting.cs" />
+    <Compile Include="ITrackCircuit.cs" />
     <Compile Include="ITrackController.cs" />
     <Compile Include="ITrackModel.cs" />
     <Compile Include="ITrain.cs" />

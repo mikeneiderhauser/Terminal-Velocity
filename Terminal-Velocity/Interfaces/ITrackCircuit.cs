@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Utility;
+
 namespace Interfaces
 {
-    interface ITesting
+    public class ITrackCircuit
     {
-        bool DoTest(out int pass, out int fail, out List<string> messages);
+        public event EventHandler<TrainDetectedEventArgs> TrainDetected;
     }
 }

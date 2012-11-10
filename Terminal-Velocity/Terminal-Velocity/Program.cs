@@ -12,15 +12,6 @@ namespace TerminalVelocity
     {
         static void Main(string[] args)
         {
-            Environment e = new Environment();
-            e.Tick += e_Tick;
-
-            while (true) ;
-        }
-
-        static void e_Tick(object sender, TickEventArgs e)
-        {
-            Console.WriteLine("Ticks " + e.Ticks);
         }
     }
 }
