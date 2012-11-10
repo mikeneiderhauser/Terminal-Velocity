@@ -49,7 +49,14 @@ namespace Testing
                         Console.WriteLine(string.Format("A fatal error has occured"));
                         totalFail++;
                     }
+<<<<<<< HEAD
 
+                    Console.WriteLine("==================================================\n");
+                }
+            }
+
+            Console.WriteLine("Testing completed.\n");
+=======
                     Console.WriteLine("\n");
                 }
             }
@@ -60,6 +67,7 @@ namespace Testing
             Console.WriteLine(string.Format("Total Passed : {0} \nTotal Fail : {1} \nTotal Fatal Errors : {2}", totalPass, totalFail, totalFatal));
             Console.WriteLine("==================================================");
             Console.WriteLine("==================================================");
+>>>>>>> TrackControllerPrototype
             Console.Read();
 
             return 0;
