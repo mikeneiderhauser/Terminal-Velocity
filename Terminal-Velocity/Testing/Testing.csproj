@@ -43,8 +43,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tester.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CTCOffice\CTCOffice.csproj">
+      <Project>{8b7b6259-91f9-4db2-aed3-e20fac7ac986}</Project>
+      <Name>CTCOffice</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemScheduler\SystemScheduler.csproj">
+      <Project>{0302a665-c11c-483f-94e0-202843124ba5}</Project>
+      <Name>SystemScheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
+      <Project>{920c2fce-2b74-4f45-92bd-d3cae2ad4391}</Project>
+      <Name>Terminal-Velocity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrackController\TrackController.csproj">
+      <Project>{b12e3c6b-35ad-4661-a41e-b5cf8137843e}</Project>
+      <Name>TrackController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrackModel\TrackModel.csproj">
+      <Project>{d7d68f74-8243-4ad1-9171-1d29da45c063}</Project>
+      <Name>TrackModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrainController\TrainController.csproj">
+      <Project>{c097cccf-7085-4ded-8269-1b5ea566e73a}</Project>
+      <Name>TrainController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrainModel\TrainModel.csproj">
+      <Project>{1a092719-340a-4c70-98d5-fc9ac09e2e87}</Project>
+      <Name>TrainModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
