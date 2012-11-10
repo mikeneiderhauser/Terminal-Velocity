@@ -7,9 +7,15 @@ namespace Interfaces
 {
     public interface IRoute
     {
-        public Enum RouteType;
-        public IBlock EndBlock;
-        public int RouteID;
-        public List<IBlock> RouteBlocks;
+        RouteTypes RouteType { get; }
+        IBlock EndBlock { get; }
+        int RouteID { get; }
+        List<IBlock> RouteBlocks { get; }
+    }
+
+    public enum RouteTypes
+    {
+        PointRoute,
+        DefinedRoute
     }
 }

@@ -7,7 +7,7 @@ namespace Interfaces
 {
     public interface IStatus
     {
-        public List<ITrain> Trains;
-        public List<IBlock> Blocks;
+        List<ITrain> Trains { get; set; }
+        List<IBlock> Blocks { get; set; }
     }
 }

@@ -7,13 +7,25 @@ namespace Interfaces
 {
     public interface IRequest
     {
-        public int TrackControllerID;
-        public int TrainID;
-        public int TrainAuthority;
-        public IRoute TrainRoute;
-        public DateTime IssueDateTime;
-        public IBlock Block;
-        public IStatus Info;
-        public Enum RequestType;
+        int TrackControllerID { get; }
+        int TrainID { get; }
+        int TrainAuthority { get; }
+        IRoute TrainRoute { get; }
+        DateTime IssueDateTime { get; }
+        IBlock Block { get; }
+        IStatus Info { get; set; }
+        RequestTypes RequestType { get; }
+    }
+
+    public enum RequestTypes
+    {
+        DispatchTrain,
+        SetTrainOOS,
+        AssignTrainRoute,
+        SetTrainAuthority,
+        TrackMaintenanceOpen,
+        TrackMaintenanceClose,
+        TrackControllerData,
+        SetTrainSpeed
     }
 }
