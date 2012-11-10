@@ -38,10 +38,13 @@ namespace Testing
                     {
                         Console.WriteLine(string.Format("[{0}] A fatal error has occured", t.ToString()));
                     }
+
+                    Console.WriteLine("==================================================\n");
                 }
             }
 
-            Console.WriteLine("==================================================\n");
+            Console.WriteLine("Testing completed.\n");
+            Console.Read();
 
             return 0;
         }
