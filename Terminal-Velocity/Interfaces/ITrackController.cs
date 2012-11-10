@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Interfaces
 {
-    public class ITrackController
+    public interface ITrackController
     {
-        public IRequest Request;
-        public int ID;
-        public ITrackController Previous;
-        public ITrackController Next;
-        public List<ITrain> Trains;
-        public List<IBlock> Blocks;
-        public List<IRoute> Routes;
+        IRequest Request { set; }
+        int ID { get; }
+        ITrackController Previous { get; }
+        ITrackController Next { get; }
+        List<ITrain> Trains { get; }
+        List<IBlock> Blocks { get; }
+        List<IRoute> Routes { get; }
     }
 }
