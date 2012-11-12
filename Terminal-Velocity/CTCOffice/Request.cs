@@ -21,20 +21,6 @@ namespace CTCOffice
         private IBlock _block;
         #endregion
 
-        #region Public Class Variables
-        public enum RequestTypes
-        {
-        DispatchTrain,
-        SetTrainOOS,
-        AssignTrainRoute,
-        SetTrainAuthority,
-        TrackMaintenanceOpen,
-        TrackMaintenanceClose,
-        TrackControllerData,
-        SetTrainSpeed
-        }
-        #endregion
-
         #region Constructor
         public Request(RequestTypes request, int trackControllerID,
             int trainID, int authority, IRoute route,
