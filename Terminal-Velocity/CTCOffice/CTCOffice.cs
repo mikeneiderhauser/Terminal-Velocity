@@ -7,16 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Interfaces;
+using Utility;
 
 namespace CTCOffice
 {
     public partial class CTCOffice : Form
     {
         private Operator _op;
+
         public CTCOffice()
         {
             InitializeComponent();
-
+            disableUserControl();
             txtGlobalTimeArea.Text = "1";
             loginStatusImage.Image = Properties.Resources.red;
 
@@ -36,12 +39,18 @@ namespace CTCOffice
             */
         }
 
+        #region Private Functions
         private void CTCOffice_Load(object sender, EventArgs e)
         {
 
         }
 
         private void _btnLoginLogout_Click(object sender, EventArgs e)
+        {
+            processLogin();
+        }
+
+        private void processLogin()
         {
             if (_btnLoginLogout.Text.Equals("Login"))
             {
@@ -51,11 +60,13 @@ namespace CTCOffice
                     _txtPassword.Text = "";
                     loginStatusImage.Image = Properties.Resources.green;
                     _btnLoginLogout.Text = "Logout";
+
+                    enableUserControl();
                 }
                 else
                 {
                     //Tell Op that the credentials are invalid & clear
-                    MessageBox.Show("Operators entered credentials are invalid!", "Login Failed!", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("Operators entered credentials are invalid!", "Login Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _txtUsername.Text = "";
                     _txtPassword.Text = "";
                 }
@@ -63,17 +74,77 @@ namespace CTCOffice
             else
             {
                 //button says logout
-                if(_op.isAuth())
+                if (_op.isAuth())
                 {
-                    //call logout
+                    _op.logout();
                 }
 
                 _txtUsername.Text = "";
                 _txtPassword.Text = "";
                 loginStatusImage.Image = Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
+
+                disableUserControl();
             }
         }//end btnLogin Logout
 
-    }
-}
+        private void enableUserControl()
+        {
+            setUserControlState(true);
+        }//end enable User Control
+
+        private void disableUserControl()
+        {
+            setUserControlState(false);
+        }//end disable User Control
+
+        private void setUserControlState(bool state)
+        {
+            _btnDispatchTrain.Enabled = state;
+            _btnSchedule_1.Enabled = state;
+            _btnSchedule_2.Enabled = state;
+            _btnRefreshView.Enabled = state;
+            _btnRefreshMetrics.Enabled = state;
+            _btnSpeed.Enabled = state;
+            _checkAutomatedScheduling.Enabled = state;
+            dataGridTrackLayout.Enabled = state;
+        }
+
+        private void _txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                //enter was pressed, click login button
+                _btnLoginLogout_Click(_btnLoginLogout, EventArgs.Empty);
+            }
+        }
+
+        private void _txtUsername_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                //enter was pressed, click login button
+                _btnLoginLogout_Click(_btnLoginLogout, EventArgs.Empty);
+            }
+        }
+
+        private void dispatchTrain()
+        {
+            IRoute myRoute = promptForRoute();
+            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1, myRoute, null);
+            sendRequest(request);
+        }
+
+        private IRoute promptForRoute()
+        {
+            return null;
+        }
+
+        private void sendRequest(IRequest request)
+        {
+
+        }
+
+        #endregion
+    }//end class
+}//end namespace

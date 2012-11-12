@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this._groupLoginLogout = new System.Windows.Forms.GroupBox();
+            this.loginStatusImage = new System.Windows.Forms.PictureBox();
             this._btnLoginLogout = new System.Windows.Forms.Button();
             this._txtPassword = new System.Windows.Forms.TextBox();
             this._lblPassword = new System.Windows.Forms.Label();
@@ -47,7 +48,7 @@
             this._btnSchedule_2 = new System.Windows.Forms.Button();
             this._checkAutomatedScheduling = new System.Windows.Forms.CheckBox();
             this.d = new System.Windows.Forms.GroupBox();
-            this._btrRefreshMetrics = new System.Windows.Forms.Button();
+            this._btnRefreshMetrics = new System.Windows.Forms.Button();
             this._lblTotalMetrics = new System.Windows.Forms.Label();
             this._lblPassengersMetrics = new System.Windows.Forms.Label();
             this._lblTrainsMetrics = new System.Windows.Forms.Label();
@@ -65,8 +66,8 @@
             this.lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
             this.lblCTCOfficeStatusHead = new System.Windows.Forms.Label();
             this.dataGridTrackLayout = new System.Windows.Forms.DataGridView();
-            this.loginStatusImage = new System.Windows.Forms.PictureBox();
             this._groupLoginLogout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupGlobalTimeControls.SuspendLayout();
             this._groupSystemSchedulerControls.SuspendLayout();
@@ -75,7 +76,6 @@
             this.groupSystemStatus.SuspendLayout();
             this.groupRunningStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTrackLayout)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -92,6 +92,15 @@
             this._groupLoginLogout.TabIndex = 0;
             this._groupLoginLogout.TabStop = false;
             this._groupLoginLogout.Text = "Login / Logout";
+            // 
+            // loginStatusImage
+            // 
+            this.loginStatusImage.InitialImage = null;
+            this.loginStatusImage.Location = new System.Drawing.Point(272, 9);
+            this.loginStatusImage.Name = "loginStatusImage";
+            this.loginStatusImage.Size = new System.Drawing.Size(16, 16);
+            this.loginStatusImage.TabIndex = 6;
+            this.loginStatusImage.TabStop = false;
             // 
             // _btnLoginLogout
             // 
@@ -110,6 +119,7 @@
             this._txtPassword.Size = new System.Drawing.Size(100, 20);
             this._txtPassword.TabIndex = 3;
             this._txtPassword.UseSystemPasswordChar = true;
+            this._txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._txtPassword_KeyPress);
             // 
             // _lblPassword
             // 
@@ -135,6 +145,7 @@
             this._txtUsername.Name = "_txtUsername";
             this._txtUsername.Size = new System.Drawing.Size(100, 20);
             this._txtUsername.TabIndex = 2;
+            this._txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._txtUsername_KeyPress);
             // 
             // _groupOperatorControls
             // 
@@ -255,7 +266,7 @@
             // 
             // d
             // 
-            this.d.Controls.Add(this._btrRefreshMetrics);
+            this.d.Controls.Add(this._btnRefreshMetrics);
             this.d.Controls.Add(this._lblTotalMetrics);
             this.d.Controls.Add(this._lblPassengersMetrics);
             this.d.Controls.Add(this._lblTrainsMetrics);
@@ -270,14 +281,14 @@
             this.d.TabStop = false;
             this.d.Text = "System Metrics";
             // 
-            // _btrRefreshMetrics
+            // _btnRefreshMetrics
             // 
-            this._btrRefreshMetrics.Location = new System.Drawing.Point(171, 89);
-            this._btrRefreshMetrics.Name = "_btrRefreshMetrics";
-            this._btrRefreshMetrics.Size = new System.Drawing.Size(75, 23);
-            this._btrRefreshMetrics.TabIndex = 7;
-            this._btrRefreshMetrics.Text = "Refresh";
-            this._btrRefreshMetrics.UseVisualStyleBackColor = true;
+            this._btnRefreshMetrics.Location = new System.Drawing.Point(171, 89);
+            this._btnRefreshMetrics.Name = "_btnRefreshMetrics";
+            this._btnRefreshMetrics.Size = new System.Drawing.Size(75, 23);
+            this._btnRefreshMetrics.TabIndex = 7;
+            this._btnRefreshMetrics.Text = "Refresh";
+            this._btnRefreshMetrics.UseVisualStyleBackColor = true;
             // 
             // _lblTotalMetrics
             // 
@@ -368,7 +379,7 @@
             this.groupSystemStatus.Controls.Add(this._groupSystemSchedulerControls);
             this.groupSystemStatus.Location = new System.Drawing.Point(1275, 3);
             this.groupSystemStatus.Name = "groupSystemStatus";
-            this.groupSystemStatus.Size = new System.Drawing.Size(273, 756);
+            this.groupSystemStatus.Size = new System.Drawing.Size(273, 765);
             this.groupSystemStatus.TabIndex = 6;
             this.groupSystemStatus.TabStop = false;
             this.groupSystemStatus.Text = "System Status";
@@ -437,17 +448,8 @@
             this.dataGridTrackLayout.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridTrackLayout.Location = new System.Drawing.Point(8, 124);
             this.dataGridTrackLayout.Name = "dataGridTrackLayout";
-            this.dataGridTrackLayout.Size = new System.Drawing.Size(1255, 635);
+            this.dataGridTrackLayout.Size = new System.Drawing.Size(1261, 644);
             this.dataGridTrackLayout.TabIndex = 7;
-            // 
-            // loginStatusImage
-            // 
-            this.loginStatusImage.InitialImage = null;
-            this.loginStatusImage.Location = new System.Drawing.Point(272, 9);
-            this.loginStatusImage.Name = "loginStatusImage";
-            this.loginStatusImage.Size = new System.Drawing.Size(16, 16);
-            this.loginStatusImage.TabIndex = 6;
-            this.loginStatusImage.TabStop = false;
             // 
             // CTCOffice
             // 
@@ -464,6 +466,7 @@
             this.Load += new System.EventHandler(this.CTCOffice_Load);
             this._groupLoginLogout.ResumeLayout(false);
             this._groupLoginLogout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).EndInit();
             this._groupOperatorControls.ResumeLayout(false);
             this._groupGlobalTimeControls.ResumeLayout(false);
             this._groupGlobalTimeControls.PerformLayout();
@@ -476,7 +479,6 @@
             this.groupRunningStatus.ResumeLayout(false);
             this.groupRunningStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTrackLayout)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -502,7 +504,7 @@
         private System.Windows.Forms.Button _btnSchedule_2;
         private System.Windows.Forms.CheckBox _checkAutomatedScheduling;
         private System.Windows.Forms.GroupBox d;
-        private System.Windows.Forms.Button _btrRefreshMetrics;
+        private System.Windows.Forms.Button _btnRefreshMetrics;
         private System.Windows.Forms.Label _lblTotalMetrics;
         private System.Windows.Forms.Label _lblPassengersMetrics;
         private System.Windows.Forms.Label _lblTrainsMetrics;
