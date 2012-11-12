@@ -65,6 +65,7 @@
             this.lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
             this.lblCTCOfficeStatusHead = new System.Windows.Forms.Label();
             this.dataGridTrackLayout = new System.Windows.Forms.DataGridView();
+            this.loginStatusImage = new System.Windows.Forms.PictureBox();
             this._groupLoginLogout.SuspendLayout();
             this._groupOperatorControls.SuspendLayout();
             this._groupGlobalTimeControls.SuspendLayout();
@@ -74,10 +75,12 @@
             this.groupSystemStatus.SuspendLayout();
             this.groupRunningStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTrackLayout)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
             // 
+            this._groupLoginLogout.Controls.Add(this.loginStatusImage);
             this._groupLoginLogout.Controls.Add(this._btnLoginLogout);
             this._groupLoginLogout.Controls.Add(this._txtPassword);
             this._groupLoginLogout.Controls.Add(this._lblPassword);
@@ -98,6 +101,7 @@
             this._btnLoginLogout.TabIndex = 1;
             this._btnLoginLogout.Text = "Login";
             this._btnLoginLogout.UseVisualStyleBackColor = true;
+            this._btnLoginLogout.Click += new System.EventHandler(this._btnLoginLogout_Click);
             // 
             // _txtPassword
             // 
@@ -436,6 +440,15 @@
             this.dataGridTrackLayout.Size = new System.Drawing.Size(1255, 635);
             this.dataGridTrackLayout.TabIndex = 7;
             // 
+            // loginStatusImage
+            // 
+            this.loginStatusImage.InitialImage = null;
+            this.loginStatusImage.Location = new System.Drawing.Point(272, 9);
+            this.loginStatusImage.Name = "loginStatusImage";
+            this.loginStatusImage.Size = new System.Drawing.Size(16, 16);
+            this.loginStatusImage.TabIndex = 6;
+            this.loginStatusImage.TabStop = false;
+            // 
             // CTCOffice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -463,6 +476,7 @@
             this.groupRunningStatus.ResumeLayout(false);
             this.groupRunningStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTrackLayout)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -506,6 +520,7 @@
         private System.Windows.Forms.Label lblSystemSchedulerStatusHead;
         private System.Windows.Forms.Label lblCTCOfficeStatusHead;
         private System.Windows.Forms.DataGridView dataGridTrackLayout;
+        private System.Windows.Forms.PictureBox loginStatusImage;
     }
 }
 
