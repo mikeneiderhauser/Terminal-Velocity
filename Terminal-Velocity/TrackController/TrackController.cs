@@ -100,7 +100,9 @@ namespace TrackController
 
         public void Recieve(ITrain train)
         {
-
+            // foreach ITrain in Train)
+            // if not found, error
+            // else do work if ID matches
         }
 
         public void LoadPLCProgram(string filename)
