@@ -47,16 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CTCMainDisplay.cs">
+    <Compile Include="CTCOffice.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CTCMainDisplay.Designer.cs">
-      <DependentUpon>CTCMainDisplay.cs</DependentUpon>
+    <Compile Include="CTCOffice.Designer.cs">
+      <DependentUpon>CTCOffice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CTCMainDisplay.resx">
-      <DependentUpon>CTCMainDisplay.cs</DependentUpon>
+    <Compile Include="Request.cs" />
+    <EmbeddedResource Include="CTCOffice.resx">
+      <DependentUpon>CTCOffice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -76,6 +78,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
