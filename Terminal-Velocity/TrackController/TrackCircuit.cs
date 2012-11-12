@@ -10,21 +10,53 @@ namespace TrackController
 {
     public class TrackCircuit : ITrackCircuit
     {
-        public EventHandler<TrainDetectedEventArgs> TrainDetected;
+        public event EventHandler<TrainDetectedEventArgs> TrainDetected;
 
         private IEnvironment _env;
+        private ITrackController _trackController;
+        private List<ITrain> _trains;
 
         #region Constructor(s)
 
         public TrackCircuit(IEnvironment env)
         {
+            _trains = new List<ITrain>();
+
             _env = env;
             _env.Tick += _env_Tick;
         }
 
         #endregion // Constructor(s)
 
-        #region Events 
+        #region Public Properties
+
+        public ITrackController TrackController
+        {
+            get { return _trackController; }
+            set { _trackController = value; }
+        }
+
+        #endregion // Public Properties
+
+        #region Public Methods
+
+        public void ToTrackController(ITrain train)
+        {
+            _trackController.Recieve(train);
+        }
+
+        public void ToTrain(int ID)
+        {
+            foreach (ITrain t in _trains)
+            {
+                // if (t.ID == _ID
+                // return t;
+            }
+        }
+
+        #endregion // Public Methods
+
+        #region Events
 
         protected virtual void OnTrainDetected(TrainDetectedEventArgs e)
         {
@@ -36,9 +68,8 @@ namespace TrackController
 
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            // Do Work to see if a train has been detected.
-            // if (train)
-                // OnTrainDectected( train ID)
+            // foreach train in environment,
+            // if train is in area of control, add train
         }
 
         #endregion // Events

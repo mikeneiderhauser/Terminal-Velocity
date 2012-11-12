@@ -35,6 +35,10 @@ namespace TrackController
         /// <param name="next">The next track contrtoller, or null</param>
         public TrackController(IEnvironment env, ITrackCircuit circuit, ITrackController prev, ITrackController next)
         {
+            _trains = new List<ITrain>();
+            _blocks = new List<IBlock>();
+            _routes = new List<IRoute>();
+
             _env = env;
             _env.Tick += _env_Tick;
 
@@ -93,6 +97,11 @@ namespace TrackController
         #endregion // Public Properties
 
         #region Public Methods
+
+        public void Recieve(ITrain train)
+        {
+
+        }
 
         public void LoadPLCProgram(string filename)
         {
