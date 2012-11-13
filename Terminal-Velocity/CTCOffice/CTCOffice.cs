@@ -126,6 +126,7 @@ namespace CTCOffice
                 _txtPassword.Text = "";
                 loginStatusImage.Image = Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
+                _txtUsername.Focus();
 
                 disableUserControl();
             }
@@ -161,6 +162,7 @@ namespace CTCOffice
             _btnSpeed.Enabled = state;
             _checkAutomatedScheduling.Enabled = state;
             dataGridTrackLayout.Enabled = state;
+            txtGlobalTimeArea.Enabled = state;
         }
 
         /// <summary>

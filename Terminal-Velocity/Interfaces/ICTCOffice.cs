@@ -21,12 +21,12 @@ namespace Interfaces
         /// function for System Scheduler to CTC to send request through CTC to Track Controller
         /// </summary>
         /// <param name="request">request sent to the track controller</param>
-        public void passRequest(IRequest request);
+        void passRequest(IRequest request);
 
         /// <summary>
         /// function for Track Controller to send response to CTC
         /// </summary>
         /// <param name="request">request sent to the ctc office</param>
-        public void handleResponse(IRequest request);
+        void handleResponse(IRequest request);
     }
 }
