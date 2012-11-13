@@ -5,6 +5,8 @@ using System.Text;
 
 using Interfaces;
 using Utility;
+using TerminalVelocity;
+using CTCOffice;
 
 namespace TerminalVelocity
 {
@@ -14,7 +16,7 @@ namespace TerminalVelocity
         {
             Environment e = new Environment();
             e.Tick += e_Tick;
-
+            
             while (true) ;
         }
 

@@ -14,6 +14,7 @@ namespace CTCOffice
 {
     public partial class CTCOffice : Form
     {
+        private Environment _env;
         private Operator _op;
 
         public CTCOffice()
