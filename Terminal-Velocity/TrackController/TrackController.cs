@@ -33,21 +33,19 @@ namespace TrackController
         /// <param name="circuit">A track circuit for the track controller</param>
         /// <param name="prev">The previous track controller, or null</param>
         /// <param name="next">The next track contrtoller, or null</param>
-        public TrackController(IEnvironment env, ITrackCircuit circuit, ITrackController prev, ITrackController next)
+        public TrackController(IEnvironment env, ITrackCircuit circuit)
         {
+            _trains = new List<ITrain>();
+            _blocks = new List<IBlock>();
+            _routes = new List<IRoute>();
+
             _env = env;
             _env.Tick += _env_Tick;
 
             _circuit = circuit;
             _circuit.TrainDetected += _circuit_TrainDetected;
 
-            _prev = prev;
-            _next = next;
-
-            if (_prev != null)
-                _ID = _prev.ID;
-            else
-                _ID = 0;
+            _ID = -1;
         }
 
         #endregion // Constructor(s)
@@ -67,12 +65,21 @@ namespace TrackController
         public ITrackController Previous
         {
             get { return _prev; }
-            set { _prev = value; }
+            set 
+            { 
+                _prev = value;
+                SetID();
+            }
         }
 
         public ITrackController Next
         {
             get { return _next; }
+            set 
+            { 
+                _next = value;
+                SetID();
+            }
         }
 
         public List<ITrain> Trains
@@ -94,6 +101,13 @@ namespace TrackController
 
         #region Public Methods
 
+        public void Recieve(ITrain train)
+        {
+            // foreach ITrain in Train)
+            // if not found, error
+            // else do work if ID matches
+        }
+
         public void LoadPLCProgram(string filename)
         {
             _plc = new PLC(filename);
@@ -102,6 +116,16 @@ namespace TrackController
         #endregion // Public Methods
 
         #region Private Methods
+
+        private void SetID()
+        {
+            if (_prev != null)
+            {
+                _ID = _prev.ID + 1;
+            }
+            else
+                _ID = 0;
+        }
 
         // Private method for handling the request object
         private void HandleRequest(IRequest request)

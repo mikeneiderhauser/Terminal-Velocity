@@ -7,8 +7,11 @@ using Utility;
 
 namespace Interfaces
 {
-    public class ITrackCircuit
+    public interface ITrackCircuit
     {
-        public event EventHandler<TrainDetectedEventArgs> TrainDetected;
+        event EventHandler<TrainDetectedEventArgs> TrainDetected;
+
+        void ToTrackController(ITrain train);
+        void ToTrain(int ID);
     }
 }
