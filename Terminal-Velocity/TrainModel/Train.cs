@@ -41,17 +41,20 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
-        
         private IEnvironment _environment;
 
-        public Train(int trainID, int temperature, IEnvironment environment)
+
+
+        #region Constructors
+
+        public Train(int trainID, IEnvironment environment)
         {
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "Created at " + DateTime.Now + ".\n";
             _lightsOn = false;
             _doorsOpen = false;
-            _temperature = temperature;
+            _temperature = 32;
 
             _currentAcceleration = 0;
             _currentVelocity = 0;
@@ -69,10 +72,35 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
 
-        void  _environment_Tick(object sender, TickEventArgs e)
+        public Train(int trainID, int numPassengers, int numCrew, int temperature, IEnvironment environment)
         {
- 	        //handle tick here
+            _trainID = trainID;
+            _totalMass = calculateMass();
+            _informationLog = "Created at " + DateTime.Now + ".\n";
+            _lightsOn = false;
+            _doorsOpen = false;
+            _temperature = temperature;
+
+            _currentAcceleration = 0;
+            _currentVelocity = 0;
+            _currentPosition = 0;
+
+            _numPassengers = numPassengers;
+            _numCrew = numCrew;
+
+            _brakeFailure = false;
+            _engineFailure = false;
+            _signalPickupFailure = false;
+
+            _environment = environment;
+
+            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
+        
+        #endregion
+
+
+        #region Public Methods
 
         //TODO
         public void EmergencyBrake()
@@ -85,7 +113,11 @@ namespace TrainModel
             return true;
         }
 
-        // private functions
+        #endregion
+
+
+        #region Private Methods
+
         private double calculateMass()
         {
             return (_initialMass + _personMass*(_numPassengers + _numCrew));
@@ -103,7 +135,17 @@ namespace TrainModel
             return false;
         }
 
+        private void _environment_Tick(object sender, TickEventArgs e)
+        {
+            //handle tick here
+        }
+        
+        #endregion
+
+
+
         #region Properties
+
         public int TrainID
         {
             get { return _trainID; }
