@@ -14,11 +14,14 @@ namespace CTCOffice
 {
     public partial class CTCOffice : Form
     {
-        private Environment _env;
+        private IEnvironment _env;
         private Operator _op;
 
-        public CTCOffice()
+        public CTCOffice(IEnvironment env)
         {
+            _env = env;
+            _env.Tick += _env_Tick;
+            
             InitializeComponent();
             disableUserControl();
             txtGlobalTimeArea.Text = "1";
@@ -147,5 +150,13 @@ namespace CTCOffice
         }
 
         #endregion
+
+        #region Events
+        private void _env_Tick(object sender, TickEventArgs e)
+        {
+            int x = 0;
+        }
+
+        #endregion // Events
     }//end class
 }//end namespace

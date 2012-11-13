@@ -85,6 +85,10 @@
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
+      <Project>{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}</Project>
+      <Name>Terminal-Velocity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
       <Name>Utility</Name>

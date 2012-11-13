@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using Interfaces;
+using Utility;
+using TerminalVelocity;
+
 namespace CTCOffice
 {
     static class Program
@@ -15,7 +19,7 @@ namespace CTCOffice
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CTCOffice());
+            Application.Run(new CTCOffice(new TerminalVelocity.Environment()));
         }
     }
 }
