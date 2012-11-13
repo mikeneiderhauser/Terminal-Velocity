@@ -20,9 +20,14 @@ namespace CTCOffice
         private IEnvironment _env;
 
         /// <summary>
-        /// The first track controller closest to the CTC Office
+        /// The first track controller closest to the CTC Office (Red Line)
         /// </summary>
-        private ITrackController _primaryTC;
+        private ITrackController _primaryTCRed;
+
+        /// <summary>
+        /// The first track controller closest to the CTC Office (Green Line)
+        /// </summary>
+        private ITrackController _primaryTCGreen;
 
         /// <summary>
         /// Holds a reference to the Operator Credentials / Login status
@@ -43,7 +48,7 @@ namespace CTCOffice
         /// Constructor for the CTC Office
         /// </summary>
         /// <param name="env">Takes in the Environment as a param</param>
-        public CTCOffice(IEnvironment env, ITrackController primaryTC)
+        public CTCOffice(IEnvironment env, ITrackController primaryTCRed, ITrackController primaryTCGreen)
         {
             _env = env;
             _env.Tick += _env_Tick;
@@ -53,7 +58,8 @@ namespace CTCOffice
             this.StopAutomation += _handleEvent2;
             */
 
-            _primaryTC = primaryTC;
+            _primaryTCRed = primaryTCRed;
+            _primaryTCGreen = primaryTCGreen;
 
             InitializeComponent();
             disableUserControl();
@@ -279,6 +285,10 @@ namespace CTCOffice
 
         }
         #endregion
+        
+
+        //Make handleResponse implement a queue and check if Request.Info is null before processing
+
 
         #region Event Handlers
         /// <summary>
