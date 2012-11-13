@@ -23,6 +23,8 @@ namespace Interfaces
         void doorClose();
         void sendPower(double Power);
 
+        void commit();
+
 
 
 
