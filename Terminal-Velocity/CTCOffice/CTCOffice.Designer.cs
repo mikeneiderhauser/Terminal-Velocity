@@ -176,6 +176,7 @@
             this._btnSchedule_1.TabIndex = 1;
             this._btnSchedule_1.Text = "Schedule Trains";
             this._btnSchedule_1.UseVisualStyleBackColor = true;
+            this._btnSchedule_1.Click += new System.EventHandler(this._btnSchedule_1_Click);
             // 
             // _btnDispatchTrain
             // 
@@ -253,6 +254,7 @@
             this._btnSchedule_2.TabIndex = 1;
             this._btnSchedule_2.Text = "Open System Scheduler";
             this._btnSchedule_2.UseVisualStyleBackColor = true;
+            this._btnSchedule_2.Click += new System.EventHandler(this._btnSchedule_2_Click);
             // 
             // _checkAutomatedScheduling
             // 
@@ -263,6 +265,7 @@
             this._checkAutomatedScheduling.TabIndex = 0;
             this._checkAutomatedScheduling.Text = "Enable / Disable Automated Scheduling";
             this._checkAutomatedScheduling.UseVisualStyleBackColor = true;
+            this._checkAutomatedScheduling.CheckedChanged += new System.EventHandler(this._checkAutomatedScheduling_CheckedChanged);
             // 
             // d
             // 
