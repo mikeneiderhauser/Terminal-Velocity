@@ -20,6 +20,11 @@ namespace CTCOffice
         private IEnvironment _env;
 
         /// <summary>
+        /// The first track controller closest to the CTC Office
+        /// </summary>
+        private ITrackController _primaryTC;
+
+        /// <summary>
         /// Holds a reference to the Operator Credentials / Login status
         /// </summary>
         private Operator _op;
@@ -38,7 +43,7 @@ namespace CTCOffice
         /// Constructor for the CTC Office
         /// </summary>
         /// <param name="env">Takes in the Environment as a param</param>
-        public CTCOffice(IEnvironment env)
+        public CTCOffice(IEnvironment env, ITrackController primaryTC)
         {
             _env = env;
             _env.Tick += _env_Tick;
@@ -47,6 +52,8 @@ namespace CTCOffice
             this.StartAutomation += _handleEvent1;
             this.StopAutomation += _handleEvent2;
             */
+
+            _primaryTC = primaryTC;
 
             InitializeComponent();
             disableUserControl();
