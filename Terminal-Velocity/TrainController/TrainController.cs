@@ -9,6 +9,11 @@ namespace TrainController
 {
    public class TrainController : ITrainController
     {
+        public IEnvironment _environment
+        {
+            get { return _environment; }
+            set { _environment = value; }
+        }
         public ITrain Train
         {
             get { return Train; }
