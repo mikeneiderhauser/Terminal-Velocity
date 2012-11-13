@@ -9,6 +9,9 @@ namespace Interfaces
 {
     public interface IEnvironment
     {
+        /// <summary>
+        /// Event that generates clock
+        /// </summary>
         event EventHandler<TickEventArgs> Tick;
     }
 }
