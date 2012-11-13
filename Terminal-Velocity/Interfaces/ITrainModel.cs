@@ -7,24 +7,24 @@ namespace Interfaces
 {
     public interface ITrainModel
     {
-        public int TrainID { get; }
-        public int TotalLength { get; }
-        public double TotalMass { get; }
-        public string InformationLog { get; }
-        public bool LightsOn { get; set; }
-        public bool DoorOpen { get; set; }
-        public int Temperature { get; set; }
-        public double CurrentAcceleration { get; }
-        public double CurrentVelocity { get; }
-        public double CurrentPosition { get; }
-        public int MaxCapacity { get; }
-        public int NumPassengers { get; set; }
-        public int NumCrew { get; set; }
-        public bool BrakeFailure { get; }
-        public bool EngineFailure { get; }
-        public bool SignalPickupFailure { get; }
+        int TrainID { get; }
+        int Length { get; }
+        double TotalMass { get; }
+        string InformationLog { get; }
+        bool LightsOn { get; set; }
+        bool DoorsOpen { get; set; }
+        int Temperature { get; set; }
+        double CurrentAcceleration { get; }
+        double CurrentVelocity { get; }
+        double CurrentPosition { get; }
+        int MaxCapacity { get; }
+        int NumPassengers { get; set; }
+        int NumCrew { get; set; }
+        bool BrakeFailure { get; }
+        bool EngineFailure { get; }
+        bool SignalPickupFailure { get; }
 
-        public bool ChangeMovement(double power);
-        public void EmergencyBrake();
+        bool ChangeMovement(double power);
+        void EmergencyBrake();
     }
 }

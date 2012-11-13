@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal-Velocity", "Terminal-Velocity\Terminal-Velocity.csproj", "{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{C071856C-44B0-46F0-965C-0D9AE2A293D1}"
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainController", "TrainCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackController", "TrackController\TrackController.csproj", "{B12E3C6B-35AD-4661-A41E-B5CF8137843E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainModel", "TrainModel\TrainModel.csproj", "{1A092719-340A-4C70-98D5-FC9AC09E2E87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainModel", "TrainModel\TrainModel.csproj", "{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{28C944F8-DF4A-498B-987F-CEAD8C41E028}"
 EndProject
@@ -101,16 +101,16 @@ Global
 		{B12E3C6B-35AD-4661-A41E-B5CF8137843E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B12E3C6B-35AD-4661-A41E-B5CF8137843E}.Release|x86.ActiveCfg = Release|x86
 		{B12E3C6B-35AD-4661-A41E-B5CF8137843E}.Release|x86.Build.0 = Release|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Debug|x86.ActiveCfg = Debug|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Debug|x86.Build.0 = Debug|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Release|Any CPU.ActiveCfg = Release|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Release|Mixed Platforms.Build.0 = Release|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Release|x86.ActiveCfg = Release|x86
-		{1A092719-340A-4C70-98D5-FC9AC09E2E87}.Release|x86.Build.0 = Release|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Debug|x86.ActiveCfg = Debug|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Debug|x86.Build.0 = Debug|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Release|Any CPU.ActiveCfg = Release|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Release|Mixed Platforms.Build.0 = Release|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Release|x86.ActiveCfg = Release|x86
+		{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}.Release|x86.Build.0 = Release|x86
 		{28C944F8-DF4A-498B-987F-CEAD8C41E028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28C944F8-DF4A-498B-987F-CEAD8C41E028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28C944F8-DF4A-498B-987F-CEAD8C41E028}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
