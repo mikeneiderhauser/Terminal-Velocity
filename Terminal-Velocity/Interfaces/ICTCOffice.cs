@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface ICTCOffice
+    public interface ICTCOffice
     {
         /// <summary>
         /// Event to start automation

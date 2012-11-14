@@ -13,6 +13,9 @@ namespace TerminalVelocity
     {
         public event EventHandler<TickEventArgs> Tick;
 
+        private ICTCOffice _CTCOffice;
+        private ITrackController _primaryTC;
+
         private long _total;
         private long _interval = 100;
         private Timer _timer = new Timer();
@@ -22,6 +25,18 @@ namespace TerminalVelocity
             _timer.Interval = _interval;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
+        }
+
+        public ICTCOffice CTCOffice
+        {
+            get { return _CTCOffice; }
+            set { _CTCOffice = value; }
+        }
+
+        public ITrackController PrimaryTrackController
+        {
+            get { return _primaryTC; }
+            set { _primaryTC = value; }
         }
 
         /// <summary>
