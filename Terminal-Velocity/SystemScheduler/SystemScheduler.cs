@@ -10,17 +10,7 @@ namespace SystemScheduler
 {
     public class SystemScheduler : ISystemScheduler
     {
-        private PLC _plc;
-        private IEnvironment _env;
-
-        private ITrackController _prev;
-        private ITrackController _next;
-
-        private List<IBlock> _blocks;
-        private List<ITrain> _trains;
-        private List<IRoute> _routes;
-
-        private int _ID;
+        private 
 
         #region Constructor(s)
 

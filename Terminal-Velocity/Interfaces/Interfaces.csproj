@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDispatchDatabase.cs" />
+    <Compile Include="IDispatch.cs" />
     <Compile Include="IStatus.cs" />
     <Compile Include="IBlock.cs" />
     <Compile Include="IEnvironment.cs" />
