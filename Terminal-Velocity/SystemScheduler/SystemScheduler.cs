@@ -10,22 +10,18 @@ namespace SystemScheduler
 {
     public class SystemScheduler : ISystemScheduler
     {
-        private 
+        private IEnvironment _env;
+        private ICTCOffice _ctc;
 
         #region Constructor(s)
 
-        public TrackController(IEnvironment env, ITrackController prev, ITrackController next)
+        public SystemScheduler(IEnvironment env, ICTCOffice ctc)
         {
             _env = env;
             _env.Tick += _env_Tick;
 
-            _prev = prev;
-            _next = next;
-
-            if (_prev != null)
-                _ID = _prev.ID;
-            else
-                _ID = 0;
+            _ctc = ctc;
+    
         }
 
         #endregion // Constructor(s)
@@ -107,27 +103,10 @@ namespace SystemScheduler
 
         void _env_Tick(object sender, TickEventArgs e)
         {
-            bool safe = PLC_IsSafe();
-            bool lights = PLC_LightsRequired();
+            //parse dispatches and sned any requests
         }
 
         #endregion // Events
 
-        internal class PLC
-        {
-            public PLC(string filename)
-            {
-            }
-
-            public bool IsSafe(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
-            {
-                return false;
-            }
-
-            public bool LightsRequired(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
-            {
-                return false;
-            }
-        }
     }
 }

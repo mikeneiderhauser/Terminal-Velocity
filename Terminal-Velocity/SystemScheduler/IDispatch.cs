@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface IDispatchDatabase
+    public interface IDispatch
     {
-        string Filename { get; }
-        List<IDispatch> Dispatch { get; }
+        DateTime Time { get; }
+        int ID { get; }
+        IRoute Route { get; }
     }
 }
