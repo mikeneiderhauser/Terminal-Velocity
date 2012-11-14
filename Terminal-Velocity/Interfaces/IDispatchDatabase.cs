@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface ISystemScheduler
+    public interface IDispatchDatabase
     {
-        IRequest GetRoute { get; }
+        string Filename { get; }
+        List<Dispatch> Dispatch { get; }
     }
 }
