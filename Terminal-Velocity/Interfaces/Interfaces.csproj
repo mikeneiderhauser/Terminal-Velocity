@@ -51,7 +51,6 @@
     <Compile Include="ITrackCircuit.cs" />
     <Compile Include="ITrackController.cs" />
     <Compile Include="ITrackModel.cs" />
-    <Compile Include="ITrain.cs" />
     <Compile Include="ITrainController.cs" />
     <Compile Include="ITrainModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Interfaces;
 using Utility;
+using Interfaces;
 
 namespace TrainModel
 {
@@ -11,7 +11,7 @@ namespace TrainModel
     {
         // Has public parameters
         private int _trainID;
-        private const double _length = 32.33; //meters
+        private const double _length = 32.33; // meters
         private double _totalMass;
         private string _informationLog;
         private bool _lightsOn;
@@ -21,7 +21,7 @@ namespace TrainModel
         private double _currentVelocity;
         private double _currentPosition;
         
-        private const int _maxCapacity = 222;
+        private const int _maxCapacity = 222; // 74 seated, 148 standing
         private int _numPassengers;
         private int _numCrew;
         
@@ -30,7 +30,8 @@ namespace TrainModel
         private bool _signalPickupFailure;
         
         private ITrainController _trainController;
-
+        private IBlock _currentBlock;
+        private IEnvironment _environment;
        
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
@@ -41,35 +42,17 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
-        private IEnvironment _environment;
 
-
+        //TODO: get list of trains from environment
+        private List<Train> allTrains;
 
         #region Constructors
 
-        public Train(int trainID, IEnvironment environment)
+        /// <summary>
+        /// This constructor is used when passenger information is not given.
+        /// </summary>
+        public Train(int trainID, IEnvironment environment) : this(trainID, 0, 0, 32, environment)
         {
-            _trainID = trainID;
-            _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\n";
-            _lightsOn = false;
-            _doorsOpen = false;
-            _temperature = 32;
-
-            _currentAcceleration = 0;
-            _currentVelocity = 0;
-            _currentPosition = 0;
-
-            _numPassengers = 0;
-            _numCrew = 0;
-
-            _brakeFailure = false;
-            _engineFailure = false;
-            _signalPickupFailure = false;
-
-            _environment = environment;
-
-            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
 
         public Train(int trainID, int numPassengers, int numCrew, int temperature, IEnvironment environment)
@@ -110,6 +93,8 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
+            
+
             return true;
         }
 
@@ -118,15 +103,15 @@ namespace TrainModel
 
         #region Private Methods
 
-        private double calculateMass()
-        {
-            return (_initialMass + _personMass*(_numPassengers + _numCrew));
-        }
-
         //TODO
         private void updateMovement()
         {
 
+        }
+
+        private double calculateMass()
+        {
+            return (_initialMass + _personMass*(_numPassengers + _numCrew));
         }
 
         //TODO
@@ -138,6 +123,7 @@ namespace TrainModel
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             //handle tick here
+            updateMovement();
         }
         
         #endregion
