@@ -15,5 +15,18 @@ namespace TrainModel
         {
             InitializeComponent();
         }
+
+        public void DisplayError(string error)
+        {
+            MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void PopulateComboBox(List<Train> allTrains)
+        {
+            foreach(Train train in allTrains)
+            {
+                allTrainComboBox.Items.Add(train.ToString());
+            }
+        }
     }
 }

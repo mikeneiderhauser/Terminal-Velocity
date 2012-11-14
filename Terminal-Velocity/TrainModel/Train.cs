@@ -98,6 +98,15 @@ namespace TrainModel
             return true;
         }
 
+        /// <summary>
+        /// This overrides the regular ToString() method for a Train.
+        /// </summary>
+        /// <returns>Returns "Train " + trainID</returns>
+        public override string ToString()
+        {
+            return "Train " + _trainID;
+        }
+
         #endregion
 
 

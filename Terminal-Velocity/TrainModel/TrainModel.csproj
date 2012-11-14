@@ -66,6 +66,7 @@
     <EmbeddedResource Include="TrainGUI.resx">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Interfaces.ITrainModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
