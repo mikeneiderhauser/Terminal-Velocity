@@ -1,6 +1,6 @@
 ﻿namespace CTCOffice
 {
-    partial class CTCOffice
+    partial class CTCOffice_old
     {
         /// <summary>
         /// Required designer variable.
