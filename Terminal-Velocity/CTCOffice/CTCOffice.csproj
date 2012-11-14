@@ -66,6 +66,9 @@
     <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
+    <EmbeddedResource Include="CTCOfficeGUI.resx">
+      <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CTCOffice_old.resx">
       <DependentUpon>CTCOffice_old.cs</DependentUpon>
     </EmbeddedResource>
