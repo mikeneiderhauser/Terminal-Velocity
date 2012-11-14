@@ -74,10 +74,12 @@ namespace TrainController
 
         public void addPassengers()
         {
-            
-            Random r = new Random(Train.getCurrentPassengerNumber(), Train.getMaxPassengers());
-            int newPassengers = r.Next();
-            Train.setCurrentPassengerNumber();
+            // TODO: Definition of ITrain is incomplete
+
+
+            //Random r = new Random(Train.getCurrentPassengerNumber(), Train.getMaxPassengers());
+            //int newPassengers = r.Next();
+            //Train.setCurrentPassengerNumber();
         }
 
         public void removePassengers()
