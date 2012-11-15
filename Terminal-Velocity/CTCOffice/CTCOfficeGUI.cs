@@ -23,7 +23,6 @@ namespace CTCOffice
             _ctcOffice = ctc;
             _environment = env;
 
-            //commit comment
             //subscribe to Environment Tick
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
