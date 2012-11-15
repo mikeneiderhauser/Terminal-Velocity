@@ -46,6 +46,7 @@ namespace TrackController
             _circuit.TrainDetected += _circuit_TrainDetected;
 
             _ID = -1;
+            SetID();
         }
 
         #endregion // Constructor(s)
@@ -130,15 +131,17 @@ namespace TrackController
         // Private method for handling the request object
         private void HandleRequest(IRequest request)
         {
-            //if request.ID = this.ID
-                // Populate the object
-            //else if ALL
-                // Populate the object
-            //else 
+            // We recieved a request for data and this track controller is targetted
+            if (request.TrackControllerID == this.ID
+                && request.RequestType == RequestTypes.TrackControllerData)
+            {
+            }
+
+            // Send the request object to the next TC or return it
             if (Next != null)
                 Next.Request = request;
-            //else
-                // Environment.CTCOffice.Give(Request) 
+            else
+                _env.CTCOffice.passRequest(request);
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes

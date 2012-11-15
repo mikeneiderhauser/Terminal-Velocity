@@ -8,7 +8,7 @@ using Utility;
 
 namespace CTCOffice
 {
-    class CTCOffice : ICTCOffice
+    public class CTCOffice : ICTCOffice
     {
         public event EventHandler<EventArgs> StartAutomation;
 
