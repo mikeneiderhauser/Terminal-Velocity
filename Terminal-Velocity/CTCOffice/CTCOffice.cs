@@ -59,6 +59,9 @@ namespace CTCOffice
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
         }
+        #endregion
+
+        #region Functions
 
         /// <summary>
         /// Function to login the operator
@@ -196,8 +199,8 @@ namespace CTCOffice
                 sendRequest(_requestsOut.Dequeue());
             }
         }
+        
         #endregion
-
 
         #region Public Interface
         public event EventHandler<EventArgs> StartAutomation;
