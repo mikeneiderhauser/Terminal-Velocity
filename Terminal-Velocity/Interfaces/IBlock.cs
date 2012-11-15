@@ -7,5 +7,6 @@ namespace Interfaces
 {
     interface IBlock
     {
+		asdf
     }
 }
