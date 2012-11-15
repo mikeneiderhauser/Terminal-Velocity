@@ -298,7 +298,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            int x = 0;
+           // int x = 0;
         }
 
         /*test even on check box

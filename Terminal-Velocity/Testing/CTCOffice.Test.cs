@@ -37,9 +37,37 @@ namespace Testing
             next.Previous = curr;
             next.Next = null;
 
+            CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(environment, prev, curr);
 
-            //CTCOffice.CTCOffice c = new CTCOffice.CTCOffice(environment, prev, curr);
-            
+            //test valid user login (implicity tests operator isAuth)
+            if (ctc.Login("root", "admin"))
+            {
+                pass++;
+            }
+            else
+            {
+                fail++;
+            }
+
+            //test invalid user login (implicity tests operator isAuth)
+            if (!ctc.Login("no", "no"))
+            {
+                pass++;
+            }
+            else
+            {
+                fail++;
+            }
+
+            //test Logout
+            if (ctc.Logout())
+            {
+                pass++;
+            }
+            else
+            {
+                fail--;
+            }
 
             return true;
         }
