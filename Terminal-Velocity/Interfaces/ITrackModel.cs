@@ -5,7 +5,17 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface ITrackModel
+    public interface ITrackModel
     {
+
+
+	IBlock requestBlockInfo(int blockID);
+	IRoute requestRouteInfo(int routeID);
+
+	IBlock[][] requestTrackGrid(int routeID);
+
+	bool requestUpdateSwitch(IBlock bToUpdate);
+	bool requestUpdateBlock(IBlock blockToChange);
+
     }
 }
