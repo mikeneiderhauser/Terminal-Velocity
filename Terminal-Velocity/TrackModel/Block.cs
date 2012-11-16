@@ -1,0 +1,119 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Interfaces;
+using Utility;
+
+namespace TrackModel
+{
+
+    public class Block : IBlock
+    {
+        //Private parameters
+		private int _blockID;
+		private StateEnum _stateAttributes;
+        private int _prevBlockID;
+		private double _startingElev;
+		private double _grade;
+		private int _location;
+		private int _bSize;
+		private DirEnum _direction;
+		private string[] _attributes;
+		private int _switchDest1;
+		private int _switchDest2;
+
+        public Block(IEnvironment environment)
+        {
+            //_environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+        }
+		
+		
+        //Handle environment tick
+        void  _environment_Tick(object sender, TickEventArgs e)
+        {
+                //handle tick here
+        }
+		
+		//Public methods
+        public bool hasSwitch()
+        {
+			return false;
+        }
+		
+		public bool hasTunnel()
+		{
+			return false;
+		}
+		
+		public bool hasHeater()
+		{
+			return false;
+		}
+		
+		public bool hasCrossing()
+		{
+			return false;
+		}
+		
+		public bool hasStation()
+		{
+			return false;
+		}
+		
+		
+		
+        #region Properties
+        public int BlockID
+        {
+            get { return _trainID; }
+        }
+        
+		
+        public StateEnum State
+		{
+			get {return _stateAttributes;}	
+		}
+		
+		public int PrevBlockID
+		{
+			get { return _prevBlockID; }	
+		}
+		
+		public double StartingElev
+		{
+			get { return _startingElev;}	
+		}
+		
+		public double Grade
+		{
+			get {return _grade;}	
+		}
+		
+		public int Location
+		{
+			get {return _location;}	
+		}
+		
+		public int BlockSize
+		{
+			get {return _bSize;}	
+		}
+		
+		public DirEnum Direction
+		{
+			get {return _direction;}	
+		}
+		
+		public int SwitchDest1
+		{
+			get {return _switchDest1;}	
+		}
+		
+		public int SwitchDest2
+		{
+			get {return _switchDest2;}	
+		}
+		#endregion
+    }
+}
