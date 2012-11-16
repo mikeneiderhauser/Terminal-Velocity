@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Utility;
 using Interfaces;
+using Utility;
 
 namespace TrainModel
 {
@@ -11,7 +11,7 @@ namespace TrainModel
     {
         // Has public parameters
         private int _trainID;
-        private const double _length = 32.33; // meters
+        private const double _length = 32.33; //meters
         private double _totalMass;
         private string _informationLog;
         private bool _lightsOn;
@@ -21,7 +21,7 @@ namespace TrainModel
         private double _currentVelocity;
         private double _currentPosition;
         
-        private const int _maxCapacity = 222; // 74 seated, 148 standing
+        private const int _maxCapacity = 222;
         private int _numPassengers;
         private int _numCrew;
         
@@ -30,8 +30,7 @@ namespace TrainModel
         private bool _signalPickupFailure;
         
         private ITrainController _trainController;
-        private IBlock _currentBlock;
-        private IEnvironment _environment;
+
        
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
@@ -42,20 +41,10 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
+        
+        private IEnvironment _environment;
 
-        //TODO: get list of trains from environment
-        private List<Train> allTrains;
-
-        #region Constructors
-
-        /// <summary>
-        /// This constructor is used when passenger information is not given.
-        /// </summary>
-        public Train(int trainID, IEnvironment environment) : this(trainID, 0, 0, 32, environment)
-        {
-        }
-
-        public Train(int trainID, int numPassengers, int numCrew, int temperature, IEnvironment environment)
+        public Train(int trainID, int temperature, IEnvironment environment)
         {
             _trainID = trainID;
             _totalMass = calculateMass();
@@ -68,8 +57,8 @@ namespace TrainModel
             _currentVelocity = 0;
             _currentPosition = 0;
 
-            _numPassengers = numPassengers;
-            _numCrew = numCrew;
+            _numPassengers = 0;
+            _numCrew = 0;
 
             _brakeFailure = false;
             _engineFailure = false;
@@ -79,11 +68,11 @@ namespace TrainModel
 
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
-        
-        #endregion
 
-
-        #region Public Methods
+        void  _environment_Tick(object sender, TickEventArgs e)
+        {
+ 	        //handle tick here
+        }
 
         //TODO
         public void EmergencyBrake()
@@ -93,34 +82,19 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
-            
-
             return true;
         }
 
-        /// <summary>
-        /// This overrides the regular ToString() method for a Train.
-        /// </summary>
-        /// <returns>Returns "Train " + trainID</returns>
-        public override string ToString()
+        // private functions
+        private double calculateMass()
         {
-            return "Train " + _trainID;
+            return (_initialMass + _personMass*(_numPassengers + _numCrew));
         }
-
-        #endregion
-
-
-        #region Private Methods
 
         //TODO
         private void updateMovement()
         {
 
-        }
-
-        private double calculateMass()
-        {
-            return (_initialMass + _personMass*(_numPassengers + _numCrew));
         }
 
         //TODO
@@ -129,18 +103,7 @@ namespace TrainModel
             return false;
         }
 
-        private void _environment_Tick(object sender, TickEventArgs e)
-        {
-            //handle tick here
-            updateMovement();
-        }
-        
-        #endregion
-
-
-
         #region Properties
-
         public int TrainID
         {
             get { return _trainID; }
