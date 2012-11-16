@@ -14,7 +14,7 @@ namespace TrainController
             get { return _environment; }
             set { _environment = value; }
         }
-        public ITrain Train
+        public ITrainModel Train
         {
             get { return Train; }
         }
@@ -74,27 +74,29 @@ namespace TrainController
 
         public void addPassengers()
         {
-            // TODO: Definition of ITrain is incomplete
-
-
-            //Random r = new Random(Train.getCurrentPassengerNumber(), Train.getMaxPassengers());
-            //int newPassengers = r.Next();
-            //Train.setCurrentPassengerNumber();
+            
+            Random r = new Random();
+            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity+1);
+            Train.NumPassengers = newPassengers;
+            //Send throughput afterwards
         }
 
         public void removePassengers()
         {
-            throw new NotImplementedException();
+            Random r = new Random();
+            int newPassengers = r.Next(0, Train.NumPassengers + 1);
+            Train.NumPassengers = newPassengers;
+
         }
 
         public void lightsOn()
         {
-            throw new NotImplementedException();
+            Train.LightsOn = true;
         }
 
         public void lightsOff()
         {
-            throw new NotImplementedException();
+            Train.LightsOn = false;
         }
 
         public void returnFeedback(string Feedback)
@@ -104,7 +106,9 @@ namespace TrainController
 
         public void doorOpen()
         {
-            throw new NotImplementedException();
+            if(Train.CurrentVelocity == 0 && CurrentBlock.)
+            {
+                Train.DoorsOpen = true;
         }
 
         public void doorClose()
