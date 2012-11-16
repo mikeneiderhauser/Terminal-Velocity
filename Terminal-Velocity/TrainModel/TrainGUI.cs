@@ -38,19 +38,24 @@ namespace TrainModel
 
         private void UpdateGUI()
         {
+            
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
             accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
-            // TODO: add elevation text values
+            
+            elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
             massValueText.Text = selectedTrain.TotalMass.ToString();
+            
             numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
             numCrewValueText.Text = selectedTrain.NumCrew.ToString();
 
+            // set values for lights
             if (selectedTrain.LightsOn)
                 lightsValueText.Text = "On";
             else
                 lightsValueText.Text = "Off";
 
+            // set values for doors
             if (selectedTrain.DoorsOpen)
                 doorsValueText.Text = "Open";
             else
@@ -59,6 +64,7 @@ namespace TrainModel
 
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
         }
     }
 }
