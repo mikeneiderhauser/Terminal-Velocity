@@ -22,7 +22,7 @@ namespace Testing
             // Previous track controller's circuit
             ITrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
             // The CTC Office
-            //ICTC
+            ICTCOffice office = new CTCOffice.CTCOffice();
 
             ITrackController prev = new TrackController.TrackController(environment, currCircuit);
             ITrackController curr = new TrackController.TrackController(environment, currCircuit);
@@ -36,6 +36,10 @@ namespace Testing
 
             next.Previous = curr;
             next.Next = null;
+
+
+            environment.CTCOffice = office;
+            environment.PrimaryTrackController = prev;
 
             return true;
         }
