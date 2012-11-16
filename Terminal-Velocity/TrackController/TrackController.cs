@@ -18,9 +18,9 @@ namespace TrackController
         private ITrackController _prev;
         private ITrackController _next;
 
-        private List<IBlock> _blocks;
-        private List<ITrain> _trains;
-        private List<IRoute> _routes;
+        private Dictionary<int, IBlock> _blocks;
+        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, IRoute> _routes;
 
         private int _ID;
 
@@ -35,17 +35,20 @@ namespace TrackController
         /// <param name="next">The next track contrtoller, or null</param>
         public TrackController(IEnvironment env, ITrackCircuit circuit)
         {
-            _trains = new List<ITrain>();
-            _blocks = new List<IBlock>();
-            _routes = new List<IRoute>();
+            _trains = new Dictionary<int, ITrain>();
+            _blocks = new Dictionary<int, IBlock>();
+            _routes = new Dictionary<int, IRoute>();
 
             _env = env;
             _env.Tick += _env_Tick;
 
             _circuit = circuit;
-            _circuit.TrainDetected += _circuit_TrainDetected;
 
             _ID = -1;
+            SetID();
+
+            // PROTOTYPE - static PLC
+            _plc = new PLC();
         }
 
         #endregion // Constructor(s)
@@ -82,17 +85,17 @@ namespace TrackController
             }
         }
 
-        public List<ITrain> Trains
+        public Dictionary<int, ITrain> Trains
         {
             get { return _trains; }
         }
 
-        public List<IBlock> Blocks
+        public Dictionary<int, IBlock> Blocks
         {
             get { return _blocks; }
         }
 
-        public List<IRoute> Routes
+        public Dictionary<int, IRoute> Routes
         {
             get { return _routes; }
         }
@@ -101,9 +104,13 @@ namespace TrackController
 
         #region Public Methods
 
-        public void Recieve(ITrain train)
+        /// <summary>
+        /// Recieve and process data sent from a train
+        /// </summary>
+        /// <param name="data"></param>
+        public void Recieve(object data)
         {
-            // foreach ITrain in Train)
+            // foreach ITrain in Train
             // if not found, error
             // else do work if ID matches
         }
@@ -130,27 +137,51 @@ namespace TrackController
         // Private method for handling the request object
         private void HandleRequest(IRequest request)
         {
-            //if request.ID = this.ID
-                // Populate the object
-            //else if ALL
-                // Populate the object
-            //else 
+            switch (request.RequestType)
+            {
+                case RequestTypes.TrackControllerData:
+                    {
+                        if (request.TrackControllerID == this.ID)
+                        {
+                            request.Info.Trains = Trains.Values.ToList<ITrain>();
+                        }
+                        return;
+                    }
+                case RequestTypes.TrackMaintenanceClose:
+                    break;
+                case RequestTypes.TrackMaintenanceOpen:
+                    break;
+                case RequestTypes.SetTrainSpeed:
+                    if (Trains.Keys.Contains(request.TrainID))
+                    {
+                        // set train speed
+                    }
+                    break;
+                case RequestTypes.SetTrainAuthority:
+                    if (Trains.Keys.Contains(request.TrainID))
+                    {
+                        _circuit.ToTrain(request.TrainID, -1, request.TrainAuthority);
+                    }
+                    break;
+            }
+
+            // Send the request object to the next TC or return it
             if (Next != null)
                 Next.Request = request;
-            //else
-                // Environment.CTCOffice.Give(Request) 
+            else
+                _env.CTCOffice.passRequest(request);
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
-        private bool PLC_IsSafe()
+        private void PLC_DoWork()
         {
-            return _plc.IsSafe(Blocks, Trains, Routes);
-        }
+            // Snapshot values
+            List<IBlock> sb = Blocks.Values.ToList();
+            List<ITrain> st = Trains.Values.ToList();
+            List<IRoute> sr = Routes.Values.ToList();
 
-        // Calls into the PLC passing in the current Blocks, Trains, and Routes
-        private bool PLC_LightsRequired()
-        {
-            return _plc.LightsRequired(Blocks, Trains, Routes);
+            // _plc.LightsRequired(sb, st, sr);
+            // _plc.IsSafe(sb, st, sr);
         }
 
         #endregion // Private Methods
@@ -160,56 +191,11 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            //bool safe = PLC_IsSafe();
-            //bool lights = PLC_LightsRequired();
-        }
-
-        // A train is detected so add it to the list of trains
-        private void _circuit_TrainDetected(object sender, TrainDetectedEventArgs e)
-        {
-            int trainID = e.TrainID;
-            // lookup train
-            // Trains.add(new Train);
+            _trains = _circuit.Trains;
+            PLC_DoWork();
         }
 
         #endregion // Events
-
-        /// <summary>
-        /// An internal class for representing a PLC
-        /// </summary>
-        internal class PLC
-        {
-            /// <summary>
-            /// Construct a new instance of a PLC
-            /// </summary>
-            /// <param name="filename">The file containing the program to load</param>
-            public PLC(string filename)
-            {
-            }
-
-            /// <summary>
-            /// Checks whether we are in a safe state
-            /// </summary>
-            /// <param name="blocks">The blocks in question</param>
-            /// <param name="trains">The trains in question</param>
-            /// <param name="routes">The routes ub quetstion</param>
-            /// <returns></returns>
-            public bool IsSafe(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
-            {
-                return false;
-            }
-
-            /// <summary>
-            /// Checks whether we need to turn on lights
-            /// </summary>
-            /// <param name="blocks">The blocks in question</param>
-            /// <param name="trains">The trains in question</param>
-            /// <param name="routes">The routes ub quetstion</param>
-            /// <returns></returns>
-            public bool LightsRequired(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
-            {
-                return false;
-            }
-        }
+        
     }
 }
