@@ -70,7 +70,7 @@ namespace TerminalVelocity
         /// <param name="filename">string path to new file</param>
         public void changeLogFile(string filename)
         {
-
+            //not implemented
         }
 
         #endregion

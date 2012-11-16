@@ -11,25 +11,33 @@ namespace TerminalVelocity
 {
     public class Environment : IEnvironment
     {
-        public event EventHandler<TickEventArgs> Tick;
-
+        #region Private Variables
         private ICTCOffice _CTCOffice;
+        private ISystemScheduler _systemScheduler;
         private ITrackController _primaryTCRed;
         private ITrackController _primaryTCGreen;
         private ITrackModel _trackModel;
-        private ISystemScheduler _systemScheduler;
-
+        private List<ITrainModel> _allTrains;
+        private SystemLog _sysLog;
+        
         private long _total;
         private long _interval = 100;
         private Timer _timer = new Timer();
+        #endregion
 
+        #region Constructor
         public Environment()
         {
             _timer.Interval = _interval;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
-        }
 
+            _allTrains = new List<ITrainModel>();
+            _sysLog = new SystemLog();
+        }
+        #endregion
+
+        #region Public Property
         public ICTCOffice CTCOffice
         {
             get { return _CTCOffice; }
@@ -60,6 +68,20 @@ namespace TerminalVelocity
             set { _trackModel = value; }
         }
 
+
+        public List<ITrainModel> AllTrains
+        {
+            get { return _allTrains; }
+        }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Tick For Interface
+        /// </summary>
+        public event EventHandler<TickEventArgs> Tick;
+
         /// <summary>
         /// The on tick event.  Fires every time a clock interval elapses.
         /// </summary>
@@ -77,5 +99,37 @@ namespace TerminalVelocity
             _total += _interval;
             this.OnTick(new TickEventArgs(_total));
         }
+        #endregion
+
+        #region Functions
+        public void addTrain(ITrainModel train)
+        {
+            _allTrains.Add(train);
+        }
+
+        public void removeTrain(ITrainModel train)
+        {
+            _allTrains.Remove(train);
+        }
+
+        public void sendLogEntry(string msg)
+        {
+            if (_sysLog != null)
+            {
+                _sysLog.writeLog(msg);
+            }
+        }
+
+        public void setInterval(long interval)
+        {
+            _timer.Interval = (double)interval;
+        }
+
+        public long getInterval()
+        {
+            return (long)_timer.Interval;
+        }
+
+        #endregion
     }
 }
