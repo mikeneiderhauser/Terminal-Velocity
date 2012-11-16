@@ -43,11 +43,11 @@ namespace CTCOffice
             _redLineData = new LineData();
             _greenLineData = new LineData();
 
-            //get track layout from track model (red)
+            _redLineData.Layout = _env.TrackModel.requestTrackGrid(0);
             //add 2D blocks to LineData (red)
             //add blocks to Line Data objects (red)
-            
-            //get track layout from track model (green)
+
+            _greenLineData.Layout = _env.TrackModel.requestTrackGrid(1);
             //add 2D blocks to LineData (green)
             //add blocks to Line Data objects (green)
 
