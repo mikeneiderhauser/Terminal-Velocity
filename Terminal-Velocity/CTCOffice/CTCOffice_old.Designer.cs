@@ -1,6 +1,6 @@
 ﻿namespace CTCOffice
 {
-    partial class CTCOffice
+    partial class CTCOffice_old
     {
         /// <summary>
         /// Required designer variable.
@@ -382,7 +382,7 @@
             this.groupSystemStatus.Controls.Add(this._groupSystemSchedulerControls);
             this.groupSystemStatus.Location = new System.Drawing.Point(1275, 3);
             this.groupSystemStatus.Name = "groupSystemStatus";
-            this.groupSystemStatus.Size = new System.Drawing.Size(273, 765);
+            this.groupSystemStatus.Size = new System.Drawing.Size(273, 622);
             this.groupSystemStatus.TabIndex = 6;
             this.groupSystemStatus.TabStop = false;
             this.groupSystemStatus.Text = "System Status";
@@ -454,7 +454,7 @@
             this.dataGridTrackLayout.Size = new System.Drawing.Size(1261, 644);
             this.dataGridTrackLayout.TabIndex = 7;
             // 
-            // CTCOffice
+            // CTCOffice_old
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -464,7 +464,7 @@
             this.Controls.Add(this.groupSystemNotifications);
             this.Controls.Add(this._groupOperatorControls);
             this.Controls.Add(this._groupLoginLogout);
-            this.Name = "CTCOffice";
+            this.Name = "CTCOffice_old";
             this.Text = "CTC Office";
             this.Load += new System.EventHandler(this.CTCOffice_Load);
             this._groupLoginLogout.ResumeLayout(false);
