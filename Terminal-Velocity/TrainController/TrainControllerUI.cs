@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CTCOffice
+namespace TrainController
 {
-    public partial class Form1 : Form
+    public partial class TrainControllerUI : UserControl
     {
-        public Form1()
+        public TrainControllerUI()
         {
             InitializeComponent();
         }

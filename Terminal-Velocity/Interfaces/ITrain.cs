@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface ITrain
+    public interface ITrain
     {
     }
 }

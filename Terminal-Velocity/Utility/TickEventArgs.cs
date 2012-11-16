@@ -12,7 +12,7 @@ namespace Utility
 
         public TickEventArgs(long ticks)
         {
-            Ticks = Ticks;
+            Ticks = ticks;
         }
     }
 }

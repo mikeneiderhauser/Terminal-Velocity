@@ -5,10 +5,7 @@ using System.Text;
 
 namespace Testing
 {
-    class Program
+    public class TrackCircuitTest
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
