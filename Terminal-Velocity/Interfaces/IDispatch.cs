@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface ITesting
+    public interface IDispatch
     {
-        bool DoTest(out int pass, out int fail, out List<string> messages);
+        DateTime Time { get; }
+        int ID { get; }
+        IRoute Route { get; }
     }
 }

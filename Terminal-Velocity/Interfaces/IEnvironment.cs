@@ -22,6 +22,14 @@ namespace Interfaces
         /// <summary>
         /// A reference to the first, or primary, track controller
         /// </summary>
-        ITrackController PrimaryTrackController { get; set; }
+        ITrackController PrimaryTrackControllerRed { get; set; }
+
+        ITrackController PrimaryTrackControllerGreen{ get; set; }
+
+        ISystemScheduler SystemScheduler { get; set; }
+
+        ITrackModel TrackModel { get; set; }
+
+
     }
 }

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Interfaces
 {
-    interface ISystemScheduler
+    public interface ISystemScheduler
     {
+        IRequest GetRoute { get; }
     }
 }

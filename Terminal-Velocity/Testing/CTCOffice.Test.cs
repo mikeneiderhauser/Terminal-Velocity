@@ -7,7 +7,7 @@ using Interfaces;
 
 namespace Testing
 {
-    public class TrackControllerTest : ITesting
+    public class CTCOfficeTest : ITesting
     {
         public bool DoTest(out int pass, out int fail, out List<string> message)
         {
@@ -21,6 +21,8 @@ namespace Testing
             ITrackCircuit nextCircuit = new TrackController.TrackCircuit(environment);
             // Previous track controller's circuit
             ITrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
+            // The CTC Office
+            //ICTC
 
             ITrackController prev = new TrackController.TrackController(environment, currCircuit);
             ITrackController curr = new TrackController.TrackController(environment, currCircuit);
@@ -35,12 +37,37 @@ namespace Testing
             next.Previous = curr;
             next.Next = null;
 
-            // The CTC Office
-            ICTCOffice office = new CTCOffice.CTCOffice(environment, prev, prev);
+            CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(environment, prev, curr);
 
-            environment.CTCOffice = office;
-            environment.PrimaryTrackControllerGreen = prev;
-            environment.PrimaryTrackControllerRed = prev;
+            //test valid user login (implicity tests operator isAuth)
+            if (ctc.Login("root", "admin"))
+            {
+                pass++;
+            }
+            else
+            {
+                fail++;
+            }
+
+            //test invalid user login (implicity tests operator isAuth)
+            if (!ctc.Login("no", "no"))
+            {
+                pass++;
+            }
+            else
+            {
+                fail++;
+            }
+
+            //test Logout
+            if (ctc.Logout())
+            {
+                pass++;
+            }
+            else
+            {
+                fail--;
+            }
 
             return true;
         }

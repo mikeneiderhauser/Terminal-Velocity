@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface ITesting
+    public interface ITrain
     {
-        bool DoTest(out int pass, out int fail, out List<string> messages);
     }
 }

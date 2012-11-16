@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface ITesting
+    public interface IDispatchDatabase
     {
-        bool DoTest(out int pass, out int fail, out List<string> messages);
+        string Filename { get; }
+        List<IDispatch> Dispatch { get; }
     }
 }
