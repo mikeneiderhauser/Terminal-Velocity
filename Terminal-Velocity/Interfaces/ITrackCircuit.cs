@@ -9,9 +9,8 @@ namespace Interfaces
 {
     public interface ITrackCircuit
     {
-        event EventHandler<TrainDetectedEventArgs> TrainDetected;
-
-        void ToTrackController(ITrain train);
-        void ToTrain(int ID);
+        Dictionary<int, ITrain> Trains { get; }
+        void ToTrackController(object data);
+        void ToTrain(int ID, int speedLimit, int authority);
     }
 }

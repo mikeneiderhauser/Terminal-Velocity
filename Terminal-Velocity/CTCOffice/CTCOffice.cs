@@ -1,307 +1,238 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 using Interfaces;
 using Utility;
 
+/*
+    See passRequest for clarification
+*/
+
 namespace CTCOffice
 {
-    public partial class CTCOffice : Form
+    public class CTCOffice : ICTCOffice
     {
-        /// <summary>
-        /// Holds a reference to the environement
-        /// </summary>
+        #region Private Variables
         private IEnvironment _env;
-
-        /// <summary>
-        /// The first track controller closest to the CTC Office
-        /// </summary>
-        private ITrackController _primaryTC;
-
-        /// <summary>
-        /// Holds a reference to the Operator Credentials / Login status
-        /// </summary>
+        private ITrackController _primaryTrackControllerRed;
+        private LineData _redLineData;
+        private ITrackController _primaryTrackControllerGreen;
+        private LineData _greenLineData;
+        private Queue<IRequest> _requestsOut;
+        private Queue<IRequest> _requestsIn;
         private Operator _op;
+        #endregion
 
-        /// <summary>
-        /// Declare StartAutomation Event
-        /// </summary>
-        public event EventHandler<EventArgs> StartAutomation;
-
-        /// <summary>
-        /// Declare StopAutomation Event
-        /// </summary>
-        public event EventHandler<EventArgs> StopAutomation;
-
-        /// <summary>
-        /// Constructor for the CTC Office
-        /// </summary>
-        /// <param name="env">Takes in the Environment as a param</param>
-        public CTCOffice(IEnvironment env, ITrackController primaryTC)
+        #region Constructor
+        public CTCOffice(IEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _env = env;
-            _env.Tick += _env_Tick;
+            _primaryTrackControllerGreen = greenTC;
+            _primaryTrackControllerRed = redTC;
 
-            /* Test even on checkbox
-            this.StartAutomation += _handleEvent1;
-            this.StopAutomation += _handleEvent2;
-            */
-
-            _primaryTC = primaryTC;
-
-            InitializeComponent();
-            disableUserControl();
-            txtGlobalTimeArea.Text = "1";
-            loginStatusImage.Image = Properties.Resources.red;
-
+            //subscribe to Environment Tick
+            _env.Tick += new EventHandler<TickEventArgs>(_env_Tick);
 
             //create new operator object
             _op = new Operator();
             //set credentials
-            _op.setAuth("mike", "42");
+            _op.setAuth("root", "admin");
 
-            /* Unit Test of operator login - PASS
-            //test login
-            _op.login("mike", "42");
+            _redLineData = new LineData();
+            _greenLineData = new LineData();
+
+            //get track layout from track model (red)
+            //add 2D blocks to LineData (red)
+            //add blocks to Line Data objects (red)
+            
+            //get track layout from track model (green)
+            //add 2D blocks to LineData (green)
+            //add blocks to Line Data objects (green)
+
+            //create queues
+            _requestsOut = new Queue<IRequest>();
+            _requestsIn = new Queue<IRequest>();
+
+            //get status from red and green prrimary track controllers (default)
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
+        }
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Function to login the operator
+        /// </summary>
+        /// <param name="username">Passed in Operator Entered Username</param>
+        /// <param name="password">Passed in Operator Entered Password</param>
+        /// <returns>True if operator is logged in. Else False</returns>
+        public bool Login(string username, string password)
+        {
+            _op.login(username, password);
+            return _op.isAuth();
+        }
+
+        /// <summary>
+        /// Function to log the operator out
+        /// </summary>
+        /// <returns>Always True</returns>
+        public bool Logout()
+        {
             if (_op.isAuth())
             {
                 _op.logout();
             }
-            */
-        }
-
-        #region Private Functions
-        /// <summary>
-        /// CTC Office form is loaded
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CTCOffice_Load(object sender, EventArgs e)
-        {
-
+            return true;
         }
 
         /// <summary>
-        /// Login / Logut button clicked
+        /// Function to throw the event to the System Scheduler to start automated scheduling
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _btnLoginLogout_Click(object sender, EventArgs e)
+        public void StartScheduling()
         {
-            processLogin();
-        }
-
-        /// <summary>
-        /// Function to handle login procedure
-        /// </summary>
-        private void processLogin()
-        {
-            if (_btnLoginLogout.Text.Equals("Login"))
+            if (StartAutomation != null)
             {
-                _op.login(_txtUsername.Text.ToString(), _txtPassword.Text.ToString());
-                if (_op.isAuth())
-                {
-                    _txtPassword.Text = "";
-                    loginStatusImage.Image = Properties.Resources.green;
-                    _btnLoginLogout.Text = "Logout";
-
-                    enableUserControl();
-                }
-                else
-                {
-                    //Tell Op that the credentials are invalid & clear
-                    MessageBox.Show("Operators entered credentials are invalid!", "Login Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    _txtUsername.Text = "";
-                    _txtPassword.Text = "";
-                }
-            }
-            else
-            {
-                //button says logout
-                if (_op.isAuth())
-                {
-                    _op.logout();
-                }
-
-                _txtUsername.Text = "";
-                _txtPassword.Text = "";
-                loginStatusImage.Image = Properties.Resources.red;
-                _btnLoginLogout.Text = "Login";
-                _txtUsername.Focus();
-
-                disableUserControl();
-            }
-        }//end btnLogin Logout
-
-        /// <summary>
-        /// function to enable user controls (calls setUserControlState)
-        /// </summary>
-        private void enableUserControl()
-        {
-            setUserControlState(true);
-        }//end enable User Control
-
-        /// <summary>
-        /// function to disable user controls (calls setUserControlState)
-        /// </summary>
-        private void disableUserControl()
-        {
-            setUserControlState(false);
-        }//end disable User Control
-
-        /// <summary>
-        /// sets the accessibility state of controls
-        /// </summary>
-        /// <param name="state"></param>
-        private void setUserControlState(bool state)
-        {
-            _btnDispatchTrain.Enabled = state;
-            _btnSchedule_1.Enabled = state;
-            _btnSchedule_2.Enabled = state;
-            _btnRefreshView.Enabled = state;
-            _btnRefreshMetrics.Enabled = state;
-            _btnSpeed.Enabled = state;
-            _checkAutomatedScheduling.Enabled = state;
-            dataGridTrackLayout.Enabled = state;
-            txtGlobalTimeArea.Enabled = state;
-        }
-
-        /// <summary>
-        /// Handles text changing in password field (handles enter)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _txtPassword_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)13)
-            {
-                //enter was pressed, click login button
-                _btnLoginLogout_Click(_btnLoginLogout, EventArgs.Empty);
+                StartAutomation(this, EventArgs.Empty);
             }
         }
 
         /// <summary>
-        /// Handles text changing in password field (handles enter)
+        /// Function to throw the event to the System Scheduler to start automated scheduling
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _txtUsername_KeyPress(object sender, KeyPressEventArgs e)
+        public void StopScheduling()
         {
-            if (e.KeyChar == (char)13)
+            if (StopAutomation != null)
             {
-                //enter was pressed, click login button
-                _btnLoginLogout_Click(_btnLoginLogout, EventArgs.Empty);
+                StopAutomation(this, EventArgs.Empty);
             }
         }
 
         /// <summary>
-        /// Function the sets up a request and sends request to primary track controller to dispatch a train
+        /// Sends a request to the primary track controller. Has logic to determine with primary track controller
         /// </summary>
-        private void dispatchTrain()
+        /// <param name="request">Request to send to track controller</param>
+        public void sendRequest(IRequest request)
         {
-            IRoute myRoute = promptForRoute();
-            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1, myRoute, null);
-            sendRequest(request);
+            int line = determineLine(request);
+            //figure out a way to determine line from block ID -- Waiting on Track Model
+
+            if (line == 0)
+            {
+                //red line
+                _primaryTrackControllerRed.Request = request;
+            }
+            else if (line == 1)
+            {
+                //greenline
+                _primaryTrackControllerGreen.Request = request;
+
+            }
         }
 
         /// <summary>
-        /// Function to prompt user to enter route details
+        /// Do Processing on Tick
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void _env_Tick(object sender, TickEventArgs e)
+        {
+            addAutomaticUpdate();
+            //handle queues here
+            processOut();
+            processIn();
+        }
+
+        /// <summary>
+        /// Calculates if the CTC should ask the track controllers for data.
+        /// </summary>
+        private void addAutomaticUpdate()
+        {
+            //cannot implement until environment implementation is expanded
+        }
+
+        /// <summary>
+        /// logic to determine which track line
+        /// </summary>
+        /// <param name="request">Request to process</param>
         /// <returns></returns>
-        private IRoute promptForRoute()
+        private int determineLine(IRequest request)
         {
-            return null;
+            //cannot implement without Track Model Interface
+            //red=0....green=1
+            return 0;
         }
 
         /// <summary>
-        /// Sends any request to the primary track controller
+        /// Processes the _requestIn Queue (handles 1 request at a time (1 request per tick))
         /// </summary>
-        /// <param name="request"></param>
-        private void sendRequest(IRequest request)
+        private void processIn()
         {
-
-        }
-
-        /// <summary>
-        /// Handles system scheudler automation check box being checked/unchecked -> fires events accordingly
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _checkAutomatedScheduling_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_checkAutomatedScheduling.Checked)
+            int line = 0;
+            IRequest removedRequest;
+            if (_requestsIn.Count != 0)
             {
-                if (StartAutomation != null)
+                //handle passing to SS if needed. (requuest is per track controller)
+                removedRequest = _requestsIn.Dequeue();
+                line = determineLine(removedRequest);
+
+                if (line == 0)
                 {
-                    StartAutomation(this, EventArgs.Empty);
+                    //red
+                }
+                else if (line == 1)
+                {
+                    //green
                 }
             }
-            else
+        }
+        
+        /// <summary>
+        /// Processes the _requestOut Queue (handles 1 request at a time (1request per tick))
+        /// </summary>
+        private void processOut()
+        {
+            if (_requestsOut.Count != 0)
             {
-                if (StopAutomation != null)
-                {
-                    StopAutomation(this, EventArgs.Empty);
-                }
+                sendRequest(_requestsOut.Dequeue());
             }
-        }//end _checkAutomatedScheduling_CheckedChanged
-
-        /// <summary>
-        /// Handles the Show Schedule Button(1)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _btnSchedule_1_Click(object sender, EventArgs e)
-        {
-            openScheduler();
         }
-
-        /// <summary>
-        /// Handles the Show Schedule Button(2)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _btnSchedule_2_Click(object sender, EventArgs e)
-        {
-            openScheduler();
-        }
-
-        /// <summary>
-        /// Shows the Scheduler Window
-        /// </summary>
-        private void openScheduler()
-        {
-
-        }
+        
         #endregion
 
-        #region Event Handlers
+        #region Public Interface
+        public event EventHandler<EventArgs> StartAutomation;
+
+        public event EventHandler<EventArgs> StopAutomation;
+
         /// <summary>
-        /// Handles the environments tick
+        /// Pass request from System Scheduler to Track Controller via send request
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _env_Tick(object sender, TickEventArgs e)
+        /// <param name="request"></param>
+        public void passRequest(IRequest request)
         {
-            int x = 0;
+            //add request to queue to send to Track Controller
+            //while the scheduler is on, the CTCOffice is (blocked/unblocked?)
+            if (request != null)
+            {
+                _requestsOut.Enqueue(request);
+            }
         }
 
-        /*test even on check box
-        private void _handleEvent1(object sender, EventArgs e)
+        /// <summary>
+        /// Sends Request to CTC for processing.  Will only process if request.Info is not null
+        /// </summary>
+        /// <param name="request">request to process</param>
+        public void handleResponse(IRequest request)
         {
-            int x = 0;
+            //add request to queue for CTC to Process. CTC will only process if Info is not null
+            if (request.Info != null)
+            {
+                _requestsIn.Enqueue(request);
+            }
         }
-
-        private void _handleEvent2(object sender, EventArgs e)
-        {
-            int x = 0;
-        }
-        */
-        #endregion // Events
-    }//end class
-}//end namespace
+        #endregion
+    }
+}

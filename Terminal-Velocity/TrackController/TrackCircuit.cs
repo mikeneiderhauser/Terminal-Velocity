@@ -10,17 +10,15 @@ namespace TrackController
 {
     public class TrackCircuit : ITrackCircuit
     {
-        public event EventHandler<TrainDetectedEventArgs> TrainDetected;
-
         private IEnvironment _env;
         private ITrackController _trackController;
-        private List<ITrain> _trains;
+        private Dictionary<int, ITrain> _trains;
 
         #region Constructor(s)
 
         public TrackCircuit(IEnvironment env)
         {
-            _trains = new List<ITrain>();
+            _trains = new Dictionary<int, ITrain>();
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -29,6 +27,11 @@ namespace TrackController
         #endregion // Constructor(s)
 
         #region Public Properties
+
+        public Dictionary<int, ITrain> Trains
+        {
+            get { return _trains; }
+        }
 
         public ITrackController TrackController
         {
@@ -40,17 +43,25 @@ namespace TrackController
 
         #region Public Methods
 
-        public void ToTrackController(ITrain train)
+        public void ToTrackController(object data)
         {
-            _trackController.Recieve(train);
+            _trackController.Recieve(data);
         }
 
-        public void ToTrain(int ID)
+        public void ToTrain(int ID, int speedLimit = -1, int authority = -1)
         {
-            foreach (ITrain t in _trains)
+            ITrain train;
+            if (Trains.TryGetValue(ID, out train))
             {
-                // if (t.ID == _ID
-                // return t;
+                if (speedLimit >= 0)
+                {
+                    // set speed
+                }
+
+                if (authority >= 0)
+                {
+                    // set authority
+                }
             }
         }
 
@@ -58,18 +69,15 @@ namespace TrackController
 
         #region Events
 
-        protected virtual void OnTrainDetected(TrainDetectedEventArgs e)
-        {
-            if (TrainDetected != null)
-            {
-                TrainDetected(this, e);
-            }
-        }
-
         private void _env_Tick(object sender, TickEventArgs e)
         {
             // foreach train in environment,
             // if train is in area of control, add train
+
+            int trainID = 0;
+            ITrain train = null;
+
+            _trains.Add(trainID, train);
         }
 
         #endregion // Events

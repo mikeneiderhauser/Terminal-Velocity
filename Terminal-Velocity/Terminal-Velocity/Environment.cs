@@ -14,7 +14,10 @@ namespace TerminalVelocity
         public event EventHandler<TickEventArgs> Tick;
 
         private ICTCOffice _CTCOffice;
-        private ITrackController _primaryTC;
+        private ITrackController _primaryTCRed;
+        private ITrackController _primaryTCGreen;
+        private ITrackModel _trackModel;
+        private ISystemScheduler _systemScheduler;
 
         private long _total;
         private long _interval = 100;
@@ -33,10 +36,28 @@ namespace TerminalVelocity
             set { _CTCOffice = value; }
         }
 
-        public ITrackController PrimaryTrackController
+        public ISystemScheduler SystemScheduler
         {
-            get { return _primaryTC; }
-            set { _primaryTC = value; }
+            get { return _systemScheduler; }
+            set { _systemScheduler = value; }
+        }
+
+        public ITrackController PrimaryTrackControllerRed
+        {
+            get { return _primaryTCRed; }
+            set { _primaryTCRed = value; }
+        }
+
+        public ITrackController PrimaryTrackControllerGreen
+        {
+            get { return _primaryTCGreen; }
+            set { _primaryTCGreen = value; }
+        }
+
+        public ITrackModel TrackModel
+        {
+            get { return _trackModel; }
+            set { _trackModel = value; }
         }
 
         /// <summary>
