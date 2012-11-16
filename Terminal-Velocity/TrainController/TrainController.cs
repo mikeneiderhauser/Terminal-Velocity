@@ -116,5 +116,11 @@ namespace TrainController
         {
             throw new NotImplementedException();
         }
+
+
+        public void commit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -38,8 +38,8 @@ namespace TerminalVelocity
 
         public ISystemScheduler SystemScheduler
         {
-            get { return _CTCOffice; }
-            set { _CTCOffice = value; }
+            get { return _systemScheduler; }
+            set { _systemScheduler = value; }
         }
 
         public ITrackController PrimaryTrackControllerRed

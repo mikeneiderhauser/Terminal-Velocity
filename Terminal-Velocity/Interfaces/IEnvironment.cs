@@ -24,7 +24,7 @@ namespace Interfaces
         /// </summary>
         ITrackController PrimaryTrackControllerRed { get; set; }
 
-        ITrackController PrimaryTrackControllerGreen{ get; set; }
+        ITrackController PrimaryTrackControllerGreen { get; set; }
 
         ISystemScheduler SystemScheduler { get; set; }
 
