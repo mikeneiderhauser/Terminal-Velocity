@@ -30,5 +30,29 @@ namespace Interfaces
 	bool runsNorthWest();
 	bool runsSouthEast();
 	bool runsSouthWest();
-    }	
+    }
+
+public enum DirEnum 
+	{
+		North,
+		South,
+		East,
+		West,
+		Northeast,
+		Northwest,
+		Southeast,
+		Southwest,
+		North_AND_South,
+		East_AND_West,
+		Northeast_AND_Southwest,
+		Northwest_AND_Southeast
+	}
+
+public enum StateEnum
+	{
+		PowerFailure,
+		BrokenTrackFailure,
+		CircuitFailure,
+		Healthy
+	}
 }
