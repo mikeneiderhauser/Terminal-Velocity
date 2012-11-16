@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface ISystemScheduler
+    public interface IDispatch
     {
-        IRequest GetRoute { get; }
+        DateTime Time { get; }
+        int ID { get; }
+        IRoute Route { get; }
     }
 }
