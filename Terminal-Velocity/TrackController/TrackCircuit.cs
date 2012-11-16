@@ -75,9 +75,8 @@ namespace TrackController
             // if train is in area of control, add train
 
             int trainID = 0;
-            ITrain train = null;
-
-            _trains.Add(trainID, train);
+            //ITrain train = null;
+            //_trains.Add(trainID, train);
         }
 
         #endregion // Events

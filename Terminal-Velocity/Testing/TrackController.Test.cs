@@ -36,7 +36,7 @@ namespace Testing
             next.Next = null;
 
             // The CTC Office
-            ICTCOffice office = new CTCOffice.CTCOffice(environment, null, prev);
+            ICTCOffice office = new CTCOffice.CTCOffice(environment, prev, prev);
 
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
