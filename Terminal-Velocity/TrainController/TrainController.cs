@@ -106,17 +106,18 @@ namespace TrainController
 
         public void doorOpen()
         {
-            if(Train.CurrentVelocity == 0 && CurrentBlock.)
+            if (Train.CurrentVelocity == 0)
             {
                 Train.DoorsOpen = true;
+            }
         }
 
         public void doorClose()
         {
-            throw new NotImplementedException();
+            Train.DoorsOpen = false;
         }
 
-        public void sendPower(double Power)
+        public void sendPower(double speed)
         {
             throw new NotImplementedException();
         }
