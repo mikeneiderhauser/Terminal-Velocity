@@ -42,7 +42,8 @@ namespace TrainModel
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
             accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
             
-            elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString(); // TODO: check this is the right one
+            // TODO: removed to prevent build error
+            //elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString(); // TODO: check this is the right one
             massValueText.Text = selectedTrain.TotalMass.ToString();
             
             numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();

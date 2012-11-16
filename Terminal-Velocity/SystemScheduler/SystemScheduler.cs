@@ -28,74 +28,13 @@ namespace SystemScheduler
 
         #region Public Properties
 
-        public IRequest Request
-        {
-            set { HandleRequest(value); }
-        }
-
-        public int ID
-        {
-            get { return _ID; }
-        }
-
-        public ITrackController Previous
-        {
-            get { return _prev; }
-        }
-
-        public ITrackController Next
-        {
-            get { return _next; }
-        }
-
-        public List<ITrain> Trains
-        {
-            get { return _trains; }
-        }
-
-        public List<IBlock> Blocks
-        {
-            get { return _blocks; }
-        }
-
-        public List<IRoute> Routes
-        {
-            get { return _routes; }
-        }
-
         #endregion // Public Properties
 
         #region Public Methods
 
-        public void LoadPLCProgram(string filename)
-        {
-            _plc = new PLC(filename);
-        }
-
         #endregion // Public Methods
 
         #region Private Methods
-
-        private void HandleRequest(IRequest request)
-        {
-            // if request.ID = this.ID
-            //else
-
-            if (Next != null)
-                Next.Request = request;
-            //else
-            // Environment.CTCOffice.Give(Request) 
-        }
-
-        private bool PLC_IsSafe()
-        {
-            return _plc.IsSafe(Blocks, Trains, Routes);
-        }
-
-        private bool PLC_LightsRequired()
-        {
-            return _plc.LightsRequired(Blocks, Trains, Routes);
-        }
 
         #endregion // Private Methods
 
@@ -108,5 +47,10 @@ namespace SystemScheduler
 
         #endregion // Events
 
+
+        public IRequest GetRoute
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
