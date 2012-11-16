@@ -23,6 +23,7 @@ namespace Interfaces
         bool BrakeFailure { get; }
         bool EngineFailure { get; }
         bool SignalPickupFailure { get; }
+        IBlock CurrentBlock { get; }
 
         bool ChangeMovement(double power);
         void EmergencyBrake();

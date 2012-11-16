@@ -35,7 +35,7 @@ namespace TrainModel
        
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
-        private const double _personMass = 200; // kilograms
+        private const double _personMass = 90; // kilograms
         private const double _width = 2.65; // meters
         private const double _height = 3.42; // meters
         private const double _physicalAccelerationLimit = 0.5; // meters/second^2
@@ -49,7 +49,8 @@ namespace TrainModel
         #region Constructors
 
         /// <summary>
-        /// This constructor is used when passenger information is not given.
+        /// This constructor is used when passenger, crew, and temperature information is not given.
+        /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
         public Train(int trainID, IEnvironment environment) : this(trainID, 0, 0, 32, environment)
         {
@@ -76,8 +77,9 @@ namespace TrainModel
             _signalPickupFailure = false;
 
             _environment = environment;
-
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+
+            // TODO: set allTrains equal to list contained in environment and add this train
         }
         
         #endregion
@@ -164,19 +166,41 @@ namespace TrainModel
         public bool LightsOn
         {
             get { return _lightsOn; }
-            set { _lightsOn = value; }
+            set 
+            {
+                _lightsOn = value;
+                _informationLog += "Train " + _trainID;
+
+                if (_lightsOn)
+                    _informationLog += " lights were turned on.\n";
+                else
+                    _informationLog += " lights were turned off.\n";
+            }
         }
 
         public bool DoorsOpen
         {
             get { return _doorsOpen; }
-            set { _doorsOpen = value; }
+            set 
+            { 
+                _doorsOpen = value;
+                _informationLog += "Train " + _trainID;
+              
+                if (_doorsOpen)
+                    _informationLog += " doors were opened.\n";
+                else
+                    _informationLog += " doors were closed.\n";
+            }
         }
 
         public int Temperature
         {
             get { return _temperature; }
-            set { _temperature = value; }
+            set
+            { 
+                _temperature = value;
+                _informationLog += "Train " + _trainID + " temperature was set to " + _temperature;
+            }
         }
 
         public double CurrentAcceleration
@@ -203,8 +227,19 @@ namespace TrainModel
         {
             get { return _numPassengers; }
             set 
-            { 
+            {
+                int oldNumPassengers = _numPassengers;
                 _numPassengers = value;
+                int difference = _numPassengers - oldNumPassengers;
+
+                if (difference < 0) // people get off train
+                {
+                    difference *= -1;
+                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\n";
+                }
+                else // people get on train
+                    _informationLog += difference + " passengers got on Train " + _trainID + ".\n";
+
                 _totalMass = calculateMass();
             }
         }
@@ -212,9 +247,20 @@ namespace TrainModel
         public int NumCrew
         {
             get { return _numCrew; }
-            set 
-            { 
+            set
+            {
+                int oldNumCrew = _numCrew;
                 _numCrew = value;
+                int difference = _numCrew - oldNumCrew;
+
+                if (difference < 0) // people get off train
+                {
+                    difference *= -1;
+                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\n";
+                }
+                else // people get on train
+                    _informationLog += difference + " crew members got on Train " + _trainID + ".\n";
+
                 _totalMass = calculateMass();
             }
         }
@@ -233,6 +279,11 @@ namespace TrainModel
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
+        }
+
+        public IBlock CurrentBlock
+        {
+            get { return _currentBlock; }
         }
         
         #endregion
