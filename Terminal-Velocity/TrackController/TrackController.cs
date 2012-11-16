@@ -160,8 +160,8 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            bool safe = PLC_IsSafe();
-            bool lights = PLC_LightsRequired();
+            //bool safe = PLC_IsSafe();
+            //bool lights = PLC_LightsRequired();
         }
 
         // A train is detected so add it to the list of trains
