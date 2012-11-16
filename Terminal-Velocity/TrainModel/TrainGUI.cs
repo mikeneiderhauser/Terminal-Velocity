@@ -11,6 +11,7 @@ namespace TrainModel
 {
     public partial class TrainGUI : UserControl
     {
+        //Commit for GUI
         // TODO: Set selectedTrain = to train selected by combo box
         private Train selectedTrain;
 
