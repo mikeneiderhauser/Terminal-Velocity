@@ -38,12 +38,11 @@ namespace TrainModel
 
         private void UpdateGUI()
         {
-            
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
             accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
             
-            elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
+            elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString(); // TODO: check this is the right one
             massValueText.Text = selectedTrain.TotalMass.ToString();
             
             numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();

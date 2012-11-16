@@ -30,8 +30,10 @@ namespace TrainModel
         private bool _signalPickupFailure;
         
         private ITrainController _trainController;
-        private IBlock _currentBlock;
         private IEnvironment _environment;
+
+        private IBlock _currentBlock;
+        private double _blockLength;
        
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
@@ -42,6 +44,7 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
+        private const double _accelerationGravity = -9.8; // meters/second^2
 
         //TODO: get list of trains from environment
         private List<Train> allTrains;
@@ -52,29 +55,28 @@ namespace TrainModel
         /// This constructor is used when passenger, crew, and temperature information is not given.
         /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
-        public Train(int trainID, IEnvironment environment) : this(trainID, 0, 0, 32, environment)
-        {
-        }
-
-        public Train(int trainID, int numPassengers, int numCrew, int temperature, IEnvironment environment)
+        public Train(int trainID, IBlock startingBlock, IEnvironment environment)
         {
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "Created at " + DateTime.Now + ".\n";
             _lightsOn = false;
             _doorsOpen = false;
-            _temperature = temperature;
+            _temperature = 32;
 
             _currentAcceleration = 0;
             _currentVelocity = 0;
             _currentPosition = 0;
 
-            _numPassengers = numPassengers;
-            _numCrew = numCrew;
+            _numPassengers = 0;
+            _numCrew = 0;
 
             _brakeFailure = false;
             _engineFailure = false;
             _signalPickupFailure = false;
+
+            _currentBlock = startingBlock;
+            _blockLength = _currentBlock.BlockSize;
 
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
@@ -90,12 +92,12 @@ namespace TrainModel
         //TODO
         public void EmergencyBrake()
         {
+            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
         }
 
         //TODO
         public bool ChangeMovement(double power)
         {
-            
 
             return true;
         }
@@ -114,10 +116,27 @@ namespace TrainModel
 
         #region Private Methods
 
-        //TODO
+        //TODO: Update block changes, whether going forwards or backwards
+        //      Handle elevation calculations
         private void updateMovement()
         {
+            _currentVelocity += _currentAcceleration; // TODO: + elevation values
+            _currentPosition += _currentVelocity;
 
+
+            // Handles edge of blocks for forwards and backwards
+            if (_currentPosition >= _blockLength)
+            {
+                //_currentBlock = _currentBlock.NEXT;
+                _currentPosition = _currentPosition - _blockLength;
+                _blockLength = _currentBlock.BlockSize;
+            }
+            else if (_currentPosition < 0)
+            {
+                //_currentBlock = _currentBlock.PREVIOUS;
+                _blockLength = _currentBlock.BlockSize;
+                _currentPosition = _blockLength - _currentPosition*-1;
+            }
         }
 
         private double calculateMass()
