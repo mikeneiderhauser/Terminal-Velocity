@@ -13,5 +13,15 @@ namespace Interfaces
         /// Event that generates clock
         /// </summary>
         event EventHandler<TickEventArgs> Tick;
+
+        /// <summary>
+        /// A reference to the CTCOffice
+        /// </summary>
+        ICTCOffice CTCOffice { get; set; }
+
+        /// <summary>
+        /// A reference to the first, or primary, track controller
+        /// </summary>
+        ITrackController PrimaryTrackController { get; set; }
     }
 }

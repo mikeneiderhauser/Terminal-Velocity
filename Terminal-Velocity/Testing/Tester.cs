@@ -60,7 +60,8 @@ namespace Testing
             Console.WriteLine(string.Format("Total Passed : {0} \nTotal Fail : {1} \nTotal Fatal Errors : {2}", totalPass, totalFail, totalFatal));
             Console.WriteLine("==================================================");
             Console.WriteLine("==================================================");
-            Console.Read();
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
 
             return 0;
         }
