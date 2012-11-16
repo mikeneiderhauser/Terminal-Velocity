@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <ProjectGuid>{1A092719-340A-4C70-98D5-FC9AC09E2E87}</ProjectGuid>
+    <ProjectGuid>{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TrainModel</RootNamespace>
