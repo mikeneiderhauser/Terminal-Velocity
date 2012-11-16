@@ -34,26 +34,26 @@
             this.trainInfoTextBox = new System.Windows.Forms.TextBox();
             this.allTrainComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.doorsValueText = new System.Windows.Forms.TextBox();
-            this.doorsTextBox = new System.Windows.Forms.TextBox();
-            this.lightsValueText = new System.Windows.Forms.TextBox();
-            this.lightsTextBox = new System.Windows.Forms.TextBox();
-            this.numCrewValueText = new System.Windows.Forms.TextBox();
-            this.numCrewTextBox = new System.Windows.Forms.TextBox();
-            this.numPassengersValueText = new System.Windows.Forms.TextBox();
-            this.numPassengersTextBox = new System.Windows.Forms.TextBox();
-            this.massValueText = new System.Windows.Forms.TextBox();
-            this.massTextBox = new System.Windows.Forms.TextBox();
-            this.elevationValueText = new System.Windows.Forms.TextBox();
-            this.elevationTextBox = new System.Windows.Forms.TextBox();
-            this.accelerationValueText = new System.Windows.Forms.TextBox();
-            this.accelerationTextBox = new System.Windows.Forms.TextBox();
-            this.velocityValueText = new System.Windows.Forms.TextBox();
-            this.velocityTextBox = new System.Windows.Forms.TextBox();
-            this.positionValueText = new System.Windows.Forms.TextBox();
             this.outputVariableTextBox = new System.Windows.Forms.TextBox();
             this.outputValueTextBox = new System.Windows.Forms.TextBox();
             this.positionTextBox = new System.Windows.Forms.TextBox();
+            this.positionValueText = new System.Windows.Forms.TextBox();
+            this.velocityTextBox = new System.Windows.Forms.TextBox();
+            this.velocityValueText = new System.Windows.Forms.TextBox();
+            this.accelerationTextBox = new System.Windows.Forms.TextBox();
+            this.accelerationValueText = new System.Windows.Forms.TextBox();
+            this.elevationTextBox = new System.Windows.Forms.TextBox();
+            this.elevationValueText = new System.Windows.Forms.TextBox();
+            this.massTextBox = new System.Windows.Forms.TextBox();
+            this.massValueText = new System.Windows.Forms.TextBox();
+            this.numPassengersTextBox = new System.Windows.Forms.TextBox();
+            this.numPassengersValueText = new System.Windows.Forms.TextBox();
+            this.numCrewTextBox = new System.Windows.Forms.TextBox();
+            this.numCrewValueText = new System.Windows.Forms.TextBox();
+            this.lightsTextBox = new System.Windows.Forms.TextBox();
+            this.lightsValueText = new System.Windows.Forms.TextBox();
+            this.doorsTextBox = new System.Windows.Forms.TextBox();
+            this.doorsValueText = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,184 +119,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(222, 385);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
-            // doorsValueText
-            // 
-            this.doorsValueText.Location = new System.Drawing.Point(114, 346);
-            this.doorsValueText.Multiline = true;
-            this.doorsValueText.Name = "doorsValueText";
-            this.doorsValueText.ReadOnly = true;
-            this.doorsValueText.Size = new System.Drawing.Size(104, 32);
-            this.doorsValueText.TabIndex = 19;
-            this.doorsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // doorsTextBox
-            // 
-            this.doorsTextBox.Location = new System.Drawing.Point(4, 346);
-            this.doorsTextBox.Multiline = true;
-            this.doorsTextBox.Name = "doorsTextBox";
-            this.doorsTextBox.ReadOnly = true;
-            this.doorsTextBox.Size = new System.Drawing.Size(103, 32);
-            this.doorsTextBox.TabIndex = 18;
-            this.doorsTextBox.Text = "Doors";
-            this.doorsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lightsValueText
-            // 
-            this.lightsValueText.Location = new System.Drawing.Point(114, 308);
-            this.lightsValueText.Multiline = true;
-            this.lightsValueText.Name = "lightsValueText";
-            this.lightsValueText.ReadOnly = true;
-            this.lightsValueText.Size = new System.Drawing.Size(104, 31);
-            this.lightsValueText.TabIndex = 17;
-            this.lightsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lightsTextBox
-            // 
-            this.lightsTextBox.Location = new System.Drawing.Point(4, 308);
-            this.lightsTextBox.Multiline = true;
-            this.lightsTextBox.Name = "lightsTextBox";
-            this.lightsTextBox.ReadOnly = true;
-            this.lightsTextBox.Size = new System.Drawing.Size(103, 31);
-            this.lightsTextBox.TabIndex = 16;
-            this.lightsTextBox.Text = "Lights";
-            this.lightsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // numCrewValueText
-            // 
-            this.numCrewValueText.Location = new System.Drawing.Point(114, 270);
-            this.numCrewValueText.Multiline = true;
-            this.numCrewValueText.Name = "numCrewValueText";
-            this.numCrewValueText.ReadOnly = true;
-            this.numCrewValueText.Size = new System.Drawing.Size(104, 31);
-            this.numCrewValueText.TabIndex = 15;
-            this.numCrewValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // numCrewTextBox
-            // 
-            this.numCrewTextBox.Location = new System.Drawing.Point(4, 270);
-            this.numCrewTextBox.Multiline = true;
-            this.numCrewTextBox.Name = "numCrewTextBox";
-            this.numCrewTextBox.ReadOnly = true;
-            this.numCrewTextBox.Size = new System.Drawing.Size(103, 31);
-            this.numCrewTextBox.TabIndex = 14;
-            this.numCrewTextBox.Text = "Crew";
-            this.numCrewTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // numPassengersValueText
-            // 
-            this.numPassengersValueText.Location = new System.Drawing.Point(114, 232);
-            this.numPassengersValueText.Multiline = true;
-            this.numPassengersValueText.Name = "numPassengersValueText";
-            this.numPassengersValueText.ReadOnly = true;
-            this.numPassengersValueText.Size = new System.Drawing.Size(104, 31);
-            this.numPassengersValueText.TabIndex = 13;
-            this.numPassengersValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // numPassengersTextBox
-            // 
-            this.numPassengersTextBox.Location = new System.Drawing.Point(4, 232);
-            this.numPassengersTextBox.Multiline = true;
-            this.numPassengersTextBox.Name = "numPassengersTextBox";
-            this.numPassengersTextBox.ReadOnly = true;
-            this.numPassengersTextBox.Size = new System.Drawing.Size(103, 31);
-            this.numPassengersTextBox.TabIndex = 12;
-            this.numPassengersTextBox.Text = "Passengers";
-            this.numPassengersTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // massValueText
-            // 
-            this.massValueText.Location = new System.Drawing.Point(114, 194);
-            this.massValueText.Multiline = true;
-            this.massValueText.Name = "massValueText";
-            this.massValueText.ReadOnly = true;
-            this.massValueText.Size = new System.Drawing.Size(104, 31);
-            this.massValueText.TabIndex = 11;
-            this.massValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // massTextBox
-            // 
-            this.massTextBox.Location = new System.Drawing.Point(4, 194);
-            this.massTextBox.Multiline = true;
-            this.massTextBox.Name = "massTextBox";
-            this.massTextBox.ReadOnly = true;
-            this.massTextBox.Size = new System.Drawing.Size(103, 31);
-            this.massTextBox.TabIndex = 10;
-            this.massTextBox.Text = "Current Mass";
-            this.massTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // elevationValueText
-            // 
-            this.elevationValueText.Location = new System.Drawing.Point(114, 156);
-            this.elevationValueText.Multiline = true;
-            this.elevationValueText.Name = "elevationValueText";
-            this.elevationValueText.ReadOnly = true;
-            this.elevationValueText.Size = new System.Drawing.Size(104, 31);
-            this.elevationValueText.TabIndex = 9;
-            this.elevationValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // elevationTextBox
-            // 
-            this.elevationTextBox.Location = new System.Drawing.Point(4, 156);
-            this.elevationTextBox.Multiline = true;
-            this.elevationTextBox.Name = "elevationTextBox";
-            this.elevationTextBox.ReadOnly = true;
-            this.elevationTextBox.Size = new System.Drawing.Size(103, 31);
-            this.elevationTextBox.TabIndex = 8;
-            this.elevationTextBox.Text = "Current Elevation";
-            this.elevationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // accelerationValueText
-            // 
-            this.accelerationValueText.Location = new System.Drawing.Point(114, 118);
-            this.accelerationValueText.Multiline = true;
-            this.accelerationValueText.Name = "accelerationValueText";
-            this.accelerationValueText.ReadOnly = true;
-            this.accelerationValueText.Size = new System.Drawing.Size(104, 31);
-            this.accelerationValueText.TabIndex = 7;
-            this.accelerationValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // accelerationTextBox
-            // 
-            this.accelerationTextBox.Location = new System.Drawing.Point(4, 118);
-            this.accelerationTextBox.Multiline = true;
-            this.accelerationTextBox.Name = "accelerationTextBox";
-            this.accelerationTextBox.ReadOnly = true;
-            this.accelerationTextBox.Size = new System.Drawing.Size(103, 31);
-            this.accelerationTextBox.TabIndex = 6;
-            this.accelerationTextBox.Text = "Current Acceleration";
-            this.accelerationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // velocityValueText
-            // 
-            this.velocityValueText.Location = new System.Drawing.Point(114, 80);
-            this.velocityValueText.Multiline = true;
-            this.velocityValueText.Name = "velocityValueText";
-            this.velocityValueText.ReadOnly = true;
-            this.velocityValueText.Size = new System.Drawing.Size(104, 31);
-            this.velocityValueText.TabIndex = 5;
-            this.velocityValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // velocityTextBox
-            // 
-            this.velocityTextBox.Location = new System.Drawing.Point(4, 80);
-            this.velocityTextBox.Multiline = true;
-            this.velocityTextBox.Name = "velocityTextBox";
-            this.velocityTextBox.ReadOnly = true;
-            this.velocityTextBox.Size = new System.Drawing.Size(103, 31);
-            this.velocityTextBox.TabIndex = 4;
-            this.velocityTextBox.Text = "Current Velocity";
-            this.velocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // positionValueText
-            // 
-            this.positionValueText.Location = new System.Drawing.Point(114, 42);
-            this.positionValueText.Multiline = true;
-            this.positionValueText.Name = "positionValueText";
-            this.positionValueText.ReadOnly = true;
-            this.positionValueText.Size = new System.Drawing.Size(104, 31);
-            this.positionValueText.TabIndex = 3;
-            this.positionValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // outputVariableTextBox
             // 
             this.outputVariableTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -331,7 +153,184 @@
             this.positionTextBox.TabIndex = 2;
             this.positionTextBox.Text = "Current Position";
             this.positionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.positionTextBox.TextChanged += new System.EventHandler(this.positionTextBox_TextChanged);
+            // 
+            // positionValueText
+            // 
+            this.positionValueText.Location = new System.Drawing.Point(114, 42);
+            this.positionValueText.Multiline = true;
+            this.positionValueText.Name = "positionValueText";
+            this.positionValueText.ReadOnly = true;
+            this.positionValueText.Size = new System.Drawing.Size(104, 31);
+            this.positionValueText.TabIndex = 3;
+            this.positionValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // velocityTextBox
+            // 
+            this.velocityTextBox.Location = new System.Drawing.Point(4, 80);
+            this.velocityTextBox.Multiline = true;
+            this.velocityTextBox.Name = "velocityTextBox";
+            this.velocityTextBox.ReadOnly = true;
+            this.velocityTextBox.Size = new System.Drawing.Size(103, 31);
+            this.velocityTextBox.TabIndex = 4;
+            this.velocityTextBox.Text = "Current Velocity";
+            this.velocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // velocityValueText
+            // 
+            this.velocityValueText.Location = new System.Drawing.Point(114, 80);
+            this.velocityValueText.Multiline = true;
+            this.velocityValueText.Name = "velocityValueText";
+            this.velocityValueText.ReadOnly = true;
+            this.velocityValueText.Size = new System.Drawing.Size(104, 31);
+            this.velocityValueText.TabIndex = 5;
+            this.velocityValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // accelerationTextBox
+            // 
+            this.accelerationTextBox.Location = new System.Drawing.Point(4, 118);
+            this.accelerationTextBox.Multiline = true;
+            this.accelerationTextBox.Name = "accelerationTextBox";
+            this.accelerationTextBox.ReadOnly = true;
+            this.accelerationTextBox.Size = new System.Drawing.Size(103, 31);
+            this.accelerationTextBox.TabIndex = 6;
+            this.accelerationTextBox.Text = "Current Acceleration";
+            this.accelerationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // accelerationValueText
+            // 
+            this.accelerationValueText.Location = new System.Drawing.Point(114, 118);
+            this.accelerationValueText.Multiline = true;
+            this.accelerationValueText.Name = "accelerationValueText";
+            this.accelerationValueText.ReadOnly = true;
+            this.accelerationValueText.Size = new System.Drawing.Size(104, 31);
+            this.accelerationValueText.TabIndex = 7;
+            this.accelerationValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // elevationTextBox
+            // 
+            this.elevationTextBox.Location = new System.Drawing.Point(4, 156);
+            this.elevationTextBox.Multiline = true;
+            this.elevationTextBox.Name = "elevationTextBox";
+            this.elevationTextBox.ReadOnly = true;
+            this.elevationTextBox.Size = new System.Drawing.Size(103, 31);
+            this.elevationTextBox.TabIndex = 8;
+            this.elevationTextBox.Text = "Current Elevation";
+            this.elevationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // elevationValueText
+            // 
+            this.elevationValueText.Location = new System.Drawing.Point(114, 156);
+            this.elevationValueText.Multiline = true;
+            this.elevationValueText.Name = "elevationValueText";
+            this.elevationValueText.ReadOnly = true;
+            this.elevationValueText.Size = new System.Drawing.Size(104, 31);
+            this.elevationValueText.TabIndex = 9;
+            this.elevationValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // massTextBox
+            // 
+            this.massTextBox.Location = new System.Drawing.Point(4, 194);
+            this.massTextBox.Multiline = true;
+            this.massTextBox.Name = "massTextBox";
+            this.massTextBox.ReadOnly = true;
+            this.massTextBox.Size = new System.Drawing.Size(103, 31);
+            this.massTextBox.TabIndex = 10;
+            this.massTextBox.Text = "Current Mass";
+            this.massTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // massValueText
+            // 
+            this.massValueText.Location = new System.Drawing.Point(114, 194);
+            this.massValueText.Multiline = true;
+            this.massValueText.Name = "massValueText";
+            this.massValueText.ReadOnly = true;
+            this.massValueText.Size = new System.Drawing.Size(104, 31);
+            this.massValueText.TabIndex = 11;
+            this.massValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // numPassengersTextBox
+            // 
+            this.numPassengersTextBox.Location = new System.Drawing.Point(4, 232);
+            this.numPassengersTextBox.Multiline = true;
+            this.numPassengersTextBox.Name = "numPassengersTextBox";
+            this.numPassengersTextBox.ReadOnly = true;
+            this.numPassengersTextBox.Size = new System.Drawing.Size(103, 31);
+            this.numPassengersTextBox.TabIndex = 12;
+            this.numPassengersTextBox.Text = "Passengers";
+            this.numPassengersTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // numPassengersValueText
+            // 
+            this.numPassengersValueText.Location = new System.Drawing.Point(114, 232);
+            this.numPassengersValueText.Multiline = true;
+            this.numPassengersValueText.Name = "numPassengersValueText";
+            this.numPassengersValueText.ReadOnly = true;
+            this.numPassengersValueText.Size = new System.Drawing.Size(104, 31);
+            this.numPassengersValueText.TabIndex = 13;
+            this.numPassengersValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // numCrewTextBox
+            // 
+            this.numCrewTextBox.Location = new System.Drawing.Point(4, 270);
+            this.numCrewTextBox.Multiline = true;
+            this.numCrewTextBox.Name = "numCrewTextBox";
+            this.numCrewTextBox.ReadOnly = true;
+            this.numCrewTextBox.Size = new System.Drawing.Size(103, 31);
+            this.numCrewTextBox.TabIndex = 14;
+            this.numCrewTextBox.Text = "Crew";
+            this.numCrewTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // numCrewValueText
+            // 
+            this.numCrewValueText.Location = new System.Drawing.Point(114, 270);
+            this.numCrewValueText.Multiline = true;
+            this.numCrewValueText.Name = "numCrewValueText";
+            this.numCrewValueText.ReadOnly = true;
+            this.numCrewValueText.Size = new System.Drawing.Size(104, 31);
+            this.numCrewValueText.TabIndex = 15;
+            this.numCrewValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lightsTextBox
+            // 
+            this.lightsTextBox.Location = new System.Drawing.Point(4, 308);
+            this.lightsTextBox.Multiline = true;
+            this.lightsTextBox.Name = "lightsTextBox";
+            this.lightsTextBox.ReadOnly = true;
+            this.lightsTextBox.Size = new System.Drawing.Size(103, 31);
+            this.lightsTextBox.TabIndex = 16;
+            this.lightsTextBox.Text = "Lights";
+            this.lightsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lightsValueText
+            // 
+            this.lightsValueText.Location = new System.Drawing.Point(114, 308);
+            this.lightsValueText.Multiline = true;
+            this.lightsValueText.Name = "lightsValueText";
+            this.lightsValueText.ReadOnly = true;
+            this.lightsValueText.Size = new System.Drawing.Size(104, 31);
+            this.lightsValueText.TabIndex = 17;
+            this.lightsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // doorsTextBox
+            // 
+            this.doorsTextBox.Location = new System.Drawing.Point(4, 346);
+            this.doorsTextBox.Multiline = true;
+            this.doorsTextBox.Name = "doorsTextBox";
+            this.doorsTextBox.ReadOnly = true;
+            this.doorsTextBox.Size = new System.Drawing.Size(103, 32);
+            this.doorsTextBox.TabIndex = 18;
+            this.doorsTextBox.Text = "Doors";
+            this.doorsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // doorsValueText
+            // 
+            this.doorsValueText.Location = new System.Drawing.Point(114, 346);
+            this.doorsValueText.Multiline = true;
+            this.doorsValueText.Name = "doorsValueText";
+            this.doorsValueText.ReadOnly = true;
+            this.doorsValueText.Size = new System.Drawing.Size(104, 32);
+            this.doorsValueText.TabIndex = 19;
+            this.doorsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TrainGUI
             // 

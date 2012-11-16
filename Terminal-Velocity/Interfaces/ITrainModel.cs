@@ -19,12 +19,10 @@ namespace Interfaces
         double CurrentPosition { get; }
         int MaxCapacity { get; }
         int NumPassengers { get; set; }
-        
         int NumCrew { get; set; }
         bool BrakeFailure { get; }
         bool EngineFailure { get; }
         bool SignalPickupFailure { get; }
-        IBlock CurrentBlock { get; }
 
         bool ChangeMovement(double power);
         void EmergencyBrake();
