@@ -63,10 +63,7 @@ namespace TrackModel
 	public IBlock[] BlockList
 	{
 		get {return _blockList;}
-	}
-        
-		
-        	
+	}	
 	#endregion
     }
 }
