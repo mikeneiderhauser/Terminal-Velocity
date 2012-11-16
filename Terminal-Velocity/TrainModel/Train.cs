@@ -306,5 +306,11 @@ namespace TrainModel
         }
         
         #endregion
+
+
+        int ITrainModel.Length
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
