@@ -12,13 +12,13 @@ namespace TrackModel
     {
         //Private parameters
 		private int _routeID;
-		private String _routeName;
+		private string _routeName;
 		private int _numBlocks;
 		private Block[] _blockList;
 		private int _startBlockID;
 		private int _endBlockID;
 
-        public RouteInfo(int rID,String rName,int nBlocks,Block[] blocks, int sID, int eID)
+        public RouteInfo(int rID,string rName,int nBlocks,Block[] blocks, int sID, int eID)
         {
 		_routeID=rID;
 		_routeName=rName;
