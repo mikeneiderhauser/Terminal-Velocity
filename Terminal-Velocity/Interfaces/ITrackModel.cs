@@ -7,15 +7,12 @@ namespace Interfaces
 {
     public interface ITrackModel
     {
+        IBlock requestBlockInfo(int blockID);
+        IRoute requestRouteInfo(int routeID);
 
+        IBlock[][] requestTrackGrid(int routeID);
 
-	IBlock requestBlockInfo(int blockID);
-	IRoute requestRouteInfo(int routeID);
-
-	IBlock[][] requestTrackGrid(int routeID);
-
-	bool requestUpdateSwitch(IBlock bToUpdate);
-	bool requestUpdateBlock(IBlock blockToChange);
-
+        bool requestUpdateSwitch(IBlock bToUpdate);
+        bool requestUpdateBlock(IBlock blockToChange);
     }
 }

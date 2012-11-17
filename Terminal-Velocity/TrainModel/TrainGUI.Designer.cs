@@ -348,6 +348,11 @@
 
         }
 
+        private void allTrainComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         private System.Windows.Forms.TextBox trainInfoTextBox;

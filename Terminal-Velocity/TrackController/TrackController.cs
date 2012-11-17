@@ -143,7 +143,8 @@ namespace TrackController
                     {
                         if (request.TrackControllerID == this.ID)
                         {
-                            request.Info.Trains = Trains.Values.ToList<ITrain>();
+                            if (request.Info != null)
+                                request.Info.Trains = Trains.Values.ToList<ITrain>();
                         }
                         return;
                     }
