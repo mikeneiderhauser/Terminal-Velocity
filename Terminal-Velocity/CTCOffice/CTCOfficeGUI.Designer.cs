@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this._groupLoginLogout = new System.Windows.Forms.GroupBox();
-            this.loginStatusImage = new System.Windows.Forms.PictureBox();
+            this._loginStatusImage = new System.Windows.Forms.PictureBox();
             this._btnLoginLogout = new System.Windows.Forms.Button();
             this._txtPassword = new System.Windows.Forms.TextBox();
             this._lblPassword = new System.Windows.Forms.Label();
@@ -37,8 +37,8 @@
             this._txtUsername = new System.Windows.Forms.TextBox();
             this._groupOperatorControls = new System.Windows.Forms.GroupBox();
             this._btnRefreshView = new System.Windows.Forms.Button();
-            this._btnSchedule_1 = new System.Windows.Forms.Button();
             this._btnDispatchTrain = new System.Windows.Forms.Button();
+            this._btnSchedule_1 = new System.Windows.Forms.Button();
             this._groupSystemStatus = new System.Windows.Forms.GroupBox();
             this._groupRunningStatus = new System.Windows.Forms.GroupBox();
             this._lblEnvironmentHead = new System.Windows.Forms.Label();
@@ -70,7 +70,7 @@
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
             this._groupLoginLogout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
@@ -83,7 +83,7 @@
             // 
             // _groupLoginLogout
             // 
-            this._groupLoginLogout.Controls.Add(this.loginStatusImage);
+            this._groupLoginLogout.Controls.Add(this._loginStatusImage);
             this._groupLoginLogout.Controls.Add(this._btnLoginLogout);
             this._groupLoginLogout.Controls.Add(this._txtPassword);
             this._groupLoginLogout.Controls.Add(this._lblPassword);
@@ -96,14 +96,14 @@
             this._groupLoginLogout.TabStop = false;
             this._groupLoginLogout.Text = "Login / Logout";
             // 
-            // loginStatusImage
+            // _loginStatusImage
             // 
-            this.loginStatusImage.InitialImage = null;
-            this.loginStatusImage.Location = new System.Drawing.Point(272, 9);
-            this.loginStatusImage.Name = "loginStatusImage";
-            this.loginStatusImage.Size = new System.Drawing.Size(16, 16);
-            this.loginStatusImage.TabIndex = 6;
-            this.loginStatusImage.TabStop = false;
+            this._loginStatusImage.InitialImage = null;
+            this._loginStatusImage.Location = new System.Drawing.Point(272, 9);
+            this._loginStatusImage.Name = "_loginStatusImage";
+            this._loginStatusImage.Size = new System.Drawing.Size(16, 16);
+            this._loginStatusImage.TabIndex = 6;
+            this._loginStatusImage.TabStop = false;
             // 
             // _btnLoginLogout
             // 
@@ -172,16 +172,6 @@
             this._btnRefreshView.UseVisualStyleBackColor = true;
             this._btnRefreshView.Click += new System.EventHandler(this._btnRefreshView_Click);
             // 
-            // _btnSchedule_1
-            // 
-            this._btnSchedule_1.Location = new System.Drawing.Point(98, 29);
-            this._btnSchedule_1.Name = "_btnSchedule_1";
-            this._btnSchedule_1.Size = new System.Drawing.Size(100, 23);
-            this._btnSchedule_1.TabIndex = 1;
-            this._btnSchedule_1.Text = "Schedule Trains";
-            this._btnSchedule_1.UseVisualStyleBackColor = true;
-            this._btnSchedule_1.Click += new System.EventHandler(this._btnSchedule_1_Click);
-            // 
             // _btnDispatchTrain
             // 
             this._btnDispatchTrain.Location = new System.Drawing.Point(6, 29);
@@ -191,6 +181,16 @@
             this._btnDispatchTrain.Text = "Dispatch Train";
             this._btnDispatchTrain.UseVisualStyleBackColor = true;
             this._btnDispatchTrain.Click += new System.EventHandler(this._btnDispatchTrain_Click);
+            // 
+            // _btnSchedule_1
+            // 
+            this._btnSchedule_1.Location = new System.Drawing.Point(98, 29);
+            this._btnSchedule_1.Name = "_btnSchedule_1";
+            this._btnSchedule_1.Size = new System.Drawing.Size(100, 23);
+            this._btnSchedule_1.TabIndex = 1;
+            this._btnSchedule_1.Text = "Schedule Trains";
+            this._btnSchedule_1.UseVisualStyleBackColor = true;
+            this._btnSchedule_1.Click += new System.EventHandler(this._btnSchedule_1_Click);
             // 
             // _groupSystemStatus
             // 
@@ -462,7 +462,7 @@
             this._tabGreenLine.Location = new System.Drawing.Point(4, 22);
             this._tabGreenLine.Name = "_tabGreenLine";
             this._tabGreenLine.Padding = new System.Windows.Forms.Padding(3);
-            this._tabGreenLine.Size = new System.Drawing.Size(780, 365);
+            this._tabGreenLine.Size = new System.Drawing.Size(979, 618);
             this._tabGreenLine.TabIndex = 1;
             this._tabGreenLine.Text = "Green Line";
             this._tabGreenLine.UseVisualStyleBackColor = true;
@@ -472,7 +472,7 @@
             this._tabTeamLogo.Location = new System.Drawing.Point(4, 22);
             this._tabTeamLogo.Name = "_tabTeamLogo";
             this._tabTeamLogo.Padding = new System.Windows.Forms.Padding(3);
-            this._tabTeamLogo.Size = new System.Drawing.Size(780, 365);
+            this._tabTeamLogo.Size = new System.Drawing.Size(979, 618);
             this._tabTeamLogo.TabIndex = 2;
             this._tabTeamLogo.Text = "Terminal Velocity";
             this._tabTeamLogo.UseVisualStyleBackColor = true;
@@ -508,7 +508,7 @@
             this.Size = new System.Drawing.Size(1272, 716);
             this._groupLoginLogout.ResumeLayout(false);
             this._groupLoginLogout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).EndInit();
             this._groupOperatorControls.ResumeLayout(false);
             this._groupSystemStatus.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
@@ -528,7 +528,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox _groupLoginLogout;
-        private System.Windows.Forms.PictureBox loginStatusImage;
+        private System.Windows.Forms.PictureBox _loginStatusImage;
         private System.Windows.Forms.Button _btnLoginLogout;
         private System.Windows.Forms.TextBox _txtPassword;
         private System.Windows.Forms.Label _lblPassword;

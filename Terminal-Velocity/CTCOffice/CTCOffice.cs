@@ -71,8 +71,18 @@ namespace CTCOffice
         /// <returns>True if operator is logged in. Else False</returns>
         public bool Login(string username, string password)
         {
+            bool status = false;
             _op.login(username, password);
-            return _op.isAuth();
+            status = _op.isAuth();
+            if (status)
+            {
+                _env.sendLogEntry((string)"CTCOffice: User Logged in with username->" + username + ".");
+            }
+            else
+            {
+                _env.sendLogEntry("CTCOffice: User Logged out.");
+            }
+            return status;
         }
 
         /// <summary>
@@ -86,6 +96,11 @@ namespace CTCOffice
                 _op.logout();
             }
             return true;
+        }
+
+        public bool isAuth()
+        {
+            return _op.isAuth();
         }
 
         /// <summary>

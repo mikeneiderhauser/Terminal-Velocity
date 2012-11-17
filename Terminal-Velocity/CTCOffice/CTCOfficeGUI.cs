@@ -25,6 +25,9 @@ namespace CTCOffice
 
             //subscribe to Environment Tick
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+            _ctcOffice.Logout();
+            _btnLoginLogout.Text = "Logout";
+            _loginStatusImage.Image = Properties.Resources.red;
         }
 
 
@@ -38,11 +41,29 @@ namespace CTCOffice
             //throw new NotImplementedException();
         }
 
-
         private void _btnLoginLogout_Click(object sender, EventArgs e)
         {
+            if (_ctcOffice.isAuth())
+            {
+                _ctcOffice.Logout();
+            }
+            else
+            {
+                if (_ctcOffice.Login(_txtUsername.Text, _txtPassword.Text))
+                {
+                    enableUserControls();
+                    _loginStatusImage.Image = Properties.Resources.green;
+                    _btnLoginLogout.Text = "Logout";
+                }
+                else
+                {
+                    disableUserControls();
+                    _loginStatusImage.Image = Properties.Resources.red;
+                    _btnLoginLogout.Text = "Login";
+                }
 
-        }
+            }
+        }//end button LoginLogout
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
@@ -56,12 +77,12 @@ namespace CTCOffice
 
         private void _btnSchedule_1_Click(object sender, EventArgs e)
         {
-
+            //show system scheduker
         }
 
         private void _btnSchedule_2_Click(object sender, EventArgs e)
         {
-
+            //show system scheduler
         }
 
         private void _btnRefreshMetrics_Click(object sender, EventArgs e)
@@ -94,7 +115,42 @@ namespace CTCOffice
 
         private void _checkAutomatedScheduling_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (_checkAutomatedScheduling.Checked)
+            {
+                _ctcOffice.StartScheduling();
+            }
+            else
+            {
+                _ctcOffice.StopScheduling();
+            }
         }
-    }
+
+        private void disableUserControls()
+        {
+            mainDisplayLogo();
+            setControlState(false);
+        }
+
+        private void enableUserControls()
+        {
+            setControlState(true);
+        }
+
+        private void mainDisplayLogo()
+        {
+            _tabTeamLogo.Focus();
+        }
+
+        private void setControlState(bool state)
+        {
+            _btnDispatchTrain.Enabled = state;
+            _btnSchedule_1.Enabled = state;
+            _btnSchedule_2.Enabled = state;
+            _btnRefreshView.Enabled = state;
+            _btnRefreshMetrics.Enabled = state;
+            _btnSpeed.Enabled = state;
+            _checkAutomatedScheduling.Enabled = state;
+            _systemViewTabs.Enabled = state;
+        }
+    }//end ctc gui
 }
