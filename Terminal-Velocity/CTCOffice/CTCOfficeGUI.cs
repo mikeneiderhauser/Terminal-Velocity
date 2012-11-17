@@ -27,6 +27,9 @@ namespace CTCOffice
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
             _ctcOffice.Logout();
             _btnLoginLogout.Text = "Logout";
+            
+            mainDisplayLogo();            
+            disableUserControls();
             _loginStatusImage.Image = Properties.Resources.red;
         }
 
@@ -46,6 +49,9 @@ namespace CTCOffice
             if (_ctcOffice.isAuth())
             {
                 _ctcOffice.Logout();
+                disableUserControls();
+                _loginStatusImage.Image = Properties.Resources.red;
+                _btnLoginLogout.Text = "Login";
             }
             else
             {
@@ -60,6 +66,7 @@ namespace CTCOffice
                     disableUserControls();
                     _loginStatusImage.Image = Properties.Resources.red;
                     _btnLoginLogout.Text = "Login";
+                    _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
                 }
 
             }
@@ -138,7 +145,7 @@ namespace CTCOffice
 
         private void mainDisplayLogo()
         {
-            _tabTeamLogo.Focus();
+            _systemViewTabs.SelectedIndex = 2;//Terminal Velocity Tab
         }
 
         private void setControlState(bool state)

@@ -43,13 +43,16 @@ namespace CTCOffice
             _redLineData = new LineData();
             _greenLineData = new LineData();
 
-            _redLineData.Layout = _env.TrackModel.requestTrackGrid(0);
-            //add 2D blocks to LineData (red)
-            //add blocks to Line Data objects (red)
+            if (_env.TrackModel != null)
+            {
+                _redLineData.Layout = _env.TrackModel.requestTrackGrid(0);
+                //add 2D blocks to LineData (red)
+                //add blocks to Line Data objects (red)
 
-            _greenLineData.Layout = _env.TrackModel.requestTrackGrid(1);
-            //add 2D blocks to LineData (green)
-            //add blocks to Line Data objects (green)
+                _greenLineData.Layout = _env.TrackModel.requestTrackGrid(1);
+                //add 2D blocks to LineData (green)
+                //add blocks to Line Data objects (green)
+            }
 
             //create queues
             _requestsOut = new Queue<IRequest>();
