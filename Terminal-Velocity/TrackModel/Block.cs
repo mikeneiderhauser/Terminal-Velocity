@@ -112,7 +112,12 @@ namespace TrackModel
 		
         public StateEnum State
 		{
-			get {return _stateAttributes;}	
+			get {return _stateAttributes;}
+
+			set
+			{
+				_stateAttributes=value;
+			}	
 		}
 		
 		public int PrevBlockID
@@ -137,7 +142,11 @@ namespace TrackModel
 		
 		public int BlockSize
 		{
-			get {return _bSize;}	
+			get {return _bSize;}
+			set
+			{
+				_bSize=value;
+			}
 		}
 		
 		public DirEnum Direction
@@ -147,12 +156,20 @@ namespace TrackModel
 		
 		public int SwitchDest1
 		{
-			get {return _switchDest1;}	
+			get {return _switchDest1;}
+			set
+			{
+				_switchDest1=value;
+			}	
 		}
 		
 		public int SwitchDest2
 		{
-			get {return _switchDest2;}	
+			get {return _switchDest2;}
+			set
+			{
+				_switchDest2=value;
+			}	
 		}
 		#endregion
     }

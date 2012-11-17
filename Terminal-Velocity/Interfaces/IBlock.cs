@@ -9,14 +9,14 @@ namespace Interfaces
     {
         int BlockID { get; }
         StateEnum State { get; set; }
-        int PrevBlockID { get; set; }
+        int PrevBlockID { get; }
         double StartingElev { get; }
         double Grade { get; }
         int[] Location { get; }
         double BlockSize { get; set; }
         DirEnum Direction { get; }
-        int SwitchDest1 { get; }
-        int SwitchDest2 { get; }
+        int SwitchDest1 { get; set; }
+        int SwitchDest2 { get; set; }
 
         bool hasSwitch();
         bool hasTunnel();
