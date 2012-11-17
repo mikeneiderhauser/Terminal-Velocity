@@ -47,7 +47,12 @@ namespace Testing
             else if (args.Length == 1)
             {
                 if (args[0].CompareTo("unit") == 0)
+                {
                     UnitTestFramework();
+
+                    Console.WriteLine("\n\nPress enter to continue...");
+                    Console.ReadLine();
+                }
             }
 
             return 0;
@@ -55,6 +60,42 @@ namespace Testing
 
         static void GUITestFramework(int test)
         {
+            ////////////////////////////////////////////////////////////////////////////////////////
+            //                              Initializations                                       //
+            ////////////////////////////////////////////////////////////////////////////////////////
+
+            // Environment object
+            TerminalVelocity.Environment environment = new TerminalVelocity.Environment();
+            // Our track circuit
+            TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
+            // Next track controller's circuit
+            TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment);
+            // Previous track controller's circuit
+            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
+
+            TrackController.TrackController prev = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController next = new TrackController.TrackController(environment, currCircuit);
+
+            prev.Previous = null;
+            prev.Next = curr;
+
+            curr.Previous = prev;
+            curr.Next = next;
+
+            next.Previous = curr;
+            next.Next = null;
+
+            // Assign the same track controller to both lines
+            CTCOffice.CTCOffice office = new CTCOffice.CTCOffice(environment, prev, prev);
+
+            environment.CTCOffice = office;
+            environment.PrimaryTrackControllerGreen = prev;
+            environment.PrimaryTrackControllerRed = prev;
+
+            ////////////////////////////////////////////////////////////////////////////////////////
+            //                              Initializations                                       //
+            ////////////////////////////////////////////////////////////////////////////////////////
 
             Form form = new Form();
             UserControl control = new UserControl();
@@ -63,6 +104,7 @@ namespace Testing
                 case 0: // SystemScheduler
                     break;
                 case 1: // CTCOffice
+                    control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
                     break;
@@ -76,6 +118,7 @@ namespace Testing
             }
 
             form.Controls.Add(control);
+            form.AutoSize = true;
             form.ShowDialog();
         }
 
@@ -129,8 +172,6 @@ namespace Testing
             Console.WriteLine(string.Format("Total Passed : {0} \nTotal Fail : {1} \nTotal Fatal Errors : {2}", totalPass, totalFail, totalFatal));
             Console.WriteLine("==================================================");
             Console.WriteLine("==================================================");
-            Console.WriteLine("\n\nPress enter to continue...");
-            Console.ReadLine();
         }
     }
 }
