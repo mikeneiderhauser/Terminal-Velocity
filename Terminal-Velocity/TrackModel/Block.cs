@@ -22,6 +22,7 @@ namespace TrackModel
 		private string[] _attributes;
 		private int _switchDest1;
 		private int _switchDest2;
+		private int _trackConID;
 
         public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2)
         {
@@ -171,14 +172,14 @@ namespace TrackModel
         
 		
         public StateEnum State
-		{
+	{
 			get {return _stateAttributes;}
 
 			set
 			{
 				_stateAttributes=value;
 			}	
-		}
+	}
 		
 		public int PrevBlockID
 		{
@@ -230,6 +231,16 @@ namespace TrackModel
 			{
 				_switchDest2=value;
 			}	
+		}
+
+		public int TrackConID
+		{
+			get {return _trackConID;}
+			set 
+			{
+				_trackConID=value;
+			}
+		
 		}
 		#endregion
     }
