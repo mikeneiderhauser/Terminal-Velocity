@@ -20,9 +20,14 @@ namespace CTCOffice
         private LineData _redLineData;
         private ITrackController _primaryTrackControllerGreen;
         private LineData _greenLineData;
+        private Operator _op;
+
         private Queue<IRequest> _requestsOut;
         private Queue<IRequest> _requestsIn;
-        private Operator _op;
+        private event EventHandler<EventArgs> RequestQueueOut;
+        private event EventHandler<EventArgs> RequestQueueIn;
+        private bool _processingOutRequests;
+        private bool _processingInRequests;
         #endregion
 
         #region Constructor
@@ -53,16 +58,89 @@ namespace CTCOffice
                 //add 2D blocks to LineData (green)
                 //add blocks to Line Data objects (green)
             }
+            else
+            {
+                _env.sendLogEntry("CTCOffice: NULL Referenct to TrackModel");
+            }
 
             //create queues
             _requestsOut = new Queue<IRequest>();
             _requestsIn = new Queue<IRequest>();
-
             
+            //create queue events
+            RequestQueueIn += new EventHandler<EventArgs>(CTCOffice_RequestQueueIn);
+            RequestQueueOut += new EventHandler<EventArgs>(CTCOffice_RequestQueueOut);
+
+            //create queue processing flags / mutex
+            _processingOutRequests = false;
+            _processingInRequests = false;
 
             //get status from red and green prrimary track controllers (default)
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
+            RequestQueueOut(this, EventArgs.Empty);
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Function to handle queue out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CTCOffice_RequestQueueOut(object sender, EventArgs e)
+        {
+            //handle sequential sending of the queue to the track controller
+            if (!_processingOutRequests)
+            {
+                //if office is not already processing queue
+                _processingOutRequests = true;
+                while (_requestsOut.Count > 0)
+                {
+                    sendRequest(_requestsOut.Dequeue());
+                }
+                _processingOutRequests = false;
+
+                //failsafe - check to see if there is a new request while processing... (should nevert hit)
+                if (_requestsOut.Count != 0)
+                {
+                    RequestQueueOut(this, EventArgs.Empty);
+                }
+            }
+            //else already processing
+        }
+
+        /// <summary>
+        /// Function to handle Queue In
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CTCOffice_RequestQueueIn(object sender, EventArgs e)
+        {
+            //handle sequential recieving of requests from track controller
+            if (!_processingInRequests)
+            {
+                _processingInRequests = true;
+                while (_requestsIn.Count > 0)
+                {
+                    if ((_requestsIn.Peek()).Info != null)
+                    {
+                        //if valid return data
+                        internalRequest(_requestsIn.Dequeue());
+                    }
+                    else
+                    {
+                        //invalid return data
+                        _requestsIn.Dequeue();
+                    }
+                }
+                _processingInRequests = false;
+
+                //failsafe - check to see if there is a new request while processing... (should nevert hit)
+                if (_requestsIn.Count != 0)
+                {
+                    RequestQueueOut(this, EventArgs.Empty);
+                }
+            }
         }
         #endregion
 
@@ -103,6 +181,10 @@ namespace CTCOffice
             return true;
         }
 
+        /// <summary>
+        /// Function to determine if Operator is authorized to use CTC
+        /// </summary>
+        /// <returns></returns>
         public bool isAuth()
         {
             return _op.isAuth();
@@ -153,6 +235,15 @@ namespace CTCOffice
         }
 
         /// <summary>
+        /// Function to handle return request
+        /// </summary>
+        /// <param name="request"></param>
+        private void internalRequest(IRequest request)
+        {
+            //handle request property (Status)Info here
+        }
+
+        /// <summary>
         /// Do Processing on Tick
         /// </summary>
         /// <param name="sender"></param>
@@ -160,9 +251,6 @@ namespace CTCOffice
         void _env_Tick(object sender, TickEventArgs e)
         {
             addAutomaticUpdate();
-            //handle queues here
-            processOut();
-            processIn();
         }
 
         /// <summary>
@@ -183,43 +271,7 @@ namespace CTCOffice
             //cannot implement without Track Model Interface
             //red=0....green=1
             return 0;
-        }
-
-        /// <summary>
-        /// Processes the _requestIn Queue (handles 1 request at a time (1 request per tick))
-        /// </summary>
-        private void processIn()
-        {
-            int line = 0;
-            IRequest removedRequest;
-            if (_requestsIn.Count != 0)
-            {
-                //handle passing to SS if needed. (requuest is per track controller)
-                removedRequest = _requestsIn.Dequeue();
-                line = determineLine(removedRequest);
-
-                if (line == 0)
-                {
-                    //red
-                }
-                else if (line == 1)
-                {
-                    //green
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Processes the _requestOut Queue (handles 1 request at a time (1request per tick))
-        /// </summary>
-        private void processOut()
-        {
-            if (_requestsOut.Count != 0)
-            {
-                sendRequest(_requestsOut.Dequeue());
-            }
-        }
-        
+        }        
         #endregion
 
         #region Public Interface
@@ -238,6 +290,7 @@ namespace CTCOffice
             if (request != null)
             {
                 _requestsOut.Enqueue(request);
+                RequestQueueOut(this, EventArgs.Empty);
             }
         }
 
@@ -251,6 +304,8 @@ namespace CTCOffice
             if (request.Info != null)
             {
                 _requestsIn.Enqueue(request);
+                //throws event to actually process queue
+                RequestQueueIn(this, EventArgs.Empty);
             }
         }
         #endregion
