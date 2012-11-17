@@ -17,22 +17,16 @@ namespace TrackModel
 		private Block[] _blockList;
 		private int _startBlockID;
 		private int _endBlockID;
-		private IEnvironment _env
 
-        public RouteInfo(IEnvironment environment)
+        public RouteInfo(int rID,String rName,int nBlocks,Block[] blocks, int sID, int eID)
         {
-		_env=environment;
-            //_environment.Tick +=
+		_routeID=rID;
+		_routeName=rName;
+		_numBlocks=nBlocks;
+		_blockList=blocks;
+		_startBlockID=sID;
+		_endBlockID=eID;
         }
-		
-		
-        //Handle environment tick
-        void  _environment_Tick(object sender, TickEventArgs e)
-        {
-                //handle tick here
-        }
-		
-		
 		
         #region Properties
         public int RouteID
