@@ -8,13 +8,13 @@ namespace Interfaces
     public interface IBlock
     {
         int BlockID { get; }
-        //StateEnum State { get; set; }
+        StateEnum State { get; set; }
         int PrevBlockID { get; set; }
         double StartingElev { get; }
         double Grade { get; }
         int[] Location { get; }
         double BlockSize { get; set; }
-        //DirEnum Direction { get; }
+        DirEnum Direction { get; }
         int SwitchDest1 { get; }
         int SwitchDest2 { get; }
 
@@ -22,6 +22,7 @@ namespace Interfaces
         bool hasTunnel();
         bool hasHeater();
         bool hasCrossing();
+	bool hasStation();
         bool runsNorth();
         bool runsSouth();
         bool runsEast();
