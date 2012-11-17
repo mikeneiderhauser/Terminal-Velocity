@@ -67,42 +67,98 @@ namespace TrackModel
 
 	public bool runsNorth()
 	{
-		return false;
+		if(_direction==DirEnum.North || _direction==DirEnum.North_AND_South)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsSouth()
 	{
-		return false;
+		if(_direction==DirEnum.South || _direction==DirEnum.North_AND_South)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsEast()
 	{
-		return false;
+		if(_direction==DirEnum.East || _direction==DirEnum.East_AND_West)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsWest()
 	{
-		return false;
+		if(_direction==DirEnum.West || _direction==DirEnum.East_AND_West)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsNorthEast()
 	{
-		return false;
+		if(_direction==DirEnum.Northeast || _direction==DirEnum.Northeast_AND_Southwest)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsNorthWest()
 	{
-		return false;
+		if(_direction==DirEnum.Northwest || _direction==DirEnum.Northwest_AND_Southeast)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsSouthEast()
 	{
-		return false;
+		if(_direction==DirEnum.Southeast || _direction==DirEnum.Northwest_AND_Southeast)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public bool runsSouthWest()
 	{
-		return false;
+		if(_direction==DirEnum.Southwest || _direction==DirEnum.Northeast_AND_Southwest)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 		
 		
