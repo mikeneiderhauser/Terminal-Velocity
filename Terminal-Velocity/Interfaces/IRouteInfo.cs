@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface IBlock
+    public interface IRouteInfo
     {
 	int RouteID{ get; }
 	String RouteName { get;}
