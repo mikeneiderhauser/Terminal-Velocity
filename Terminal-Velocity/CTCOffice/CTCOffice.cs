@@ -58,6 +58,8 @@ namespace CTCOffice
             _requestsOut = new Queue<IRequest>();
             _requestsIn = new Queue<IRequest>();
 
+            
+
             //get status from red and green prrimary track controllers (default)
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
