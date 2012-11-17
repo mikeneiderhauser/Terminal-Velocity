@@ -60,6 +60,46 @@ namespace TrackModel
 		{
 			return false;
 		}
+
+	public bool runsNorth()
+	{
+		return false;
+	}
+
+	public bool runsSouth()
+	{
+		return false;
+	}
+
+	public bool runsEast()
+	{
+		return false;
+	}
+
+	public bool runsWest()
+	{
+		return false;
+	}
+
+	public bool runsNorthEast()
+	{
+		return false;
+	}
+
+	public bool runsNorthWest()
+	{
+		return false;
+	}
+
+	public bool runsSouthEast()
+	{
+		return false;
+	}
+
+	public bool runsSouthWest()
+	{
+		return false;
+	}
 		
 		
 		
