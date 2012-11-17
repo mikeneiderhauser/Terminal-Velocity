@@ -16,7 +16,7 @@ namespace TrackModel
         private int _prevBlockID;
 		private double _startingElev;
 		private double _grade;
-		private int _location;
+		private int[] _location;
 		private int _bSize;
 		private DirEnum _direction;
 		private string[] _attributes;
@@ -130,7 +130,7 @@ namespace TrackModel
 			get {return _grade;}	
 		}
 		
-		public int Location
+		public int[] Location
 		{
 			get {return _location;}	
 		}
