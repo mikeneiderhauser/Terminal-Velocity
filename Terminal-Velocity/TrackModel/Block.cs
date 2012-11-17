@@ -13,7 +13,7 @@ namespace TrackModel
         //Private parameters
 		private int _blockID;
 		private StateEnum _stateAttributes;
-        private int _prevBlockID;
+        	private int _prevBlockID;
 		private double _startingElev;
 		private double _grade;
 		private int[] _location;
@@ -23,19 +23,23 @@ namespace TrackModel
 		private int _switchDest1;
 		private int _switchDest2;
 
-        public Block(IEnvironment environment)
+        public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2)
         {
-            //_environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+		_blockID=bID;
+		_stateAttributes=state;
+		_prevBlockID=pBID;
+		_startingElev=sElev;
+		_grade=g;
+		_location=loc;
+		_bSize=bS;
+		_direction=dir;
+		_attributes=atts;
+		_switchDest1=d1;
+		_switchDest2=d2;
         }
 		
 		
-        //Handle environment tick
-        void  _environment_Tick(object sender, TickEventArgs e)
-        {
-                //handle tick here
-        }
-		
-		//Public methods
+	//Public methods
         public bool hasSwitch()
         {
 			return false;
