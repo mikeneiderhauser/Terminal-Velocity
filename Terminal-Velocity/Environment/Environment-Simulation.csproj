@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8B7B6259-91F9-4DB2-AED3-E20FAC7AC986}</ProjectGuid>
+    <ProjectGuid>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CTCOffice</RootNamespace>
-    <AssemblyName>CTCOffice</AssemblyName>
+    <RootNamespace>Environment</RootNamespace>
+    <AssemblyName>Environment</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -39,7 +39,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,40 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CTCOffice.cs" />
-    <Compile Include="CTCOfficeGUI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CTCOfficeGUI.Designer.cs">
-      <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CTCOffice_old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CTCOffice_old.Designer.cs">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LayoutCellDataContainer.cs" />
-    <Compile Include="LineData.cs" />
-    <Compile Include="Operator.cs" />
+    <Compile Include="Environment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Request.cs" />
-    <EmbeddedResource Include="CTCOfficeGUI.resx">
-      <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CTCOffice_old.resx">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Route.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="SystemLog.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -95,48 +74,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
-      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>Environment-Simulation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
-      <Project>{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}</Project>
-      <Name>Terminal-Velocity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TrainController\TrainController.csproj">
-      <Project>{C097CCCF-7085-4DED-8269-1B5EA566E73A}</Project>
-      <Name>TrainController</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TrainModel\TrainModel.csproj">
-      <Project>{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}</Project>
-      <Name>TrainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
       <Name>Utility</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\green.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\red.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TerminalVelocity.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GreenTrack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RedTrack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Unpopulated.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

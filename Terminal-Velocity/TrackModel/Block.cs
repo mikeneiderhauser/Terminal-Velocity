@@ -43,28 +43,73 @@ namespace TrackModel
 	//Public methods
         public bool hasSwitch()
         {
-			return false;
+		for(int i=0;i<_attributes.Length;i++)
+		{
+			if(_attributes[i].Equals("SWITCH",StringComparison.Ordinal))
+			{
+				return true;
+			}
+		}
+
+		return false;
+		
+		//Alternate implementation involves checking if switchDest2=-1
+
+
         }
 		
-		public bool hasTunnel()
+	public bool hasTunnel()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("TUNNEL",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+
+	}
 		
-		public bool hasHeater()
+	public bool hasHeater()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("HEATER",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 		
-		public bool hasCrossing()
+	public bool hasCrossing()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("CROSSING",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 		
-		public bool hasStation()
+	public bool hasStation()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("STATION",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 
 	public bool runsNorth()
 	{

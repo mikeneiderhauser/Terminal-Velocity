@@ -80,6 +80,9 @@
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
       <Name>Utility</Name>
+    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
+      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
+      <Name>Environment-Simulation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
