@@ -17,6 +17,7 @@ namespace Interfaces
         DirEnum Direction { get; }
         int SwitchDest1 { get; set; }
         int SwitchDest2 { get; set; }
+	int TrackConID {get; set;}
 
         bool hasSwitch();
         bool hasTunnel();
