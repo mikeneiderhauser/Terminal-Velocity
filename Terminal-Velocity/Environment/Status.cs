@@ -6,7 +6,7 @@ using System.Text;
 using Interfaces;
 using Utility;
 
-namespace TerminalVelocity
+namespace EnvironmentSimulation
 {
     class Status : IStatus
     {

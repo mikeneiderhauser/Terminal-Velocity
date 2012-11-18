@@ -6,9 +6,9 @@ using System.Text;
 using Interfaces;
 using Utility;
 
-namespace TerminalVelocity
+namespace EnvironmentSimulation
 {
-    class Route
+    class Route : IRoute
     {
         #region Private Class Variables
         /// <summary>

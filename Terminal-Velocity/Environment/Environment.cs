@@ -7,7 +7,7 @@ using System.Timers;
 using Interfaces;
 using Utility;
 
-namespace TerminalVelocity
+namespace EnvironmentSimulation
 {
     public class Environment : IEnvironment
     {
