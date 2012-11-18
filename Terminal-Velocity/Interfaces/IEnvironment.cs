@@ -32,7 +32,7 @@ namespace Interfaces
         /// <summary>
         /// A reference to the first, or primary, track controller (Green)
         /// </summary>
-        ITrackController PrimaryTrackControllerGreen{ get; set; }
+        ITrackController PrimaryTrackControllerGreen { get; set; }
 
         /// <summary>
         /// A reference to the Track Model

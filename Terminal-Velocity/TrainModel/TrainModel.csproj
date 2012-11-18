@@ -59,7 +59,6 @@
     <Compile Include="TrainGUI.Designer.cs">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Train.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
