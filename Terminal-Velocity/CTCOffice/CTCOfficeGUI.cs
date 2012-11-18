@@ -31,6 +31,8 @@ namespace CTCOffice
             mainDisplayLogo();            
             disableUserControls();
             _loginStatusImage.Image = Properties.Resources.red;
+            _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
+
         }
 
 
@@ -158,6 +160,22 @@ namespace CTCOffice
             _btnSpeed.Enabled = state;
             _checkAutomatedScheduling.Enabled = state;
             _systemViewTabs.Enabled = state;
+        }
+
+        private void _loginStatusImage_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+
+            }
+        }
+
+        private void _layoutPiece_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+
+            }
         }
     }//end ctc gui
 }

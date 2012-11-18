@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this._groupLoginLogout = new System.Windows.Forms.GroupBox();
-            this._loginStatusImage = new System.Windows.Forms.PictureBox();
             this._btnLoginLogout = new System.Windows.Forms.Button();
             this._txtPassword = new System.Windows.Forms.TextBox();
             this._lblPassword = new System.Windows.Forms.Label();
@@ -69,8 +68,11 @@
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
+            this._panelRedLine = new System.Windows.Forms.Panel();
+            this._panelGreenLine = new System.Windows.Forms.Panel();
+            this._imageTeamLogo = new System.Windows.Forms.PictureBox();
+            this._loginStatusImage = new System.Windows.Forms.PictureBox();
             this._groupLoginLogout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
@@ -78,7 +80,12 @@
             this._groupGlobalTimeControls.SuspendLayout();
             this._groupSystemSchedulerControls.SuspendLayout();
             this._systemViewTabs.SuspendLayout();
+            this._tabRedLine.SuspendLayout();
+            this._tabGreenLine.SuspendLayout();
+            this._tabTeamLogo.SuspendLayout();
             this.groupSystemNotifications.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -95,15 +102,6 @@
             this._groupLoginLogout.TabIndex = 1;
             this._groupLoginLogout.TabStop = false;
             this._groupLoginLogout.Text = "Login / Logout";
-            // 
-            // _loginStatusImage
-            // 
-            this._loginStatusImage.InitialImage = null;
-            this._loginStatusImage.Location = new System.Drawing.Point(272, 9);
-            this._loginStatusImage.Name = "_loginStatusImage";
-            this._loginStatusImage.Size = new System.Drawing.Size(16, 16);
-            this._loginStatusImage.TabIndex = 6;
-            this._loginStatusImage.TabStop = false;
             // 
             // _btnLoginLogout
             // 
@@ -449,6 +447,7 @@
             // 
             // _tabRedLine
             // 
+            this._tabRedLine.Controls.Add(this._panelRedLine);
             this._tabRedLine.Location = new System.Drawing.Point(4, 22);
             this._tabRedLine.Name = "_tabRedLine";
             this._tabRedLine.Padding = new System.Windows.Forms.Padding(3);
@@ -459,6 +458,7 @@
             // 
             // _tabGreenLine
             // 
+            this._tabGreenLine.Controls.Add(this._panelGreenLine);
             this._tabGreenLine.Location = new System.Drawing.Point(4, 22);
             this._tabGreenLine.Name = "_tabGreenLine";
             this._tabGreenLine.Padding = new System.Windows.Forms.Padding(3);
@@ -469,6 +469,7 @@
             // 
             // _tabTeamLogo
             // 
+            this._tabTeamLogo.Controls.Add(this._imageTeamLogo);
             this._tabTeamLogo.Location = new System.Drawing.Point(4, 22);
             this._tabTeamLogo.Name = "_tabTeamLogo";
             this._tabTeamLogo.Padding = new System.Windows.Forms.Padding(3);
@@ -495,6 +496,40 @@
             this.listSystemNotifications.Size = new System.Drawing.Size(357, 43);
             this.listSystemNotifications.TabIndex = 0;
             // 
+            // _panelRedLine
+            // 
+            this._panelRedLine.Location = new System.Drawing.Point(2, 3);
+            this._panelRedLine.Name = "_panelRedLine";
+            this._panelRedLine.Size = new System.Drawing.Size(975, 612);
+            this._panelRedLine.TabIndex = 0;
+            // 
+            // _panelGreenLine
+            // 
+            this._panelGreenLine.Location = new System.Drawing.Point(0, 3);
+            this._panelGreenLine.Name = "_panelGreenLine";
+            this._panelGreenLine.Size = new System.Drawing.Size(976, 612);
+            this._panelGreenLine.TabIndex = 0;
+            // 
+            // _imageTeamLogo
+            // 
+            this._imageTeamLogo.BackColor = System.Drawing.Color.Black;
+            this._imageTeamLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this._imageTeamLogo.Location = new System.Drawing.Point(-4, 0);
+            this._imageTeamLogo.Name = "_imageTeamLogo";
+            this._imageTeamLogo.Size = new System.Drawing.Size(987, 622);
+            this._imageTeamLogo.TabIndex = 0;
+            this._imageTeamLogo.TabStop = false;
+            // 
+            // _loginStatusImage
+            // 
+            this._loginStatusImage.InitialImage = null;
+            this._loginStatusImage.Location = new System.Drawing.Point(272, 9);
+            this._loginStatusImage.Name = "_loginStatusImage";
+            this._loginStatusImage.Size = new System.Drawing.Size(16, 16);
+            this._loginStatusImage.TabIndex = 6;
+            this._loginStatusImage.TabStop = false;
+            this._loginStatusImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this._loginStatusImage_MouseClick);
+            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -508,7 +543,6 @@
             this.Size = new System.Drawing.Size(1272, 716);
             this._groupLoginLogout.ResumeLayout(false);
             this._groupLoginLogout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).EndInit();
             this._groupOperatorControls.ResumeLayout(false);
             this._groupSystemStatus.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
@@ -520,7 +554,12 @@
             this._groupSystemSchedulerControls.ResumeLayout(false);
             this._groupSystemSchedulerControls.PerformLayout();
             this._systemViewTabs.ResumeLayout(false);
+            this._tabRedLine.ResumeLayout(false);
+            this._tabGreenLine.ResumeLayout(false);
+            this._tabTeamLogo.ResumeLayout(false);
             this.groupSystemNotifications.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -568,6 +607,9 @@
         private System.Windows.Forms.TabPage _tabTeamLogo;
         private System.Windows.Forms.GroupBox groupSystemNotifications;
         private System.Windows.Forms.ListBox listSystemNotifications;
+        private System.Windows.Forms.Panel _panelRedLine;
+        private System.Windows.Forms.Panel _panelGreenLine;
+        private System.Windows.Forms.PictureBox _imageTeamLogo;
 
     }
 }
