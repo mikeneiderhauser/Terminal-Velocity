@@ -53,8 +53,33 @@ namespace TrackModel
 
 	private int initDB()
 	{
-		//DROP and CREATE table statements go here.
-		//returns -1 on any failure, 0 on success
+		//BLOCKS TABLE declaration
+                string createBLOCKS="CREATE TABLE BLOCKS ("+
+                                   "blockID int NOT NULL," +
+                                   "line varchar2(25) NOT NULL," +
+                                   "infra varchar2(200)," +
+                                   "starting_elev float(25)," +
+                                   "grade float(25),"+
+                                   "CONSTRAINT pk_Blocks PRIMARY KEY(blockID) )";
+
+		_dbCon.Open();
+			//Initialize command to create BLOCKS TABLE
+			SQLiteCommand createCommand=new SQLiteCommand(createBLOCKS);
+			createCommand.Connection=_dbCon;
+			try
+			{
+				int res=createCommand.ExecuteNonQuery();//Exec CREATE
+				_dbCon.Close();//CLOSE DB
+				if(res!=0)
+					return -1;
+				else
+					return 0;
+			}
+			catch(Exception crap)
+			{
+				_dbCon.Close();
+				return -1;
+			}
 	}
 		
 		
