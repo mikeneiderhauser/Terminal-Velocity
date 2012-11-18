@@ -26,7 +26,5 @@ namespace Interfaces
 
         bool ChangeMovement(double power);
         void EmergencyBrake();
-        bool ChangeMovement(double power);
-        void EmergencyBrake();
     }
 }
