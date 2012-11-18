@@ -22,6 +22,7 @@ namespace TrackModel
 		private string[] _attributes;
 		private int _switchDest1;
 		private int _switchDest2;
+		private int _trackConID;
 
         public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2)
         {
@@ -42,28 +43,73 @@ namespace TrackModel
 	//Public methods
         public bool hasSwitch()
         {
-			return false;
+		for(int i=0;i<_attributes.Length;i++)
+		{
+			if(_attributes[i].Equals("SWITCH",StringComparison.Ordinal))
+			{
+				return true;
+			}
+		}
+
+		return false;
+		
+		//Alternate implementation involves checking if switchDest2=-1
+
+
         }
 		
-		public bool hasTunnel()
+	public bool hasTunnel()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("TUNNEL",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+
+	}
 		
-		public bool hasHeater()
+	public bool hasHeater()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("HEATER",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 		
-		public bool hasCrossing()
+	public bool hasCrossing()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("CROSSING",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 		
-		public bool hasStation()
+	public bool hasStation()
+	{
+		for(int i=0;i<_attributes.Length;i++)
 		{
-			return false;
+			if(_attributes[i].Equals("STATION",StringComparison.Ordinal))
+			{
+				return true;
+			}
 		}
+
+		return false;
+	}
 
 	public bool runsNorth()
 	{
@@ -171,14 +217,14 @@ namespace TrackModel
         
 		
         public StateEnum State
-		{
+	{
 			get {return _stateAttributes;}
 
 			set
 			{
 				_stateAttributes=value;
 			}	
-		}
+	}
 		
 		public int PrevBlockID
 		{
@@ -230,6 +276,16 @@ namespace TrackModel
 			{
 				_switchDest2=value;
 			}	
+		}
+
+		public int TrackConID
+		{
+			get {return _trackConID;}
+			set 
+			{
+				_trackConID=value;
+			}
+		
 		}
 		#endregion
     }
