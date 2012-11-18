@@ -9,16 +9,16 @@ using Utility;
 
 namespace CTCOffice
 {
-    private class LayoutCellDataContainer
+    public class LayoutCellDataContainer
     {
         private ITrainModel _train;
         private IBlock _block;
         private Image _tile;
 
-        public LayoutCellDataContainer(IBlock block, Image tile)
+        public LayoutCellDataContainer()
         {
-            _block = block;
-            _tile = tile;
+            _block = null;
+            _tile = null;
             _train = null;
         }
 

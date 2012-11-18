@@ -127,4 +127,13 @@
   <data name="TerminalVelocity" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TerminalVelocity.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GreenTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GreenTrack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RedTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RedTrack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unpopulated" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Unpopulated.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -45,18 +45,10 @@ namespace CTCOffice
             //set credentials
             _op.setAuth("root", "admin");
 
-            _redLineData = new LineData();
-            _greenLineData = new LineData();
-
             if (_env.TrackModel != null)
             {
-                _redLineData.Layout = _env.TrackModel.requestTrackGrid(0);
-                //add 2D blocks to LineData (red)
-                //add blocks to Line Data objects (red)
-
-                _greenLineData.Layout = _env.TrackModel.requestTrackGrid(1);
-                //add 2D blocks to LineData (green)
-                //add blocks to Line Data objects (green)
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),0);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),1);
             }
             else
             {
@@ -271,7 +263,27 @@ namespace CTCOffice
             //cannot implement without Track Model Interface
             //red=0....green=1
             return 0;
-        }        
+        }
+
+        /// <summary>
+        /// Function to return line data to gui
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public LineData getLine(int line)
+        {
+            if (line == 0)
+            {
+                return _redLineData;
+            }
+            else if (line ==1)
+            {
+                return _greenLineData;
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region Public Interface

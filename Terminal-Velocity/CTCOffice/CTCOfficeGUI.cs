@@ -16,23 +16,38 @@ namespace CTCOffice
     {
         private IEnvironment _environment;
         private CTCOffice _ctcOffice;
+        private int _speedState;
+        private LineData _redLineData;
+        private LineData _greenLineData;
 
         public CTCOfficeGUI(IEnvironment env, CTCOffice ctc)
         {
             InitializeComponent();
+            //set refs to ctc office and environment
             _ctcOffice = ctc;
             _environment = env;
+            _speedState = 0;
 
             //subscribe to Environment Tick
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+
+            //ensure the user is logged out
             _ctcOffice.Logout();
-            _btnLoginLogout.Text = "Logout";
+            //change button text
+            _btnLoginLogout.Text = "Login";
             
+            //show team logo (block out user)
             mainDisplayLogo();            
             disableUserControls();
             _loginStatusImage.Image = Properties.Resources.red;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
+            //get line data
+            _redLineData = _ctcOffice.getLine(0);
+            _greenLineData = _ctcOffice.getLine(1);
+
+            //post to log that the gui has loaded
+            _environment.sendLogEntry("CTCOffice: GUI Loaded");
         }
 
 
@@ -50,25 +65,43 @@ namespace CTCOffice
         {
             if (_ctcOffice.isAuth())
             {
+                //if logged in.. log out
                 _ctcOffice.Logout();
+                //disable user controls (lock out op)
                 disableUserControls();
                 _loginStatusImage.Image = Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
+                mainDisplayLogo();
+                //post to log
+                _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
             }
             else
             {
+                //if logged out, login
                 if (_ctcOffice.Login(_txtUsername.Text, _txtPassword.Text))
                 {
+                    //if login pass (enable controls)
                     enableUserControls();
                     _loginStatusImage.Image = Properties.Resources.green;
+                    //show red line tab
+                    showRedLine();
+                    //remove password
+                    _txtPassword.Text = "";
+                    //change button txt
                     _btnLoginLogout.Text = "Logout";
                 }
                 else
                 {
+                    //if login fail (disable controls)
                     disableUserControls();
                     _loginStatusImage.Image = Properties.Resources.red;
                     _btnLoginLogout.Text = "Login";
-                    _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
+                    //post to log
+                    _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
+                    //show logo
+                    mainDisplayLogo();
+                    //tell user invalid creds
+                    MessageBox.Show("Invalid Credentials", "Unauthorized", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }
@@ -96,12 +129,26 @@ namespace CTCOffice
 
         private void _btnRefreshMetrics_Click(object sender, EventArgs e)
         {
-
+            updateMetrics();
         }
 
-        private void _btnSpeed_Click(object sender, EventArgs e)
+        private void updateMetrics()
         {
+            int max = 0;
+            int sumPass = 0;
+            int sumCrew = 0;
+            List<ITrainModel> trains = _environment.AllTrains;
+            foreach (ITrainModel t in trains)
+            {
+                sumPass += t.NumPassengers;
+                sumCrew += t.NumCrew;
+                max += t.MaxCapacity;
+            }
 
+            _lblTrainsMetrics.Text = trains.Count.ToString();
+            _lblCrewMetrics.Text = sumCrew.ToString();
+            _lblPassengersMetrics.Text = sumPass.ToString();
+            _lblTotalMetrics.Text = (sumPass + sumCrew).ToString() + " / " + max.ToString();
         }
 
         private void _txtUsername_KeyPress(object sender, KeyPressEventArgs e)
@@ -150,6 +197,16 @@ namespace CTCOffice
             _systemViewTabs.SelectedIndex = 2;//Terminal Velocity Tab
         }
 
+        private void showRedLine()
+        {
+            _systemViewTabs.SelectedIndex = 0;//Red line
+        }
+
+        private void showGreenLine()
+        {
+            _systemViewTabs.SelectedIndex = 1;//Green Line
+        }
+
         private void setControlState(bool state)
         {
             _btnDispatchTrain.Enabled = state;
@@ -157,16 +214,23 @@ namespace CTCOffice
             _btnSchedule_2.Enabled = state;
             _btnRefreshView.Enabled = state;
             _btnRefreshMetrics.Enabled = state;
-            _btnSpeed.Enabled = state;
             _checkAutomatedScheduling.Enabled = state;
             _systemViewTabs.Enabled = state;
-        }
+            _btnGlobalTime10WallSpeed.Enabled = state;
+            _btnGlobalTimeWallSpeed.Enabled = state;
 
-        private void _loginStatusImage_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
+            if (state)
             {
-
+                if (_speedState == 0)
+                {
+                    //at wall speed, show 10x
+                    _btnGlobalTimeWallSpeed.Enabled = false;
+                }
+                else
+                {
+                    //at 10x, show wall
+                    _btnGlobalTimeWallSpeed.Enabled = true;
+                }
             }
         }
 
@@ -177,5 +241,34 @@ namespace CTCOffice
 
             }
         }
+
+        /// <summary>
+        /// Function to set simulation speed to normal (wall speed)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
+        {
+            _environment.setInterval(_environment.getInterval()*10);
+            _btnGlobalTimeWallSpeed.Enabled = false;
+        }
+
+        /// <summary>
+        /// Function to set simulation speed to 10x normal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
+        {
+            _environment.setInterval(_environment.getInterval()/10);
+            _btnGlobalTimeWallSpeed.Enabled = true;
+        }
+
+        private void _btnGlobalTimeWallSpeed_EnabledChanged(object sender, EventArgs e)
+        {
+            //only allow 1 button to be controllable
+            _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
+        }
+
     }//end ctc gui
 }
