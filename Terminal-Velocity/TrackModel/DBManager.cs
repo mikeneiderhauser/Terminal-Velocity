@@ -262,9 +262,39 @@ namespace TrackModel
 	//Argument to this function shouldbe changed
 	//into the SQLResults object returned from
 	//runQuery() above
-	public Block formatBlockQueryResults(SqlDataReader blockReader)
+	public Block formatBlockQueryResults(SqlDataReader bR)
 	{
-		return null;
+		Block tempBlock=null;
+		int i=0;
+		while (bR.Read() )
+		{
+			//Get all fields for a given block
+			string bID=bR.GetString(bR.GetOrdinal("blockID"));
+			string line=bR.GetString(bR.GetOrdinal("line"));
+			string infra=bR.GetString(bR.GetOrdinal("infra"));
+			string sE=bR.GetString(bR.GetOrdinal("starting_elev"));
+			string grade=bR.GetString(bR.GetOrdinal("grade"));
+			string locX=bR.GetString(bR.GetOrdinal("locX"));
+			string locY=bR.GetString(bR.GetOrdinal("locY"));
+			string bSize=bR.GetString(bR.GetOrdinal("bSize"));
+			string dir=bR.GetString(bR.GetOrdinal("dir"));
+			string state=bR.GetString(bR.GetOrdinal("state"));
+			string prev=bR.GetString(bR.GetOrdinal("prev"));
+			string dest1=bR.GetString(bR.GetOrdinal("dest1"));
+			string dest2=bR.GetString(bR.GetOrdinal("dest2"));
+			string trackCirID=bR.GetString(bR.GetOrdinal("trackCirID"));
+			//Parse fields that must be provided as a different type
+			int bIDNum;
+			
+
+
+			i++;//Inc counter
+		}
+
+		if(i!=1)
+			return null;
+		else
+			return tempBlock;
 	}
 
 	//Argument to this function should be changed
