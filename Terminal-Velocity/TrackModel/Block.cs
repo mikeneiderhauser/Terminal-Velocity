@@ -23,8 +23,9 @@ namespace TrackModel
 		private int _switchDest1;
 		private int _switchDest2;
 		private int _trackCirID;
+		private string _line;
 
-        public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2)
+        public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2,int tCID,string l)
         {
 		_blockID=bID;
 		_stateAttributes=state;
@@ -37,6 +38,8 @@ namespace TrackModel
 		_attributes=atts;
 		_switchDest1=d1;
 		_switchDest2=d2;
+		_trackCirID=tCID;
+		_line=l;
         }
 
 	public Block(int bID)
@@ -296,6 +299,11 @@ namespace TrackModel
 		public string[] AttrArray
 		{
 			get {return _attributes;}
+		}
+
+		public string Line
+		{
+			get {return _line;}
 		}
 		#endregion
     }
