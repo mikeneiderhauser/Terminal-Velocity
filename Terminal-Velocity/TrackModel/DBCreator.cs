@@ -111,23 +111,55 @@ namespace TrackModel
 		//Read all information from file into an array of lines
 		string[] fileLines = File.ReadAllLines(fPath);
 
+
+                //Set up character delimiter
+                char[] commaArr=new char[1];
+                commaArr[0]=',';
+
 		////////////////////////////////////////////////////////
 		//Iterate through each one.
 		foreach(string line in fileLines)
 		{
+			//IF we're not a blank line (begins with comma) or a header line (begins with Line)
+			//THEN process and insert
+			if(!line.StartsWith(",") && !line.StartsWith("Line") )
+			{
+			
+			
+				//Delimit around comma's
+				string[] fields=line.Split(commaArr);
+				string blockID=fields[2];
+				string lineName=fields[0];
+				string infra=fields[6];
+				string sElev=fields[9];
+				string grade=fields[4];
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade) AS VALUES(" +
+						blockID+", "+lineName+", "+infra+", "+sElev+", "+grade+")";
 
-			//Set up character delimiter
-			char[] commaArr=new char[1];
-			commaArr[0]=',';
+				_dbCon.Open();
+	                	        SQLiteCommand insertCommand=new SQLiteCommand(singleInsert);
+        		                insertCommand.Connection=_dbCon;
 
-			//Delimit around comma's
-			string[] fields=line.Split(commaArr);
 
-			_dbCon.Open();
-			_dbCon.Close();
+
+		                        try
+                		        {
+                                		int res=insertCommand.ExecuteNonQuery();//Exec CREATE
+         	                        	_dbCon.Close();//CLOSE DB
+                 	               		if(res!=1)
+                        	                	return -1;
+                        		}
+                        		catch(Exception crap)
+                        		{
+                                		_dbCon.Close();
+                                		return -1;
+                        		}
+			}//End if statement for valid data lines
 		}
 		//End for loop iterating through all strings
 		////////////////////////////////////////////////////////
+
+		return 0;//If you get to this point, you've executed successfully.
 	}
 
 	public int handleUpdateRequest(int bID, int newBlockSize)
