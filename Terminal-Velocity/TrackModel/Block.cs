@@ -292,6 +292,11 @@ namespace TrackModel
 			}
 		
 		}
+
+		public string[] AttrArray
+		{
+			get {return _attributes;}
+		}
 		#endregion
     }
 }

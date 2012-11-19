@@ -141,25 +141,42 @@ namespace TrackModel
 		else if(updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) )
 		{
 			//Create switch update string
-			string updateString=	"UPDATE BLOCKS"+
+			string updateString=	"UPDATE BLOCKS "+
 						"SET dest1="+bToUpdate.SwitchDest2+", dest2="+bToUpdate.SwitchDest1+
-						"WHERE blockID="+bID;
+						" WHERE blockID="+bID;
 			return updateString;
 		}
 		else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
 		{
 			//blocks are allowed to update heater, track circuit info, state
-			//Create block update string
-			string updateString=	"UPDATE BLOCKS"+
-						"SET state="+bToUpdate.State+" "+
-						"WHERE blockID="+bID;
+			//To get the heater information, we have to turn the whole attributes
+				//array of the block into a string for putting in the DB
+			string attrString="";
+			
+			//Assemble attribute string from split array
+			//	--will be put in database
+			string[] tempArr=bToUpdate.AttrArray;
+			for(int i=0;i<bToUpdate.Length;i++)
+			{
+				attrString=attrString+bToUpdate[i]+"; ";
+			}
+
+
+			//Create block update string			
+			string updateString=	"UPDATE BLOCKS "+
+						"SET state='"+bToUpdate.State+"', trackCirID="+bToUpdate.TrackCirID+", infra='"+attrString+"' "
+						" WHERE blockID="+bID;
 			return  updateString;
 		}
 	}
 
 	public String createInsert(Block b)
 	{
-	
+		//Looking back, im not sure why I thought I needed this method.
+		//DB insertion should be done entirely through the DBCreator and not through the DBManager
+
+		//I will hold off on implementing this method until I'm certain I need to
+		return null;
 	}
 
 

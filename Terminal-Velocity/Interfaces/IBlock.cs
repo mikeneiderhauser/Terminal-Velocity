@@ -18,6 +18,7 @@ namespace Interfaces
         int SwitchDest1 { get; set; }
         int SwitchDest2 { get; set; }
 	int TrackCirID {get; set;}
+	string[] AttrArray {get; }
 
         bool hasSwitch();
         bool hasTunnel();
