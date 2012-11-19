@@ -68,7 +68,7 @@ namespace TrackModel
 				   "prev int,"+
 				   "dest1 int,"+
 				   "dest2 int,"+
-				   "trackConID,"
+				   "trackCirID int,"
                                    "CONSTRAINT pk_Blocks PRIMARY KEY(blockID) )";
 
 		_dbCon.Open();
