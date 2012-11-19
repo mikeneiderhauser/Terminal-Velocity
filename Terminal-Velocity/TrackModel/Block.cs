@@ -22,7 +22,7 @@ namespace TrackModel
 		private string[] _attributes;
 		private int _switchDest1;
 		private int _switchDest2;
-		private int _trackConID;
+		private int _trackCirID;
 
         public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2)
         {
@@ -38,6 +38,11 @@ namespace TrackModel
 		_switchDest1=d1;
 		_switchDest2=d2;
         }
+
+	public Block(int bID)
+	{
+		_blockID=bID;
+	}
 		
 		
 	//Public methods
@@ -278,12 +283,12 @@ namespace TrackModel
 			}	
 		}
 
-		public int TrackConID
+		public int TrackCirID
 		{
-			get {return _trackConID;}
+			get {return _trackCirID;}
 			set 
 			{
-				_trackConID=value;
+				_trackCirID=value;
 			}
 		
 		}
