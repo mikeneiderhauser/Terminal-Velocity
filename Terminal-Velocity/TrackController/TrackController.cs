@@ -155,7 +155,8 @@ namespace TrackController
                 case RequestTypes.SetTrainSpeed:
                     if (Trains.Keys.Contains(request.TrainID))
                     {
-                        // set train speed
+                        //  TrainAuthority also contains the speec, if RequestTypes is SetTrainSpeed
+                        _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
@@ -181,8 +182,9 @@ namespace TrackController
             List<ITrain> st = Trains.Values.ToList();
             List<IRoute> sr = Routes.Values.ToList();
 
-            // _plc.LightsRequired(sb, st, sr);
-            // _plc.IsSafe(sb, st, sr);
+            _plc.ToggleLights(sb, st, sr);
+            _plc.DoSwitch(sb, st, sr);
+            _plc.IsSafe(sb, st, sr);
         }
 
         #endregion // Private Methods
