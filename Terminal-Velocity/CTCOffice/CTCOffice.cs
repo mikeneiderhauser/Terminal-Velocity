@@ -68,9 +68,9 @@ namespace CTCOffice
             _processingInRequests = false;
 
             //get status from red and green prrimary track controllers (default)
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
             RequestQueueOut(this, EventArgs.Empty);
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
 

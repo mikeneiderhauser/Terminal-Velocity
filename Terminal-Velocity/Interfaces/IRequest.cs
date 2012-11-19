@@ -23,6 +23,11 @@ namespace Interfaces
         int TrainAuthority { get; }
 
         /// <summary>
+        /// Property to access _trainSpeed
+        /// </summary>
+        double Trainspeed { get; }
+
+        /// <summary>
         /// Property to access _trainRoute (train routing information)
         /// </summary>
         IRoute TrainRoute { get; }
