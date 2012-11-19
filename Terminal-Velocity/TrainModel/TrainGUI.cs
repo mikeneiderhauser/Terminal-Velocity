@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Interfaces;
+
 namespace TrainModel
 {
     public partial class TrainGUI : UserControl
@@ -21,9 +23,9 @@ namespace TrainModel
             MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void PopulateComboBox(List<Train> allTrains)
+        private void PopulateComboBox(List<ITrain> allTrains)
         {
-            foreach(Train train in allTrains)
+            foreach(ITrain train in allTrains)
             {
                 allTrainComboBox.Items.Add(train.ToString());
             }

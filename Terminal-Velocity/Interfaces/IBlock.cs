@@ -8,20 +8,22 @@ namespace Interfaces
     public interface IBlock
     {
         int BlockID { get; }
-        //StateEnum State { get; set; }
-        int PrevBlockID { get; set; }
+        StateEnum State { get; set; }
+        int PrevBlockID { get; }
         double StartingElev { get; }
         double Grade { get; }
         int[] Location { get; }
         double BlockSize { get; set; }
-        //DirEnum Direction { get; }
-        int SwitchDest1 { get; }
-        int SwitchDest2 { get; }
+        DirEnum Direction { get; }
+        int SwitchDest1 { get; set; }
+        int SwitchDest2 { get; set; }
+	int TrackConID {get; set;}
 
         bool hasSwitch();
         bool hasTunnel();
         bool hasHeater();
         bool hasCrossing();
+	bool hasStation();
         bool runsNorth();
         bool runsSouth();
         bool runsEast();
@@ -31,4 +33,28 @@ namespace Interfaces
         bool runsSouthEast();
         bool runsSouthWest();
     }
+
+public enum DirEnum 
+	{
+		North,
+		South,
+		East,
+		West,
+		Northeast,
+		Northwest,
+		Southeast,
+		Southwest,
+		North_AND_South,
+		East_AND_West,
+		Northeast_AND_Southwest,
+		Northwest_AND_Southeast
+	}
+
+public enum StateEnum
+	{
+		PowerFailure,
+		BrokenTrackFailure,
+		CircuitFailure,
+		Healthy
+	}
 }

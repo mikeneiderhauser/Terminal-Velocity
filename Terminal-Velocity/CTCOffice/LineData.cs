@@ -8,24 +8,60 @@ using Utility;
 
 namespace CTCOffice
 {
-    class LineData
+    public class LineData
     {
-        private List<ITrain> _trains;
+        private List<ITrainModel> _trains;
         private List<IBlock> _blocks;
-        private IBlock[][] _layout;
+        private LayoutCellDataContainer[,] _layout;
 
-        public LineData(){}
+        public LineData(IBlock[][] layout, int line)
+        {
+            _trains = new List<ITrainModel>();
+            _blocks = new List<IBlock>();
+            _layout = new LayoutCellDataContainer[layout.GetUpperBound(0), layout.GetUpperBound(1)];
 
-        public void AddTrain(ITrain train)
+            for (int i = 0; i < layout.GetUpperBound(0); i++)
+            {
+                for(int j=0; j < layout.GetUpperBound(1); j++)
+                {
+                    LayoutCellDataContainer conatiner = new LayoutCellDataContainer();
+
+                    //determine tile
+                    if (layout[i][j] == null)
+                    {
+                        conatiner.Tile = Properties.Resources.Unpopulated;
+                        //conatiner.Block = null;
+                    }
+                    else
+                    {
+                        _blocks.Add(layout[i][j]);
+                        conatiner.Block = layout[i][j];
+
+                        if (line == 0)
+                        {
+                            conatiner.Tile = Properties.Resources.RedTrack;
+                        }
+                        else
+                        {
+                            conatiner.Tile = Properties.Resources.GreenTrack;
+                        }
+                    }//end determine tile
+
+                    _layout[i,j] = conatiner;
+                }//end for 2nd dimension
+            }//end for 1st dimentsion
+        }//end constructor
+
+        public void AddTrain(ITrainModel train)
         {
             _trains.Add(train);
         }
 
-        public ITrain RemoveTrian(ITrain train)
+        public ITrainModel RemoveTrian(ITrainModel train)
         {
-            ITrain toRemove = null;
+            ITrainModel toRemove = null;
 
-            foreach (ITrain t in _trains)
+            foreach (ITrainModel t in _trains)
             {
                 //check if train ID's match.. need ITrain class to implement
             }
@@ -38,7 +74,7 @@ namespace CTCOffice
             _blocks.Add(block);
         }
 
-        public List<ITrain> Trains 
+        public List<ITrainModel> Trains 
         {
             get { return _trains; }
             set { _trains = value; }
@@ -50,7 +86,7 @@ namespace CTCOffice
             set { _blocks = value; }
         }
 
-        public IBlock[][] Layout
+        public LayoutCellDataContainer[,] Layout
         {
             get { return _layout; }
             set { _layout = value; }

@@ -205,5 +205,11 @@ namespace TrainModel
         {
             get { throw new NotImplementedException(); }
         }
+
+
+        int ITrainModel.Length
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

@@ -40,6 +40,7 @@ namespace Testing
 
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
+            environment.PrimaryTrackControllerRed = prev;
 
             return true;
         }
