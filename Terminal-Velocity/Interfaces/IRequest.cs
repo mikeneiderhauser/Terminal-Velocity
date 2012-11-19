@@ -24,6 +24,7 @@ namespace Interfaces
 
         /// <summary>
         /// Property to access _trainSpeed
+        /// Fixed interface issue
         /// </summary>
         double TrainSpeed { get; }
 
