@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Sqlite;
 using Interfaces;
 using Utility;
 
@@ -11,28 +12,114 @@ namespace TrackModel
     public class DBManager
     {
         //Private parameters
-		private int _blockID;
+	private SqliteConnection _dbCon;
 
-        public DBManager(int bID)
+        public DBManager(SqliteConnection con)
         {
-		_blockID=bID;
+		_dbCon=con;
         }
 		
 		
 	//Public methods
         public String createQueryString(string qType, int ID)
         {
-		return null;
+		//Check basic ID validity
+		if(ID<=0)
+		{
+			return null;
+		}
+	
+		if(!qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase) && !qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase) )
+		{
+			//Test whether ID=blockID exists
+			//If(exists)
+			//	format query
+			//	return query
+			//else
+				return null;
+		}
+		else if(qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase))//Format for block
+		{
+			//Test whether ID=blockID exists
+			//If(exists)
+			//	format query
+			//	return query
+			//else
+				return null;
+		}
+		else//(qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase))//Format for ROUTE
+		{
+			//Test whether ID=routeID exists
+			//If(exists)
+			//	format query
+			//	return query
+			//else
+				return null;
+		}
+	}
+
+	private bool routeExists(int id)
+	{
+		string selectString=	"SELECT *"+
+					"FROM ROUTES"+
+					"WHERE routeID="+id;
+
+                _dbCon.Open();
+                        //Initialize command to create BLOCKS TABLE
+                        SqliteCommand selCom=new SqliteCommand(selectString);
+                        selCom.Connection=_dbCon;
+                        try
+                        {
+                                SqlDataReader tempReader=selCom.ExecuteReader();
+                                bool exists=tempReader.HasRows;
+                                tempReader.Close();//Close reader
+                                _dbCon.Close();//CLOSE DB
+                                return exists;
+                        }
+                        catch(Exception crap)
+                        {
+                                _dbCon.Close();
+                                return false;
+                        }
+
+
+	}
+
+	private bool blockExists(int id)
+	{
+		string selectString=	"SELECT *"+
+					"FROM BLOCKS" +
+					"WHERE blockID="+id;
+
+                _dbCon.Open();
+                        //Initialize command to create BLOCKS TABLE
+                        SqliteCommand selCom=new SqliteCommand(selectString);
+                        selCom.Connection=_dbCon;
+                        try
+                        {
+                                SqlDataReader tempReader=selCom.ExecuteReader();
+    				bool exists=tempReader.HasRows;
+				tempReader.Close();//Close reader
+                                _dbCon.Close();//CLOSE DB
+				return exists;        
+                        }
+                        catch(Exception crap)
+                        {
+                                _dbCon.Close();
+                                return false;
+                        }
+
+
 	}
 	
 	public String createUpdate(string updateType, Block bToUpdate)
 	{
-		return null;
+	
 	}
 
 	public String createInsert(Block b)
 	{
-		return null;
+	
 	}
 
 
@@ -47,12 +134,14 @@ namespace TrackModel
 
 	public bool runUpdate(string sqlUpdate)
 	{
-		return false;
+		if(_dbCon==null)
+			return false;
 	}
 
 	public bool runInsert(string sqlInsert)
 	{
-		return false;
+		if(_dbCon==null)
+			return false;
 	}
 
 
