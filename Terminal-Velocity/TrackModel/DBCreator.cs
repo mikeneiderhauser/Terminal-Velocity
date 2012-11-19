@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data.Sqlite;
 using System.IO;
+using Utilities;
 using Interfaces;
-using Utility;
-
-namespace TrackModel
-{
-
 
     public class DBCreator
     {
@@ -40,6 +36,7 @@ namespace TrackModel
 		//If you needed to create the db tables,do so now
 		if(needsInitFlag==true)
 		{
+			//Console.WriteLine("About to enter initDB");
 			int initResult=initDB();
 
 			//If creating the db failed
@@ -64,11 +61,12 @@ namespace TrackModel
 
 		_dbCon.Open();
 			//Initialize command to create BLOCKS TABLE
-			SQLiteCommand createCommand=new SQLiteCommand(createBLOCKS);
+			SqliteCommand createCommand=new SqliteCommand(createBLOCKS);
 			createCommand.Connection=_dbCon;
 			try
 			{
-				int res=createCommand.ExecuteNonQuery();//Exec CREATE
+				int res=createCommand.ExecuteNonQuery();//Exec CREATEi
+				//Console.WriteLine(res);
 				_dbCon.Close();//CLOSE DB
 				if(res!=0)
 					return -1;
@@ -103,7 +101,7 @@ namespace TrackModel
 		}
 
 		//Check the file format
-		if(fPath.EndsWith(".csv") )
+		if(!fPath.EndsWith(".csv") )
 		{
 			return -2;
 		}
@@ -116,13 +114,15 @@ namespace TrackModel
                 char[] commaArr=new char[1];
                 commaArr[0]=',';
 
+		//Console.WriteLine("About to enter forloop");
 		////////////////////////////////////////////////////////
 		//Iterate through each one.
 		foreach(string line in fileLines)
 		{
+			//Console.WriteLine("Line is: "+line);
 			//IF we're not a blank line (begins with comma) or a header line (begins with Line)
 			//THEN process and insert
-			if(!line.StartsWith(",") && !line.StartsWith("Line") )
+			if(!line.StartsWith(",") && !line.StartsWith("Line") && !line.StartsWith(" "))
 			{
 			
 			
@@ -130,14 +130,24 @@ namespace TrackModel
 				string[] fields=line.Split(commaArr);
 				string blockID=fields[2];
 				string lineName=fields[0];
-				string infra=fields[6];
+
+				string infra;
+				if(fields[6].Equals("",StringComparison.OrdinalIgnoreCase))
+				{
+					infra="none";
+				}
+				else
+				{
+					infra=fields[6];
+				}
 				string sElev=fields[9];
 				string grade=fields[4];
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade) AS VALUES(" +
-						blockID+", "+lineName+", "+infra+", "+sElev+", "+grade+")";
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade) VALUES(" +
+						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+")";
+				//Console.WriteLine(singleInsert);
 
 				_dbCon.Open();
-	                	        SQLiteCommand insertCommand=new SQLiteCommand(singleInsert);
+	                	        SqliteCommand insertCommand=new SqliteCommand(singleInsert);
         		                insertCommand.Connection=_dbCon;
 
 
@@ -145,6 +155,7 @@ namespace TrackModel
 		                        try
                 		        {
                                 		int res=insertCommand.ExecuteNonQuery();//Exec CREATE
+						//Console.WriteLine(res);
          	                        	_dbCon.Close();//CLOSE DB
                  	               		if(res!=1)
                         	                	return -1;
@@ -152,6 +163,7 @@ namespace TrackModel
                         		catch(Exception crap)
                         		{
                                 		_dbCon.Close();
+						//Console.WriteLine(crap.Message.ToString());
                                 		return -1;
                         		}
 			}//End if statement for valid data lines
@@ -164,9 +176,8 @@ namespace TrackModel
 
 	public int handleUpdateRequest(int bID, int newBlockSize)
 	{
-
+		return -1;
 	}
 
 	//Properties
-    }
 }
