@@ -14,7 +14,7 @@ namespace TrackModel
 		private IEnvironment _env;
 		private DBManager _dbManager;
 		private DisplayManager _dispManager;
-		private DBCreatorLoader _dbCreator;
+		private DBCreator _dbCreator;
 		
 
         public TrackModel(IEnvironment environment)
