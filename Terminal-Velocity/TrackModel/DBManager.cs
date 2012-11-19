@@ -141,13 +141,17 @@ namespace TrackModel
 		else if(updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) )
 		{
 			//Create switch update string
-			string updateString="";
+			string updateString=	"UPDATE BLOCKS"+
+						"SET "+
+						"WHERE blockID="+bID;
 			return updateString;
 		}
 		else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
 		{
 			//Create block update string
-			string updateString="";
+			string updateString=	"UPDATE BLOCKS"+
+						"SET "+
+						"WHERE blockID="+bID;
 			return  updateString;
 		}
 	}
