@@ -32,6 +32,11 @@ namespace CTCOffice
         private int _trainAuthority;
 
         /// <summary>
+        /// Holds the speed to set to the train in a request
+        /// </summary>
+        private double _trainSpeed;
+
+        /// <summary>
         /// Holds train routing information
         /// </summary>
         private IRoute _trainRoute;
@@ -64,7 +69,7 @@ namespace CTCOffice
         /// <param name="route">route information</param>
         /// <param name="block">block information</param>
         public Request(RequestTypes request, int trackControllerID,
-            int trainID, int authority, IRoute route,
+            int trainID, int authority, double speed, IRoute route,
             IBlock block)
         {
             _requestType = request;
@@ -75,6 +80,7 @@ namespace CTCOffice
             _block = block;
             _issueDateTime = DateTime.Now;
             _info = null;
+            _trainSpeed = speed;
         }
 
         #endregion
@@ -102,6 +108,14 @@ namespace CTCOffice
         public int TrainAuthority
         {
             get { return _trainAuthority; }
+        }
+
+        /// <summary>
+        /// Property for _trainSpeed
+        /// </summary>
+        public double TrainSpeed
+        {
+            get { return _trainSpeed; }
         }
 
         /// <summary>

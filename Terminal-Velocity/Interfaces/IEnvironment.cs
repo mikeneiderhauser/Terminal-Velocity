@@ -32,7 +32,7 @@ namespace Interfaces
         /// <summary>
         /// A reference to the first, or primary, track controller (Green)
         /// </summary>
-        ITrackController PrimaryTrackControllerGreen{ get; set; }
+        ITrackController PrimaryTrackControllerGreen { get; set; }
 
         /// <summary>
         /// A reference to the Track Model
@@ -73,5 +73,17 @@ namespace Interfaces
         /// </summary>
         /// <returns></returns>
         long getInterval();
+
+        /// <summary>
+        /// Function to stop the environment timer -> CTC Access Only
+        /// </summary>
+        /// <param name="sender">ref to caller</param>
+        void stopTick(object sender);
+
+        /// <summary>
+        /// Function to start environment timer -> CTC Access Only
+        /// </summary>
+        /// <param name="sender">ref to caller</param>
+        void startTick(object sender);
     }
 }

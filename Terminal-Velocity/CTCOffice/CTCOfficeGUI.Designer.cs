@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this._groupLoginLogout = new System.Windows.Forms.GroupBox();
-            this.loginStatusImage = new System.Windows.Forms.PictureBox();
+            this._loginStatusImage = new System.Windows.Forms.PictureBox();
             this._btnLoginLogout = new System.Windows.Forms.Button();
             this._txtPassword = new System.Windows.Forms.TextBox();
             this._lblPassword = new System.Windows.Forms.Label();
@@ -37,8 +37,8 @@
             this._txtUsername = new System.Windows.Forms.TextBox();
             this._groupOperatorControls = new System.Windows.Forms.GroupBox();
             this._btnRefreshView = new System.Windows.Forms.Button();
-            this._btnSchedule_1 = new System.Windows.Forms.Button();
             this._btnDispatchTrain = new System.Windows.Forms.Button();
+            this._btnSchedule_1 = new System.Windows.Forms.Button();
             this._groupSystemStatus = new System.Windows.Forms.GroupBox();
             this._groupRunningStatus = new System.Windows.Forms.GroupBox();
             this._lblEnvironmentHead = new System.Windows.Forms.Label();
@@ -56,21 +56,25 @@
             this._lblTrainsHeading = new System.Windows.Forms.Label();
             this._lblSystemMetricsHeading = new System.Windows.Forms.Label();
             this._groupGlobalTimeControls = new System.Windows.Forms.GroupBox();
-            this._lblSpeedDetail = new System.Windows.Forms.Label();
-            this._btnSpeed = new System.Windows.Forms.Button();
-            this._txtGlobalTimeArea = new System.Windows.Forms.TextBox();
+            this._btnGlobalTime10WallSpeed = new System.Windows.Forms.Button();
+            this._btnGlobalTimeWallSpeed = new System.Windows.Forms.Button();
             this._lblSpeed = new System.Windows.Forms.Label();
             this._groupSystemSchedulerControls = new System.Windows.Forms.GroupBox();
             this._btnSchedule_2 = new System.Windows.Forms.Button();
             this._checkAutomatedScheduling = new System.Windows.Forms.CheckBox();
             this._systemViewTabs = new System.Windows.Forms.TabControl();
             this._tabRedLine = new System.Windows.Forms.TabPage();
+            this._panelRedLine = new System.Windows.Forms.Panel();
             this._tabGreenLine = new System.Windows.Forms.TabPage();
+            this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
+            this._imageTeamLogo = new System.Windows.Forms.PictureBox();
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
+            this._lblCrewHeading = new System.Windows.Forms.Label();
+            this._lblCrewMetrics = new System.Windows.Forms.Label();
             this._groupLoginLogout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
@@ -78,12 +82,16 @@
             this._groupGlobalTimeControls.SuspendLayout();
             this._groupSystemSchedulerControls.SuspendLayout();
             this._systemViewTabs.SuspendLayout();
+            this._tabRedLine.SuspendLayout();
+            this._tabGreenLine.SuspendLayout();
+            this._tabTeamLogo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
             this.groupSystemNotifications.SuspendLayout();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
             // 
-            this._groupLoginLogout.Controls.Add(this.loginStatusImage);
+            this._groupLoginLogout.Controls.Add(this._loginStatusImage);
             this._groupLoginLogout.Controls.Add(this._btnLoginLogout);
             this._groupLoginLogout.Controls.Add(this._txtPassword);
             this._groupLoginLogout.Controls.Add(this._lblPassword);
@@ -96,14 +104,14 @@
             this._groupLoginLogout.TabStop = false;
             this._groupLoginLogout.Text = "Login / Logout";
             // 
-            // loginStatusImage
+            // _loginStatusImage
             // 
-            this.loginStatusImage.InitialImage = null;
-            this.loginStatusImage.Location = new System.Drawing.Point(272, 9);
-            this.loginStatusImage.Name = "loginStatusImage";
-            this.loginStatusImage.Size = new System.Drawing.Size(16, 16);
-            this.loginStatusImage.TabIndex = 6;
-            this.loginStatusImage.TabStop = false;
+            this._loginStatusImage.InitialImage = null;
+            this._loginStatusImage.Location = new System.Drawing.Point(272, 9);
+            this._loginStatusImage.Name = "_loginStatusImage";
+            this._loginStatusImage.Size = new System.Drawing.Size(16, 16);
+            this._loginStatusImage.TabIndex = 6;
+            this._loginStatusImage.TabStop = false;
             // 
             // _btnLoginLogout
             // 
@@ -172,16 +180,6 @@
             this._btnRefreshView.UseVisualStyleBackColor = true;
             this._btnRefreshView.Click += new System.EventHandler(this._btnRefreshView_Click);
             // 
-            // _btnSchedule_1
-            // 
-            this._btnSchedule_1.Location = new System.Drawing.Point(98, 29);
-            this._btnSchedule_1.Name = "_btnSchedule_1";
-            this._btnSchedule_1.Size = new System.Drawing.Size(100, 23);
-            this._btnSchedule_1.TabIndex = 1;
-            this._btnSchedule_1.Text = "Schedule Trains";
-            this._btnSchedule_1.UseVisualStyleBackColor = true;
-            this._btnSchedule_1.Click += new System.EventHandler(this._btnSchedule_1_Click);
-            // 
             // _btnDispatchTrain
             // 
             this._btnDispatchTrain.Location = new System.Drawing.Point(6, 29);
@@ -191,6 +189,16 @@
             this._btnDispatchTrain.Text = "Dispatch Train";
             this._btnDispatchTrain.UseVisualStyleBackColor = true;
             this._btnDispatchTrain.Click += new System.EventHandler(this._btnDispatchTrain_Click);
+            // 
+            // _btnSchedule_1
+            // 
+            this._btnSchedule_1.Location = new System.Drawing.Point(98, 29);
+            this._btnSchedule_1.Name = "_btnSchedule_1";
+            this._btnSchedule_1.Size = new System.Drawing.Size(100, 23);
+            this._btnSchedule_1.TabIndex = 1;
+            this._btnSchedule_1.Text = "Schedule Trains";
+            this._btnSchedule_1.UseVisualStyleBackColor = true;
+            this._btnSchedule_1.Click += new System.EventHandler(this._btnSchedule_1_Click);
             // 
             // _groupSystemStatus
             // 
@@ -266,6 +274,9 @@
             // 
             // _groupSystemMetrics
             // 
+            this._groupSystemMetrics.Controls.Add(this._lblCrewMetrics);
+            this._groupSystemMetrics.Controls.Add(this._lblSystemMetricsHeading);
+            this._groupSystemMetrics.Controls.Add(this._lblCrewHeading);
             this._groupSystemMetrics.Controls.Add(this._btnRefreshMetrics);
             this._groupSystemMetrics.Controls.Add(this._lblTotalMetrics);
             this._groupSystemMetrics.Controls.Add(this._lblPassengersMetrics);
@@ -273,7 +284,6 @@
             this._groupSystemMetrics.Controls.Add(this._lblTotalLoadHeading);
             this._groupSystemMetrics.Controls.Add(this._lblPassengersHeading);
             this._groupSystemMetrics.Controls.Add(this._lblTrainsHeading);
-            this._groupSystemMetrics.Controls.Add(this._lblSystemMetricsHeading);
             this._groupSystemMetrics.Location = new System.Drawing.Point(13, 299);
             this._groupSystemMetrics.Name = "_groupSystemMetrics";
             this._groupSystemMetrics.Size = new System.Drawing.Size(252, 123);
@@ -294,7 +304,7 @@
             // _lblTotalMetrics
             // 
             this._lblTotalMetrics.AutoSize = true;
-            this._lblTotalMetrics.Location = new System.Drawing.Point(68, 94);
+            this._lblTotalMetrics.Location = new System.Drawing.Point(68, 81);
             this._lblTotalMetrics.Name = "_lblTotalMetrics";
             this._lblTotalMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblTotalMetrics.TabIndex = 6;
@@ -303,7 +313,7 @@
             // _lblPassengersMetrics
             // 
             this._lblPassengersMetrics.AutoSize = true;
-            this._lblPassengersMetrics.Location = new System.Drawing.Point(68, 71);
+            this._lblPassengersMetrics.Location = new System.Drawing.Point(68, 52);
             this._lblPassengersMetrics.Name = "_lblPassengersMetrics";
             this._lblPassengersMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblPassengersMetrics.TabIndex = 5;
@@ -312,7 +322,7 @@
             // _lblTrainsMetrics
             // 
             this._lblTrainsMetrics.AutoSize = true;
-            this._lblTrainsMetrics.Location = new System.Drawing.Point(68, 49);
+            this._lblTrainsMetrics.Location = new System.Drawing.Point(68, 39);
             this._lblTrainsMetrics.Name = "_lblTrainsMetrics";
             this._lblTrainsMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblTrainsMetrics.TabIndex = 4;
@@ -321,16 +331,16 @@
             // _lblTotalLoadHeading
             // 
             this._lblTotalLoadHeading.AutoSize = true;
-            this._lblTotalLoadHeading.Location = new System.Drawing.Point(6, 94);
+            this._lblTotalLoadHeading.Location = new System.Drawing.Point(10, 81);
             this._lblTotalLoadHeading.Name = "_lblTotalLoadHeading";
-            this._lblTotalLoadHeading.Size = new System.Drawing.Size(64, 13);
+            this._lblTotalLoadHeading.Size = new System.Drawing.Size(61, 13);
             this._lblTotalLoadHeading.TabIndex = 3;
-            this._lblTotalLoadHeading.Text = "Total Load: ";
+            this._lblTotalLoadHeading.Text = "Total Load:";
             // 
             // _lblPassengersHeading
             // 
             this._lblPassengersHeading.AutoSize = true;
-            this._lblPassengersHeading.Location = new System.Drawing.Point(6, 71);
+            this._lblPassengersHeading.Location = new System.Drawing.Point(6, 52);
             this._lblPassengersHeading.Name = "_lblPassengersHeading";
             this._lblPassengersHeading.Size = new System.Drawing.Size(65, 13);
             this._lblPassengersHeading.TabIndex = 2;
@@ -339,16 +349,16 @@
             // _lblTrainsHeading
             // 
             this._lblTrainsHeading.AutoSize = true;
-            this._lblTrainsHeading.Location = new System.Drawing.Point(29, 49);
+            this._lblTrainsHeading.Location = new System.Drawing.Point(32, 39);
             this._lblTrainsHeading.Name = "_lblTrainsHeading";
-            this._lblTrainsHeading.Size = new System.Drawing.Size(42, 13);
+            this._lblTrainsHeading.Size = new System.Drawing.Size(39, 13);
             this._lblTrainsHeading.TabIndex = 1;
-            this._lblTrainsHeading.Text = "Trains: ";
+            this._lblTrainsHeading.Text = "Trains:";
             // 
             // _lblSystemMetricsHeading
             // 
             this._lblSystemMetricsHeading.AutoSize = true;
-            this._lblSystemMetricsHeading.Location = new System.Drawing.Point(6, 26);
+            this._lblSystemMetricsHeading.Location = new System.Drawing.Point(10, 16);
             this._lblSystemMetricsHeading.Name = "_lblSystemMetricsHeading";
             this._lblSystemMetricsHeading.Size = new System.Drawing.Size(105, 13);
             this._lblSystemMetricsHeading.TabIndex = 0;
@@ -356,9 +366,8 @@
             // 
             // _groupGlobalTimeControls
             // 
-            this._groupGlobalTimeControls.Controls.Add(this._lblSpeedDetail);
-            this._groupGlobalTimeControls.Controls.Add(this._btnSpeed);
-            this._groupGlobalTimeControls.Controls.Add(this._txtGlobalTimeArea);
+            this._groupGlobalTimeControls.Controls.Add(this._btnGlobalTime10WallSpeed);
+            this._groupGlobalTimeControls.Controls.Add(this._btnGlobalTimeWallSpeed);
             this._groupGlobalTimeControls.Controls.Add(this._lblSpeed);
             this._groupGlobalTimeControls.Location = new System.Drawing.Point(15, 428);
             this._groupGlobalTimeControls.Name = "_groupGlobalTimeControls";
@@ -367,42 +376,35 @@
             this._groupGlobalTimeControls.TabStop = false;
             this._groupGlobalTimeControls.Text = "Track Model";
             // 
-            // _lblSpeedDetail
+            // _btnGlobalTime10WallSpeed
             // 
-            this._lblSpeedDetail.AutoSize = true;
-            this._lblSpeedDetail.ForeColor = System.Drawing.SystemColors.GrayText;
-            this._lblSpeedDetail.Location = new System.Drawing.Point(6, 55);
-            this._lblSpeedDetail.Name = "_lblSpeedDetail";
-            this._lblSpeedDetail.Size = new System.Drawing.Size(162, 13);
-            this._lblSpeedDetail.TabIndex = 3;
-            this._lblSpeedDetail.Text = "Min (Wall Speed): 1  -->  Max: 10";
+            this._btnGlobalTime10WallSpeed.Location = new System.Drawing.Point(129, 36);
+            this._btnGlobalTime10WallSpeed.Name = "_btnGlobalTime10WallSpeed";
+            this._btnGlobalTime10WallSpeed.Size = new System.Drawing.Size(93, 23);
+            this._btnGlobalTime10WallSpeed.TabIndex = 2;
+            this._btnGlobalTime10WallSpeed.Text = "10x Wall Speed";
+            this._btnGlobalTime10WallSpeed.UseVisualStyleBackColor = true;
+            this._btnGlobalTime10WallSpeed.Click += new System.EventHandler(this._btnGlobalTime10WallSpeed_Click);
             // 
-            // _btnSpeed
+            // _btnGlobalTimeWallSpeed
             // 
-            this._btnSpeed.Location = new System.Drawing.Point(115, 29);
-            this._btnSpeed.Name = "_btnSpeed";
-            this._btnSpeed.Size = new System.Drawing.Size(75, 23);
-            this._btnSpeed.TabIndex = 2;
-            this._btnSpeed.Text = "Apply";
-            this._btnSpeed.UseVisualStyleBackColor = true;
-            this._btnSpeed.Click += new System.EventHandler(this._btnSpeed_Click);
-            // 
-            // _txtGlobalTimeArea
-            // 
-            this._txtGlobalTimeArea.Location = new System.Drawing.Point(9, 32);
-            this._txtGlobalTimeArea.Name = "_txtGlobalTimeArea";
-            this._txtGlobalTimeArea.Size = new System.Drawing.Size(100, 20);
-            this._txtGlobalTimeArea.TabIndex = 1;
-            this._txtGlobalTimeArea.Text = "1";
+            this._btnGlobalTimeWallSpeed.Location = new System.Drawing.Point(12, 36);
+            this._btnGlobalTimeWallSpeed.Name = "_btnGlobalTimeWallSpeed";
+            this._btnGlobalTimeWallSpeed.Size = new System.Drawing.Size(75, 23);
+            this._btnGlobalTimeWallSpeed.TabIndex = 1;
+            this._btnGlobalTimeWallSpeed.Text = "Wall Speed";
+            this._btnGlobalTimeWallSpeed.UseVisualStyleBackColor = true;
+            this._btnGlobalTimeWallSpeed.EnabledChanged += new System.EventHandler(this._btnGlobalTimeWallSpeed_EnabledChanged);
+            this._btnGlobalTimeWallSpeed.Click += new System.EventHandler(this._btnGlobalTimeWallSpeed_Click);
             // 
             // _lblSpeed
             // 
             this._lblSpeed.AutoSize = true;
             this._lblSpeed.Location = new System.Drawing.Point(6, 16);
             this._lblSpeed.Name = "_lblSpeed";
-            this._lblSpeed.Size = new System.Drawing.Size(97, 13);
+            this._lblSpeed.Size = new System.Drawing.Size(181, 13);
             this._lblSpeed.TabIndex = 0;
-            this._lblSpeed.Text = "Global Time Speed";
+            this._lblSpeed.Text = "Global Time Speed - Click to Change";
             // 
             // _groupSystemSchedulerControls
             // 
@@ -449,6 +451,7 @@
             // 
             // _tabRedLine
             // 
+            this._tabRedLine.Controls.Add(this._panelRedLine);
             this._tabRedLine.Location = new System.Drawing.Point(4, 22);
             this._tabRedLine.Name = "_tabRedLine";
             this._tabRedLine.Padding = new System.Windows.Forms.Padding(3);
@@ -457,25 +460,51 @@
             this._tabRedLine.Text = "Red Line";
             this._tabRedLine.UseVisualStyleBackColor = true;
             // 
+            // _panelRedLine
+            // 
+            this._panelRedLine.Location = new System.Drawing.Point(2, 3);
+            this._panelRedLine.Name = "_panelRedLine";
+            this._panelRedLine.Size = new System.Drawing.Size(975, 612);
+            this._panelRedLine.TabIndex = 0;
+            // 
             // _tabGreenLine
             // 
+            this._tabGreenLine.Controls.Add(this._panelGreenLine);
             this._tabGreenLine.Location = new System.Drawing.Point(4, 22);
             this._tabGreenLine.Name = "_tabGreenLine";
             this._tabGreenLine.Padding = new System.Windows.Forms.Padding(3);
-            this._tabGreenLine.Size = new System.Drawing.Size(780, 365);
+            this._tabGreenLine.Size = new System.Drawing.Size(979, 618);
             this._tabGreenLine.TabIndex = 1;
             this._tabGreenLine.Text = "Green Line";
             this._tabGreenLine.UseVisualStyleBackColor = true;
             // 
+            // _panelGreenLine
+            // 
+            this._panelGreenLine.Location = new System.Drawing.Point(0, 3);
+            this._panelGreenLine.Name = "_panelGreenLine";
+            this._panelGreenLine.Size = new System.Drawing.Size(976, 612);
+            this._panelGreenLine.TabIndex = 0;
+            // 
             // _tabTeamLogo
             // 
+            this._tabTeamLogo.Controls.Add(this._imageTeamLogo);
             this._tabTeamLogo.Location = new System.Drawing.Point(4, 22);
             this._tabTeamLogo.Name = "_tabTeamLogo";
             this._tabTeamLogo.Padding = new System.Windows.Forms.Padding(3);
-            this._tabTeamLogo.Size = new System.Drawing.Size(780, 365);
+            this._tabTeamLogo.Size = new System.Drawing.Size(979, 618);
             this._tabTeamLogo.TabIndex = 2;
             this._tabTeamLogo.Text = "Terminal Velocity";
             this._tabTeamLogo.UseVisualStyleBackColor = true;
+            // 
+            // _imageTeamLogo
+            // 
+            this._imageTeamLogo.BackColor = System.Drawing.Color.Black;
+            this._imageTeamLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this._imageTeamLogo.Location = new System.Drawing.Point(-4, 0);
+            this._imageTeamLogo.Name = "_imageTeamLogo";
+            this._imageTeamLogo.Size = new System.Drawing.Size(987, 622);
+            this._imageTeamLogo.TabIndex = 0;
+            this._imageTeamLogo.TabStop = false;
             // 
             // groupSystemNotifications
             // 
@@ -495,6 +524,24 @@
             this.listSystemNotifications.Size = new System.Drawing.Size(357, 43);
             this.listSystemNotifications.TabIndex = 0;
             // 
+            // _lblCrewHeading
+            // 
+            this._lblCrewHeading.AutoSize = true;
+            this._lblCrewHeading.Location = new System.Drawing.Point(37, 65);
+            this._lblCrewHeading.Name = "_lblCrewHeading";
+            this._lblCrewHeading.Size = new System.Drawing.Size(34, 13);
+            this._lblCrewHeading.TabIndex = 8;
+            this._lblCrewHeading.Text = "Crew:";
+            // 
+            // _lblCrewMetrics
+            // 
+            this._lblCrewMetrics.AutoSize = true;
+            this._lblCrewMetrics.Location = new System.Drawing.Point(68, 68);
+            this._lblCrewMetrics.Name = "_lblCrewMetrics";
+            this._lblCrewMetrics.Size = new System.Drawing.Size(13, 13);
+            this._lblCrewMetrics.TabIndex = 9;
+            this._lblCrewMetrics.Text = "0";
+            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -508,7 +555,7 @@
             this.Size = new System.Drawing.Size(1272, 716);
             this._groupLoginLogout.ResumeLayout(false);
             this._groupLoginLogout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loginStatusImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).EndInit();
             this._groupOperatorControls.ResumeLayout(false);
             this._groupSystemStatus.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
@@ -520,6 +567,10 @@
             this._groupSystemSchedulerControls.ResumeLayout(false);
             this._groupSystemSchedulerControls.PerformLayout();
             this._systemViewTabs.ResumeLayout(false);
+            this._tabRedLine.ResumeLayout(false);
+            this._tabGreenLine.ResumeLayout(false);
+            this._tabTeamLogo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
             this.groupSystemNotifications.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -528,7 +579,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox _groupLoginLogout;
-        private System.Windows.Forms.PictureBox loginStatusImage;
+        private System.Windows.Forms.PictureBox _loginStatusImage;
         private System.Windows.Forms.Button _btnLoginLogout;
         private System.Windows.Forms.TextBox _txtPassword;
         private System.Windows.Forms.Label _lblPassword;
@@ -555,9 +606,6 @@
         private System.Windows.Forms.Label _lblTrainsHeading;
         private System.Windows.Forms.Label _lblSystemMetricsHeading;
         private System.Windows.Forms.GroupBox _groupGlobalTimeControls;
-        private System.Windows.Forms.Label _lblSpeedDetail;
-        private System.Windows.Forms.Button _btnSpeed;
-        private System.Windows.Forms.TextBox _txtGlobalTimeArea;
         private System.Windows.Forms.Label _lblSpeed;
         private System.Windows.Forms.GroupBox _groupSystemSchedulerControls;
         private System.Windows.Forms.Button _btnSchedule_2;
@@ -568,6 +616,13 @@
         private System.Windows.Forms.TabPage _tabTeamLogo;
         private System.Windows.Forms.GroupBox groupSystemNotifications;
         private System.Windows.Forms.ListBox listSystemNotifications;
+        private System.Windows.Forms.Panel _panelRedLine;
+        private System.Windows.Forms.Panel _panelGreenLine;
+        private System.Windows.Forms.PictureBox _imageTeamLogo;
+        private System.Windows.Forms.Button _btnGlobalTime10WallSpeed;
+        private System.Windows.Forms.Button _btnGlobalTimeWallSpeed;
+        private System.Windows.Forms.Label _lblCrewHeading;
+        private System.Windows.Forms.Label _lblCrewMetrics;
 
     }
 }

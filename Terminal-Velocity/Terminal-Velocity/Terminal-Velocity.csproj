@@ -70,6 +70,10 @@
     <Compile Include="SystemLog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
+      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
+      <Name>Environment-Simulation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
       <Name>Interfaces</Name>

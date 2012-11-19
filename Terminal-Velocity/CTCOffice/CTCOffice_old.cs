@@ -212,7 +212,7 @@ namespace CTCOffice
         private void dispatchTrain()
         {
             IRoute myRoute = promptForRoute();
-            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1, myRoute, null);
+            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1,-1, myRoute, null);
             sendRequest(request);
         }
 
