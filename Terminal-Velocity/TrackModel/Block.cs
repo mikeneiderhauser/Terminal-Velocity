@@ -212,7 +212,7 @@ namespace TrackModel
         #region Properties
         public int BlockID
         {
-            get { return _trainID; }
+            get { return _blockID; }
         }
         
 		
