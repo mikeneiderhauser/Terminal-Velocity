@@ -262,7 +262,7 @@ namespace TrackModel
 	//Argument to this function shouldbe changed
 	//into the SQLResults object returned from
 	//runQuery() above
-	public Block formatQueryResults(void)
+	public Block formatBlockQueryResults(SqlDataReader blockReader)
 	{
 		return null;
 	}
@@ -270,7 +270,7 @@ namespace TrackModel
 	//Argument to this function should be changed
 	//into the SQLResults object returned from
 	//runQuery above (and used in fQR above)
-	public Route formatQueryResults(void)
+	public Route formatRouteQueryResults(SqlDataReader routeReader)
 	{
 		return null;
 	}
