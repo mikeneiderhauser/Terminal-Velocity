@@ -7,6 +7,9 @@ using System.IO;
 using Utilities;
 using Interfaces;
 
+
+namespace TrackModel
+{
     public class DBCreator
     {
         //Private parameters
@@ -180,4 +183,6 @@ using Interfaces;
 	}
 
 	//Properties
-}
+}//End class
+
+}//End namespace
