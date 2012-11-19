@@ -25,7 +25,7 @@ namespace Interfaces
         /// <summary>
         /// Property to access _trainSpeed
         /// </summary>
-        double Trainspeed { get; }
+        double TrainSpeed { get; }
 
         /// <summary>
         /// Property to access _trainRoute (train routing information)
