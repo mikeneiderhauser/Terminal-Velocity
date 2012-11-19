@@ -181,8 +181,23 @@ namespace TrackModel
 	//Return type should be changed into some sort of
 	//SQLResults object after I examine the libraries
 	//and classes used for this type of thing in C#
-	public void runQuery(string sqlQuery)
+	public SqlDataReader runQuery(string sqlQuery)
 	{
+                _dbCon.Open();
+                        //Initialize command to create BLOCKS TABLE
+                        SqliteCommand selCom=new SqliteCommand(sqlQuery);
+                        selCom.Connection=_dbCon;
+                        try
+                        {
+                                SqlDataReader tempReader=selCom.ExecuteReader();
+                                _dbCon.Close();//CLOSE DB
+                                return tempReader;
+                        }
+                        catch(Exception crap)
+                        {
+                                _dbCon.Close();
+                                return null;
+                        }
 
 	}
 
