@@ -142,15 +142,16 @@ namespace TrackModel
 		{
 			//Create switch update string
 			string updateString=	"UPDATE BLOCKS"+
-						"SET "+
+						"SET dest1="+bToUpdate.SwitchDest2+", dest2="+bToUpdate.SwitchDest1+
 						"WHERE blockID="+bID;
 			return updateString;
 		}
 		else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
 		{
+			//blocks are allowed to update heater, track circuit info, state
 			//Create block update string
 			string updateString=	"UPDATE BLOCKS"+
-						"SET "+
+						"SET state="+bToUpdate.State+" "+
 						"WHERE blockID="+bID;
 			return  updateString;
 		}
