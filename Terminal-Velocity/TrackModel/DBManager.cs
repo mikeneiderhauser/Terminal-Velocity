@@ -31,30 +31,36 @@ namespace TrackModel
 	
 		if(!qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase) && !qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase) )
 		{
-			//Test whether ID=blockID exists
-			//If(exists)
-			//	format query
-			//	return query
-			//else
-				return null;
+			return null;
 		}
 		else if(qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase))//Format for block
 		{
-			//Test whether ID=blockID exists
-			//If(exists)
-			//	format query
-			//	return query
-			//else
-				return null;
+                      //Test whether block exists
+                        bool exists=blockExists(ID);
+                        if(exists)
+                        {
+                                string blockQuery=      "SELECT *"+
+                                                        "FROM BLOCKS"+
+                                                        "WHERE blockID="+ID;
+                                return blockQuery;
+                        }
+                        else
+                                return null;
+
 		}
 		else//(qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase))//Format for ROUTE
 		{
-			//Test whether ID=routeID exists
-			//If(exists)
-			//	format query
-			//	return query
-			//else
-				return null;
+			//Test whether block exists
+                        bool exists=routeExists(ID);
+                        if(exists)
+                        {
+                                string routeQuery=      "SELECT *"+
+                                                        "FROM ROUTES"+
+                                                        "WHERE routeID="+ID;
+                                return routeQuery;
+                        }
+                        else
+                                return null;
 		}
 	}
 
