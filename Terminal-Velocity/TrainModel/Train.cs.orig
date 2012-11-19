@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+<<<<<<< HEAD
+using Interfaces;
+using Utility;
+=======
 using Utility;
 using Interfaces;
+>>>>>>> TrainModelPrototype
 
 namespace TrainModel
 {
     public class Train : ITrainModel
     {
+<<<<<<< HEAD
+        // Has public parameters
+        private int _trainID;
+        private const double _length = 32.33; //meters
+=======
         //Commit for Train Class 11/16/2012 4:30
         // Has public parameters
         private int _trainID;
         private const double _length = 32.33; // meters
+>>>>>>> TrainModelPrototype
         private double _totalMass;
         private string _informationLog;
         private bool _lightsOn;
@@ -21,6 +32,23 @@ namespace TrainModel
         private double _currentAcceleration;
         private double _currentVelocity;
         private double _currentPosition;
+<<<<<<< HEAD
+        
+        private const int _maxCapacity = 222;
+        private int _numPassengers;
+        private int _numCrew;
+        
+        private bool _brakeFailure;
+        private bool _engineFailure;
+        private bool _signalPickupFailure;
+        
+        private ITrainController _trainController;
+
+       
+        // Does not have public parameters
+        private const double _initialMass = 40900; // kilograms
+        private const double _personMass = 200; // kilograms
+=======
 
         private const int _maxCapacity = 222; // 74 seated, 148 standing
         private int _numPassengers;
@@ -39,12 +67,19 @@ namespace TrainModel
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
         private const double _personMass = 90; // kilograms
+>>>>>>> TrainModelPrototype
         private const double _width = 2.65; // meters
         private const double _height = 3.42; // meters
         private const double _physicalAccelerationLimit = 0.5; // meters/second^2
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
+<<<<<<< HEAD
+        
+        private IEnvironment _environment;
+
+        public Train(int trainID, int temperature, IEnvironment environment)
+=======
         private const double _accelerationGravity = -9.8; // meters/second^2
 
         //TODO: get list of trains from environment
@@ -57,13 +92,18 @@ namespace TrainModel
         /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
         public Train(int trainID, IBlock startingBlock, IEnvironment environment)
+>>>>>>> TrainModelPrototype
         {
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "Created at " + DateTime.Now + ".\n";
             _lightsOn = false;
             _doorsOpen = false;
+<<<<<<< HEAD
+            _temperature = temperature;
+=======
             _temperature = 32;
+>>>>>>> TrainModelPrototype
 
             _currentAcceleration = 0;
             _currentVelocity = 0;
@@ -76,6 +116,21 @@ namespace TrainModel
             _engineFailure = false;
             _signalPickupFailure = false;
 
+<<<<<<< HEAD
+            _environment = environment;
+
+            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+        }
+
+        void  _environment_Tick(object sender, TickEventArgs e)
+        {
+ 	        //handle tick here
+        }
+
+        //TODO
+        public void EmergencyBrake()
+        {
+=======
             _currentBlock = startingBlock;
             _blockLength = _currentBlock.BlockSize;
 
@@ -94,11 +149,27 @@ namespace TrainModel
         public void EmergencyBrake()
         {
             _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
+>>>>>>> TrainModelPrototype
         }
 
         //TODO
         public bool ChangeMovement(double power)
         {
+<<<<<<< HEAD
+            return true;
+        }
+
+        // private functions
+        private double calculateMass()
+        {
+            return (_initialMass + _personMass*(_numPassengers + _numCrew));
+        }
+
+        //TODO
+        private void updateMovement()
+        {
+
+=======
 
             return true;
         }
@@ -143,6 +214,7 @@ namespace TrainModel
         private double calculateMass()
         {
             return (_initialMass + _personMass * (_numPassengers + _numCrew));
+>>>>>>> TrainModelPrototype
         }
 
         //TODO
@@ -151,6 +223,9 @@ namespace TrainModel
             return false;
         }
 
+<<<<<<< HEAD
+        #region Properties
+=======
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             //handle tick here
@@ -163,6 +238,7 @@ namespace TrainModel
 
         #region Properties
 
+>>>>>>> TrainModelPrototype
         public int TrainID
         {
             get { return _trainID; }
@@ -186,6 +262,9 @@ namespace TrainModel
         public bool LightsOn
         {
             get { return _lightsOn; }
+<<<<<<< HEAD
+            set { _lightsOn = value; }
+=======
             set
             {
                 _lightsOn = value;
@@ -196,11 +275,15 @@ namespace TrainModel
                 else
                     _informationLog += " lights were turned off.\n";
             }
+>>>>>>> TrainModelPrototype
         }
 
         public bool DoorsOpen
         {
             get { return _doorsOpen; }
+<<<<<<< HEAD
+            set { _doorsOpen = value; }
+=======
             set
             {
                 _doorsOpen = value;
@@ -211,16 +294,21 @@ namespace TrainModel
                 else
                     _informationLog += " doors were closed.\n";
             }
+>>>>>>> TrainModelPrototype
         }
 
         public int Temperature
         {
             get { return _temperature; }
+<<<<<<< HEAD
+            set { _temperature = value; }
+=======
             set
             {
                 _temperature = value;
                 _informationLog += "Train " + _trainID + " temperature was set to " + _temperature;
             }
+>>>>>>> TrainModelPrototype
         }
 
         public double CurrentAcceleration
@@ -246,6 +334,11 @@ namespace TrainModel
         public int NumPassengers
         {
             get { return _numPassengers; }
+<<<<<<< HEAD
+            set 
+            { 
+                _numPassengers = value;
+=======
             set
             {
                 int oldNumPassengers = _numPassengers;
@@ -260,6 +353,7 @@ namespace TrainModel
                 else // people get on train
                     _informationLog += difference + " passengers got on Train " + _trainID + ".\n";
 
+>>>>>>> TrainModelPrototype
                 _totalMass = calculateMass();
             }
         }
@@ -267,6 +361,11 @@ namespace TrainModel
         public int NumCrew
         {
             get { return _numCrew; }
+<<<<<<< HEAD
+            set 
+            { 
+                _numCrew = value;
+=======
             set
             {
                 int oldNumCrew = _numCrew;
@@ -281,6 +380,7 @@ namespace TrainModel
                 else // people get on train
                     _informationLog += difference + " crew members got on Train " + _trainID + ".\n";
 
+>>>>>>> TrainModelPrototype
                 _totalMass = calculateMass();
             }
         }
@@ -300,6 +400,17 @@ namespace TrainModel
         {
             get { return _signalPickupFailure; }
         }
+<<<<<<< HEAD
+        
+        #endregion
+
+
+        int ITrainModel.Length
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+=======
 
         public IBlock CurrentBlock
         {
@@ -308,10 +419,15 @@ namespace TrainModel
 
         #endregion
 
+>>>>>>> TrainModelPrototype
 
         int ITrainModel.Length
         {
             get { throw new NotImplementedException(); }
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> TrainModelPrototype

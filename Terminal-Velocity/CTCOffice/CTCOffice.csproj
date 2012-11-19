@@ -63,6 +63,9 @@
     <Compile Include="CTCOffice_old.Designer.cs">
       <DependentUpon>CTCOffice_old.cs</DependentUpon>
     </Compile>
+    <Compile Include="LineData.cs" />
+    <Compile Include="Operator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="Operator.cs" />
@@ -81,6 +84,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>

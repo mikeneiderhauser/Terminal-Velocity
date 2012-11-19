@@ -5,6 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Terminal_Velocity</RootNamespace>
+    <AssemblyName>Terminal-Velocity</AssemblyName>
     <ProjectGuid>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -50,6 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Route.cs" />
     <Compile Include="Status.cs" />
