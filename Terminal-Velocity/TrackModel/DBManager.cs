@@ -193,6 +193,29 @@ namespace TrackModel
 	{
 		if(_dbCon==null)
 			return false;
+
+
+                _dbCon.Open();
+                SqliteCommand updateCom=new SqliteCommand(sqlUpdate);
+                updateCom.Connection=_dbCon;
+                try
+                {
+                     int res=updateCom.ExecuteNonQuery();//Exec CREATE
+                     //Console.WriteLine(res);
+                     _dbCon.Close();//CLOSE DB
+                     if(res!=1)
+                          return false;
+		     else
+			  return true;
+                }
+                catch(Exception crap)
+                {
+                      _dbCon.Close();
+                     //Console.WriteLine(crap.Message.ToStrin
+                     return false;
+                }
+
+
 	}
 
 	public bool runInsert(string sqlInsert)
