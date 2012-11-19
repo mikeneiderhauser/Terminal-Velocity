@@ -74,9 +74,16 @@ namespace CTCOffice
         {
             Boolean status = false;
 
-            if (_username.Equals(_authUsername) && _password.Equals(_authPassword))
+            if (_username == null || _password == null)
             {
-                status = true;
+                //handle null case
+            }
+            else
+            {
+                if (_username.Equals(_authUsername) && _password.Equals(_authPassword))
+                {
+                    status = true;
+                }
             }
             return status;
         }

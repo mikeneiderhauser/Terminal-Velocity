@@ -65,7 +65,8 @@ namespace Testing
             ////////////////////////////////////////////////////////////////////////////////////////
 
             // Environment object
-            TerminalVelocity.Environment environment = new TerminalVelocity.Environment();
+            EnvironmentSimulation.Environment environment = new EnvironmentSimulation.Environment();
+            //TerminalVelocity.Environment environment = new TerminalVelocity.Environment();
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit

@@ -31,10 +31,10 @@ namespace TrackModel
         #region Properties
         public int RouteID
         {
-            get { return _trainID; }
+            get { return _routeID; }
         }
 
-	public int RouteName
+	public string RouteName
 	{
 		get {return _routeName;}
 	}

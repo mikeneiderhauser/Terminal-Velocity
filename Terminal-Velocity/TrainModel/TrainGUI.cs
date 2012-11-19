@@ -11,9 +11,17 @@ namespace TrainModel
 {
     public partial class TrainGUI : UserControl
     {
+        //Commit for GUI
+        // TODO: Set selectedTrain = to train selected by combo box
+        private Train selectedTrain;
+
         public TrainGUI()
         {
             InitializeComponent();
+
+            // TODO: populate combo box by setting allTrains equal to list contained in environment
+
+            UpdateGUI();
         }
 
         public void DisplayError(string error)
@@ -27,6 +35,37 @@ namespace TrainModel
             {
                 allTrainComboBox.Items.Add(train.ToString());
             }
+        }
+
+        private void UpdateGUI()
+        {
+            positionValueText.Text = selectedTrain.CurrentPosition.ToString();
+            velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
+            accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
+            
+            // TODO: removed to prevent build error
+            //elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString(); // TODO: check this is the right one
+            massValueText.Text = selectedTrain.TotalMass.ToString();
+            
+            numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
+            numCrewValueText.Text = selectedTrain.NumCrew.ToString();
+
+            // set values for lights
+            if (selectedTrain.LightsOn)
+                lightsValueText.Text = "On";
+            else
+                lightsValueText.Text = "Off";
+
+            // set values for doors
+            if (selectedTrain.DoorsOpen)
+                doorsValueText.Text = "Open";
+            else
+                doorsValueText.Text = "Closed";
+        }
+
+        private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

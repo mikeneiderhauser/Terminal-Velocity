@@ -17,7 +17,7 @@ namespace TrackModel
 		private double _startingElev;
 		private double _grade;
 		private int[] _location;
-		private int _bSize;
+		private double _bSize;
 		private DirEnum _direction;
 		private string[] _attributes;
 		private int _switchDest1;
@@ -217,7 +217,7 @@ namespace TrackModel
         #region Properties
         public int BlockID
         {
-            get { return _trainID; }
+            get { return _blockID; }
         }
         
 		
@@ -251,7 +251,7 @@ namespace TrackModel
 			get {return _location;}	
 		}
 		
-		public int BlockSize
+		public double BlockSize
 		{
 			get {return _bSize;}
 			set

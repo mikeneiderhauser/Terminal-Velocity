@@ -19,7 +19,7 @@ namespace TerminalVelocity
         private ITrackModel _trackModel;
         private List<ITrainModel> _allTrains;
         private SystemLog _sysLog;
-        
+
         private long _total;
         private long _interval = 100;
         private Timer _timer = new Timer();
@@ -130,6 +130,31 @@ namespace TerminalVelocity
             return (long)_timer.Interval;
         }
 
+        public void stopTick(object sender)
+        {
+            if (sender == _CTCOffice)
+            {
+                _timer.Stop();
+                sendLogEntry("Environment: Envoked Timer Stop");
+            }
+            else
+            {
+                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
+            }
+        }
+
+        public void startTick(object sender)
+        {
+            if (sender == CTCOffice)
+            {
+                _timer.Start();
+                sendLogEntry("Environment: Envoked Timer Start");
+            }
+            else
+            {
+                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
+            }
+        }
         #endregion
     }
 }

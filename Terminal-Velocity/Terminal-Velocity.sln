@@ -1,7 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal-Velocity", "Terminal-Velocity\Terminal-Velocity.csproj", "{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{C071856C-44B0-46F0-965C-0D9AE2A293D1}"
@@ -21,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{28C944F8-DF4A-498B-987F-CEAD8C41E028}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{13141EB7-9F8E-4685-899F-5C1E26E69C46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Environment-Simulation", "Environment\Environment-Simulation.csproj", "{5E2B56A2-F4EE-4044-BA42-80808D162BAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +133,16 @@ Global
 		{13141EB7-9F8E-4685-899F-5C1E26E69C46}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{13141EB7-9F8E-4685-899F-5C1E26E69C46}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{13141EB7-9F8E-4685-899F-5C1E26E69C46}.Release|x86.ActiveCfg = Release|Any CPU
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Debug|x86.ActiveCfg = Debug|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Debug|x86.Build.0 = Debug|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Release|Any CPU.ActiveCfg = Release|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Release|x86.ActiveCfg = Release|x86
+		{5E2B56A2-F4EE-4044-BA42-80808D162BAA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
