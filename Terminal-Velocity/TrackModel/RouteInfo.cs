@@ -34,7 +34,7 @@ namespace TrackModel
             get { return _routeID; }
         }
 
-	public int RouteName
+	public string RouteName
 	{
 		get {return _routeName;}
 	}

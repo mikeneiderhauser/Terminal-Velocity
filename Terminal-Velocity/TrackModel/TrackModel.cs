@@ -12,9 +12,9 @@ namespace TrackModel
     {
         //Private parameters
 		private IEnvironment _env;
-		private DBManager _dbManager;
-		private DisplayManager _dispManager;
-		private DBCreator _dbCreator;
+		//private DBManager _dbManager;
+		//private DisplayManager _dispManager;
+		//private DBCreator _dbCreator;
 		
 
         public TrackModel(IEnvironment environment)
