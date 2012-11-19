@@ -8,19 +8,29 @@ using System.Text;
 using System.Windows.Forms;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+using Interfaces;
+
+>>>>>>> prototype
+=======
 using Interfaces;
 
 =======
 >>>>>>> TrainModelPrototype
+>>>>>>> prototype
 namespace TrainModel
 {
     public partial class TrainGUI : UserControl
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
         public TrainGUI()
         {
             InitializeComponent();
 =======
+>>>>>>> prototype
         //Commit for GUI
         // TODO: Set selectedTrain = to train selected by combo box
         private Train selectedTrain;
@@ -32,7 +42,15 @@ namespace TrainModel
             // TODO: populate combo box by setting allTrains equal to list contained in environment
 
             UpdateGUI();
+<<<<<<< HEAD
+=======
+        public TrainGUI()
+        {
+            InitializeComponent();
+>>>>>>> prototype
+=======
 >>>>>>> TrainModelPrototype
+>>>>>>> prototype
         }
 
         public void DisplayError(string error)
@@ -41,6 +59,16 @@ namespace TrainModel
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+        private void PopulateComboBox(List<Train> allTrains)
+        {
+            foreach(Train train in allTrains)
+=======
+        private void PopulateComboBox(List<ITrain> allTrains)
+        {
+            foreach(ITrain train in allTrains)
+>>>>>>> prototype
+=======
         private void PopulateComboBox(List<ITrain> allTrains)
         {
             foreach(ITrain train in allTrains)
@@ -49,12 +77,16 @@ namespace TrainModel
         {
             foreach(Train train in allTrains)
 >>>>>>> TrainModelPrototype
+>>>>>>> prototype
             {
                 allTrainComboBox.Items.Add(train.ToString());
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> prototype
 
         private void UpdateGUI()
         {
@@ -86,6 +118,11 @@ namespace TrainModel
         {
             
         }
+<<<<<<< HEAD
+=======
+>>>>>>> prototype
+=======
 >>>>>>> TrainModelPrototype
+>>>>>>> prototype
     }
 }
