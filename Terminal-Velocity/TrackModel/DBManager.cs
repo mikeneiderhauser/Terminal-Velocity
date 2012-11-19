@@ -114,8 +114,6 @@ namespace TrackModel
                                 _dbCon.Close();
                                 return false;
                         }
-
-
 	}
 	
 	//Allows updates types of "SWITCH" or "BLOCK"
@@ -222,6 +220,27 @@ namespace TrackModel
 	{
 		if(_dbCon==null)
 			return false;
+
+                _dbCon.Open();
+                SqliteCommand insertCom=new SqliteCommand(sqlInsert);
+                insertCom.Connection=_dbCon;
+                try
+                {
+                     int res=insertCom.ExecuteNonQuery();//Exec insert
+                     //Console.WriteLine(res);
+                     _dbCon.Close();//CLOSE DB
+                     if(res!=1)
+                          return false;
+                     else
+                          return true;
+                }
+                catch(Exception crap)
+                {
+                      _dbCon.Close();
+                     //Console.WriteLine(crap.Message.ToStrin
+                     return false;
+                }
+
 	}
 
 
