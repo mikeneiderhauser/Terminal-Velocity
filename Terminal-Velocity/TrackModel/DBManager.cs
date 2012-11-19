@@ -118,9 +118,38 @@ namespace TrackModel
 
 	}
 	
+	//Allows updates types of "SWITCH" or "BLOCK"
+	//	SWITCH updates only affect the switch
+	//	BLOCK updates are allowed to update state info, track circuit info, heater info
 	public String createUpdate(string updateType, Block bToUpdate)
 	{
-	
+		//Check that block isnt null
+		if(bToUpdate==null)
+			return null;
+
+		//Get block ID and check that it exists
+		int bID=bToUpdate.BlockID;
+		bool exists=blockExists(bID);
+		if(!exists)
+			return null;
+
+		//if updateType was an unexpected value, quit out
+		if(!updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) && !updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
+		{
+			return null;
+		}
+		else if(updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) )
+		{
+			//Create switch update string
+			string updateString="";
+			return updateString;
+		}
+		else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
+		{
+			//Create block update string
+			string updateString="";
+			return  updateString;
+		}
 	}
 
 	public String createInsert(Block b)
