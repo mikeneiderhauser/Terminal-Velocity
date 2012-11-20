@@ -57,7 +57,7 @@ namespace TrainController
         private double SpeedInput
         {
             get { return SpeedInput; }
-            set {if(  
+            set {if(  checkSpeedLimit())
                 SpeedInput = value; }
         }
 

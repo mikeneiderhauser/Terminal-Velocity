@@ -23,5 +23,10 @@ namespace TrainController
         {
             _currentTrainController.EmergencyBrakes();
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
