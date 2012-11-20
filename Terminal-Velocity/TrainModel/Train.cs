@@ -82,7 +82,12 @@ namespace TrainModel
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
+            // TODO: double check constructor
+            _trainController = new ITrainController();
+
             // TODO: set allTrains equal to list contained in environment and add this train
+            allTrains = environment.AllTrains;
+            allTrains.add(this);
         }
 
         #endregion
@@ -121,7 +126,7 @@ namespace TrainModel
         //      Handle elevation calculations
         private void updateMovement()
         {
-            _currentVelocity += _currentAcceleration; // TODO: + elevation values
+            _currentVelocity += _currentAcceleration; // TODO: + elevation values -> change acceleration first
             _currentPosition += _currentVelocity;
 
 
@@ -306,12 +311,25 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        // TODO: double check that it works
+        // for track controller communications
+
+        #region Track Controller communication parameters
+
+        public double SpeedLimit
+        {
+            get { return _trainController.SpeedLimit; }
+            set { _trainController.SpeedLimit = value; }
+        }
+
+        public int AuthorityLimit
+        {
+            get { return _trainController.AuthorityLimit; }
+            set { _trainController.AuthorityLimit = value; }
+        }
+
         #endregion
 
-
-        int ITrainModel.Length
-        {
-            get { throw new NotImplementedException(); }
-        }
+        #endregion
     }
 }
