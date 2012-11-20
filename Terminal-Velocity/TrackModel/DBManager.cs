@@ -50,17 +50,29 @@ namespace TrackModel
 		}
 		else//(qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase))//Format for ROUTE
 		{
-			//Test whether block exists
-                        bool exists=routeExists(ID);
-                        if(exists)
-                        {
-                                string routeQuery=      "SELECT *"+
-                                                        "FROM ROUTES"+
-                                                        "WHERE routeID="+ID;
-                                return routeQuery;
-                        }
-                        else
-                                return null;
+
+			//Only accept 0 or 1 for route id's
+			string routeName;
+			if(ID==0)
+			{
+				routeName="Red";
+			}
+			else if(ID==1)
+			{
+				routeName="Green";
+			}
+			else
+			{
+				//Only supports red and green lines
+				return null;
+			}
+	
+			//Routes right now only exists as the set of
+			//BLOCK table tuples sharing a line name.
+                        string routeQuery=      "SELECT *"+
+                                                "FROM BLOCKS"+
+                                                "WHERE line="+routeName;
+                        return routeQuery;
 		}
 	}
 
@@ -332,8 +344,22 @@ namespace TrackModel
 	//Argument to this function should be changed
 	//into the SQLResults object returned from
 	//runQuery above (and used in fQR above)
-	public Route formatRouteQueryResults(SqlDataReader routeReader)
+	public Route formatRouteQueryResults(SqlDataReader rr)
 	{
+		//Temp list used to store blocks, since we dont know
+		//ahead of time how many to expect
+		List<Block> blockList = new List<Block>();
+		Route tempRoute;
+		int routeID;
+		string rName;
+		int nBlocks;
+		int startBlockID=-1;
+		int endBlockID=-1;
+
+		while (rr.Read() )
+		{
+
+		}
 		return null;
 	}
 		
