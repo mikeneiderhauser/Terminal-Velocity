@@ -57,7 +57,8 @@ namespace TrainController
         private double SpeedInput
         {
             get { return SpeedInput; }
-            set { SpeedInput = value; }
+            set {if(  
+                SpeedInput = value; }
         }
 
 
@@ -86,7 +87,10 @@ namespace TrainController
             Train.NumPassengers = newPassengers;
             //Send throughput afterwards
         }
-
+        public static ITrainController makeTrainController()
+        {
+            return new TrainController();
+        }
         public void removePassengers()
         {
             Random r = new Random();

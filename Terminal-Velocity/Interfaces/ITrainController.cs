@@ -12,8 +12,9 @@ namespace Interfaces
         int AuthorityLimit { get; set; }
         double SpeedLimit { get; set; }
         IBlock CurrentBlock { get; set; }
-        int Announcement { set; } 
+        int Announcement { set; }
 
+        
         void addPassengers();
         void removePassengers();
         void lightsOn();
