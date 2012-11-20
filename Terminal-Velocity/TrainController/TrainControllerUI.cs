@@ -11,9 +11,17 @@ namespace TrainController
 {
     public partial class TrainControllerUI : UserControl
     {
+        TrainController _currentTrainController;
         public TrainControllerUI()
         {
             InitializeComponent();
+        }
+
+     
+
+        private void _btnEmergencyBrake_Click(object sender, EventArgs e)
+        {
+            _currentTrainController.EmergencyBrakes();
         }
     }
 }

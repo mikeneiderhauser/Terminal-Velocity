@@ -7,7 +7,7 @@ using Interfaces;
 
 namespace TrainController
 {
-   public class TrainController : ITrainController
+    public class TrainController : ITrainController
     {
         public IEnvironment _environment
         {
@@ -54,6 +54,12 @@ namespace TrainController
                 SpeedLimit = value;
             }
         }
+        private double SpeedInput
+        {
+            get { return SpeedInput; }
+            set { SpeedInput = value; }
+        }
+
 
         public IBlock CurrentBlock
         {
@@ -74,9 +80,9 @@ namespace TrainController
 
         public void addPassengers()
         {
-            
+
             Random r = new Random();
-            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity+1);
+            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity + 1);
             Train.NumPassengers = newPassengers;
             //Send throughput afterwards
         }
@@ -106,10 +112,8 @@ namespace TrainController
 
         public void doorOpen()
         {
-            if (Train.CurrentVelocity == 0)
-            {
-                Train.DoorsOpen = true;
-            }
+            Train.DoorsOpen = true;
+
         }
 
         public void doorClose()
@@ -121,5 +125,23 @@ namespace TrainController
         {
             throw new NotImplementedException();
         }
+        private bool checkSpeedLimit()
+        {
+            return SpeedInput <= SpeedLimit;
+        }
+        private bool checkDoorOpen()
+        {
+            return Train.CurrentVelocity == 0;
+        }
+        private void checkLightsOn()
+        {
+            Train.LightsOn = CurrentBlock.hasTunnel();
+        }
+        public void EmergencyBrakes()
+        {
+            Train.EmergencyBrake();
+        }
+
     }
+
 }
