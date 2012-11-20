@@ -32,6 +32,7 @@ namespace TrainModel
 
         private ITrainController _trainController;
         private IEnvironment _environment;
+        private ITrackModel _trackModel;
 
         private IBlock _currentBlock;
         private double _blockLength;
@@ -81,6 +82,8 @@ namespace TrainModel
 
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+
+            _trackModel = environment.TrackModel;
 
             // TODO: double check constructor
             _trainController = new ITrainController();
@@ -133,13 +136,19 @@ namespace TrainModel
             // Handles edge of blocks for forwards and backwards
             if (_currentPosition >= _blockLength)
             {
-                //_currentBlock = _currentBlock.NEXT;
+                //_currentBlock = _currentBlock.NEXT method
+                int nextBlockID = _currentBlock.SwitchDest1;
+                _currentBlock = _trackModel.requestBlockInfo(nextBlockID);
+                
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
             }
             else if (_currentPosition < 0)
             {
-                //_currentBlock = _currentBlock.PREVIOUS;
+                //_currentBlock = _currentBlock.PREVIOUS method
+                int prevBlockID = _currentBlock.PrevBlockID;
+                _currentBlock = _trackModel.requestBlockInfo(prevBlockID);
+
                 _blockLength = _currentBlock.BlockSize;
                 _currentPosition = _blockLength - _currentPosition * -1;
             }
