@@ -1,6 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal-Velocity", "Terminal-Velocity\Terminal-Velocity.csproj", "{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}"
 EndProject
@@ -34,6 +33,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Debug|x86.ActiveCfg = Debug|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Debug|x86.Build.0 = Debug|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Release|Any CPU.ActiveCfg = Release|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Release|Mixed Platforms.Build.0 = Release|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Release|x86.ActiveCfg = Release|x86
+		{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}.Release|x86.Build.0 = Release|x86
 		{C071856C-44B0-46F0-965C-0D9AE2A293D1}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{C071856C-44B0-46F0-965C-0D9AE2A293D1}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{C071856C-44B0-46F0-965C-0D9AE2A293D1}.Debug|Mixed Platforms.Build.0 = Debug|x86

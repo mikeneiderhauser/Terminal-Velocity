@@ -171,7 +171,7 @@ namespace TrackController
             if (Next != null)
                 Next.Request = request;
             else
-                _env.CTCOffice.passRequest(request);
+                _env.CTCOffice.handleResponse(request);
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
