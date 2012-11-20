@@ -319,6 +319,7 @@ namespace TrackModel
 				bool trackCirIDRes=int.TryParse(trackCirID,out trackCirIDFinal);
 				if(!trackCirIDRes) {trackCirIDFinal=-1;}
 
+			tempBlock=new Block(bIDFinal,stateFinal,prevFinal,sEFinal,gradeFinal,locFinal,bSizeFinal,dirFinal,infraFinal,dest1Final,dest2Final,trackCirIDFinal,line);
 			i++;//Inc counter
 		}
 
