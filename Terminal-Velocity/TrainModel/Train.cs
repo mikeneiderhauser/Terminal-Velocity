@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Utility;
 using Interfaces;
 
@@ -86,11 +87,11 @@ namespace TrainModel
             _trackModel = environment.TrackModel;
 
             // TODO: double check constructor
-            _trainController = new ITrainController();
+            //_trainController = new ITrainController();
 
             // TODO: set allTrains equal to list contained in environment and add this train
-            allTrains = environment.AllTrains;
-            allTrains.add(this);
+            //allTrains = environment.AllTrains;
+            //allTrains.add(this);
         }
 
         #endregion
@@ -340,5 +341,11 @@ namespace TrainModel
         #endregion
 
         #endregion
+
+
+        int ITrainModel.Length
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
