@@ -8,7 +8,7 @@ namespace Interfaces
     public interface ITrainModel
     {
         int TrainID { get; }
-        int Length { get; }
+        double Length { get; }
         double TotalMass { get; }
         string InformationLog { get; }
         bool LightsOn { get; set; }

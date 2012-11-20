@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CTCOffice.Test.cs" />
+    <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackController.Test.cs" />
   </ItemGroup>
@@ -55,6 +58,10 @@
     <ProjectReference Include="..\CTCOffice\CTCOffice.csproj">
       <Project>{8b7b6259-91f9-4db2-aed3-e20fac7ac986}</Project>
       <Name>CTCOffice</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
+      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
+      <Name>SimulationEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
@@ -90,6 +97,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

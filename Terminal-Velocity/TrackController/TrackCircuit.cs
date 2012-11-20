@@ -10,13 +10,13 @@ namespace TrackController
 {
     public class TrackCircuit : ITrackCircuit
     {
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
         private ITrackController _trackController;
         private Dictionary<int, ITrain> _trains;
 
         #region Constructor(s)
 
-        public TrackCircuit(IEnvironment env)
+        public TrackCircuit(ISimulationEnvironment env)
         {
             _trains = new Dictionary<int, ITrain>();
 
@@ -75,9 +75,8 @@ namespace TrackController
             // if train is in area of control, add train
 
             int trainID = 0;
-            ITrain train = null;
-
-            _trains.Add(trainID, train);
+            //ITrain train = null;
+            //_trains.Add(trainID, train);
         }
 
         #endregion // Events

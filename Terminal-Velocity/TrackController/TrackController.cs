@@ -11,7 +11,7 @@ namespace TrackController
     public class TrackController : ITrackController
     {
         private PLC _plc;
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
 
         private ITrackCircuit _circuit;
 
@@ -33,7 +33,7 @@ namespace TrackController
         /// <param name="circuit">A track circuit for the track controller</param>
         /// <param name="prev">The previous track controller, or null</param>
         /// <param name="next">The next track contrtoller, or null</param>
-        public TrackController(IEnvironment env, ITrackCircuit circuit)
+        public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
             _trains = new Dictionary<int, ITrain>();
             _blocks = new Dictionary<int, IBlock>();
@@ -143,7 +143,8 @@ namespace TrackController
                     {
                         if (request.TrackControllerID == this.ID)
                         {
-                            request.Info.Trains = Trains.Values.ToList<ITrain>();
+                            if (request.Info != null)
+                                request.Info.Trains = Trains.Values.ToList<ITrain>();
                         }
                         return;
                     }

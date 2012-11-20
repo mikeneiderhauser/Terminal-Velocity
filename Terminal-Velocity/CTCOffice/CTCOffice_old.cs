@@ -17,7 +17,7 @@ namespace CTCOffice
         /// <summary>
         /// Holds a reference to the environement
         /// </summary>
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
 
         /// <summary>
         /// The first track controller closest to the CTC Office (Red Line)
@@ -48,7 +48,7 @@ namespace CTCOffice
         /// Constructor for the CTC Office
         /// </summary>
         /// <param name="env">Takes in the Environment as a param</param>
-        public CTCOffice_old(IEnvironment env, ITrackController primaryTCRed, ITrackController primaryTCGreen)
+        public CTCOffice_old(ISimulationEnvironment env, ITrackController primaryTCRed, ITrackController primaryTCGreen)
         {
             _env = env;
             _env.Tick += _env_Tick;
@@ -212,7 +212,7 @@ namespace CTCOffice
         private void dispatchTrain()
         {
             IRoute myRoute = promptForRoute();
-            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1, myRoute, null);
+            IRequest request = new Request(RequestTypes.DispatchTrain, 0, -1, 1,-1, myRoute, null);
             sendRequest(request);
         }
 

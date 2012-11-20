@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Interfaces;
 
 namespace TrainModel
 {
@@ -13,13 +14,21 @@ namespace TrainModel
     {
         // TODO: Set selectedTrain = to train selected by combo box
         private Train selectedTrain;
+        private List<ITrainModel> allTrains;
+        private int numTrains;
 
-        public TrainGUI()
+        public TrainGUI(ISimulationEnvironment environment)
         {
             InitializeComponent();
 
-            // TODO: populate combo box by setting allTrains equal to list contained in environment
+            allTrainComboBox.SelectedIndexChanged += new EventHandler(allTrainComboBox_SelectedIndexChanged);
 
+            allTrains = environment.AllTrains;
+            numTrains = allTrains.Count;
+
+            PopulateComboBox(allTrains); // TODO: update combobox each time new train is added
+
+            selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
         }
 
@@ -28,22 +37,23 @@ namespace TrainModel
             MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void PopulateComboBox(List<Train> allTrains)
+        private void PopulateComboBox(List<ITrainModel> allTrains)
         {
             foreach(Train train in allTrains)
             {
-                allTrainComboBox.Items.Add(train.ToString());
+                allTrainComboBox.Items.Add(train);
             }
         }
 
         private void UpdateGUI()
         {
+            trainLabel.Text = selectedTrain.ToString();
+
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
             accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
             
-            // TODO: removed to prevent build error
-            //elevationValueText.Text = selectedTrain.CurrentBlock.Grade.ToString(); // TODO: check this is the right one
+            gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
             massValueText.Text = selectedTrain.TotalMass.ToString();
             
             numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
@@ -64,7 +74,11 @@ namespace TrainModel
 
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            if (numTrains != allTrains.Count) // TODO: check if trains have been added or removed from list
+                PopulateComboBox(allTrains);
+
+            selectedTrain = (Train)allTrainComboBox.SelectedItem;
+            UpdateGUI();
         }
     }
 }
