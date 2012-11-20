@@ -55,20 +55,20 @@ namespace TrackModel
 	{
 		//BLOCKS TABLE declaration
                 string createBLOCKS="CREATE TABLE BLOCKS ("+
-                                   "blockID int NOT NULL," +
-                                   "line varchar2(25) NOT NULL," +
-                                   "infra varchar2(200)," +
-                                   "starting_elev float(25)," +
-                                   "grade float(25),"+
+                                   "blockID int NOT NULL," +		//
+                                   "line varchar2(25) NOT NULL," +	//
+                                   "infra varchar2(200)," +		//
+                                   "starting_elev float(25)," +		//
+                                   "grade float(25),"+			//
 				   "locX int,"+
 				   "locY int,"+
-				   "bSize int,"+
-				   "dir varchar2(50),"+
-				   "state varchar2(100),"+
+				   "bSize float(25),"+			//
+				   "dir varchar2(50),"+			//
+				   "state varchar2(100),"+		//
 				   "prev int,"+
 				   "dest1 int,"+
 				   "dest2 int,"+
-				   "trackCirID int,"
+				   "trackCirID int,"			//
                                    "CONSTRAINT pk_Blocks PRIMARY KEY(blockID) )";
 
 		_dbCon.Open();
@@ -154,8 +154,9 @@ namespace TrackModel
 				}
 				string sElev=fields[9];
 				string grade=fields[4];
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade) VALUES(" +
-						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+")";
+				string blockSize=fields[3];
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
+						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1)";
 				//Console.WriteLine(singleInsert);
 
 				_dbCon.Open();
