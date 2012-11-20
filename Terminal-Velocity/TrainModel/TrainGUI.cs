@@ -48,6 +48,7 @@ namespace TrainModel
         private void UpdateGUI()
         {
             trainLabel.Text = selectedTrain.ToString();
+            trainInfoTextBox.Text = selectedTrain.InformationLog;
 
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
