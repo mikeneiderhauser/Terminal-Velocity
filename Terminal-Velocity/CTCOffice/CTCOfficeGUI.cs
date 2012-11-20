@@ -107,9 +107,16 @@ namespace CTCOffice
             }
         }//end button LoginLogout
 
-        private void _btnDispatchTrain_Click(object sender, EventArgs e)
+        private IRoute routeSelection()
         {
 
+            return null;
+        }
+
+        private void _btnDispatchTrain_Click(object sender, EventArgs e)
+        {
+            IRoute route = routeSelection();
+            _ctcOffice.dispatchTrainRequest(route);
         }
 
         private void _btnRefreshView_Click(object sender, EventArgs e)

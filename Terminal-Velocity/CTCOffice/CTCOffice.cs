@@ -262,7 +262,12 @@ namespace CTCOffice
         {
             //cannot implement without Track Model Interface
             //red=0....green=1
-            return 0;
+            return request.TrainRoute.RouteID;
+        }
+
+        private int determineLine(IRoute route)
+        {
+            return route.RouteID;
         }
 
         /// <summary>
@@ -284,6 +289,68 @@ namespace CTCOffice
             return null;
         }
 
+        public void dispatchTrainRequest(IRoute route)
+        {
+            int line = determineLine(route);
+            int id = 0;
+            if (line == 0)
+            {
+                id = _primaryTrackControllerRed.ID;
+            }
+            else if (line == 1)
+            {
+                id = _primaryTrackControllerGreen.ID;
+            }
+            else
+            {
+                _env.sendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
+            }
+
+            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, null));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainOutOfServiceRequest(int trainID, int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainOOS, trackControllerID, trainID, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void assignTrainRouteRequest(int trainID, int trackControllerID, IRoute route, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.AssignTrainRoute, trackControllerID, trainID, 0, 0, route, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainAuthorityRequest(int trainID, int trackControllerID, int authority, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainAuthority, trackControllerID, trainID, authority, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void closeTrackBlockRequest(int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceClose, trackControllerID, 0, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void openTrackBlockRequest(int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceOpen, trackControllerID, 0, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainSpeedRequest(int trainID, int trackControllerID, int speed, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void trackControllerDataRequest(int trackControllerID)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, trackControllerID, 0, 0, 0, null, null));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Public Interface
