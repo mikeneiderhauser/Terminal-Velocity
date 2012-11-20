@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data.Sqlite;
 using System.IO;
-using Utilities;
 using Interfaces;
-
+using Utilities;
 
 namespace TrackModel
 {
@@ -65,10 +64,10 @@ namespace TrackModel
 				   "bSize float(25),"+			//
 				   "dir varchar2(50),"+			//
 				   "state varchar2(100),"+		//
-				   "prev int,"+
+				   "prev int,"+				//
 				   "dest1 int,"+
 				   "dest2 int,"+
-				   "trackCirID int,"			//
+				   "trackCirID int,"+			//
                                    "CONSTRAINT pk_Blocks PRIMARY KEY(blockID) )";
 
 		_dbCon.Open();
@@ -129,6 +128,8 @@ namespace TrackModel
 		//Console.WriteLine("About to enter forloop");
 		////////////////////////////////////////////////////////
 		//Iterate through each one.
+		
+		string prevID="16";//
 		foreach(string line in fileLines)
 		{
 			//Console.WriteLine("Line is: "+line);
@@ -136,12 +137,32 @@ namespace TrackModel
 			//THEN process and insert
 			if(!line.StartsWith(",") && !line.StartsWith("Line") && !line.StartsWith(" "))
 			{
-			
+				
 			
 				//Delimit around comma's
 				string[] fields=line.Split(commaArr);
 				string blockID=fields[2];
 				string lineName=fields[0];
+
+				int dest1ID=0;
+				int.TryParse(blockID,out dest1ID);
+				dest1ID++;
+				string dest1Str=dest1ID.ToString();
+
+				//PREV RED LINE HARDCODING
+				if(fields[1].Equals("O",StringComparison.OrdinalIgnoreCase))
+					prevID="43";
+				else if(fields[1].Equals("R",StringComparison.OrdinalIgnoreCase))
+					prevID="32";
+
+
+				//DEST1 RED LINE HARDCODING
+				if(blockID.Equals("66",StringComparison.OrdinalIgnoreCase))
+					dest1Str="52";
+				else if(fields[1].Equals("Q",StringComparison.OrdinalIgnoreCase))
+					dest1Str="38";
+				else if(fields[1].Equals("T",StringComparison.OrdinalIgnoreCase))
+					dest1Str="27";
 
 				string infra;
 				if(fields[6].Equals("",StringComparison.OrdinalIgnoreCase))
@@ -155,10 +176,10 @@ namespace TrackModel
 				string sElev=fields[9];
 				string grade=fields[4];
 				string blockSize=fields[3];
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
-						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1)";
+				string singleInsert="INSERT INTO BLOCKS(blockID,prev,dest1, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
+						blockID+", "+prevID+", "+dest1Str+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1)";
 				//Console.WriteLine(singleInsert);
-
+				prevID=blockID;
 				_dbCon.Open();
 	                	        SqliteCommand insertCommand=new SqliteCommand(singleInsert);
         		                insertCommand.Connection=_dbCon;
@@ -194,5 +215,4 @@ namespace TrackModel
 
 	//Properties
 }//End class
-
 }//End namespace
