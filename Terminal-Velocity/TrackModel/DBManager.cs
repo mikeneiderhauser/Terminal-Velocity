@@ -346,21 +346,92 @@ namespace TrackModel
 	//runQuery above (and used in fQR above)
 	public Route formatRouteQueryResults(SqlDataReader rr)
 	{
+
+		if(rr==null)
+			return null;
 		//Temp list used to store blocks, since we dont know
 		//ahead of time how many to expect
 		List<Block> blockList = new List<Block>();
-		Route tempRoute;
-		int routeID;
-		string rName;
-		int nBlocks;
-		int startBlockID=-1;
-		int endBlockID=-1;
+		int nBlocks=0;
 
+		//We need to get our list of blocks, and the number of blocks
 		while (rr.Read() )
 		{
+			//Get all fields for a given block
+                        string bID=rr.GetString(rr.GetOrdinal("blockID"));
+                        string line=rr.GetString(rr.GetOrdinal("line"));
+                        string infra=rr.GetString(rr.GetOrdinal("infra"));
+                        string sE=rr.GetString(rr.GetOrdinal("starting_elev"));
+                        string grade=rr.GetString(rr.GetOrdinal("grade"));
+                        string locX=rr.GetString(rr.GetOrdinal("locX"));
+                        string locY=rr.GetString(rr.GetOrdinal("locY"));
+                        string bSize=rr.GetString(rr.GetOrdinal("bSize"));
+                        string dir=rr.GetString(rr.GetOrdinal("dir"));
+                        string state=rr.GetString(rr.GetOrdinal("state"));
+                        string prev=rr.GetString(rr.GetOrdinal("prev"));
+                        string dest1=rr.GetString(rr.GetOrdinal("dest1"));
+                        string dest2=rr.GetString(rr.GetOrdinal("dest2"));
+                        string trackCirID=rr.GetString(rr.GetOrdinal("trackCirID"));
+			
+                        //////////////////////////////////////////////////////////////////////
+                        //Parse fields that must be provided as a different type
+                        string[] infraFinal=infra.Split(";");
+                        DirEnum dirFinal=Enum.Parse(typeof(DirEnum),dir,true);
+                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true)
+                        int bIDFinal;
+                                bool bIDRes=int.TryParse(bID, out bIDFinal);
+                                if(!bIDRes) {bIDFinal=-1;}
+                        double sEFinal;
+                                bool sERes=double.TryParse(sE,out sEFinal);
+                                if(!sERes) {sEFinal=-1.0;}
+                        double gradeFinal;
+                                bool gradeRes=double.TryParse(grade,out gradeFinal);
+                                if(!gradeRes) {gradeFinal=-1.0;}
+                        int[] locFinal;
+                                bool locXRes=int.TryParse(locX,out locFinal[0]);
+                                if (!locXRes) {locFinal[0]=-1.0;}
+                                bool locYRes=int.TryParse(locY,out locFinal[1]);
+                                if(!locYRes) {locFinal[1]=-1.0;}
+                        double bSizeFinal;
+                                bool bSizeRes=double.TryParse(bSize,out bSizeFinal);
+                                if(!bSizeRes) {bSizeFinal=-1.0;}
+                        int prevFinal;
+                                bool prevRes=int.TryParse(prev,out prevFinal);
+                                if(!prevRes) {prevFinal=-1;}
+                        int dest1Final;
+                                bool dest1Res=int.TryParse(dest1,out dest1Final);
+                                if(!dest1Res) {dest1Final=-1;}
+                        int dest2Final;
+                                bool dest2Res=int.TryParse(dest2,out dest2Final);
+                                if(!dest2Res) {dest2Final=-1;}
+                        int trackCirIDFinal;
+                                bool trackCirIDRes=int.TryParse(trackCirID,out trackCirIDFinal);
+                                if(!trackCirIDRes) {trackCirIDFinal=-1;}
 
+			blockList.add(new Block(bIDFinal,stateFinal,prevFinal,sEFinal,gradeFinal,locFinal,bSizeFinal,dirFinal,infraFinal,dest1Final,dest2Final,trackCirIDFinal,line) );
+			nBlocks++;
 		}
-		return null;
+
+		//If we didnt find any blocks, give up.
+		if(nBlocks==0)
+			return null;
+
+		
+		Block[] blocks=blockList.toArray();
+		string rName=blocks[0].Line;
+		int rID;
+		if(rName.Equals("Red",StringComparison.OrdinalIgnoreCase)
+			rID=0;
+		else
+			rID=1;
+
+
+		int sID=-1;
+		int eID=-1;
+
+		Route tempRoute=new Route(rID,rName,nBlocks,blocks,sID,eID);
+		return tempRoute;
+		
 	}
 		
 		
