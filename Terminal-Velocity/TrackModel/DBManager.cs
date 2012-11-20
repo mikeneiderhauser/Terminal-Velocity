@@ -283,10 +283,41 @@ namespace TrackModel
 			string dest1=bR.GetString(bR.GetOrdinal("dest1"));
 			string dest2=bR.GetString(bR.GetOrdinal("dest2"));
 			string trackCirID=bR.GetString(bR.GetOrdinal("trackCirID"));
-			//Parse fields that must be provided as a different type
-			int bIDNum;
-			
 
+			//////////////////////////////////////////////////////////////////////
+			//Parse fields that must be provided as a different type
+			string[] infraFinal=infra.Split(";");
+                        DirEnum dirFinal=Enum.Parse(typeof(DirEnum),dir,true);
+                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true)
+			int bIDFinal; 
+				bool bIDRes=int.TryParse(bID, out bIDFinal);
+				if(!bIDRes) {bIDFinal=-1;}
+			double sEFinal; 
+				bool sERes=double.TryParse(sE,out sEFinal);
+				if(!sERes) {sEFinal=-1.0;}
+			double gradeFinal; 
+				bool gradeRes=double.TryParse(grade,out gradeFinal);
+				if(!gradeRes) {gradeFinal=-1.0;}
+			int[] locFinal;
+				bool locXRes=int.TryParse(locX,out locFinal[0]);
+				if (!locXRes) {locFinal[0]=-1.0;}
+				bool locYRes=int.TryParse(locY,out locFinal[1]);
+				if(!locYRes) {locFinal[1]=-1.0;}
+			double bSizeFinal;
+				bool bSizeRes=double.TryParse(bSize,out bSizeFinal);
+				if(!bSizeRes) {bSizeFinal=-1.0;}
+			int prevFinal;
+				bool prevRes=int.TryParse(prev,out prevFinal);
+				if(!prevRes) {prevFinal=-1;}
+			int dest1Final;
+				bool dest1Res=int.TryParse(dest1,out dest1Final);
+				if(!dest1Res) {dest1Final=-1;}
+			int dest2Final;
+				bool dest2Res=int.TryParse(dest2,out dest2Final);
+				if(!dest2Res) {dest2Final=-1;}
+			int trackCirIDFinal;
+				bool trackCirIDRes=int.TryParse(trackCirID,out trackCirIDFinal);
+				if(!trackCirIDRes) {trackCirIDFinal=-1;}
 
 			i++;//Inc counter
 		}
