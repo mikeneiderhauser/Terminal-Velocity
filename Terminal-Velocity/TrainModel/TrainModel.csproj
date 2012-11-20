@@ -71,7 +71,6 @@
     <EmbeddedResource Include="TrainGUI.resx">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\DataSources\Interfaces.ITrainModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,7 +88,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
-      <Project>{7589C6A3-73DA-4E4C-98EE-3298E6CE0DDB}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
