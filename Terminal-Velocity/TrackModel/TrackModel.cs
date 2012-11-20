@@ -11,13 +11,13 @@ namespace TrackModel
     public class TrackModel : ITrackModel
     {
         //Private parameters
-		private IEnvironment _env;
+		private ISimulationEnvironment _env;
 		//private DBManager _dbManager;
 		//private DisplayManager _dispManager;
 		//private DBCreator _dbCreator;
 		
 
-        public TrackModel(IEnvironment environment)
+        public TrackModel(ISimulationEnvironment environment)
         {
 		_env=environment;
             //_environment.Tick +=

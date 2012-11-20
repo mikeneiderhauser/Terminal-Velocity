@@ -75,9 +75,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>Environment-Simulation</Name>
+      <Name>SimulationEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>

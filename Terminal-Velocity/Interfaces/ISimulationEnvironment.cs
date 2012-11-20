@@ -7,7 +7,7 @@ using Utility;
 
 namespace Interfaces
 {
-    public interface IEnvironment
+    public interface ISimulationEnvironment
     {
         /// <summary>
         /// Event that generates clock

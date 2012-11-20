@@ -15,7 +15,7 @@ namespace CTCOffice
     public class CTCOffice : ICTCOffice
     {
         #region Private Variables
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
         private ITrackController _primaryTrackControllerRed;
         private LineData _redLineData;
         private ITrackController _primaryTrackControllerGreen;
@@ -31,7 +31,7 @@ namespace CTCOffice
         #endregion
 
         #region Constructor
-        public CTCOffice(IEnvironment env, ITrackController redTC, ITrackController greenTC)
+        public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _env = env;
             _primaryTrackControllerGreen = greenTC;
