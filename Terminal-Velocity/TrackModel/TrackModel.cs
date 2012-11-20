@@ -11,13 +11,13 @@ namespace TrackModel
     public class TrackModel : ITrackModel
     {
         //Private parameters
-		private IEnvironment _env;
-        //private DBManager _dbManager;
-        //private DisplayManager _dispManager;
-        //private DBCreatorLoader _dbCreator;
+		private ISimulationEnvironment _env;
+		//private DBManager _dbManager;
+		//private DisplayManager _dispManager;
+		//private DBCreator _dbCreator;
 		
 
-        public TrackModel(IEnvironment environment)
+        public TrackModel(ISimulationEnvironment environment)
         {
 		_env=environment;
             //_environment.Tick +=
@@ -54,11 +54,5 @@ namespace TrackModel
         {
                 //handle tick here
       	}
-
-
-        IRoute ITrackModel.requestRouteInfo(int routeID)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

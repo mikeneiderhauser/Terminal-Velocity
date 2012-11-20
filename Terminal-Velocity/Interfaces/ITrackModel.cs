@@ -8,7 +8,7 @@ namespace Interfaces
     public interface ITrackModel
     {
         IBlock requestBlockInfo(int blockID);
-        IRoute requestRouteInfo(int routeID);
+        IRouteInfo requestRouteInfo(int routeID);
 
         IBlock[][] requestTrackGrid(int routeID);
 

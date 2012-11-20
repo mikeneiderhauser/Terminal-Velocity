@@ -15,7 +15,7 @@ namespace CTCOffice
     public class CTCOffice : ICTCOffice
     {
         #region Private Variables
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
         private ITrackController _primaryTrackControllerRed;
         private LineData _redLineData;
         private ITrackController _primaryTrackControllerGreen;
@@ -31,7 +31,7 @@ namespace CTCOffice
         #endregion
 
         #region Constructor
-        public CTCOffice(IEnvironment env, ITrackController redTC, ITrackController greenTC)
+        public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _env = env;
             _primaryTrackControllerGreen = greenTC;
@@ -68,9 +68,9 @@ namespace CTCOffice
             _processingInRequests = false;
 
             //get status from red and green prrimary track controllers (default)
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,null,null));
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
             RequestQueueOut(this, EventArgs.Empty);
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1, null, null));
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
 

@@ -17,7 +17,9 @@ namespace Interfaces
         DirEnum Direction { get; }
         int SwitchDest1 { get; set; }
         int SwitchDest2 { get; set; }
-	int TrackConID {get; set;}
+	int TrackCirID {get; set;}
+	string[] AttrArray {get; }
+	string Line {get; }
 
         bool hasSwitch();
         bool hasTunnel();

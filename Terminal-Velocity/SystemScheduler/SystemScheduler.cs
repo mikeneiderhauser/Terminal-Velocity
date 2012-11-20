@@ -10,12 +10,12 @@ namespace SystemScheduler
 {
     public class SystemScheduler : ISystemScheduler
     {
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
         private ICTCOffice _ctc;
 
         #region Constructor(s)
 
-        public SystemScheduler(IEnvironment env, ICTCOffice ctc)
+        public SystemScheduler(ISimulationEnvironment env, ICTCOffice ctc)
         {
             _env = env;
             _env.Tick += _env_Tick;
