@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Utility;
 using Interfaces;
+using TrainController;
 
 namespace TrainModel
 {
@@ -89,9 +89,8 @@ namespace TrainModel
             // TODO: double check constructor
             //_trainController = new ITrainController();
 
-            // set allTrains equal to list contained in environment and add this train
+            // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
-            allTrains.Add(this);
         }
 
         #endregion
@@ -108,7 +107,7 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
-
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
             return true;
         }
 
