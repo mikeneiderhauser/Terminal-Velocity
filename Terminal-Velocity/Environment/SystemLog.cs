@@ -7,7 +7,7 @@ using System.IO;
 using Interfaces;
 using Utility;
 
-namespace EnvironmentSimulation
+namespace SimulationEnvironment
 {
     class SystemLog
     {

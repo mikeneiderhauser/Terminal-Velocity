@@ -31,7 +31,7 @@ namespace TrainModel
         private bool _signalPickupFailure;
 
         private ITrainController _trainController;
-        private IEnvironment _environment;
+        private ISimulationEnvironment _environment;
         private ITrackModel _trackModel;
 
         private IBlock _currentBlock;
@@ -57,7 +57,7 @@ namespace TrainModel
         /// This constructor is used when passenger, crew, and temperature information is not given.
         /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
-        public Train(int trainID, IBlock startingBlock, IEnvironment environment)
+        public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
             _trainID = trainID;
             _totalMass = calculateMass();

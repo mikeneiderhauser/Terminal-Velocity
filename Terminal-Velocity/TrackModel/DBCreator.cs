@@ -60,6 +60,15 @@ namespace TrackModel
                                    "infra varchar2(200)," +
                                    "starting_elev float(25)," +
                                    "grade float(25),"+
+				   "locX int,"+
+				   "locY int,"+
+				   "bSize int,"+
+				   "dir varchar2(50),"+
+				   "state varchar2(100),"+
+				   "prev int,"+
+				   "dest1 int,"+
+				   "dest2 int,"+
+				   "trackCirID int,"
                                    "CONSTRAINT pk_Blocks PRIMARY KEY(blockID) )";
 
 		_dbCon.Open();

@@ -7,7 +7,7 @@ using Utility;
 
 namespace Interfaces
 {
-    public interface IEnvironment
+    public interface ISimulationEnvironment
     {
         /// <summary>
         /// Event that generates clock
@@ -32,11 +32,7 @@ namespace Interfaces
         /// <summary>
         /// A reference to the first, or primary, track controller (Green)
         /// </summary>
-<<<<<<< HEAD
-        ITrackController PrimaryTrackControllerGreen{ get; set; }
-=======
         ITrackController PrimaryTrackControllerGreen { get; set; }
->>>>>>> prototype
 
         /// <summary>
         /// A reference to the Track Model
@@ -77,8 +73,6 @@ namespace Interfaces
         /// </summary>
         /// <returns></returns>
         long getInterval();
-<<<<<<< HEAD
-=======
 
         /// <summary>
         /// Function to stop the environment timer -> CTC Access Only
@@ -91,6 +85,5 @@ namespace Interfaces
         /// </summary>
         /// <param name="sender">ref to caller</param>
         void startTick(object sender);
->>>>>>> prototype
     }
 }
