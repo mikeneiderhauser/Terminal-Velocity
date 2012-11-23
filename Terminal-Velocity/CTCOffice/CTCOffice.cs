@@ -30,6 +30,7 @@ namespace CTCOffice
         private bool _processingInRequests;
         #endregion
 
+        //confirm merge
         #region Constructor
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
