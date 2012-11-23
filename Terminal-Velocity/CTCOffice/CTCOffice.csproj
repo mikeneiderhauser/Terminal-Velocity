@@ -97,15 +97,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>Environment-Simulation</Name>
+      <Name>SimulationEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
-      <Project>{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}</Project>
-      <Name>Terminal-Velocity</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrainController\TrainController.csproj">
       <Project>{C097CCCF-7085-4DED-8269-1B5EA566E73A}</Project>

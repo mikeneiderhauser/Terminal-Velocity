@@ -70,6 +70,7 @@ namespace CTCOffice
             //get status from red and green prrimary track controllers (default)
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
             RequestQueueOut(this, EventArgs.Empty);
+
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
@@ -81,6 +82,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void CTCOffice_RequestQueueOut(object sender, EventArgs e)
         {
+            int i = 0;
             //handle sequential sending of the queue to the track controller
             if (!_processingOutRequests)
             {
@@ -88,7 +90,9 @@ namespace CTCOffice
                 _processingOutRequests = true;
                 while (_requestsOut.Count > 0)
                 {
-                    sendRequest(_requestsOut.Dequeue());
+                    IRequest temp = _requestsOut.Dequeue();
+                    sendRequest(temp);
+                    i++;
                 }
                 _processingOutRequests = false;
 
@@ -210,7 +214,9 @@ namespace CTCOffice
         /// <param name="request">Request to send to track controller</param>
         public void sendRequest(IRequest request)
         {
-            int line = determineLine(request);
+            int line = determineLine(request.TrackControllerID);
+                
+                //determineLine(request);
             //figure out a way to determine line from block ID -- Waiting on Track Model
 
             if (line == 0)
@@ -267,7 +273,16 @@ namespace CTCOffice
 
         private int determineLine(IRoute route)
         {
+            if(route == null)
+            {
+                return -1;
+            }
             return route.RouteID;
+        }
+
+        private int determineLine(int trackControllerID)
+        {
+            return 0;
         }
 
         /// <summary>
@@ -292,7 +307,7 @@ namespace CTCOffice
         public void dispatchTrainRequest(IRoute route)
         {
             int line = determineLine(route);
-            int id = 0;
+            int id = -1;
             if (line == 0)
             {
                 id = _primaryTrackControllerRed.ID;

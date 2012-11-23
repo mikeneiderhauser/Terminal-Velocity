@@ -47,6 +47,9 @@
             this._lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
             this._lblCTCOfficeStatusHead = new System.Windows.Forms.Label();
             this._groupSystemMetrics = new System.Windows.Forms.GroupBox();
+            this._lblCrewMetrics = new System.Windows.Forms.Label();
+            this._lblSystemMetricsHeading = new System.Windows.Forms.Label();
+            this._lblCrewHeading = new System.Windows.Forms.Label();
             this._btnRefreshMetrics = new System.Windows.Forms.Button();
             this._lblTotalMetrics = new System.Windows.Forms.Label();
             this._lblPassengersMetrics = new System.Windows.Forms.Label();
@@ -54,7 +57,6 @@
             this._lblTotalLoadHeading = new System.Windows.Forms.Label();
             this._lblPassengersHeading = new System.Windows.Forms.Label();
             this._lblTrainsHeading = new System.Windows.Forms.Label();
-            this._lblSystemMetricsHeading = new System.Windows.Forms.Label();
             this._groupGlobalTimeControls = new System.Windows.Forms.GroupBox();
             this._btnGlobalTime10WallSpeed = new System.Windows.Forms.Button();
             this._btnGlobalTimeWallSpeed = new System.Windows.Forms.Button();
@@ -71,8 +73,6 @@
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
-            this._lblCrewHeading = new System.Windows.Forms.Label();
-            this._lblCrewMetrics = new System.Windows.Forms.Label();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
@@ -291,6 +291,33 @@
             this._groupSystemMetrics.TabStop = false;
             this._groupSystemMetrics.Text = "System Metrics";
             // 
+            // _lblCrewMetrics
+            // 
+            this._lblCrewMetrics.AutoSize = true;
+            this._lblCrewMetrics.Location = new System.Drawing.Point(68, 68);
+            this._lblCrewMetrics.Name = "_lblCrewMetrics";
+            this._lblCrewMetrics.Size = new System.Drawing.Size(13, 13);
+            this._lblCrewMetrics.TabIndex = 9;
+            this._lblCrewMetrics.Text = "0";
+            // 
+            // _lblSystemMetricsHeading
+            // 
+            this._lblSystemMetricsHeading.AutoSize = true;
+            this._lblSystemMetricsHeading.Location = new System.Drawing.Point(10, 16);
+            this._lblSystemMetricsHeading.Name = "_lblSystemMetricsHeading";
+            this._lblSystemMetricsHeading.Size = new System.Drawing.Size(105, 13);
+            this._lblSystemMetricsHeading.TabIndex = 0;
+            this._lblSystemMetricsHeading.Text = "Current System Load";
+            // 
+            // _lblCrewHeading
+            // 
+            this._lblCrewHeading.AutoSize = true;
+            this._lblCrewHeading.Location = new System.Drawing.Point(37, 65);
+            this._lblCrewHeading.Name = "_lblCrewHeading";
+            this._lblCrewHeading.Size = new System.Drawing.Size(34, 13);
+            this._lblCrewHeading.TabIndex = 8;
+            this._lblCrewHeading.Text = "Crew:";
+            // 
             // _btnRefreshMetrics
             // 
             this._btnRefreshMetrics.Location = new System.Drawing.Point(171, 89);
@@ -354,15 +381,6 @@
             this._lblTrainsHeading.Size = new System.Drawing.Size(39, 13);
             this._lblTrainsHeading.TabIndex = 1;
             this._lblTrainsHeading.Text = "Trains:";
-            // 
-            // _lblSystemMetricsHeading
-            // 
-            this._lblSystemMetricsHeading.AutoSize = true;
-            this._lblSystemMetricsHeading.Location = new System.Drawing.Point(10, 16);
-            this._lblSystemMetricsHeading.Name = "_lblSystemMetricsHeading";
-            this._lblSystemMetricsHeading.Size = new System.Drawing.Size(105, 13);
-            this._lblSystemMetricsHeading.TabIndex = 0;
-            this._lblSystemMetricsHeading.Text = "Current System Load";
             // 
             // _groupGlobalTimeControls
             // 
@@ -523,24 +541,6 @@
             this.listSystemNotifications.Name = "listSystemNotifications";
             this.listSystemNotifications.Size = new System.Drawing.Size(357, 43);
             this.listSystemNotifications.TabIndex = 0;
-            // 
-            // _lblCrewHeading
-            // 
-            this._lblCrewHeading.AutoSize = true;
-            this._lblCrewHeading.Location = new System.Drawing.Point(37, 65);
-            this._lblCrewHeading.Name = "_lblCrewHeading";
-            this._lblCrewHeading.Size = new System.Drawing.Size(34, 13);
-            this._lblCrewHeading.TabIndex = 8;
-            this._lblCrewHeading.Text = "Crew:";
-            // 
-            // _lblCrewMetrics
-            // 
-            this._lblCrewMetrics.AutoSize = true;
-            this._lblCrewMetrics.Location = new System.Drawing.Point(68, 68);
-            this._lblCrewMetrics.Name = "_lblCrewMetrics";
-            this._lblCrewMetrics.Size = new System.Drawing.Size(13, 13);
-            this._lblCrewMetrics.TabIndex = 9;
-            this._lblCrewMetrics.Text = "0";
             // 
             // CTCOfficeGUI
             // 
