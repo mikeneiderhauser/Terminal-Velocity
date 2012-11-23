@@ -50,7 +50,7 @@ namespace TrainModel
         private const double _accelerationGravity = -9.8; // meters/second^2
 
         //TODO: get list of trains from environment
-        private List<Train> allTrains;
+        private List<ITrainModel> allTrains;
 
         #region Constructors
 
@@ -89,9 +89,8 @@ namespace TrainModel
             // TODO: double check constructor
             //_trainController = new ITrainController();
 
-            // TODO: set allTrains equal to list contained in environment and add this train
-            //allTrains = environment.AllTrains;
-            //allTrains.add(this);
+            // set allTrains equal to list contained in environment
+            allTrains = environment.AllTrains;
         }
 
         #endregion
@@ -108,7 +107,7 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
-
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
             return true;
         }
 
@@ -126,8 +125,7 @@ namespace TrainModel
 
         #region Private Methods
 
-        //TODO: Update block changes, whether going forwards or backwards
-        //      Handle elevation calculations
+        //TODO: Handle elevation calculations
         private void updateMovement()
         {
             _currentVelocity += _currentAcceleration; // TODO: + elevation values -> change acceleration first
@@ -342,10 +340,5 @@ namespace TrainModel
 
         #endregion
 
-
-        int ITrainModel.Length
-        {
-            get { throw new NotImplementedException(); }
-        }
     }
 }
