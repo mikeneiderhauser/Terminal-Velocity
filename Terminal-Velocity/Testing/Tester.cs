@@ -105,10 +105,32 @@ namespace Testing
                 case 0: // SystemScheduler
                     break;
                 case 1: // CTCOffice
+                    //using all testing classes the ctc office (created a new instance of ctc)
+
+                    //create environment instance
+                    SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
+
+                    //making Request Panel Objects (For red and green)
                     CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red");
                     CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green");
-                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, office);
 
+                    //create testing track model
+                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel();
+
+                    //creating testing track controllers
+                    CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController();
+                    CTCOffice.TestingTrackController primaryGreen = new CTCOffice.TestingTrackController();
+
+                    //creating office instance
+                    CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
+
+                    //creating testing system scheduler
+                    CTCOffice.TestingSystemScheduler ss = new CTCOffice.TestingSystemScheduler();
+
+                    //creating office gui
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, ctc);
+
+                    //creating testing gui
                     control = new CTCOffice.OfficeGUITest(
                         CTCOfficeGUI, 
                         RequestRed, 

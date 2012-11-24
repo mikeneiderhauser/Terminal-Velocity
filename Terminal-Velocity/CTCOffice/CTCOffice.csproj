@@ -80,6 +80,11 @@
     <Compile Include="RequestFrame.Designer.cs">
       <DependentUpon>RequestFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestingSystemScheduler.cs" />
+    <Compile Include="TestingTrackController.cs" />
+    <Compile Include="TestingTrackModel.cs" />
+    <Compile Include="TestingTrainController.cs" />
+    <Compile Include="TestingTrainModel.cs" />
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </EmbeddedResource>
