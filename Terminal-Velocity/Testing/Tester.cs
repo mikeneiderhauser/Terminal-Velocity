@@ -110,22 +110,28 @@ namespace Testing
                     //create environment instance
                     SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
 
-                    //making Request Panel Objects (For red and green)
-                    CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red");
-                    CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green");
-
                     //create testing track model
                     CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel();
 
                     //creating testing track controllers
-                    CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController();
-                    CTCOffice.TestingTrackController primaryGreen = new CTCOffice.TestingTrackController();
+                    CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);
+                    CTCOffice.TestingTrackController primaryGreen = new CTCOffice.TestingTrackController(1);
 
                     //creating office instance
                     CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
 
                     //creating testing system scheduler
                     CTCOffice.TestingSystemScheduler ss = new CTCOffice.TestingSystemScheduler();
+
+                    env.CTCOffice = ctc;
+                    env.PrimaryTrackControllerRed = primaryRed;
+                    env.PrimaryTrackControllerGreen = primaryGreen;
+                    env.TrackModel = tm;
+                    env.SystemScheduler = ss;
+
+                    //making Request Panel Objects (For red and green)
+                    CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red", primaryRed);
+                    CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green", primaryGreen);
 
                     //creating office gui
                     CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, ctc);

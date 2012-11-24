@@ -10,14 +10,24 @@ namespace CTCOffice
 {
     public class TestingTrackModel : ITrackModel
     {
+        private List<IBlock> _blocks;
+
         public TestingTrackModel()
         {
-
+            _blocks = new List<IBlock>();
+            
         }
 
         public IBlock requestBlockInfo(int blockID)
         {
-            throw new NotImplementedException();
+            if (_blocks.Count > blockID)
+            {
+                return _blocks[blockID];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public IRouteInfo requestRouteInfo(int routeID)

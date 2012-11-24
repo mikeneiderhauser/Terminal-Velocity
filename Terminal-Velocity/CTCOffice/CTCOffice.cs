@@ -28,12 +28,15 @@ namespace CTCOffice
         private event EventHandler<EventArgs> RequestQueueIn;
         private bool _processingOutRequests;
         private bool _processingInRequests;
+        private bool _automation;
         #endregion
 
         //confirm merge
         #region Constructor
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
+            _automation = false;
+
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
@@ -122,7 +125,12 @@ namespace CTCOffice
                     if ((_requestsIn.Peek()).Info != null)
                     {
                         //if valid return data
-                        internalRequest(_requestsIn.Dequeue());
+                        IRequest r = _requestsIn.Dequeue();
+                        if (_automation)
+                        {
+                            //send request back to system scheduler
+                        }
+                        internalRequest(r);
                     }
                     else
                     {
@@ -135,7 +143,7 @@ namespace CTCOffice
                 //failsafe - check to see if there is a new request while processing... (should nevert hit)
                 if (_requestsIn.Count != 0)
                 {
-                    RequestQueueOut(this, EventArgs.Empty);
+                    RequestQueueIn(this, EventArgs.Empty);
                 }
             }
         }
@@ -196,6 +204,7 @@ namespace CTCOffice
             {
                 StartAutomation(this, EventArgs.Empty);
             }
+            _automation = true;
         }
 
         /// <summary>
@@ -207,6 +216,7 @@ namespace CTCOffice
             {
                 StopAutomation(this, EventArgs.Empty);
             }
+            _automation = false;
         }
 
         /// <summary>

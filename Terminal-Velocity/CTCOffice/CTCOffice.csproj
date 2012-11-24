@@ -74,12 +74,14 @@
     <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
+    <Compile Include="RequestEventArgs.cs" />
     <Compile Include="RequestFrame.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RequestFrame.Designer.cs">
       <DependentUpon>RequestFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestingBlock.cs" />
     <Compile Include="TestingSystemScheduler.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />

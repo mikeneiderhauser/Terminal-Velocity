@@ -10,30 +10,45 @@ namespace CTCOffice
 {
     public class TestingTrackController : ITrackController
     {
-        public TestingTrackController()
-        {
+        public event EventHandler<RequestEventArgs> RequestRec;
 
+        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, IBlock> _blocks;
+        private Dictionary<int, IRoute> _routes;
+
+        private int _id;
+        public TestingTrackController(int id)
+        {
+            _id = id;
+            _trains = new Dictionary<int, ITrain>();
+            _blocks = new Dictionary<int, IBlock>();
+            _routes = new Dictionary<int, IRoute>();
         }
 
         public IRequest Request
         {
-            set { throw new NotImplementedException(); }
+            set { handleRequest(value); }
+        }
+
+        private void handleRequest(IRequest value)
+        {
+            RequestRec(this, new RequestEventArgs(value));
         }
 
         public int ID
         {
-            get { throw new NotImplementedException(); }
+            get { return _id; }
         }
 
         public ITrackController Previous
         {
             get
             {
-                throw new NotImplementedException();
+                return this;
             }
             set
             {
-                throw new NotImplementedException();
+                //do nothing
             }
         }
 
@@ -41,37 +56,37 @@ namespace CTCOffice
         {
             get
             {
-                throw new NotImplementedException();
+                return this;
             }
             set
             {
-                throw new NotImplementedException();
+                //do nothing
             }
         }
 
         public Dictionary<int, ITrain> Trains
         {
-            get { throw new NotImplementedException(); }
+            get { return _trains; }
         }
 
         public Dictionary<int, IBlock> Blocks
         {
-            get { throw new NotImplementedException(); }
+            get { return _blocks; }
         }
 
         public Dictionary<int, IRoute> Routes
         {
-            get { throw new NotImplementedException(); }
+            get { return _routes; }
         }
 
         public void Recieve(object data)
         {
-            throw new NotImplementedException();
+            //not used for CTC Testing. Required for interface
         }
 
         public void LoadPLCProgram(string filename)
         {
-            throw new NotImplementedException();
+            //not used for CTC Testing. Required for interface
         }
     }
 }

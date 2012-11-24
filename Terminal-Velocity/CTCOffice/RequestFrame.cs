@@ -17,11 +17,17 @@ namespace CTCOffice
         private string _ptc;
         private List<IRequest> requests;
         private int current, counter;
-        public RequestFrame(string primaryTrackController)
+        private TestingTrackController _ptco;
+
+        public RequestFrame(string primaryTrackController, TestingTrackController tc)
         {
             InitializeComponent();
 
             _ptc = primaryTrackController;
+            _ptco = tc;
+
+            _ptco.RequestRec += new EventHandler<RequestEventArgs>(_ptco_RequestRec);
+
             current = 0;
             counter = 0;
             requests = new List<IRequest>();
@@ -40,6 +46,11 @@ namespace CTCOffice
             //disable for now
             _btnToFile.Enabled = false;
             
+        }
+
+        void _ptco_RequestRec(object sender, RequestEventArgs e)
+        {
+            newRequest(e.Request);
         }
 
         private void clearRequest()
