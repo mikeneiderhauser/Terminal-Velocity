@@ -159,7 +159,11 @@ namespace CTCOffice
                 _btnPrev.Enabled = false;
             }
             _lblCount.Text = current.ToString();
-            setRequest(requests[current]);
+
+            if (requests.Count != 0)
+            {
+                setRequest(requests[current]);
+            }
         }
 
         private void _btnNext_Click(object sender, EventArgs e)
@@ -172,7 +176,11 @@ namespace CTCOffice
                 _btnNext.Enabled = false;
             }
             _lblCount.Text = current.ToString();
-            setRequest(requests[current]);
+
+            if (requests.Count != 0)
+            {
+                setRequest(requests[current]);
+            }
         }
     }
 }

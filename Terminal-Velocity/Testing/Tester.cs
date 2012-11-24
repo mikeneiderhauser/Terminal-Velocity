@@ -105,7 +105,17 @@ namespace Testing
                 case 0: // SystemScheduler
                     break;
                 case 1: // CTCOffice
-                    control = new CTCOffice.CTCOfficeGUI(environment, office);
+                    CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red");
+                    CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green");
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, office);
+
+                    control = new CTCOffice.OfficeGUITest(
+                        CTCOfficeGUI, 
+                        RequestRed, 
+                        RequestGreen
+                        );
+                    
+                    //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
                     break;
