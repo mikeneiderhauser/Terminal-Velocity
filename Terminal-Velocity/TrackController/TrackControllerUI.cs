@@ -82,6 +82,8 @@ namespace TrackController
                     }
                 }
             }
+
+            base.Refresh();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
