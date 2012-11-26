@@ -277,5 +277,13 @@ namespace CTCOffice
             _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
         }
 
+        public override void Refresh()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(this.Refresh));
+                return;
+            }
+        }
     }//end ctc gui
 }
