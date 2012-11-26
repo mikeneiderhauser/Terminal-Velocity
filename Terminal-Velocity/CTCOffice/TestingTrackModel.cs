@@ -70,13 +70,13 @@ namespace CTCOffice
         {
             if (routeID == 0)
             {
-                return _redLineLayout;
+                //return _redLineLayout;
             }
             else
             {
-                return _greenLineLayout;
+                //return _greenLineLayout;
             }
-
+            return null;
         }
 
         public bool requestUpdateSwitch(IBlock bToUpdate)
