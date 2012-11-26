@@ -19,7 +19,7 @@ namespace TrackController
         private ITrackController _next;
 
         private Dictionary<int, IBlock> _blocks;
-        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, IRoute> _routes;
 
         private int _ID;
@@ -35,7 +35,7 @@ namespace TrackController
         /// <param name="next">The next track contrtoller, or null</param>
         public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
-            _trains = new Dictionary<int, ITrain>();
+            _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
             _routes = new Dictionary<int, IRoute>();
 
@@ -85,7 +85,7 @@ namespace TrackController
             }
         }
 
-        public Dictionary<int, ITrain> Trains
+        public Dictionary<int, ITrainModel> Trains
         {
             get { return _trains; }
         }
@@ -108,11 +108,11 @@ namespace TrackController
         /// Recieve and process data sent from a train
         /// </summary>
         /// <param name="data"></param>
-        public void Recieve(object data)
+        public void Recieve(ITrainModel data)
         {
-            // foreach ITrain in Train
-            // if not found, error
-            // else do work if ID matches
+            if (Trains.ContainsKey(data.TrainID))
+            {
+            }
         }
 
         public void LoadPLCProgram(string filename)
@@ -144,7 +144,7 @@ namespace TrackController
                         if (request.TrackControllerID == this.ID)
                         {
                             if (request.Info != null)
-                                request.Info.Trains = Trains.Values.ToList<ITrain>();
+                                request.Info.Trains = Trains.Values.ToList<ITrainModel>();
                         }
                         return;
                     }
@@ -155,7 +155,7 @@ namespace TrackController
                 case RequestTypes.SetTrainSpeed:
                     if (Trains.Keys.Contains(request.TrainID))
                     {
-                        //  TrainAuthority also contains the speec, if RequestTypes is SetTrainSpeed
+                        // TrainAuthority also contains the speed, if RequestTypes is SetTrainSpeed
                         _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
@@ -179,7 +179,7 @@ namespace TrackController
         {
             // Snapshot values
             List<IBlock> sb = Blocks.Values.ToList();
-            List<ITrain> st = Trains.Values.ToList();
+            List<ITrainModel> st = Trains.Values.ToList();
             List<IRoute> sr = Routes.Values.ToList();
 
             _plc.ToggleLights(sb, st, sr);

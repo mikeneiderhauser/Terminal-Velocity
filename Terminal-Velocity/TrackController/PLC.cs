@@ -23,7 +23,7 @@ namespace TrackController
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
-        public void IsSafe(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
+        public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes)
         {
         }
 
@@ -33,7 +33,7 @@ namespace TrackController
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
-        public void ToggleLights(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
+        public void ToggleLights(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes)
         {
         }
 
@@ -44,7 +44,7 @@ namespace TrackController
         /// <param name="trains"></param>
         /// <param name="routes"></param>
         /// <returns></returns>
-        public void DoSwitch(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
+        public void DoSwitch(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes)
         {
         }
 

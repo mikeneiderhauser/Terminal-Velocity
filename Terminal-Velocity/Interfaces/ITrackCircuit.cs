@@ -9,8 +9,8 @@ namespace Interfaces
 {
     public interface ITrackCircuit
     {
-        Dictionary<int, ITrain> Trains { get; }
-        void ToTrackController(object data);
+        Dictionary<int, ITrainModel> Trains { get; }
+        void ToTrackController(ITrainModel data);
         void ToTrain(int ID, int speedLimit, int authority);
     }
 }
