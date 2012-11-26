@@ -43,7 +43,7 @@ namespace TrackController
 
         #region Public Methods
 
-        public void ToTrackController(object data)
+        public void ToTrackController(ITrainModel data)
         {
             _trackController.Recieve(data);
         }
