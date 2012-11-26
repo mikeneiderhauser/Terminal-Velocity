@@ -111,7 +111,7 @@ namespace Testing
                     SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
 
                     //create testing track model
-                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel();
+                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
 
                     //creating testing track controllers
                     CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);

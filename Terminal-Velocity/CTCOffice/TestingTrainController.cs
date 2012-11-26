@@ -16,7 +16,7 @@ namespace CTCOffice
 
         }
 
-        public ITrain Train
+        public ITrainModel Train
         {
             get { throw new NotImplementedException(); }
         }

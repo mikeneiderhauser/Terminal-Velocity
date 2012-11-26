@@ -12,17 +12,17 @@ namespace CTCOffice
     {
         public event EventHandler<RequestEventArgs> RequestRec;
 
-        private Dictionary<int, ITrain> _trains;
-        private Dictionary<int, IBlock> _blocks;
-        private Dictionary<int, IRoute> _routes;
+        private List<ITrainModel> _trains;
+        private List<IBlock> _blocks;
+        private List<IRoute> _routes;
 
         private int _id;
         public TestingTrackController(int id)
         {
             _id = id;
-            _trains = new Dictionary<int, ITrain>();
-            _blocks = new Dictionary<int, IBlock>();
-            _routes = new Dictionary<int, IRoute>();
+            _trains = new List<ITrainModel>();
+            _blocks = new List<IBlock>();
+            _routes = new List<IRoute>();
         }
 
         public IRequest Request
@@ -64,17 +64,17 @@ namespace CTCOffice
             }
         }
 
-        public Dictionary<int, ITrain> Trains
+        public List<ITrainModel> Trains
         {
             get { return _trains; }
         }
 
-        public Dictionary<int, IBlock> Blocks
+        public List<IBlock> Blocks
         {
             get { return _blocks; }
         }
 
-        public Dictionary<int, IRoute> Routes
+        public List<IRoute> Routes
         {
             get { return _routes; }
         }
