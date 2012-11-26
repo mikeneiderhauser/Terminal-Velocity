@@ -95,7 +95,7 @@ namespace Testing
             environment.PrimaryTrackControllerRed = prev;
 
             ////////////////////////////////////////////////////////////////////////////////////////
-            //                              Initializations                                       //
+            //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
 
             Form form = new Form();

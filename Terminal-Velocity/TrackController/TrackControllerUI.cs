@@ -39,11 +39,11 @@ namespace TrackController
             set { _current = value; }
         }
 
-        private void DoUpdate()
+        public override void Refresh()
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action(this.DoUpdate));
+                this.BeginInvoke(new Action(this.Refresh));
                 return;
             }
 
@@ -87,13 +87,13 @@ namespace TrackController
         private void nextButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Next;
-            DoUpdate();
+            Refresh();
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Previous;
-            DoUpdate();
+            Refresh();
         }
 
         static int ticks = 0;
@@ -102,7 +102,7 @@ namespace TrackController
             ticks++;
             if (ticks > 10)
             {
-                DoUpdate();
+                Refresh();
                 ticks = 0;
             }
         }
