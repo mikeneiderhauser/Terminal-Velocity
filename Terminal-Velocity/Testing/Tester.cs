@@ -148,7 +148,7 @@ namespace Testing
                 case 2: // TrackModel
                     break;
                 case 3: // TrackController
-                    control = new TrackController.TrackControllerUI();
+                    control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
                     break;

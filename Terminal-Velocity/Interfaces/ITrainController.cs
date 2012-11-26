@@ -7,7 +7,7 @@ namespace Interfaces
 {
    public interface ITrainController
     {
-        ITrain Train { get; }
+        ITrainModel Train { get; }
         List<IBlock> AuthorityBlocks {get; set;}
         int AuthorityLimit { get; set; }
         double SpeedLimit { get; set; }
