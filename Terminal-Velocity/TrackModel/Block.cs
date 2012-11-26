@@ -25,7 +25,7 @@ namespace TrackModel
 		private int _trackCirID;
 		private string _line;
 
-        public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, int bS, DirEnum dir, string[] atts,int d1, int d2,int tCID,string l)
+        public Block(int bID, StateEnum state,int pBID,double sElev, double g, int[] loc, double bS, DirEnum dir, string[] atts,int d1, int d2,int tCID,string l)
         {
 		_blockID=bID;
 		_stateAttributes=state;
