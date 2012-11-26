@@ -122,7 +122,7 @@ namespace TrainController
             throw new NotImplementedException();
         }
 
-        ITrain ITrainController.Train
+        ITrainModel ITrainController.Train
         {
             get { throw new NotImplementedException(); }
         }

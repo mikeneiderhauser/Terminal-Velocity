@@ -13,12 +13,14 @@ namespace TrackController
         private ISimulationEnvironment _env;
         private ITrackController _trackController;
         private Dictionary<int, ITrainModel> _trains;
+        private Dictionary<int, IBlock> _blocks;
 
         #region Constructor(s)
 
         public TrackCircuit(ISimulationEnvironment env)
         {
             _trains = new Dictionary<int, ITrainModel>();
+            _blocks = new Dictionary<int, IBlock>();
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -33,6 +35,11 @@ namespace TrackController
             get { return _trains; }
         }
 
+        public Dictionary<int, IBlock> Blocks
+        {
+            get { return _blocks; }
+        }
+
         public ITrackController TrackController
         {
             get { return _trackController; }
@@ -42,11 +49,6 @@ namespace TrackController
         #endregion // Public Properties
 
         #region Public Methods
-
-        public void ToTrackController(ITrainModel data)
-        {
-            _trackController.Recieve(data);
-        }
 
         public void ToTrain(int ID, int speedLimit = -1, int authority = -1)
         {

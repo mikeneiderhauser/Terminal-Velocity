@@ -17,7 +17,6 @@ namespace Interfaces
         List<IBlock> Blocks { get; }
         List<IRoute> Routes { get; }
 
-        void Recieve(ITrainModel data);
         void LoadPLCProgram(string filename);
     }
 }
