@@ -49,6 +49,10 @@ namespace TrackController
                 return;
             }
 
+            _trains = TC.Trains;
+            _blocks = TC.Blocks;
+            _routes = TC.Routes;
+
             trainGrid.Rows.Clear();
             blockGrid.Rows.Clear();
             switchGrid.Rows.Clear();
@@ -94,16 +98,15 @@ namespace TrackController
             DoUpdate();
         }
 
+        static int ticks = 0;
         void e_Tick(object sender, Utility.TickEventArgs e)
         {
-            if (!_trains.Equals(TC.Trains))
-                _dirty++;
-            
-            _trains = TC.Trains;
-            _blocks = TC.Blocks;
-            _routes = TC.Routes;
-
-            DoUpdate();
+            ticks++;
+            if (ticks > 10)
+            {
+                DoUpdate();
+                ticks = 0;
+            }
         }
     }
 }

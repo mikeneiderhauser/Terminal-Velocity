@@ -24,8 +24,6 @@ namespace TrackController
 
         private int _ID;
 
-        private int _dirty;
-
         #region Constructor(s)
 
         /// <summary>
@@ -100,22 +98,6 @@ namespace TrackController
         public List<IRoute> Routes
         {
             get { return _routes.Values.ToList<IRoute>(); }
-        }
-
-        /// <summary>
-        /// Whether or not an update is required
-        /// </summary>
-        public bool UpdateRequired
-        {
-            get 
-            {
-                int d = _dirty;
-                _dirty = 0;
-
-                if (d > 10)
-                    return true;
-                return false;
-            }
         }
 
         #endregion // Public Properties
@@ -201,28 +183,10 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            Dictionary<int, ITrainModel> trains = _circuit.Trains;
-            Dictionary<int, IBlock> blocks = _circuit.Blocks;
-
-            if (trains.Count != _trains.Count)
-                _dirty++;
-
-            for (int i = 0; i < blocks.Count; i++)
-            {
-                if (blocks[i].State != _blocks[i].State)
-                    _dirty++;
-                if (blocks[i].SwitchDest1 != _blocks[i].SwitchDest1)
-                    _dirty++;
-                if (blocks[i].SwitchDest2 != _blocks[i].SwitchDest2)
-                    _dirty++;
-            }
-
-            _trains = trains;
-            _blocks = blocks;
+            _trains = _circuit.Trains;
+            _blocks = _circuit.Blocks;
 
             PLC_DoWork();
-
-            _dirty++;
         }
 
         #endregion // Events
