@@ -426,8 +426,9 @@ namespace TrackModel
 			rID=1;
 
 
-		int sID=-1;
-		int eID=-1;
+		//All routes start and end at the yard
+		int sID=0;
+		int eID=0;
 
 		Route tempRoute=new Route(rID,rName,nBlocks,blocks,sID,eID);
 		return tempRoute;
