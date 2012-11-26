@@ -70,7 +70,8 @@ namespace TrackModel
 				   "trackCirID int,"+			//
                                    "CONSTRAINT pk_Blocks PRIMARY KEY(blockID,line) )";
 
-		_dbCon.Open();
+			_dbCon.Open();
+
 			//Initialize command to create BLOCKS TABLE
 			SqliteCommand createCommand=new SqliteCommand(createBLOCKS);
 			createCommand.Connection=_dbCon;
@@ -80,6 +81,27 @@ namespace TrackModel
 				//Console.WriteLine(res);
 				_dbCon.Close();//CLOSE DB
 				if(res!=0)
+					return -1;
+				else
+					return 0;
+			}
+			catch(Exception crap)
+			{
+				_dbCon.Close();
+				return -1;
+			}
+
+
+			//After creating the database, first insert the YARD block
+			_dbCon.Open();
+			yardIns="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'YARD','NONE')";
+			SqliteCommand insCommand=new SqliteCommand(yardIns);
+			insCommand.Connection=_dbCon;
+			try
+			{
+				int res=insCommand.ExecuteNonQuery();//Exec insert yard statement
+				_dbCon.Close();
+				if(res!=1)
 					return -1;
 				else
 					return 0;
