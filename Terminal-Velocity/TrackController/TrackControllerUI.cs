@@ -82,24 +82,18 @@ namespace TrackController
         private void nextButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Next;
-            AsyncUpdate();
+            DoUpdate();
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Previous;
-            AsyncUpdate();
+            DoUpdate();
         }
 
         void e_Tick(object sender, Utility.TickEventArgs e)
         {
-            AsyncUpdate();
-        }
-
-        private void AsyncUpdate()
-        {
-            this.refresh = new Thread(new ThreadStart(this.DoUpdate));
-            this.refresh.Start();
+            DoUpdate();
         }
     }
 }
