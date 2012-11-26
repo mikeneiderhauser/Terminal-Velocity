@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 using Interfaces;
 using TrackController;
@@ -17,7 +16,6 @@ namespace TrackController
     public partial class TrackControllerUI : UserControl
     {
         private TrackController _current;
-        private int _dirty = 0;
 
         private List<ITrainModel> _trains;
         private List<IBlock> _blocks;
