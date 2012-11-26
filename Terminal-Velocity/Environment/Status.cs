@@ -14,7 +14,7 @@ namespace SimulationEnvironment
         /// <summary>
         /// Holds the list of trains per track controller
         /// </summary>
-        private List<ITrain> _trains;
+        private List<ITrainModel> _trains;
 
         /// <summary>
         /// Holds the list of blocks per track controller
@@ -29,7 +29,7 @@ namespace SimulationEnvironment
         /// </summary>
         /// <param name="trains">list of trains per track controller</param>
         /// <param name="blocks">list of blocks per track controller</param>
-        public Status(List<ITrain> trains, List<IBlock> blocks)
+        public Status(List<ITrainModel> trains, List<IBlock> blocks)
         {
             _trains = trains;
             _blocks = blocks;
@@ -40,7 +40,7 @@ namespace SimulationEnvironment
         /// <summary>
         /// Property to operate on _trains
         /// </summary>
-        public List<ITrain> Trains
+        public List<ITrainModel> Trains
         {
             get { return _trains; }
             set { _trains = value; }

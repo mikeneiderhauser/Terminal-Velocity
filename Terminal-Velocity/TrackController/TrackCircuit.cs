@@ -12,13 +12,13 @@ namespace TrackController
     {
         private ISimulationEnvironment _env;
         private ITrackController _trackController;
-        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, ITrainModel> _trains;
 
         #region Constructor(s)
 
         public TrackCircuit(ISimulationEnvironment env)
         {
-            _trains = new Dictionary<int, ITrain>();
+            _trains = new Dictionary<int, ITrainModel>();
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -28,7 +28,7 @@ namespace TrackController
 
         #region Public Properties
 
-        public Dictionary<int, ITrain> Trains
+        public Dictionary<int, ITrainModel> Trains
         {
             get { return _trains; }
         }
@@ -50,7 +50,7 @@ namespace TrackController
 
         public void ToTrain(int ID, int speedLimit = -1, int authority = -1)
         {
-            ITrain train;
+            ITrainModel train;
             if (Trains.TryGetValue(ID, out train))
             {
                 if (speedLimit >= 0)

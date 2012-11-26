@@ -9,13 +9,15 @@ namespace Interfaces
     {
         IRequest Request { set; }
         int ID { get; }
+
         ITrackController Previous { get; set; }
         ITrackController Next { get; set; }
-        Dictionary<int, ITrain> Trains { get; }
-        Dictionary<int, IBlock> Blocks { get; }
-        Dictionary<int, IRoute> Routes { get; }
 
-        void Recieve(object data);
+        List<ITrainModel> Trains { get; }
+        List<IBlock> Blocks { get; }
+        List<IRoute> Routes { get; }
+
+        void Recieve(ITrainModel data);
         void LoadPLCProgram(string filename);
     }
 }

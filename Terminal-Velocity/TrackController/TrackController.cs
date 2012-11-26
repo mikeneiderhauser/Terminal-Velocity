@@ -85,19 +85,19 @@ namespace TrackController
             }
         }
 
-        public Dictionary<int, ITrainModel> Trains
+        public List<ITrainModel> Trains
         {
-            get { return _trains; }
+            get { return _trains.Values.ToList<ITrainModel>(); }
         }
 
-        public Dictionary<int, IBlock> Blocks
+        public List<IBlock> Blocks
         {
-            get { return _blocks; }
+            get { return _blocks.Values.ToList<IBlock>(); }
         }
 
-        public Dictionary<int, IRoute> Routes
+        public List<IRoute> Routes
         {
-            get { return _routes; }
+            get { return _routes.Values.ToList<IRoute>(); }
         }
 
         #endregion // Public Properties
@@ -110,7 +110,7 @@ namespace TrackController
         /// <param name="data"></param>
         public void Recieve(ITrainModel data)
         {
-            if (Trains.ContainsKey(data.TrainID))
+            if (_trains.ContainsKey(data.TrainID))
             {
             }
         }
@@ -144,7 +144,7 @@ namespace TrackController
                         if (request.TrackControllerID == this.ID)
                         {
                             if (request.Info != null)
-                                request.Info.Trains = Trains.Values.ToList<ITrainModel>();
+                                request.Info.Trains = Trains;
                         }
                         return;
                     }
@@ -153,14 +153,14 @@ namespace TrackController
                 case RequestTypes.TrackMaintenanceOpen:
                     break;
                 case RequestTypes.SetTrainSpeed:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
                         // TrainAuthority also contains the speed, if RequestTypes is SetTrainSpeed
                         _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
                         _circuit.ToTrain(request.TrainID, -1, request.TrainAuthority);
                     }
@@ -178,9 +178,9 @@ namespace TrackController
         private void PLC_DoWork()
         {
             // Snapshot values
-            List<IBlock> sb = Blocks.Values.ToList();
-            List<ITrainModel> st = Trains.Values.ToList();
-            List<IRoute> sr = Routes.Values.ToList();
+            List<IBlock> sb = Blocks;
+            List<ITrainModel> st = Trains;
+            List<IRoute> sr = Routes;
 
             _plc.ToggleLights(sb, st, sr);
             _plc.DoSwitch(sb, st, sr);
