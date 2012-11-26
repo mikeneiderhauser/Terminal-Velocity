@@ -10,7 +10,7 @@ namespace Interfaces
         IBlock requestBlockInfo(int blockID);
         IRouteInfo requestRouteInfo(int routeID);
 
-        IBlock[][] requestTrackGrid(int routeID);
+        IBlock[,] requestTrackGrid(int routeID);
 
         bool requestUpdateSwitch(IBlock bToUpdate);
         bool requestUpdateBlock(IBlock blockToChange);
