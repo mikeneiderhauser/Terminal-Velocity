@@ -139,6 +139,7 @@ namespace TrackModel
 
 		//Get block ID and check that it exists
 		int bID=bToUpdate.BlockID;
+		string line=bToUpdate.Line;
 		bool exists=blockExists(bID);
 		if(!exists)
 			return null;
@@ -153,7 +154,7 @@ namespace TrackModel
 			//Create switch update string
 			string updateString=	"UPDATE BLOCKS "+
 						"SET dest1="+bToUpdate.SwitchDest2+", dest2="+bToUpdate.SwitchDest1+
-						" WHERE blockID="+bID;
+						" WHERE blockID="+bID+" AND line='"+line+"'";
 			return updateString;
 		}
 		else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
@@ -175,7 +176,7 @@ namespace TrackModel
 			//Create block update string			
 			string updateString=	"UPDATE BLOCKS "+
 						"SET state='"+bToUpdate.State+"', trackCirID="+bToUpdate.TrackCirID+", infra='"+attrString+"' "
-						" WHERE blockID="+bID;
+						" WHERE blockID="+bID+" AND line='"+line+"'";
 			return  updateString;
 		}
 	}
