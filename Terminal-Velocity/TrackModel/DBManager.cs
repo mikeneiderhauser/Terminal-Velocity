@@ -345,7 +345,7 @@ namespace TrackModel
 	//Argument to this function should be changed
 	//into the SQLResults object returned from
 	//runQuery above (and used in fQR above)
-	public Route formatRouteQueryResults(SqlDataReader rr)
+	public RouteInfo formatRouteQueryResults(SqlDataReader rr)
 	{
 
 		if(rr==null)
@@ -431,7 +431,7 @@ namespace TrackModel
 		int sID=0;
 		int eID=0;
 
-		Route tempRoute=new Route(rID,rName,nBlocks,blocks,sID,eID);
+		RouteInfo tempRoute=new Route(rID,rName,nBlocks,blocks,sID,eID);
 		return tempRoute;
 		
 	}
