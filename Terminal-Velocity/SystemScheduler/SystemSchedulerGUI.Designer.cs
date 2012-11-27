@@ -31,14 +31,14 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtFilepath = new System.Windows.Forms.TextBox();
             this.grdDispatches = new System.Windows.Forms.DataGridView();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnEdit = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.DispatchID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DispatchTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DispatchRouteType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DispatchRoute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,37 +76,7 @@
             this.grdDispatches.RowTemplate.Height = 28;
             this.grdDispatches.Size = new System.Drawing.Size(372, 150);
             this.grdDispatches.TabIndex = 2;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(15, 223);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 26);
-            this.btnDelete.TabIndex = 3;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnEdit
-            // 
-            this.btnEdit.Location = new System.Drawing.Point(97, 222);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 27);
-            this.btnEdit.TabIndex = 4;
-            this.btnEdit.Text = "Edit...";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Location = new System.Drawing.Point(178, 223);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 26);
-            this.btnAdd.TabIndex = 5;
-            this.btnAdd.Text = "Add...";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // dlgOpen
-            // 
-            this.dlgOpen.Filter = "CSV|*.csv";
+            this.grdDispatches.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellContentClick);
             // 
             // DispatchID
             // 
@@ -132,6 +102,40 @@
             this.DispatchRoute.HeaderText = "Dispatch Route";
             this.DispatchRoute.Name = "DispatchRoute";
             this.DispatchRoute.ReadOnly = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Enabled = false;
+            this.btnDelete.Location = new System.Drawing.Point(15, 223);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 26);
+            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Enabled = false;
+            this.btnEdit.Location = new System.Drawing.Point(97, 222);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 27);
+            this.btnEdit.TabIndex = 4;
+            this.btnEdit.Text = "Edit...";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(178, 223);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 26);
+            this.btnAdd.TabIndex = 5;
+            this.btnAdd.Text = "Add...";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // dlgOpen
+            // 
+            this.dlgOpen.Filter = "CSV|*.csv";
             // 
             // SystemSchedulerGUI
             // 

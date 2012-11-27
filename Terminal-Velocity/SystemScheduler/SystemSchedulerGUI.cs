@@ -45,17 +45,30 @@ namespace SystemScheduler
             foreach (IDispatch singleDispatch in _systemScheduler.DispatchDatabase.DispatchList)
             {
                 if (singleDispatch.DispatchTime == currentTime) {
-                    //_ctcOffice.passRequest();
+                    
                 }
             }
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
             dlgOpen.ShowDialog();
             txtFilepath.Text = dlgOpen.FileName;
             _systemScheduler.NewFile(txtFilepath.Text);
             grdDispatches.DataSource = _systemScheduler.DispatchDatabase.DispatchDatabaseDataSource;
-        }      
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            _systemScheduler.DispatchDatabase.Remove((int)grdDispatches[0, grdDispatches.CurrentRow.Index].Value);
+        }
+
+        private void grdDispatches_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            btnDelete.Enabled = true;
+            btnEdit.Enabled = true;
+        }            
     }
 }

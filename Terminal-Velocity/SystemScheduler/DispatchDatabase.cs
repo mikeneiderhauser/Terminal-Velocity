@@ -32,6 +32,17 @@ namespace SystemScheduler
             get { return _dispatchDataSource; }
         }
 
+        public void Remove(int dispatchID)
+        {
+            foreach (IDispatch singleDispatch in _dispatchlist)
+            {
+                if (singleDispatch.DispatchID == dispatchID)
+                {
+                    _dispatchlist.Remove(singleDispatch);
+                }
+            }
+        }
+
         public DispatchDatabase(ISimulationEnvironment env, string filename)
         {
             _environment = env;

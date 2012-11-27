@@ -40,8 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDispatchDatabase.cs" />
-    <Compile Include="IDispatch.cs" />
     <Compile Include="IRequestFrame.cs" />
     <Compile Include="IRouteInfo.cs" />
     <Compile Include="IStatus.cs" />
