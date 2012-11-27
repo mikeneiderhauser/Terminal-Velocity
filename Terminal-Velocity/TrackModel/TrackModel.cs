@@ -12,20 +12,41 @@ namespace TrackModel
     {
         //Private parameters
 		private IEnvironment _env;
-		//private DBManager _dbManager;
+		private DBManager _dbManager;
 		//private DisplayManager _dispManager;
-		//private DBCreator _dbCreator;
+		private DBCreator _dbCreator;
 		
 
         public TrackModel(IEnvironment environment)
         {
 		_env=environment;
-            //_environment.Tick +=
+		_dbCreator=new DBCreator("");
+		_dbManager=new DBManager(_dbCreator.DBCon);
+
+		//_environment.Tick+=
         }
 
 	public IBlock requestBlockInfo(int blockID)
 	{
-		return null;
+		//Dont request patently invalid blocks
+		if(blockID<0)
+			return null;
+
+		string blockQuery=_dbManager.createQueryString("BLOCK",blockID);
+
+		//Check query return val
+		if(blockQuery==null)
+			return null;
+
+		//Get data reader for query
+		SqlDataReader queryReader=_dbManager.runQuery(blockQuery);
+
+		//Check exec return val
+		if(queryReader==null)
+			return null;
+
+		IBlock temp=_dbManager.formatBlockQueryResults(queryReader);
+		return temp;
 	}
 
 	public IRouteInfo requestRouteInfo(int routeID)
