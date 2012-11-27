@@ -69,7 +69,7 @@
     <Compile Include="SystemLog.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
       <Name>Environment-Simulation</Name>
     </ProjectReference>
