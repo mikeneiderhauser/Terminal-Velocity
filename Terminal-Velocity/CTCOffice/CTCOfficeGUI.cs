@@ -56,9 +56,9 @@ namespace CTCOffice
         {
             int x = 0;
             int y = 0;
-            for (int i = 0; i < _redLineData.Layout.GetUpperBound(0); i++ )
+            for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++ )
             {
-                for (int j = 0; j < _redLineData.Layout.GetUpperBound(1); j++)
+                for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
                 {
                     PictureBox pane = new PictureBox();
                     _panelRedLine.Controls.Add(pane);

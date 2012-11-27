@@ -20,13 +20,13 @@ namespace CTCOffice
             _env = env;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
-            _layout = new LayoutCellDataContainer[layout.GetUpperBound(0), layout.GetUpperBound(1)];
+            _layout = new LayoutCellDataContainer[layout.GetUpperBound(0)+1, layout.GetUpperBound(1)+1];
 
             //for each item in the 1st dimension (row)
-            for (int i = 0; i < layout.GetUpperBound(0); i++)
+            for (int i = 0; i <= layout.GetUpperBound(0); i++)
             {
                 //for each item in the 2nd dimension (col)
-                for(int j=0; j < layout.GetUpperBound(1); j++)
+                for(int j=0; j <= layout.GetUpperBound(1); j++)
                 {
                     //make a new container
                     LayoutCellDataContainer container = new LayoutCellDataContainer();
