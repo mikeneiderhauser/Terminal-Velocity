@@ -24,7 +24,8 @@ namespace TrackModel
         public String createQueryString(string qType, int ID)
         {
 		//Check basic ID validity
-		if(ID<=0)
+			//We need to allow zero's--> Route 0 is red, and Block 0 is yard
+		if(ID<0)
 		{
 			return null;
 		}
@@ -36,7 +37,7 @@ namespace TrackModel
 		else if(qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase))//Format for block
 		{
                       //Test whether block exists
-                        bool exists=blockExists(ID);
+                        bool exists=blockExists(ID,"Red");
                         if(exists)
                         {
                                 string blockQuery=      "SELECT *"+
@@ -71,7 +72,7 @@ namespace TrackModel
 			//BLOCK table tuples sharing a line name.
                         string routeQuery=      "SELECT *"+
                                                 "FROM BLOCKS"+
-                                                "WHERE line="+routeName;
+                                                "WHERE line='"+routeName+"'";
                         return routeQuery;
 		}
 	}
@@ -103,11 +104,11 @@ namespace TrackModel
 
 	}
 
-	private bool blockExists(int id)
+	private bool blockExists(int id, string line)
 	{
 		string selectString=	"SELECT *"+
 					"FROM BLOCKS" +
-					"WHERE blockID="+id;
+					"WHERE blockID="+id+" AND line='"+line+"'";
 
                 _dbCon.Open();
                         //Initialize command to create BLOCKS TABLE
@@ -311,7 +312,7 @@ namespace TrackModel
 			double gradeFinal; 
 				bool gradeRes=double.TryParse(grade,out gradeFinal);
 				if(!gradeRes) {gradeFinal=-1.0;}
-			int[] locFinal;
+			int[] locFinal=new int[2];
 				bool locXRes=int.TryParse(locX,out locFinal[0]);
 				if (!locXRes) {locFinal[0]=-1.0;}
 				bool locYRes=int.TryParse(locY,out locFinal[1]);
