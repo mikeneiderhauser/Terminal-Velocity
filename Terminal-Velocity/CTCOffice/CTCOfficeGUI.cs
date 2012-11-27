@@ -328,7 +328,7 @@ namespace CTCOffice
 
 
                     //Add Train Menu if Train is contained by block
-                    if (c.Train != null || true)
+                    if (c.Train != null)
                     {
                         int trainID = -1;
                         if (c.Train != null)
