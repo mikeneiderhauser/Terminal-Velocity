@@ -15,12 +15,12 @@ namespace Interfaces
         int Announcement { set; }
 
         
-        public void addPassengers();
-        public void removePassengers();
-        public void checkLightsOn();
-        public void returnFeedback(String Feedback);
-        public void doorOpen();
-        public void doorClose();
+        void addPassengers();
+        void removePassengers();
+        void checkLightsOn();
+        void returnFeedback(String Feedback);
+        void doorOpen();
+        void doorClose();
         void sendPower(double Power);
 
  

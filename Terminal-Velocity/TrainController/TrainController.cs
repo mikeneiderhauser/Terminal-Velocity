@@ -12,7 +12,7 @@ namespace TrainController
         private const int highestTemperature = 75;
         private const int lowestTemperature = 65;
 
-        public IEnvironment _environment
+        public ISimulationEnvironment _environment
         {
             get { return _environment; }
             set { _environment = value; }
@@ -155,6 +155,11 @@ namespace TrainController
             Train.EmergencyBrake();
         }
 
+
+        ITrain ITrainController.Train
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
 }
