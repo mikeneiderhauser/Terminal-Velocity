@@ -39,15 +39,51 @@ namespace CTCOffice
             //show team logo (block out user)
             mainDisplayLogo();            
             disableUserControls();
-            _loginStatusImage.Image = Properties.Resources.red;
+            _loginStatusImage.Image = Utility.Properties.Resources.red;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
             //get line data
             _redLineData = _ctcOffice.getLine(0);
             _greenLineData = _ctcOffice.getLine(1);
 
+            parseLineData();
+
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
+        }
+
+        private void parseLineData()
+        {
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < _redLineData.Layout.GetUpperBound(0); i++ )
+            {
+                for (int j = 0; j < _redLineData.Layout.GetUpperBound(1); j++)
+                {
+                    PictureBox pane = new PictureBox();
+                    _panelRedLine.Controls.Add(pane);
+                    pane.Name = "_imgGrid_" + i + "_" + j;
+                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pane.Size = new Size(20, 20);
+                    pane.Location = new Point(x, y);
+                    pane.Image = _redLineData.Layout[i, j].Tile;
+                    pane.Tag = _redLineData.Layout[i, j];
+                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    x += 20;
+                }
+                y += 20;
+                x = 0;
+            }
+
+
+            for (int i = 0; i < _greenLineData.Layout.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j < _greenLineData.Layout.GetUpperBound(1); j++)
+                {
+
+                }
+            }
+
         }
 
 
@@ -69,7 +105,7 @@ namespace CTCOffice
                 _ctcOffice.Logout();
                 //disable user controls (lock out op)
                 disableUserControls();
-                _loginStatusImage.Image = Properties.Resources.red;
+                _loginStatusImage.Image = Utility.Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
                 mainDisplayLogo();
                 //post to log
@@ -82,7 +118,7 @@ namespace CTCOffice
                 {
                     //if login pass (enable controls)
                     enableUserControls();
-                    _loginStatusImage.Image = Properties.Resources.green;
+                    _loginStatusImage.Image = Utility.Properties.Resources.green;
                     //show red line tab
                     showRedLine();
                     //remove password
@@ -94,7 +130,7 @@ namespace CTCOffice
                 {
                     //if login fail (disable controls)
                     disableUserControls();
-                    _loginStatusImage.Image = Properties.Resources.red;
+                    _loginStatusImage.Image = Utility.Properties.Resources.red;
                     _btnLoginLogout.Text = "Login";
                     //post to log
                     _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");

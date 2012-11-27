@@ -13,41 +13,59 @@ namespace CTCOffice
         private List<ITrainModel> _trains;
         private List<IBlock> _blocks;
         private LayoutCellDataContainer[,] _layout;
+        private ISimulationEnvironment _env;
 
-        public LineData(IBlock[][] layout, int line)
+        public LineData(IBlock[,] layout, ISimulationEnvironment env)
         {
+            _env = env;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
             _layout = new LayoutCellDataContainer[layout.GetUpperBound(0), layout.GetUpperBound(1)];
 
+            //for each item in the 1st dimension (row)
             for (int i = 0; i < layout.GetUpperBound(0); i++)
             {
+                //for each item in the 2nd dimension (col)
                 for(int j=0; j < layout.GetUpperBound(1); j++)
                 {
-                    LayoutCellDataContainer conatiner = new LayoutCellDataContainer();
+                    //make a new container
+                    LayoutCellDataContainer container = new LayoutCellDataContainer();
 
                     //determine tile
-                    if (layout[i][j] == null)
+                    if (layout[i,j] == null)
                     {
-                        conatiner.Tile = Properties.Resources.Unpopulated;
-                        //conatiner.Block = null;
+                        //null container
+                        container.Tile = Utility.Properties.Resources.Unpopulated;
+                        container.Block = null;
+                        container.Train = null;
                     }
                     else
                     {
-                        _blocks.Add(layout[i][j]);
-                        conatiner.Block = layout[i][j];
+                        container.Train = null;
+                        _blocks.Add(layout[i,j]);
+                        container.Block = layout[i,j];
 
-                        if (line == 0)
+                        //expand after prototype
+                        if (layout[i, j].Line.CompareTo("Red")==0 || layout[i, j].Line.CompareTo("red")==0 || layout[i, j].Line.CompareTo("R")==0 || layout[i, j].Line.CompareTo("r")==0)
                         {
-                            conatiner.Tile = Properties.Resources.RedTrack;
+                            //red line
+                            container.Tile = Utility.Properties.Resources.RedTrack;
+                        }
+                        else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 || layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
+                        {
+                            //green line
+                            container.Tile = Utility.Properties.Resources.GreenTrack;
                         }
                         else
                         {
-                            conatiner.Tile = Properties.Resources.GreenTrack;
+                            container.Tile = Utility.Properties.Resources.TrackError;
+                            env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     }//end determine tile
 
-                    _layout[i,j] = conatiner;
+
+                    //add the container to the layout panel
+                    _layout[i,j] = container;
                 }//end for 2nd dimension
             }//end for 1st dimentsion
         }//end constructor
