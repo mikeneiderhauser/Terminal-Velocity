@@ -51,7 +51,23 @@ namespace TrackModel
 
 	public IRouteInfo requestRouteInfo(int routeID)
 	{
-		return null;
+		if(routeID!=0 && routeID!=1)
+			return null;
+		string routeQuery=_dbManager.createQueryString("ROUTE",routeID);
+	
+		//Check query return val
+		if(routeQuery==null)
+			return null;
+
+		//Get data reader from query
+		SqlDataReader queryReader=_dbManager.runQuery(routeQuery);
+		
+		//Check data reader return val
+		if(queryReader==null)
+			return null;
+
+		IRouteInfo temp = _dbManager.formatRouteQueryResults(queryReader);
+		return temp;
 	}
 
 	public IBlock[,] requestTrackGrid(int routeID)
