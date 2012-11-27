@@ -90,6 +90,10 @@
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TrainController\TrainController.csproj">
+      <Project>{C097CCCF-7085-4DED-8269-1B5EA566E73A}</Project>
+      <Name>TrainController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
       <Name>Utility</Name>

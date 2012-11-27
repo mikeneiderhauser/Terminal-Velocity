@@ -48,6 +48,7 @@ namespace TrainModel
         private void UpdateGUI()
         {
             trainLabel.Text = selectedTrain.ToString();
+            trainInfoTextBox.Text = selectedTrain.InformationLog;
 
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
@@ -74,8 +75,12 @@ namespace TrainModel
 
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (numTrains != allTrains.Count) // TODO: check if trains have been added or removed from list
+            // check if trains have been added or removed from list
+            if (numTrains != allTrains.Count)
+            {
                 PopulateComboBox(allTrains);
+                numTrains = allTrains.Count;
+            }
 
             selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();

@@ -47,7 +47,7 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
-        private const double _accelerationGravity = -9.8; // meters/second^2
+        private const double _accelerationGravity = 9.8; // meters/second^2
 
         //TODO: get list of trains from environment
         private List<ITrainModel> allTrains;
@@ -98,16 +98,38 @@ namespace TrainModel
 
         #region Public Methods
 
-        //TODO
         public void EmergencyBrake()
         {
             _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
+            _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
-        //TODO
         public bool ChangeMovement(double power)
         {
             _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
+
+            double currentForce = 0;
+
+            if (_currentVelocity > 0 || _currentVelocity < 0)
+            {
+                currentForce = power / _currentVelocity;
+            }
+
+            double newAcceleration = currentForce / _totalMass;
+
+            if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
+            {
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                return false;
+            }
+            else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
+            {
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                return false;
+            }
+
+            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\n";
+            _currentAcceleration = newAcceleration;
             return true;
         }
 
@@ -125,12 +147,27 @@ namespace TrainModel
 
         #region Private Methods
 
-        //TODO: Handle elevation calculations
+        private void _environment_Tick(object sender, TickEventArgs e)
+        {
+            updateMovement();
+        }
+
         private void updateMovement()
         {
-            _currentVelocity += _currentAcceleration; // TODO: + elevation values -> change acceleration first
-            _currentPosition += _currentVelocity;
+            // acceleration changes due to elevation
+            double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
+            
+            if (_currentBlock.Grade > 0) // up hill
+            {
+                _currentAcceleration -= _accelerationGravity * Math.Sin(angle);
+            }
+            else if (_currentBlock.Grade < 0) // down hill
+            {
+                _currentAcceleration += _accelerationGravity * Math.Sin(angle);
+            }
 
+            _currentVelocity += _currentAcceleration;
+            _currentPosition += _currentVelocity;
 
             // Handles edge of blocks for forwards and backwards
             if (_currentPosition >= _blockLength)
@@ -162,12 +199,6 @@ namespace TrainModel
         private bool checkFailures()
         {
             return false;
-        }
-
-        private void _environment_Tick(object sender, TickEventArgs e)
-        {
-            //handle tick here
-            updateMovement();
         }
 
         #endregion
