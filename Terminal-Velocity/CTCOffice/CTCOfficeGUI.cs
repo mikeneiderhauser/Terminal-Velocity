@@ -332,7 +332,7 @@ namespace CTCOffice
 
             if (s.Text.CompareTo("Open Track")==0)
             {
-               
+                //_ctcOffice.closeTrackBlockRequest(0, c.Block);
             }
             else if (s.Text.CompareTo("Close Track") == 0)
             {
