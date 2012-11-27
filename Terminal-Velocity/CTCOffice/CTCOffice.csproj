@@ -65,14 +65,36 @@
     </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
+    <Compile Include="OfficeGUITest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OfficeGUITest.Designer.cs">
+      <DependentUpon>OfficeGUITest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
+    <Compile Include="RequestEventArgs.cs" />
+    <Compile Include="RequestFrame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RequestFrame.Designer.cs">
+      <DependentUpon>RequestFrame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestingBlock.cs" />
+    <Compile Include="TestingSystemScheduler.cs" />
+    <Compile Include="TestingTrackController.cs" />
+    <Compile Include="TestingTrackModel.cs" />
+    <Compile Include="TestingTrainController.cs" />
+    <Compile Include="TestingTrainModel.cs" />
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CTCOffice_old.resx">
       <DependentUpon>CTCOffice_old.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OfficeGUITest.resx">
+      <DependentUpon>OfficeGUITest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,6 +106,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RequestFrame.resx">
+      <DependentUpon>RequestFrame.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -97,15 +122,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>Environment-Simulation</Name>
+      <Name>SimulationEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
-      <Project>{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}</Project>
-      <Name>Terminal-Velocity</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrainController\TrainController.csproj">
       <Project>{C097CCCF-7085-4DED-8269-1B5EA566E73A}</Project>

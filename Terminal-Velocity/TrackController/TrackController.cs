@@ -19,10 +19,12 @@ namespace TrackController
         private ITrackController _next;
 
         private Dictionary<int, IBlock> _blocks;
-        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, IRoute> _routes;
 
         private int _ID;
+
+        private int _dirty;
 
         #region Constructor(s)
 
@@ -35,7 +37,7 @@ namespace TrackController
         /// <param name="next">The next track contrtoller, or null</param>
         public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
-            _trains = new Dictionary<int, ITrain>();
+            _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
             _routes = new Dictionary<int, IRoute>();
 
@@ -85,35 +87,40 @@ namespace TrackController
             }
         }
 
-        public Dictionary<int, ITrain> Trains
+        public List<ITrainModel> Trains
         {
-            get { return _trains; }
+            get { return _trains.Values.ToList<ITrainModel>(); }
         }
 
-        public Dictionary<int, IBlock> Blocks
+        public List<IBlock> Blocks
         {
-            get { return _blocks; }
+            get { return _blocks.Values.ToList<IBlock>(); }
         }
 
-        public Dictionary<int, IRoute> Routes
+        public List<IRoute> Routes
         {
-            get { return _routes; }
+            get { return _routes.Values.ToList<IRoute>(); }
+        }
+
+        /// <summary>
+        /// Whether or not an update is required
+        /// </summary>
+        public bool UpdateRequired
+        {
+            get 
+            {
+                int d = _dirty;
+                _dirty = 0;
+
+                if (d > 10)
+                    return true;
+                return false;
+            }
         }
 
         #endregion // Public Properties
 
         #region Public Methods
-
-        /// <summary>
-        /// Recieve and process data sent from a train
-        /// </summary>
-        /// <param name="data"></param>
-        public void Recieve(object data)
-        {
-            // foreach ITrain in Train
-            // if not found, error
-            // else do work if ID matches
-        }
 
         public void LoadPLCProgram(string filename)
         {
@@ -144,7 +151,7 @@ namespace TrackController
                         if (request.TrackControllerID == this.ID)
                         {
                             if (request.Info != null)
-                                request.Info.Trains = Trains.Values.ToList<ITrain>();
+                                request.Info.Trains = Trains;
                         }
                         return;
                     }
@@ -153,14 +160,14 @@ namespace TrackController
                 case RequestTypes.TrackMaintenanceOpen:
                     break;
                 case RequestTypes.SetTrainSpeed:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
-                        //  TrainAuthority also contains the speec, if RequestTypes is SetTrainSpeed
+                        // TrainAuthority also contains the speed, if RequestTypes is SetTrainSpeed
                         _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
                         _circuit.ToTrain(request.TrainID, -1, request.TrainAuthority);
                     }
@@ -178,9 +185,9 @@ namespace TrackController
         private void PLC_DoWork()
         {
             // Snapshot values
-            List<IBlock> sb = Blocks.Values.ToList();
-            List<ITrain> st = Trains.Values.ToList();
-            List<IRoute> sr = Routes.Values.ToList();
+            List<IBlock> sb = Blocks;
+            List<ITrainModel> st = Trains;
+            List<IRoute> sr = Routes;
 
             _plc.ToggleLights(sb, st, sr);
             _plc.DoSwitch(sb, st, sr);
@@ -194,8 +201,28 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            _trains = _circuit.Trains;
+            Dictionary<int, ITrainModel> trains = _circuit.Trains;
+            Dictionary<int, IBlock> blocks = _circuit.Blocks;
+
+            if (trains.Count != _trains.Count)
+                _dirty++;
+
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                if (blocks[i].State != _blocks[i].State)
+                    _dirty++;
+                if (blocks[i].SwitchDest1 != _blocks[i].SwitchDest1)
+                    _dirty++;
+                if (blocks[i].SwitchDest2 != _blocks[i].SwitchDest2)
+                    _dirty++;
+            }
+
+            _trains = trains;
+            _blocks = blocks;
+
             PLC_DoWork();
+
+            _dirty++;
         }
 
         #endregion // Events

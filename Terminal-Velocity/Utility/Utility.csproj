@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,9 +41,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TickEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TickEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TrainDetectedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Train.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Train.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrackError.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unpopulated.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Closed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Closed.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
