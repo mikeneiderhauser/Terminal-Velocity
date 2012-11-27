@@ -41,7 +41,7 @@ namespace TrackModel
                         {
                                 string blockQuery=      "SELECT *"+
                                                         "FROM BLOCKS"+
-                                                        "WHERE blockID="+ID;
+                                                        "WHERE blockID="+ID+" AND line='Red'";
                                 return blockQuery;
                         }
                         else
