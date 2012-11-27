@@ -11,7 +11,7 @@ namespace TrackController
     public class TrackController : ITrackController
     {
         private PLC _plc;
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
 
         private ITrackCircuit _circuit;
 
@@ -33,7 +33,7 @@ namespace TrackController
         /// <param name="circuit">A track circuit for the track controller</param>
         /// <param name="prev">The previous track controller, or null</param>
         /// <param name="next">The next track contrtoller, or null</param>
-        public TrackController(IEnvironment env, ITrackCircuit circuit)
+        public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
             _trains = new Dictionary<int, ITrain>();
             _blocks = new Dictionary<int, IBlock>();
@@ -155,7 +155,8 @@ namespace TrackController
                 case RequestTypes.SetTrainSpeed:
                     if (Trains.Keys.Contains(request.TrainID))
                     {
-                        // set train speed
+                        //  TrainAuthority also contains the speec, if RequestTypes is SetTrainSpeed
+                        _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
@@ -170,7 +171,7 @@ namespace TrackController
             if (Next != null)
                 Next.Request = request;
             else
-                _env.CTCOffice.passRequest(request);
+                _env.CTCOffice.handleResponse(request);
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
@@ -181,8 +182,9 @@ namespace TrackController
             List<ITrain> st = Trains.Values.ToList();
             List<IRoute> sr = Routes.Values.ToList();
 
-            // _plc.LightsRequired(sb, st, sr);
-            // _plc.IsSafe(sb, st, sr);
+            _plc.ToggleLights(sb, st, sr);
+            _plc.DoSwitch(sb, st, sr);
+            _plc.IsSafe(sb, st, sr);
         }
 
         #endregion // Private Methods

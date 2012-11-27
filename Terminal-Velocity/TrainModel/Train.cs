@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Utility;
 using Interfaces;
 
@@ -31,7 +32,8 @@ namespace TrainModel
         private bool _signalPickupFailure;
 
         private ITrainController _trainController;
-        private IEnvironment _environment;
+        private ISimulationEnvironment _environment;
+        private ITrackModel _trackModel;
 
         private IBlock _currentBlock;
         private double _blockLength;
@@ -48,7 +50,7 @@ namespace TrainModel
         private const double _accelerationGravity = -9.8; // meters/second^2
 
         //TODO: get list of trains from environment
-        private List<Train> allTrains;
+        private List<ITrainModel> allTrains;
 
         #region Constructors
 
@@ -56,7 +58,7 @@ namespace TrainModel
         /// This constructor is used when passenger, crew, and temperature information is not given.
         /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
-        public Train(int trainID, IBlock startingBlock, IEnvironment environment)
+        public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
             _trainID = trainID;
             _totalMass = calculateMass();
@@ -82,7 +84,13 @@ namespace TrainModel
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
-            // TODO: set allTrains equal to list contained in environment and add this train
+            _trackModel = environment.TrackModel;
+
+            // TODO: double check constructor
+            //_trainController = new ITrainController();
+
+            // set allTrains equal to list contained in environment
+            allTrains = environment.AllTrains;
         }
 
         #endregion
@@ -99,7 +107,7 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
-
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
             return true;
         }
 
@@ -117,24 +125,29 @@ namespace TrainModel
 
         #region Private Methods
 
-        //TODO: Update block changes, whether going forwards or backwards
-        //      Handle elevation calculations
+        //TODO: Handle elevation calculations
         private void updateMovement()
         {
-            _currentVelocity += _currentAcceleration; // TODO: + elevation values
+            _currentVelocity += _currentAcceleration; // TODO: + elevation values -> change acceleration first
             _currentPosition += _currentVelocity;
 
 
             // Handles edge of blocks for forwards and backwards
             if (_currentPosition >= _blockLength)
             {
-                //_currentBlock = _currentBlock.NEXT;
+                //_currentBlock = _currentBlock.NEXT method
+                int nextBlockID = _currentBlock.SwitchDest1;
+                _currentBlock = _trackModel.requestBlockInfo(nextBlockID);
+                
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
             }
             else if (_currentPosition < 0)
             {
-                //_currentBlock = _currentBlock.PREVIOUS;
+                //_currentBlock = _currentBlock.PREVIOUS method
+                int prevBlockID = _currentBlock.PrevBlockID;
+                _currentBlock = _trackModel.requestBlockInfo(prevBlockID);
+
                 _blockLength = _currentBlock.BlockSize;
                 _currentPosition = _blockLength - _currentPosition * -1;
             }
@@ -306,12 +319,26 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        // TODO: double check that it works
+        // for track controller communications
+
+        #region Track Controller communication parameters
+
+        public double SpeedLimit
+        {
+            get { return _trainController.SpeedLimit; }
+            set { _trainController.SpeedLimit = value; }
+        }
+
+        public int AuthorityLimit
+        {
+            get { return _trainController.AuthorityLimit; }
+            set { _trainController.AuthorityLimit = value; }
+        }
+
         #endregion
 
+        #endregion
 
-        int ITrainModel.Length
-        {
-            get { throw new NotImplementedException(); }
-        }
     }
 }

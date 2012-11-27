@@ -7,9 +7,9 @@ using System.Timers;
 using Interfaces;
 using Utility;
 
-namespace EnvironmentSimulation
+namespace SimulationEnvironment
 {
-    public class Environment : IEnvironment
+    public class SimulationEnvironment : ISimulationEnvironment
     {
         #region Private Variables
         private ICTCOffice _CTCOffice;
@@ -26,7 +26,7 @@ namespace EnvironmentSimulation
         #endregion
 
         #region Constructor
-        public Environment()
+        public SimulationEnvironment()
         {
             _timer.Interval = _interval;
             _timer.Elapsed += _timer_Elapsed;

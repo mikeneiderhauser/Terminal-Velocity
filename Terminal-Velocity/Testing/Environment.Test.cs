@@ -12,8 +12,8 @@ namespace Testing
     {
         const int MAXTIMEOUT = 10000;
         static int counter;
-        
-        TerminalVelocity.Environment e = new TerminalVelocity.Environment();
+
+        SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
         System.Diagnostics.Stopwatch timeout = new System.Diagnostics.Stopwatch();
 
         public bool DoTest(out int pass, out int fail, out List<string> message)

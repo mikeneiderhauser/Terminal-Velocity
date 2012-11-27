@@ -14,13 +14,13 @@ namespace CTCOffice
 {
     public partial class CTCOfficeGUI : UserControl
     {
-        private IEnvironment _environment;
+        private ISimulationEnvironment _environment;
         private CTCOffice _ctcOffice;
         private int _speedState;
         private LineData _redLineData;
         private LineData _greenLineData;
 
-        public CTCOfficeGUI(IEnvironment env, CTCOffice ctc)
+        public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
         {
             InitializeComponent();
             //set refs to ctc office and environment

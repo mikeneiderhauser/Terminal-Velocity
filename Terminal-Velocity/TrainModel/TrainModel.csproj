@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Train.cs" />
     <Compile Include="TrainGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -72,7 +71,6 @@
     <EmbeddedResource Include="TrainGUI.resx">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\DataSources\Interfaces.ITrainModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -84,13 +82,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Environment\Environment-Simulation.csproj">
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>Environment-Simulation</Name>
+      <Name>SimulationEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
-      <Project>{7589C6A3-73DA-4E4C-98EE-3298E6CE0DDB}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
