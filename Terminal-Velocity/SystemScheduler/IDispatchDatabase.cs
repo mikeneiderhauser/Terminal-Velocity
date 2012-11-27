@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Interfaces;
 
-namespace Interfaces
+namespace SystemScheduler
 {
     public interface IDispatchDatabase
     {
-        string Filename { get; }
-        List<IDispatch> Dispatch { get; }
+        string DispatchDatabaseFilename { get; }
+        List<IDispatch> DispatchList { get; }
+        List<string[]> DispatchDatabaseDataSource { get; }
     }
 }

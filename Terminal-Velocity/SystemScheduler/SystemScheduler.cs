@@ -12,6 +12,7 @@ namespace SystemScheduler
     {
         private ISimulationEnvironment _env;
         private ICTCOffice _ctc;
+        private IDispatchDatabase _dispatchDatabase;
 
         #region Constructor(s)
 
@@ -27,10 +28,18 @@ namespace SystemScheduler
         #endregion // Constructor(s)
 
         #region Public Properties
-
+        public IDispatchDatabase DispatchDatabase
+        {
+            get { return _dispatchDatabase; }
+        }
         #endregion // Public Properties
 
         #region Public Methods
+
+        public void NewFile(string filename)
+        {
+            _dispatchDatabase = new DispatchDatabase(_env, filename);
+        }
 
         #endregion // Public Methods
 
@@ -47,10 +56,5 @@ namespace SystemScheduler
 
         #endregion // Events
 
-
-        public IRequest GetRoute
-        {
-            get { throw new NotImplementedException(); }
-        }
     }
 }

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Interfaces;
 
-namespace Interfaces
+namespace SystemScheduler
 {
     public interface IDispatch
     {
-        DateTime Time { get; }
-        int ID { get; }
-        IRoute Route { get; }
+        DateTime DispatchTime { get; }
+        int DispatchID { get; }
+        int DispatchRouteType { get; }
+        IRoute DispatchRoute { get; }
     }
 }
