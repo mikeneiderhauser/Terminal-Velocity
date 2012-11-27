@@ -29,6 +29,15 @@ namespace CTCOffice
         private bool _processingOutRequests;
         private bool _processingInRequests;
         private bool _automation;
+
+        private List<ITrainModel> _trains;
+
+        /// <summary>
+        /// Number of Ticks Elapsed to update
+        /// </summary>
+        private double _rate;
+
+        private double _tickCount;
         #endregion
 
         //confirm merge
@@ -36,11 +45,14 @@ namespace CTCOffice
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _automation = false;
-
+            _rate = 50;//num of ticks
+            _tickCount = 0;
+            _rate = env.getInterval();
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
 
+            _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
             _env.Tick += new EventHandler<TickEventArgs>(_env_Tick);
 
@@ -259,7 +271,12 @@ namespace CTCOffice
         /// <param name="e"></param>
         void _env_Tick(object sender, TickEventArgs e)
         {
-            addAutomaticUpdate();
+            _tickCount++;
+            if (_tickCount == _rate)
+            {
+                addAutomaticUpdate();
+            }
+            
         }
 
         /// <summary>
@@ -267,7 +284,8 @@ namespace CTCOffice
         /// </summary>
         private void addAutomaticUpdate()
         {
-            //cannot implement until environment implementation is expanded
+            //cannot implement until there is a way to get all trackcontroller ID's
+            //possibly through route infor (Red/Green) via block through track circuit etc..
         }
 
         /// <summary>

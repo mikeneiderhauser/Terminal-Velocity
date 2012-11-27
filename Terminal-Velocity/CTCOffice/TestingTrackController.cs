@@ -32,7 +32,10 @@ namespace CTCOffice
 
         private void handleRequest(IRequest value)
         {
-            //RequestRec(this, new RequestEventArgs(value));
+            if (RequestRec != null)
+            {
+                RequestRec(this, new RequestEventArgs(value));
+            }
         }
 
         public int ID

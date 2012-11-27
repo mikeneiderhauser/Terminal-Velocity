@@ -37,7 +37,7 @@
             // 
             this._panelCTC.Location = new System.Drawing.Point(3, 3);
             this._panelCTC.Name = "_panelCTC";
-            this._panelCTC.Size = new System.Drawing.Size(1272, 716);
+            this._panelCTC.Size = new System.Drawing.Size(1272, 799);
             this._panelCTC.TabIndex = 0;
             // 
             // _panelRequestGreen
@@ -62,7 +62,7 @@
             this.Controls.Add(this._panelRequestGreen);
             this.Controls.Add(this._panelCTC);
             this.Name = "OfficeGUITest";
-            this.Size = new System.Drawing.Size(1525, 720);
+            this.Size = new System.Drawing.Size(1525, 780);
             this.ResumeLayout(false);
 
         }

@@ -62,7 +62,7 @@ namespace CTCOffice
                 {
                     PictureBox pane = new PictureBox();
                     _panelRedLine.Controls.Add(pane);
-                    pane.Name = "_imgGrid_" + i + "_" + j;
+                    pane.Name = "_imgGridRed_" + i + "_" + j;
                     pane.SizeMode = PictureBoxSizeMode.CenterImage;
                     pane.Size = new Size(20, 20);
                     pane.Location = new Point(x, y);
@@ -75,13 +75,26 @@ namespace CTCOffice
                 x = 0;
             }
 
+            x = 0;
+            y = 0;
 
-            for (int i = 0; i < _greenLineData.Layout.GetUpperBound(0); i++)
+            for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
             {
-                for (int j = 0; j < _greenLineData.Layout.GetUpperBound(1); j++)
+                for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
                 {
-
+                    PictureBox pane = new PictureBox();
+                    _panelGreenLine.Controls.Add(pane);
+                    pane.Name = "_imgGridGreen_" + i + "_" + j;
+                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pane.Size = new Size(20, 20);
+                    pane.Location = new Point(x, y);
+                    pane.Image = _greenLineData.Layout[i, j].Tile;
+                    pane.Tag = _greenLineData.Layout[i, j];
+                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    x += 20;
                 }
+                y += 20;
+                x = 0;
             }
 
         }
@@ -292,14 +305,27 @@ namespace CTCOffice
 
                     //Create right click menu
                     ContextMenu cm = new ContextMenu();
+                    List<string> trackMenuTitles = new List<string>();
 
                     //Add Track Menu
                     MenuItem trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
                     trackItem.Tag = c;
-                    trackItem.MenuItems.Add("Open Track", HandleMenuClick);
-                    trackItem.MenuItems.Add("Close Track", HandleMenuClick);
-                    trackItem.MenuItems.Add("Display Track Info", HandleMenuClick);
+
+                    trackMenuTitles.Add("Open Track");
+                    trackMenuTitles.Add("Close Track");
+                    trackMenuTitles.Add("Display Track Info");
+
+                    foreach (string t in trackMenuTitles)
+                    {
+                        MenuItem temp = new MenuItem();
+                        temp.Text = t.ToString();
+                        temp.Tag = c;
+                        temp.Click += HandleMenuClick;
+                        trackItem.MenuItems.Add(temp);
+                    }
+
                     cm.MenuItems.Add(trackItem);
+
 
                     //Add Train Menu if Train is contained by block
                     if (c.Train != null || true)
@@ -309,14 +335,28 @@ namespace CTCOffice
                         {
                             trainID = c.Train.TrainID;
                         }
+
                         MenuItem trainItem = new MenuItem("Train (ID: " + trainID + ")");
                         trainItem.Tag = c;
-                        trainItem.MenuItems.Add("Assign Train Route", HandleMenuClick);
-                        trainItem.MenuItems.Add("Set Train Authority", HandleMenuClick);
-                        trainItem.MenuItems.Add("Set Train Speed", HandleMenuClick);
-                        trainItem.MenuItems.Add("Set Train OOS", HandleMenuClick);
-                        trainItem.MenuItems.Add("Display Train Info", HandleMenuClick);
+                        List<string> trainMenuTitles = new List<string>();
+
+                        trainMenuTitles.Add("Assign Train Route");
+                        trainMenuTitles.Add("Set Train Authority");
+                        trainMenuTitles.Add("Set Train Speed");
+                        trainMenuTitles.Add("Set Train OOS");
+                        trainMenuTitles.Add("Display Train Info");
+
+                        foreach (string t in trainMenuTitles)
+                        {
+                            MenuItem temp = new MenuItem();
+                            temp.Text = t.ToString();
+                            temp.Tag = c;
+                            temp.Click += HandleMenuClick;
+                            trainItem.MenuItems.Add(temp);
+                        }
+
                         cm.MenuItems.Add(trainItem);
+                    
                     }
                     //Show the context menu at cursor click
                     cm.Show((Control)sender, new Point(e.X, e.Y));

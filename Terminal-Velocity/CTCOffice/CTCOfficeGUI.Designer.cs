@@ -40,12 +40,21 @@
             this._btnDispatchTrain = new System.Windows.Forms.Button();
             this._btnSchedule_1 = new System.Windows.Forms.Button();
             this._groupSystemStatus = new System.Windows.Forms.GroupBox();
+            this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
+            this.listSystemNotifications = new System.Windows.Forms.ListBox();
             this._groupRunningStatus = new System.Windows.Forms.GroupBox();
-            this._lblEnvironmentHead = new System.Windows.Forms.Label();
-            this._lblPTrackControllerRedHead = new System.Windows.Forms.Label();
-            this._lblTrackModelStatusHead = new System.Windows.Forms.Label();
+            this._imgSysStatusSystemScheduler = new System.Windows.Forms.PictureBox();
             this._lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
+            this._imgSysStatusTrackControllerGreen = new System.Windows.Forms.PictureBox();
+            this._lblPTrackControllerGreenHead = new System.Windows.Forms.Label();
             this._lblCTCOfficeStatusHead = new System.Windows.Forms.Label();
+            this._imgSysStatusEnvironment = new System.Windows.Forms.PictureBox();
+            this._lblTrackModelStatusHead = new System.Windows.Forms.Label();
+            this._imgSysStatusTrackControllerRed = new System.Windows.Forms.PictureBox();
+            this._lblPTrackControllerRedHead = new System.Windows.Forms.Label();
+            this._imgSysStatusTrackModel = new System.Windows.Forms.PictureBox();
+            this._lblEnvironmentHead = new System.Windows.Forms.Label();
+            this._imgSysStatusCTCOffice = new System.Windows.Forms.PictureBox();
             this._groupSystemMetrics = new System.Windows.Forms.GroupBox();
             this._lblCrewMetrics = new System.Windows.Forms.Label();
             this._lblSystemMetricsHeading = new System.Windows.Forms.Label();
@@ -71,20 +80,18 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
-            this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
-            this.listSystemNotifications = new System.Windows.Forms.ListBox();
-            this._imgSysStatusCTCOffice = new System.Windows.Forms.PictureBox();
-            this._imgSysStatusSystemScheduler = new System.Windows.Forms.PictureBox();
-            this._imgSysStatusTrackModel = new System.Windows.Forms.PictureBox();
-            this._imgSysStatusTrackControllerRed = new System.Windows.Forms.PictureBox();
-            this._imgSysStatusEnvironment = new System.Windows.Forms.PictureBox();
-            this._imgSysStatusTrackControllerGreen = new System.Windows.Forms.PictureBox();
-            this._lblPTrackControllerGreenHead = new System.Windows.Forms.Label();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
+            this.groupSystemNotifications.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerRed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackModel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusCTCOffice)).BeginInit();
             this._groupSystemMetrics.SuspendLayout();
             this._groupGlobalTimeControls.SuspendLayout();
             this._groupSystemSchedulerControls.SuspendLayout();
@@ -93,13 +100,6 @@
             this._tabGreenLine.SuspendLayout();
             this._tabTeamLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
-            this.groupSystemNotifications.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusCTCOffice)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackModel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerRed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -227,6 +227,24 @@
             this._groupSystemStatus.TabStop = false;
             this._groupSystemStatus.Text = "System Status";
             // 
+            // groupSystemNotifications
+            // 
+            this.groupSystemNotifications.Controls.Add(this.listSystemNotifications);
+            this.groupSystemNotifications.Location = new System.Drawing.Point(9, 181);
+            this.groupSystemNotifications.Name = "groupSystemNotifications";
+            this.groupSystemNotifications.Size = new System.Drawing.Size(260, 109);
+            this.groupSystemNotifications.TabIndex = 9;
+            this.groupSystemNotifications.TabStop = false;
+            this.groupSystemNotifications.Text = "System Notifications";
+            // 
+            // listSystemNotifications
+            // 
+            this.listSystemNotifications.FormattingEnabled = true;
+            this.listSystemNotifications.Location = new System.Drawing.Point(6, 14);
+            this.listSystemNotifications.Name = "listSystemNotifications";
+            this.listSystemNotifications.Size = new System.Drawing.Size(254, 82);
+            this.listSystemNotifications.TabIndex = 0;
+            // 
             // _groupRunningStatus
             // 
             this._groupRunningStatus.Controls.Add(this._imgSysStatusSystemScheduler);
@@ -248,32 +266,14 @@
             this._groupRunningStatus.TabStop = false;
             this._groupRunningStatus.Text = "System Module Status";
             // 
-            // _lblEnvironmentHead
+            // _imgSysStatusSystemScheduler
             // 
-            this._lblEnvironmentHead.AutoSize = true;
-            this._lblEnvironmentHead.Location = new System.Drawing.Point(32, 20);
-            this._lblEnvironmentHead.Name = "_lblEnvironmentHead";
-            this._lblEnvironmentHead.Size = new System.Drawing.Size(66, 13);
-            this._lblEnvironmentHead.TabIndex = 4;
-            this._lblEnvironmentHead.Text = "Environment";
-            // 
-            // _lblPTrackControllerRedHead
-            // 
-            this._lblPTrackControllerRedHead.AutoSize = true;
-            this._lblPTrackControllerRedHead.Location = new System.Drawing.Point(32, 64);
-            this._lblPTrackControllerRedHead.Name = "_lblPTrackControllerRedHead";
-            this._lblPTrackControllerRedHead.Size = new System.Drawing.Size(142, 13);
-            this._lblPTrackControllerRedHead.TabIndex = 3;
-            this._lblPTrackControllerRedHead.Text = "Primary Track Controller Red";
-            // 
-            // _lblTrackModelStatusHead
-            // 
-            this._lblTrackModelStatusHead.AutoSize = true;
-            this._lblTrackModelStatusHead.Location = new System.Drawing.Point(32, 42);
-            this._lblTrackModelStatusHead.Name = "_lblTrackModelStatusHead";
-            this._lblTrackModelStatusHead.Size = new System.Drawing.Size(67, 13);
-            this._lblTrackModelStatusHead.TabIndex = 2;
-            this._lblTrackModelStatusHead.Text = "Track Model";
+            this._imgSysStatusSystemScheduler.InitialImage = null;
+            this._imgSysStatusSystemScheduler.Location = new System.Drawing.Point(9, 127);
+            this._imgSysStatusSystemScheduler.Name = "_imgSysStatusSystemScheduler";
+            this._imgSysStatusSystemScheduler.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusSystemScheduler.TabIndex = 8;
+            this._imgSysStatusSystemScheduler.TabStop = false;
             // 
             // _lblSystemSchedulerStatusHead
             // 
@@ -284,6 +284,24 @@
             this._lblSystemSchedulerStatusHead.TabIndex = 1;
             this._lblSystemSchedulerStatusHead.Text = "System Scheduler";
             // 
+            // _imgSysStatusTrackControllerGreen
+            // 
+            this._imgSysStatusTrackControllerGreen.InitialImage = null;
+            this._imgSysStatusTrackControllerGreen.Location = new System.Drawing.Point(9, 83);
+            this._imgSysStatusTrackControllerGreen.Name = "_imgSysStatusTrackControllerGreen";
+            this._imgSysStatusTrackControllerGreen.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusTrackControllerGreen.TabIndex = 13;
+            this._imgSysStatusTrackControllerGreen.TabStop = false;
+            // 
+            // _lblPTrackControllerGreenHead
+            // 
+            this._lblPTrackControllerGreenHead.AutoSize = true;
+            this._lblPTrackControllerGreenHead.Location = new System.Drawing.Point(32, 86);
+            this._lblPTrackControllerGreenHead.Name = "_lblPTrackControllerGreenHead";
+            this._lblPTrackControllerGreenHead.Size = new System.Drawing.Size(151, 13);
+            this._lblPTrackControllerGreenHead.TabIndex = 12;
+            this._lblPTrackControllerGreenHead.Text = "Primary Track Controller Green";
+            // 
             // _lblCTCOfficeStatusHead
             // 
             this._lblCTCOfficeStatusHead.AutoSize = true;
@@ -292,6 +310,69 @@
             this._lblCTCOfficeStatusHead.Size = new System.Drawing.Size(59, 13);
             this._lblCTCOfficeStatusHead.TabIndex = 0;
             this._lblCTCOfficeStatusHead.Text = "CTC Office";
+            // 
+            // _imgSysStatusEnvironment
+            // 
+            this._imgSysStatusEnvironment.InitialImage = null;
+            this._imgSysStatusEnvironment.Location = new System.Drawing.Point(9, 17);
+            this._imgSysStatusEnvironment.Name = "_imgSysStatusEnvironment";
+            this._imgSysStatusEnvironment.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusEnvironment.TabIndex = 11;
+            this._imgSysStatusEnvironment.TabStop = false;
+            // 
+            // _lblTrackModelStatusHead
+            // 
+            this._lblTrackModelStatusHead.AutoSize = true;
+            this._lblTrackModelStatusHead.Location = new System.Drawing.Point(32, 42);
+            this._lblTrackModelStatusHead.Name = "_lblTrackModelStatusHead";
+            this._lblTrackModelStatusHead.Size = new System.Drawing.Size(67, 13);
+            this._lblTrackModelStatusHead.TabIndex = 2;
+            this._lblTrackModelStatusHead.Text = "Track Model";
+            // 
+            // _imgSysStatusTrackControllerRed
+            // 
+            this._imgSysStatusTrackControllerRed.InitialImage = null;
+            this._imgSysStatusTrackControllerRed.Location = new System.Drawing.Point(9, 61);
+            this._imgSysStatusTrackControllerRed.Name = "_imgSysStatusTrackControllerRed";
+            this._imgSysStatusTrackControllerRed.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusTrackControllerRed.TabIndex = 10;
+            this._imgSysStatusTrackControllerRed.TabStop = false;
+            // 
+            // _lblPTrackControllerRedHead
+            // 
+            this._lblPTrackControllerRedHead.AutoSize = true;
+            this._lblPTrackControllerRedHead.Location = new System.Drawing.Point(32, 64);
+            this._lblPTrackControllerRedHead.Name = "_lblPTrackControllerRedHead";
+            this._lblPTrackControllerRedHead.Size = new System.Drawing.Size(142, 13);
+            this._lblPTrackControllerRedHead.TabIndex = 3;
+            this._lblPTrackControllerRedHead.Text = "Primary Track Controller Red";
+            // 
+            // _imgSysStatusTrackModel
+            // 
+            this._imgSysStatusTrackModel.InitialImage = null;
+            this._imgSysStatusTrackModel.Location = new System.Drawing.Point(9, 39);
+            this._imgSysStatusTrackModel.Name = "_imgSysStatusTrackModel";
+            this._imgSysStatusTrackModel.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusTrackModel.TabIndex = 9;
+            this._imgSysStatusTrackModel.TabStop = false;
+            // 
+            // _lblEnvironmentHead
+            // 
+            this._lblEnvironmentHead.AutoSize = true;
+            this._lblEnvironmentHead.Location = new System.Drawing.Point(32, 20);
+            this._lblEnvironmentHead.Name = "_lblEnvironmentHead";
+            this._lblEnvironmentHead.Size = new System.Drawing.Size(66, 13);
+            this._lblEnvironmentHead.TabIndex = 4;
+            this._lblEnvironmentHead.Text = "Environment";
+            // 
+            // _imgSysStatusCTCOffice
+            // 
+            this._imgSysStatusCTCOffice.InitialImage = null;
+            this._imgSysStatusCTCOffice.Location = new System.Drawing.Point(9, 105);
+            this._imgSysStatusCTCOffice.Name = "_imgSysStatusCTCOffice";
+            this._imgSysStatusCTCOffice.Size = new System.Drawing.Size(16, 16);
+            this._imgSysStatusCTCOffice.TabIndex = 7;
+            this._imgSysStatusCTCOffice.TabStop = false;
             // 
             // _groupSystemMetrics
             // 
@@ -315,7 +396,7 @@
             // _lblCrewMetrics
             // 
             this._lblCrewMetrics.AutoSize = true;
-            this._lblCrewMetrics.Location = new System.Drawing.Point(68, 68);
+            this._lblCrewMetrics.Location = new System.Drawing.Point(68, 74);
             this._lblCrewMetrics.Name = "_lblCrewMetrics";
             this._lblCrewMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblCrewMetrics.TabIndex = 9;
@@ -333,7 +414,7 @@
             // _lblCrewHeading
             // 
             this._lblCrewHeading.AutoSize = true;
-            this._lblCrewHeading.Location = new System.Drawing.Point(37, 65);
+            this._lblCrewHeading.Location = new System.Drawing.Point(37, 74);
             this._lblCrewHeading.Name = "_lblCrewHeading";
             this._lblCrewHeading.Size = new System.Drawing.Size(34, 13);
             this._lblCrewHeading.TabIndex = 8;
@@ -341,7 +422,7 @@
             // 
             // _btnRefreshMetrics
             // 
-            this._btnRefreshMetrics.Location = new System.Drawing.Point(171, 89);
+            this._btnRefreshMetrics.Location = new System.Drawing.Point(179, 16);
             this._btnRefreshMetrics.Name = "_btnRefreshMetrics";
             this._btnRefreshMetrics.Size = new System.Drawing.Size(75, 23);
             this._btnRefreshMetrics.TabIndex = 7;
@@ -352,7 +433,7 @@
             // _lblTotalMetrics
             // 
             this._lblTotalMetrics.AutoSize = true;
-            this._lblTotalMetrics.Location = new System.Drawing.Point(68, 81);
+            this._lblTotalMetrics.Location = new System.Drawing.Point(68, 92);
             this._lblTotalMetrics.Name = "_lblTotalMetrics";
             this._lblTotalMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblTotalMetrics.TabIndex = 6;
@@ -361,7 +442,7 @@
             // _lblPassengersMetrics
             // 
             this._lblPassengersMetrics.AutoSize = true;
-            this._lblPassengersMetrics.Location = new System.Drawing.Point(68, 52);
+            this._lblPassengersMetrics.Location = new System.Drawing.Point(68, 56);
             this._lblPassengersMetrics.Name = "_lblPassengersMetrics";
             this._lblPassengersMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblPassengersMetrics.TabIndex = 5;
@@ -370,7 +451,7 @@
             // _lblTrainsMetrics
             // 
             this._lblTrainsMetrics.AutoSize = true;
-            this._lblTrainsMetrics.Location = new System.Drawing.Point(68, 39);
+            this._lblTrainsMetrics.Location = new System.Drawing.Point(68, 38);
             this._lblTrainsMetrics.Name = "_lblTrainsMetrics";
             this._lblTrainsMetrics.Size = new System.Drawing.Size(13, 13);
             this._lblTrainsMetrics.TabIndex = 4;
@@ -379,7 +460,7 @@
             // _lblTotalLoadHeading
             // 
             this._lblTotalLoadHeading.AutoSize = true;
-            this._lblTotalLoadHeading.Location = new System.Drawing.Point(10, 81);
+            this._lblTotalLoadHeading.Location = new System.Drawing.Point(10, 92);
             this._lblTotalLoadHeading.Name = "_lblTotalLoadHeading";
             this._lblTotalLoadHeading.Size = new System.Drawing.Size(61, 13);
             this._lblTotalLoadHeading.TabIndex = 3;
@@ -388,7 +469,7 @@
             // _lblPassengersHeading
             // 
             this._lblPassengersHeading.AutoSize = true;
-            this._lblPassengersHeading.Location = new System.Drawing.Point(6, 52);
+            this._lblPassengersHeading.Location = new System.Drawing.Point(6, 56);
             this._lblPassengersHeading.Name = "_lblPassengersHeading";
             this._lblPassengersHeading.Size = new System.Drawing.Size(65, 13);
             this._lblPassengersHeading.TabIndex = 2;
@@ -397,7 +478,7 @@
             // _lblTrainsHeading
             // 
             this._lblTrainsHeading.AutoSize = true;
-            this._lblTrainsHeading.Location = new System.Drawing.Point(32, 39);
+            this._lblTrainsHeading.Location = new System.Drawing.Point(32, 38);
             this._lblTrainsHeading.Name = "_lblTrainsHeading";
             this._lblTrainsHeading.Size = new System.Drawing.Size(39, 13);
             this._lblTrainsHeading.TabIndex = 1;
@@ -545,87 +626,6 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
-            // groupSystemNotifications
-            // 
-            this.groupSystemNotifications.Controls.Add(this.listSystemNotifications);
-            this.groupSystemNotifications.Location = new System.Drawing.Point(9, 181);
-            this.groupSystemNotifications.Name = "groupSystemNotifications";
-            this.groupSystemNotifications.Size = new System.Drawing.Size(260, 109);
-            this.groupSystemNotifications.TabIndex = 9;
-            this.groupSystemNotifications.TabStop = false;
-            this.groupSystemNotifications.Text = "System Notifications";
-            // 
-            // listSystemNotifications
-            // 
-            this.listSystemNotifications.FormattingEnabled = true;
-            this.listSystemNotifications.Location = new System.Drawing.Point(6, 14);
-            this.listSystemNotifications.Name = "listSystemNotifications";
-            this.listSystemNotifications.Size = new System.Drawing.Size(254, 82);
-            this.listSystemNotifications.TabIndex = 0;
-            // 
-            // _imgSysStatusCTCOffice
-            // 
-            this._imgSysStatusCTCOffice.InitialImage = null;
-            this._imgSysStatusCTCOffice.Location = new System.Drawing.Point(9, 105);
-            this._imgSysStatusCTCOffice.Name = "_imgSysStatusCTCOffice";
-            this._imgSysStatusCTCOffice.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusCTCOffice.TabIndex = 7;
-            this._imgSysStatusCTCOffice.TabStop = false;
-            // 
-            // _imgSysStatusSystemScheduler
-            // 
-            this._imgSysStatusSystemScheduler.InitialImage = null;
-            this._imgSysStatusSystemScheduler.Location = new System.Drawing.Point(9, 127);
-            this._imgSysStatusSystemScheduler.Name = "_imgSysStatusSystemScheduler";
-            this._imgSysStatusSystemScheduler.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusSystemScheduler.TabIndex = 8;
-            this._imgSysStatusSystemScheduler.TabStop = false;
-            // 
-            // _imgSysStatusTrackModel
-            // 
-            this._imgSysStatusTrackModel.InitialImage = null;
-            this._imgSysStatusTrackModel.Location = new System.Drawing.Point(9, 39);
-            this._imgSysStatusTrackModel.Name = "_imgSysStatusTrackModel";
-            this._imgSysStatusTrackModel.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusTrackModel.TabIndex = 9;
-            this._imgSysStatusTrackModel.TabStop = false;
-            // 
-            // _imgSysStatusTrackControllerRed
-            // 
-            this._imgSysStatusTrackControllerRed.InitialImage = null;
-            this._imgSysStatusTrackControllerRed.Location = new System.Drawing.Point(9, 61);
-            this._imgSysStatusTrackControllerRed.Name = "_imgSysStatusTrackControllerRed";
-            this._imgSysStatusTrackControllerRed.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusTrackControllerRed.TabIndex = 10;
-            this._imgSysStatusTrackControllerRed.TabStop = false;
-            // 
-            // _imgSysStatusEnvironment
-            // 
-            this._imgSysStatusEnvironment.InitialImage = null;
-            this._imgSysStatusEnvironment.Location = new System.Drawing.Point(9, 17);
-            this._imgSysStatusEnvironment.Name = "_imgSysStatusEnvironment";
-            this._imgSysStatusEnvironment.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusEnvironment.TabIndex = 11;
-            this._imgSysStatusEnvironment.TabStop = false;
-            // 
-            // _imgSysStatusTrackControllerGreen
-            // 
-            this._imgSysStatusTrackControllerGreen.InitialImage = null;
-            this._imgSysStatusTrackControllerGreen.Location = new System.Drawing.Point(9, 83);
-            this._imgSysStatusTrackControllerGreen.Name = "_imgSysStatusTrackControllerGreen";
-            this._imgSysStatusTrackControllerGreen.Size = new System.Drawing.Size(16, 16);
-            this._imgSysStatusTrackControllerGreen.TabIndex = 13;
-            this._imgSysStatusTrackControllerGreen.TabStop = false;
-            // 
-            // _lblPTrackControllerGreenHead
-            // 
-            this._lblPTrackControllerGreenHead.AutoSize = true;
-            this._lblPTrackControllerGreenHead.Location = new System.Drawing.Point(32, 86);
-            this._lblPTrackControllerGreenHead.Name = "_lblPTrackControllerGreenHead";
-            this._lblPTrackControllerGreenHead.Size = new System.Drawing.Size(151, 13);
-            this._lblPTrackControllerGreenHead.TabIndex = 12;
-            this._lblPTrackControllerGreenHead.Text = "Primary Track Controller Green";
-            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -641,8 +641,15 @@
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).EndInit();
             this._groupOperatorControls.ResumeLayout(false);
             this._groupSystemStatus.ResumeLayout(false);
+            this.groupSystemNotifications.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
             this._groupRunningStatus.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerRed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackModel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusCTCOffice)).EndInit();
             this._groupSystemMetrics.ResumeLayout(false);
             this._groupSystemMetrics.PerformLayout();
             this._groupGlobalTimeControls.ResumeLayout(false);
@@ -654,13 +661,6 @@
             this._tabGreenLine.ResumeLayout(false);
             this._tabTeamLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
-            this.groupSystemNotifications.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusCTCOffice)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackModel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerRed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).EndInit();
             this.ResumeLayout(false);
 
         }
