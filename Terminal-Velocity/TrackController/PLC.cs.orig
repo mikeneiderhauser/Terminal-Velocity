@@ -18,21 +18,42 @@ namespace TrackController
         }
 
         /// <summary>
+<<<<<<< HEAD
+        /// Checks whether we are in a safe state
+=======
         /// Checks whether we are in a safe state and performs actions to ensure it
+>>>>>>> prototype
         /// </summary>
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
+<<<<<<< HEAD
+        /// <returns></returns>
+        public bool IsSafe(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether we need to turn on lights
+=======
         public void IsSafe(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
         {
         }
 
         /// <summary>
         /// Checks whether we need to turn on lights and does so if necessary
+>>>>>>> prototype
         /// </summary>
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
+<<<<<<< HEAD
+        /// <returns></returns>
+        public bool LightsRequired(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
+        {
+            return false;
+=======
         public void ToggleLights(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
         {
         }
@@ -46,6 +67,7 @@ namespace TrackController
         /// <returns></returns>
         public void DoSwitch(List<IBlock> blocks, List<ITrain> trains, List<IRoute> routes)
         {
+>>>>>>> prototype
         }
 
         internal class Action

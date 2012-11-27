@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Interfaces
-{
-    interface ITrackModel
-    {
-    }
-}
-=======
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +7,16 @@ namespace Interfaces
 {
     public interface ITrackModel
     {
+        IBlock requestBlockInfo(int blockID);
+        IRouteInfo requestRouteInfo(int routeID);
 
+<<<<<<< HEAD
+        IBlock[][] requestTrackGrid(int routeID);
+=======
+        IBlock[,] requestTrackGrid(int routeID);
+>>>>>>> prototype
 
-	IBlock requestBlockInfo(int blockID);
-	IRoute requestRouteInfo(int routeID);
-
-	IBlock[][] requestTrackGrid(int routeID);
-
-	bool requestUpdateSwitch(IBlock bToUpdate);
-	bool requestUpdateBlock(IBlock blockToChange);
-
+        bool requestUpdateSwitch(IBlock bToUpdate);
+        bool requestUpdateBlock(IBlock blockToChange);
     }
 }
->>>>>>> prototype

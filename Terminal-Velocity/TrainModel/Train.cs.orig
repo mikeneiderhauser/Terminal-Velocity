@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+<<<<<<< HEAD
 using Utility;
 using Interfaces;
-<<<<<<< HEAD
-=======
 using TrainController;
+=======
+
+using Utility;
+using Interfaces;
 >>>>>>> prototype
 
 namespace TrainModel
 {
     public class Train : ITrainModel
     {
-<<<<<<< HEAD
-=======
         //Commit for Train Class 11/16/2012 4:30
->>>>>>> prototype
         // Has public parameters
         private int _trainID;
         private const double _length = 32.33; // meters
@@ -28,23 +28,6 @@ namespace TrainModel
         private double _currentAcceleration;
         private double _currentVelocity;
         private double _currentPosition;
-<<<<<<< HEAD
-        
-        private const int _maxCapacity = 222; // 74 seated, 148 standing
-        private int _numPassengers;
-        private int _numCrew;
-        
-        private bool _brakeFailure;
-        private bool _engineFailure;
-        private bool _signalPickupFailure;
-        
-        private ITrainController _trainController;
-        private IEnvironment _environment;
-
-        private IBlock _currentBlock;
-        private double _blockLength;
-       
-=======
 
         private const int _maxCapacity = 222; // 74 seated, 148 standing
         private int _numPassengers;
@@ -61,7 +44,6 @@ namespace TrainModel
         private IBlock _currentBlock;
         private double _blockLength;
 
->>>>>>> prototype
         // Does not have public parameters
         private const double _initialMass = 40900; // kilograms
         private const double _personMass = 90; // kilograms
@@ -71,14 +53,14 @@ namespace TrainModel
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
         private const double _physicalVelocityLimit = 70000; // meters/hour
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
+<<<<<<< HEAD
         private const double _accelerationGravity = -9.8; // meters/second^2
+=======
+        private const double _accelerationGravity = 9.8; // meters/second^2
+>>>>>>> prototype
 
         //TODO: get list of trains from environment
-<<<<<<< HEAD
-        private List<Train> allTrains;
-=======
         private List<ITrainModel> allTrains;
->>>>>>> prototype
 
         #region Constructors
 
@@ -86,11 +68,7 @@ namespace TrainModel
         /// This constructor is used when passenger, crew, and temperature information is not given.
         /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
-<<<<<<< HEAD
-        public Train(int trainID, IBlock startingBlock, IEnvironment environment)
-=======
         public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
->>>>>>> prototype
         {
             _trainID = trainID;
             _totalMass = calculateMass();
@@ -116,11 +94,6 @@ namespace TrainModel
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
-<<<<<<< HEAD
-            // TODO: set allTrains equal to list contained in environment and add this train
-        }
-        
-=======
             _trackModel = environment.TrackModel;
 
             // TODO: double check constructor
@@ -130,12 +103,12 @@ namespace TrainModel
             allTrains = environment.AllTrains;
         }
 
->>>>>>> prototype
         #endregion
 
 
         #region Public Methods
 
+<<<<<<< HEAD
         //TODO
         public void EmergencyBrake()
         {
@@ -145,10 +118,40 @@ namespace TrainModel
         //TODO
         public bool ChangeMovement(double power)
         {
-<<<<<<< HEAD
-
-=======
             _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
+=======
+        public void EmergencyBrake()
+        {
+            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
+            _currentAcceleration = _emergencyBrakeDeceleration;
+        }
+
+        public bool ChangeMovement(double power)
+        {
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
+
+            double currentForce = 0;
+
+            if (_currentVelocity > 0 || _currentVelocity < 0)
+            {
+                currentForce = power / _currentVelocity;
+            }
+
+            double newAcceleration = currentForce / _totalMass;
+
+            if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
+            {
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                return false;
+            }
+            else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
+            {
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                return false;
+            }
+
+            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\n";
+            _currentAcceleration = newAcceleration;
 >>>>>>> prototype
             return true;
         }
@@ -168,58 +171,60 @@ namespace TrainModel
         #region Private Methods
 
 <<<<<<< HEAD
-        //TODO: Update block changes, whether going forwards or backwards
-        //      Handle elevation calculations
-        private void updateMovement()
-        {
-            _currentVelocity += _currentAcceleration; // TODO: + elevation values
-=======
         //TODO: Handle elevation calculations
         private void updateMovement()
         {
             _currentVelocity += _currentAcceleration; // TODO: + elevation values -> change acceleration first
->>>>>>> prototype
             _currentPosition += _currentVelocity;
 
+=======
+        private void _environment_Tick(object sender, TickEventArgs e)
+        {
+            updateMovement();
+        }
+
+        private void updateMovement()
+        {
+            // acceleration changes due to elevation
+            double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
+            
+            if (_currentBlock.Grade > 0) // up hill
+            {
+                _currentAcceleration -= _accelerationGravity * Math.Sin(angle);
+            }
+            else if (_currentBlock.Grade < 0) // down hill
+            {
+                _currentAcceleration += _accelerationGravity * Math.Sin(angle);
+            }
+
+            _currentVelocity += _currentAcceleration;
+            _currentPosition += _currentVelocity;
+>>>>>>> prototype
 
             // Handles edge of blocks for forwards and backwards
             if (_currentPosition >= _blockLength)
             {
-<<<<<<< HEAD
-                //_currentBlock = _currentBlock.NEXT;
-=======
                 //_currentBlock = _currentBlock.NEXT method
                 int nextBlockID = _currentBlock.SwitchDest1;
                 _currentBlock = _trackModel.requestBlockInfo(nextBlockID);
                 
->>>>>>> prototype
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
             }
             else if (_currentPosition < 0)
             {
-<<<<<<< HEAD
-                //_currentBlock = _currentBlock.PREVIOUS;
-                _blockLength = _currentBlock.BlockSize;
-                _currentPosition = _blockLength - _currentPosition*-1;
-=======
                 //_currentBlock = _currentBlock.PREVIOUS method
                 int prevBlockID = _currentBlock.PrevBlockID;
                 _currentBlock = _trackModel.requestBlockInfo(prevBlockID);
 
                 _blockLength = _currentBlock.BlockSize;
                 _currentPosition = _blockLength - _currentPosition * -1;
->>>>>>> prototype
             }
         }
 
         private double calculateMass()
         {
-<<<<<<< HEAD
-            return (_initialMass + _personMass*(_numPassengers + _numCrew));
-=======
             return (_initialMass + _personMass * (_numPassengers + _numCrew));
->>>>>>> prototype
         }
 
         //TODO
@@ -228,15 +233,14 @@ namespace TrainModel
             return false;
         }
 
+<<<<<<< HEAD
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             //handle tick here
             updateMovement();
         }
-<<<<<<< HEAD
-        
-=======
 
+=======
 >>>>>>> prototype
         #endregion
 
@@ -267,11 +271,7 @@ namespace TrainModel
         public bool LightsOn
         {
             get { return _lightsOn; }
-<<<<<<< HEAD
-            set 
-=======
             set
->>>>>>> prototype
             {
                 _lightsOn = value;
                 _informationLog += "Train " + _trainID;
@@ -286,19 +286,11 @@ namespace TrainModel
         public bool DoorsOpen
         {
             get { return _doorsOpen; }
-<<<<<<< HEAD
-            set 
-            { 
-                _doorsOpen = value;
-                _informationLog += "Train " + _trainID;
-              
-=======
             set
             {
                 _doorsOpen = value;
                 _informationLog += "Train " + _trainID;
 
->>>>>>> prototype
                 if (_doorsOpen)
                     _informationLog += " doors were opened.\n";
                 else
@@ -310,11 +302,7 @@ namespace TrainModel
         {
             get { return _temperature; }
             set
-<<<<<<< HEAD
-            { 
-=======
             {
->>>>>>> prototype
                 _temperature = value;
                 _informationLog += "Train " + _trainID + " temperature was set to " + _temperature;
             }
@@ -343,11 +331,7 @@ namespace TrainModel
         public int NumPassengers
         {
             get { return _numPassengers; }
-<<<<<<< HEAD
-            set 
-=======
             set
->>>>>>> prototype
             {
                 int oldNumPassengers = _numPassengers;
                 _numPassengers = value;
@@ -406,12 +390,6 @@ namespace TrainModel
         {
             get { return _currentBlock; }
         }
-<<<<<<< HEAD
-        
-        #endregion
-    }
-}
-=======
 
         // TODO: double check that it works
         // for track controller communications
@@ -436,4 +414,3 @@ namespace TrainModel
 
     }
 }
->>>>>>> prototype

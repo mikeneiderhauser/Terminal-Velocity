@@ -155,8 +155,12 @@ namespace TrackController
                 case RequestTypes.SetTrainSpeed:
                     if (Trains.Keys.Contains(request.TrainID))
                     {
+<<<<<<< HEAD
+                        // set train speed
+=======
                         //  TrainAuthority also contains the speec, if RequestTypes is SetTrainSpeed
                         _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
+>>>>>>> prototype
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
@@ -171,7 +175,11 @@ namespace TrackController
             if (Next != null)
                 Next.Request = request;
             else
+<<<<<<< HEAD
+                _env.CTCOffice.passRequest(request);
+=======
                 _env.CTCOffice.handleResponse(request);
+>>>>>>> prototype
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
@@ -182,9 +190,14 @@ namespace TrackController
             List<ITrain> st = Trains.Values.ToList();
             List<IRoute> sr = Routes.Values.ToList();
 
+<<<<<<< HEAD
+            // _plc.LightsRequired(sb, st, sr);
+            // _plc.IsSafe(sb, st, sr);
+=======
             _plc.ToggleLights(sb, st, sr);
             _plc.DoSwitch(sb, st, sr);
             _plc.IsSafe(sb, st, sr);
+>>>>>>> prototype
         }
 
         #endregion // Private Methods

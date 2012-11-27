@@ -33,7 +33,11 @@ namespace TrackModel
 		return null;
 	}
 
+<<<<<<< HEAD
+	public IBlock[][] requestTrackGrid(int routeID)
+=======
 	public IBlock[,] requestTrackGrid(int routeID)
+>>>>>>> prototype
 	{
 		return null;
 	}

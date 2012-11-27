@@ -12,7 +12,11 @@ namespace TerminalVelocity
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
+            Environment e = new Environment();
+=======
             SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
+>>>>>>> prototype
             //ITrackController first = Setup_Track_Controllers();
         }
     }
