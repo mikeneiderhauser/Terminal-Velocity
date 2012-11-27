@@ -35,6 +35,7 @@ namespace TrainModel
         private ISimulationEnvironment _environment;
         private ITrackModel _trackModel;
 
+        private int _trackCircuitID;
         private IBlock _currentBlock;
         private double _blockLength;
 
@@ -79,6 +80,7 @@ namespace TrainModel
             _signalPickupFailure = false;
 
             _currentBlock = startingBlock;
+            _trackCircuitID = _currentBlock.TrackCirID;
             _blockLength = _currentBlock.BlockSize;
 
             _environment = environment;
@@ -119,12 +121,12 @@ namespace TrainModel
 
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\n";
                 return false;
             }
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\n";
                 return false;
             }
 
@@ -188,17 +190,16 @@ namespace TrainModel
                 _blockLength = _currentBlock.BlockSize;
                 _currentPosition = _blockLength - _currentPosition * -1;
             }
+
+            if (_trackCircuitID != _currentBlock.TrackCirID)
+            {
+                _trackCircuitID = _currentBlock.TrackCirID;
+            }
         }
 
         private double calculateMass()
         {
             return (_initialMass + _personMass * (_numPassengers + _numCrew));
-        }
-
-        //TODO
-        private bool checkFailures()
-        {
-            return false;
         }
 
         #endregion
