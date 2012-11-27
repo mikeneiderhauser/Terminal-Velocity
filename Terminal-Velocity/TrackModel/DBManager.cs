@@ -145,7 +145,7 @@ namespace TrackModel
 			return null;
 
 		//if updateType was an unexpected value, quit out
-		if(!updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) && !updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
+		if(!updateType.Equals("SWITCH",StringComparison.OrdinalIgnoreCase) && !updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase))
 		{
 			return null;
 		}
@@ -175,7 +175,7 @@ namespace TrackModel
 
 			//Create block update string			
 			string updateString=	"UPDATE BLOCKS "+
-						"SET state='"+bToUpdate.State+"', trackCirID="+bToUpdate.TrackCirID+", infra='"+attrString+"' "
+						"SET state='"+bToUpdate.State+"', trackCirID="+bToUpdate.TrackCirID+", infra='"+attrString+"' "+
 						" WHERE blockID="+bID+" AND line='"+line+"'";
 			return  updateString;
 		}
@@ -301,7 +301,7 @@ namespace TrackModel
 			//Parse fields that must be provided as a different type
 			string[] infraFinal=infra.Split(";");
                         DirEnum dirFinal=Enum.Parse(typeof(DirEnum),dir,true);
-                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true)
+                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true);
 			int bIDFinal; 
 				bool bIDRes=int.TryParse(bID, out bIDFinal);
 				if(!bIDRes) {bIDFinal=-1;}
@@ -378,7 +378,7 @@ namespace TrackModel
                         //Parse fields that must be provided as a different type
                         string[] infraFinal=infra.Split(";");
                         DirEnum dirFinal=Enum.Parse(typeof(DirEnum),dir,true);
-                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true)
+                        StateEnum stateFinal=Enum.Parse(typeof(StateEnum),state,true);
                         int bIDFinal;
                                 bool bIDRes=int.TryParse(bID, out bIDFinal);
                                 if(!bIDRes) {bIDFinal=-1;}
@@ -421,7 +421,7 @@ namespace TrackModel
 		Block[] blocks=blockList.toArray();
 		string rName=blocks[0].Line;
 		int rID;
-		if(rName.Equals("Red",StringComparison.OrdinalIgnoreCase)
+		if(rName.Equals("Red",StringComparison.OrdinalIgnoreCase))
 			rID=0;
 		else
 			rID=1;
