@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Interfaces;
+using System.Data.SQLite;
+using System.Data.SqlClient;
 using Utility;
 
 namespace TrackModel
@@ -39,7 +41,7 @@ namespace TrackModel
 			return null;
 
 		//Get data reader for query
-		SqlDataReader queryReader=_dbManager.runQuery(blockQuery);
+        SQLiteDataReader queryReader = _dbManager.runQuery(blockQuery);
 
 		//Check exec return val
 		if(queryReader==null)
@@ -60,7 +62,7 @@ namespace TrackModel
 			return null;
 
 		//Get data reader from query
-		SqlDataReader queryReader=_dbManager.runQuery(routeQuery);
+        SQLiteDataReader queryReader = _dbManager.runQuery(routeQuery);
 		
 		//Check data reader return val
 		if(queryReader==null)
@@ -192,6 +194,8 @@ namespace TrackModel
 		{
 
 		}
+
+        return null;
 	}
 
 	public bool requestUpdateSwitch(IBlock bToUpdate)

@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.Sqlite;
+using System.Data.SQLite;
+using System.Data.SqlClient;
 using System.IO;
 using Interfaces;
-using Utilities;
+using Utility;
 
 namespace TrackModel
 {
     public class DBCreator
     {
         //Private parameters
-	private SqliteConnection _dbCon;
+	private SQLiteConnection _dbCon;
 
         public DBCreator(string fPath)
         {
@@ -33,7 +34,7 @@ namespace TrackModel
 
 		//Create a db connection (creating the db file if it doesnt already exist)
 		string connectionString="Data Source="+fPath;
-		_dbCon=new SqliteConnection(connectionString);
+		_dbCon=new SQLiteConnection(connectionString);
 
 		//If you needed to create the db tables,do so now
 		if(needsInitFlag==true)
@@ -73,7 +74,7 @@ namespace TrackModel
 			_dbCon.Open();
 
 			//Initialize command to create BLOCKS TABLE
-			SqliteCommand createCommand=new SqliteCommand(createBLOCKS);
+			SQLiteCommand createCommand=new SQLiteCommand(createBLOCKS);
 			createCommand.Connection=_dbCon;
 			try
 			{
@@ -82,8 +83,6 @@ namespace TrackModel
 				_dbCon.Close();//CLOSE DB
 				if(res!=0)
 					return -1;
-				else
-					return 0;
 			}
 			catch(Exception crap)
 			{
@@ -94,8 +93,8 @@ namespace TrackModel
 
 			//After creating the database, first insert the YARD block
 			_dbCon.Open();
-			yardIns="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'YARD','NONE')";
-			SqliteCommand insCommand=new SqliteCommand(yardIns);
+			string yardIns="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'YARD','NONE')";
+			SQLiteCommand insCommand=new SQLiteCommand(yardIns);
 			insCommand.Connection=_dbCon;
 			try
 			{
@@ -184,7 +183,7 @@ namespace TrackModel
 				//Console.WriteLine(singleInsert);
 				prevID=blockID;
 				_dbCon.Open();
-	                	        SqliteCommand insertCommand=new SqliteCommand(singleInsert);
+	                	        SQLiteCommand insertCommand=new SQLiteCommand(singleInsert);
         		                insertCommand.Connection=_dbCon;
 
 
@@ -453,10 +452,10 @@ namespace TrackModel
                        try
                        {
 			   _dbCon.Open();
-                           SqliteCommand updateCommand=new SqliteCommand(s);
-                           insertCommand.Connection=_dbCon;
+                           SQLiteCommand updateCommand=new SQLiteCommand(s);
+                           updateCommand.Connection=_dbCon;
 
-                            int res=insertCommand.ExecuteNonQuery();//Exec update
+                            int res=updateCommand.ExecuteNonQuery();//Exec update
                             //Console.WriteLine(res);
                             _dbCon.Close();//CLOSE DB
                             if(res!=1)
@@ -479,7 +478,7 @@ namespace TrackModel
 	}
 
 	//Properties
-        public SqliteConnection DBCon
+        public SQLiteConnection DBCon
         {
             get { return _dbCon; }
         }
