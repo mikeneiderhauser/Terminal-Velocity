@@ -281,8 +281,88 @@ namespace CTCOffice
         {
             if (e.Button == MouseButtons.Right)
             {
+                //cast sender as picturebox
+                PictureBox s = (PictureBox)sender;
+
+                //if sender data is not null (valid track piece / train piece)
+                if(s.Tag != null)
+                {
+                    //Cast Tag to Data Container
+                    LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+
+                    //Create right click menu
+                    ContextMenu cm = new ContextMenu();
+
+                    //Add Track Menu
+                    MenuItem trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
+                    trackItem.Tag = c;
+                    trackItem.MenuItems.Add("Open Track", HandleMenuClick);
+                    trackItem.MenuItems.Add("Close Track", HandleMenuClick);
+                    trackItem.MenuItems.Add("Display Track Info", HandleMenuClick);
+                    cm.MenuItems.Add(trackItem);
+
+                    //Add Train Menu if Train is contained by block
+                    if (c.Train != null || true)
+                    {
+                        int trainID = -1;
+                        if (c.Train != null)
+                        {
+                            trainID = c.Train.TrainID;
+                        }
+                        MenuItem trainItem = new MenuItem("Train (ID: " + trainID + ")");
+                        trainItem.Tag = c;
+                        trainItem.MenuItems.Add("Assign Train Route", HandleMenuClick);
+                        trainItem.MenuItems.Add("Set Train Authority", HandleMenuClick);
+                        trainItem.MenuItems.Add("Set Train Speed", HandleMenuClick);
+                        trainItem.MenuItems.Add("Set Train OOS", HandleMenuClick);
+                        trainItem.MenuItems.Add("Display Train Info", HandleMenuClick);
+                        cm.MenuItems.Add(trainItem);
+                    }
+                    //Show the context menu at cursor click
+                    cm.Show((Control)sender, new Point(e.X, e.Y));
+                
+                }//end if tag != null
+            }//end if right click
+        }
+
+        private void HandleMenuClick(object sender, EventArgs e)
+        {
+            MenuItem s = (MenuItem)sender;
+            LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+
+            if (s.Text.CompareTo("Open Track")==0)
+            {
+               
+            }
+            else if (s.Text.CompareTo("Close Track") == 0)
+            {
 
             }
+            else if (s.Text.CompareTo("Display Track Info") == 0)
+            {
+
+            }
+            else if (s.Text.CompareTo("Assign Train Route") == 0)
+            {
+
+            }
+            else if (s.Text.CompareTo("Set Train Authority") == 0)
+            {
+
+            }
+            else if (s.Text.CompareTo("Set Train Speed") == 0)
+            {
+
+            }
+            else if (s.Text.CompareTo("Set Train OOS") == 0)
+            {
+
+            }
+            else if (s.Text.CompareTo("Display Train Info") == 0)
+            {
+
+            }
+            //else do noting
         }
 
         /// <summary>
