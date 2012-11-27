@@ -46,8 +46,6 @@
     <Compile Include="IBlock.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IRouteInfo.cs" />
-    <Compile Include="IStatus.cs" />
-    <Compile Include="IBlock.cs" />
     <Compile Include="ISimulationEnvironment.cs" />
     <Compile Include="ICTCOffice.cs" />
     <Compile Include="IRequest.cs" />

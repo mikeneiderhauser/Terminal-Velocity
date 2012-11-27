@@ -9,11 +9,16 @@ namespace TrainController
 {
     public class TrainController : ITrainController
     {
+        private const int highestTemperature = 75;
+        private const int lowestTemperature = 65;
+
         public IEnvironment _environment
         {
             get { return _environment; }
             set { _environment = value; }
         }
+        
+ 
         public ITrainModel Train
         {
             get { return Train; }
@@ -52,13 +57,22 @@ namespace TrainController
             set
             {
                 SpeedLimit = value;
+                if (checkSpeedLimit())
+                {
+                    //slow down the train
+                }
             }
         }
         private double SpeedInput
         {
             get { return SpeedInput; }
-            set {if(  checkSpeedLimit())
-                SpeedInput = value; }
+            set 
+            {
+                if (checkSpeedLimit())
+                    SpeedInput = value;
+                else
+                    returnFeedback("Speed not implemented because it was over the speed limit");
+            }
         }
 
 
@@ -99,15 +113,12 @@ namespace TrainController
 
         }
 
-        public void lightsOn()
+        public void checkLightsOn()
         {
-            Train.LightsOn = true;
+            Train.LightsOn = CurrentBlock.hasTunnel();
         }
 
-        public void lightsOff()
-        {
-            Train.LightsOn = false;
-        }
+   
 
         public void returnFeedback(string Feedback)
         {
@@ -116,7 +127,7 @@ namespace TrainController
 
         public void doorOpen()
         {
-            Train.DoorsOpen = true;
+            Train.DoorsOpen = checkDoorOpen();
 
         }
 
@@ -135,12 +146,10 @@ namespace TrainController
         }
         private bool checkDoorOpen()
         {
+            //write log here
             return Train.CurrentVelocity == 0;
         }
-        private void checkLightsOn()
-        {
-            Train.LightsOn = CurrentBlock.hasTunnel();
-        }
+     
         public void EmergencyBrakes()
         {
             Train.EmergencyBrake();
