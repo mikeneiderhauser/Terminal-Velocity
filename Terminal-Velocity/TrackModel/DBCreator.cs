@@ -479,5 +479,10 @@ namespace TrackModel
 	}
 
 	//Properties
+        public SqliteConnection DBCon
+        {
+            get { return _dbCon; }
+        }
+
 }//End class
 }//End namespace
