@@ -64,7 +64,7 @@ namespace CTCOffice
             InitializeComponent();
             disableUserControl();
             txtGlobalTimeArea.Text = "1";
-            loginStatusImage.Image = Properties.Resources.red;
+            loginStatusImage.Image = Utility.Properties.Resources.red;
 
 
             //create new operator object
@@ -114,7 +114,7 @@ namespace CTCOffice
                 if (_op.isAuth())
                 {
                     _txtPassword.Text = "";
-                    loginStatusImage.Image = Properties.Resources.green;
+                    loginStatusImage.Image = Utility.Properties.Resources.green;
                     _btnLoginLogout.Text = "Logout";
 
                     enableUserControl();
@@ -137,7 +137,7 @@ namespace CTCOffice
 
                 _txtUsername.Text = "";
                 _txtPassword.Text = "";
-                loginStatusImage.Image = Properties.Resources.red;
+                loginStatusImage.Image = Utility.Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
                 _txtUsername.Focus();
 

@@ -51,8 +51,8 @@ namespace CTCOffice
 
             if (_env.TrackModel != null)
             {
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),0);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),1);
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),_env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
             }
             else
             {

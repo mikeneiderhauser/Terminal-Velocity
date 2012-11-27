@@ -117,17 +117,21 @@ namespace Testing
                     CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);
                     CTCOffice.TestingTrackController primaryGreen = new CTCOffice.TestingTrackController(1);
 
+
+                    env.PrimaryTrackControllerRed = primaryRed;
+                    env.PrimaryTrackControllerGreen = primaryGreen;
+                    env.TrackModel = tm;
+                    
+
                     //creating office instance
                     CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
 
                     //creating testing system scheduler
                     CTCOffice.TestingSystemScheduler ss = new CTCOffice.TestingSystemScheduler();
 
-                    env.CTCOffice = ctc;
-                    env.PrimaryTrackControllerRed = primaryRed;
-                    env.PrimaryTrackControllerGreen = primaryGreen;
-                    env.TrackModel = tm;
                     env.SystemScheduler = ss;
+                    env.CTCOffice = ctc;
+                    
 
                     //making Request Panel Objects (For red and green)
                     CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red", primaryRed);

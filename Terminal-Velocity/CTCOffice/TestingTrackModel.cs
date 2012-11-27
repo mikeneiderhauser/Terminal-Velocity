@@ -66,15 +66,15 @@ namespace CTCOffice
             throw new NotImplementedException();
         }
 
-        public IBlock[][] requestTrackGrid(int routeID)
+        public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID == 0)
             {
-                //return _redLineLayout;
+                return _redLineLayout;
             }
             else
             {
-                //return _greenLineLayout;
+                return _greenLineLayout;
             }
             return null;
         }
