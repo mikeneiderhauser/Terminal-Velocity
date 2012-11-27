@@ -196,12 +196,30 @@ namespace TrackModel
 
 	public bool requestUpdateSwitch(IBlock bToUpdate)
 	{
-		return false;
+		if(bToUpdate==null)
+			return false;
+
+		string updateString=_dbManager.createUpdate("SWITCH",bToUpdate);
+		if(updateString==null)
+			return false;
+
+		bool res=_dbManager.runUpdate(updateString);
+
+		return res;
 	}
 
 	public bool requestUpdateBlock(IBlock bToUpdate)
 	{
-		return false;
+		if(bToUpdate==null)
+			return false;
+		
+		string updateString=_dbManager.createUpdate("BLOCK",bToUpdate);
+		if(updateString==null)
+			return false;
+
+		bool res=_dbManager.runUpdate(updateString);
+		
+		return res;
 	}
 		
 		
