@@ -14,13 +14,22 @@ namespace TrackModel
     {
         //Private parameters
 	private SQLiteConnection _dbCon;
-    private static int curCirID=-1;
+    private static int _curCirID=-1;
+    private static List<TrackController.TrackCircuit> _trackCirList=null;
+    private ISimulationEnvironment _env;
 
-        public DBCreator(string fPath)
+        public DBCreator(string fPath,ISimulationEnvironment environment)
         {
+            //Store environment reference
+            _env = environment;
+
             //Init initial circuitID
-            if (curCirID == -1)
-                curCirID = 0;
+            if (_curCirID == -1)
+            {
+                _curCirID = 0;
+                _trackCirList=new List<TrackController.TrackCircuit>();
+            }
+
 
 		//fPath is the filename of the database to connect to.
 		//Check filepath's legit'ness, give it the default otherwise
@@ -205,13 +214,17 @@ namespace TrackModel
                 //Initialize trackCirID field for each block
                 if (curSection.Equals(fields[1], StringComparison.OrdinalIgnoreCase))
                 {
-                    trackCirID = curCirID;
+                    trackCirID = _curCirID;
                 }
                 else
                 {
-                    curCirID++;
-                    trackCirID = curCirID;
+                    //Update ID information
+                    _curCirID++;
+                    trackCirID = _curCirID;
                     curSection = fields[1];
+
+                    TrackController.TrackCircuit temp = new TrackController.TrackCircuit(_env);
+                    _trackCirList.Add(temp);
                 }
 
 

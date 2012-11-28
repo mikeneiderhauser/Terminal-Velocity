@@ -22,7 +22,7 @@ namespace TrackModel
         public TrackModel(ISimulationEnvironment environment)
         {
 		_env=environment;
-		_dbCreator=new DBCreator("");
+		_dbCreator=new DBCreator("",_env);
 		_dbManager=new DBManager(_dbCreator.DBCon);
 
 		//_environment.Tick+=

@@ -92,6 +92,10 @@
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TrackController\TrackController.csproj">
+      <Project>{B12E3C6B-35AD-4661-A41E-B5CF8137843E}</Project>
+      <Name>TrackController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>
       <Name>Utility</Name>
