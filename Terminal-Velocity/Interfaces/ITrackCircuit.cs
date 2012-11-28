@@ -17,6 +17,6 @@ namespace Interfaces
         Dictionary<int, ITrainModel> Trains { get; }
         Dictionary<int, IBlock> Blocks { get; }
 
-        void ToTrain(int ID, int speedLimit, int authority);
+        void ToTrain(int ID, double speedLimit, int authority);
     }
 }
