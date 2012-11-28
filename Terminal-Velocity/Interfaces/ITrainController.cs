@@ -7,22 +7,23 @@ namespace Interfaces
 {
    public interface ITrainController
     {
-        
-        
+        ITrainModel Train { get; }
+        List<IBlock> AuthorityBlocks {get; set;}
         int AuthorityLimit { get; set; }
         double SpeedLimit { get; set; }
-        int Announcement { set; }
-        double SpeedInput { get; set; }
+        IBlock CurrentBlock { get; set; }
+        int Announcement { set; } 
 
         void addPassengers();
         void removePassengers();
-        void checkLightsOn();
+        void lightsOn();
+        void lightsOff();
         void returnFeedback(String Feedback);
         void doorOpen();
         void doorClose();
         void sendPower(double Power);
 
- 
+        void commit();
 
 
 
