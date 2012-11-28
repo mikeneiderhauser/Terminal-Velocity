@@ -385,7 +385,7 @@ namespace CTCOffice
             RequestQueueOut(this, EventArgs.Empty);
         }
 
-        public void setTrainSpeedRequest(int trainID, int trackControllerID, int speed, IBlock block)
+        public void setTrainSpeedRequest(int trainID, int trackControllerID, double speed, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null, block));
             RequestQueueOut(this, EventArgs.Empty);
