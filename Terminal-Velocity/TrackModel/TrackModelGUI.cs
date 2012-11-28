@@ -33,7 +33,12 @@ namespace TrackModel
 
         private void loadFileBtn_Click(object sender, EventArgs e)
         {
+            OpenFileDialog getFName = new OpenFileDialog();
 
+            if (getFName.ShowDialog() == DialogResult.OK)
+            {
+                string fName = getFName.FileName;
+            }
         }
     }
 }
