@@ -76,7 +76,6 @@ namespace CTCOffice
             {
                 return _greenLineLayout;
             }
-            return null;
         }
 
         public bool requestUpdateSwitch(IBlock bToUpdate)
