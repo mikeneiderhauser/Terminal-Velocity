@@ -193,8 +193,8 @@ namespace TrainController
         {
            //CHECK PAPERS ASAP
             double e = speed - Train.CurrentVelocity;
-            double kp = 0.25;
-            double ki = 1;
+            //double kp = 0.25;
+            //double ki = 1;
             //need annotations
             
         }
