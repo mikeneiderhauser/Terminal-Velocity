@@ -28,6 +28,17 @@ namespace TrackModel
 		//_environment.Tick+=
         }
 
+        //Last minute method to allow TrackModel to directly take input file.
+        public bool provideInputFile(string fName)
+        {
+            int res=_dbCreator.parseInputFile(fName);
+
+            if (res == 0)
+                return true;
+            else
+                return false;
+        }
+
 	public IBlock requestBlockInfo(int blockID,string line)
 	{
 		//Dont request patently invalid blocks
