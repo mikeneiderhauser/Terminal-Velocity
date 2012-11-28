@@ -13,11 +13,11 @@ namespace TrainModel
 {
     public partial class TrainGUI : UserControl
     {
-        // TODO: Set selectedTrain = to train selected by combo box
-        private Train selectedTrain;
-        private List<ITrainModel> allTrains;
         private int numTrains;
         private int timer;
+
+        private Train selectedTrain;
+        private List<ITrainModel> allTrains;
         private ISimulationEnvironment _environment;
 
         public TrainGUI(ISimulationEnvironment environment)
@@ -25,13 +25,12 @@ namespace TrainModel
             InitializeComponent();
 
             allTrainComboBox.SelectedIndexChanged += new EventHandler(allTrainComboBox_SelectedIndexChanged);
-
             allTrains = environment.AllTrains;
             numTrains = allTrains.Count;
 
             timer = 0;
 
-            PopulateComboBox(allTrains); // TODO: update combobox each time new train is added
+            PopulateComboBox(allTrains);
 
             selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
@@ -40,6 +39,10 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
 
+        /// <summary>
+        /// Displays error message when a failure occurs.
+        /// </summary>
+        /// <param name="error"></param>
         public void DisplayError(string error)
         {
             MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);

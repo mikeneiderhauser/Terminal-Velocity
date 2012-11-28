@@ -10,8 +10,8 @@ namespace TrainModel
 {
     public class Train : ITrainModel
     {
-        //Commit for Train Class 11/16/2012 4:30
-        // Has public parameters
+        #region Global variables
+
         private int _trainID;
         private const double _length = 32.33; // meters
         private double _totalMass;
@@ -34,12 +34,18 @@ namespace TrainModel
         private ITrainController _trainController;
         private ISimulationEnvironment _environment;
         private ITrackModel _trackModel;
+        private List<ITrainModel> allTrains;
 
         private int _trackCircuitID;
         private IBlock _currentBlock;
         private double _blockLength;
 
-        // Does not have public parameters
+        #endregion
+
+
+
+        #region Constant values
+
         private const double _initialMass = 40900; // kilograms
         private const double _personMass = 90; // kilograms
         private const double _width = 2.65; // meters
@@ -50,8 +56,9 @@ namespace TrainModel
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
         private const double _accelerationGravity = 9.8; // meters/second^2
 
-        //TODO: get list of trains from environment
-        private List<ITrainModel> allTrains;
+        #endregion
+
+
 
         #region Constructors
 
@@ -87,9 +94,6 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
             _trackModel = environment.TrackModel;
-
-            // TODO: double check constructor
-            //_trainController = TrainController.TrainController();
             _trainController = new TrainController.TrainController(_environment);
 
             // set allTrains equal to list contained in environment
@@ -99,14 +103,24 @@ namespace TrainModel
         #endregion
 
 
+
         #region Public Methods
 
+
+        /// <summary>
+        /// Applies the maximum deceleration limit to the train to stop it.
+        /// </summary>
         public void EmergencyBrake()
         {
             _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
+        /// <summary>
+        /// Changes the acceleration of the train based on the given power. 
+        /// </summary>
+        /// <param name="power">Power given.</param>
+        /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
             _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
@@ -120,11 +134,14 @@ namespace TrainModel
 
             double newAcceleration = currentForce / _totalMass;
 
+            // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
                 _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\n";
                 return false;
             }
+
+            // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
                 _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\n";
@@ -148,13 +165,22 @@ namespace TrainModel
         #endregion
 
 
+
         #region Private Methods
 
+        /// <summary>
+        /// Occurs on every tick.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             updateMovement();
         }
 
+        /// <summary>
+        /// Updates the movement of the train. Accounts for slope and changes the block if necessary.
+        /// </summary>
         private void updateMovement()
         {
             // acceleration changes due to elevation
@@ -198,6 +224,10 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Calculates the mass of the train based on the number of passengers.
+        /// </summary>
+        /// <returns>The total mass.</returns>
         private double calculateMass()
         {
             return (_initialMass + _personMass * (_numPassengers + _numCrew));
