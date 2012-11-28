@@ -9,6 +9,7 @@ namespace Interfaces
 {
     public interface ITrackCircuit
     {
+        int ID { get; set; }
         Dictionary<int, ITrainModel> Trains { get; }
         Dictionary<int, IBlock> Blocks { get; }
 

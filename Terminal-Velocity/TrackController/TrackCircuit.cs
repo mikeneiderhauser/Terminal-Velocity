@@ -12,6 +12,9 @@ namespace TrackController
     {
         private ISimulationEnvironment _env;
         private ITrackController _trackController;
+
+        private int _id;
+
         private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, IBlock> _blocks;
 
@@ -29,6 +32,12 @@ namespace TrackController
         #endregion // Constructor(s)
 
         #region Public Properties
+
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
         public Dictionary<int, ITrainModel> Trains
         {
@@ -76,7 +85,6 @@ namespace TrackController
             // foreach train in environment,
             // if train is in area of control, add train
 
-            int trainID = 0;
             //ITrain train = null;
             //_trains.Add(trainID, train);
         }
