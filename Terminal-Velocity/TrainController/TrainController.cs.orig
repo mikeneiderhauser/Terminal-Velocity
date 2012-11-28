@@ -9,29 +9,61 @@ namespace TrainController
 {
     public class TrainController : ITrainController
     {
-<<<<<<< HEAD
+        private TrainControllerUI _tcGUI;
+        private ISimulationEnvironment _environment;
+
+        public TrainController(ISimulationEnvironment env)
+        {
+            _environment = env;
+            _environment.Tick += _environment_Tick;
+            _tcGUI = null;
+        }
+
+        void _environment_Tick(object sender, Utility.TickEventArgs e)
+        {
+            processTick();
+        }
+
+        public TrainControllerUI TrainControllerUserInterface
+        {
+            get { return _tcGUI; }
+            set { _tcGUI = value; }
+        }
+
+        private ITrainModel Train
+        {
+            get { return Train; }
+            set { Train = value; }
+        }
+
         private const int highestTemperature = 75;
         private const int lowestTemperature = 65;
 
-        public IEnvironment _environment
-=======
-        public ISimulationEnvironment _environment
->>>>>>> prototype
+        public ISimulationEnvironment Environment
         {
             get { return _environment; }
             set { _environment = value; }
         }
-<<<<<<< HEAD
-        
- 
-=======
->>>>>>> prototype
-        public ITrainModel Train
+
+
+        private void processTick()
         {
-            get { return Train; }
+            if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
+            {
+                if (SpeedInput > SpeedLimit)
+                    sendPower(SpeedLimit);
+                if (SpeedInput <= SpeedLimit)
+                    sendPower(SpeedInput);
+            }
+            
         }
 
-        public List<IBlock> AuthorityBlocks
+
+        //private bool checkBlockHasEnded()
+        //{
+        //    Train.
+        //}
+        private List<IBlock> AuthorityBlocks
         {
             get
             {
@@ -64,18 +96,15 @@ namespace TrainController
             set
             {
                 SpeedLimit = value;
-                if (checkSpeedLimit())
-                {
-                    //slow down the train
-                }
+              
             }
         }
-        private double SpeedInput
+        public double SpeedInput
         {
             get { return SpeedInput; }
             set 
             {
-                if (checkSpeedLimit())
+                if (!checkSpeedLimit(value))
                     SpeedInput = value;
                 else
                     returnFeedback("Speed not implemented because it was over the speed limit");
@@ -83,7 +112,7 @@ namespace TrainController
         }
 
 
-        public IBlock CurrentBlock
+        private IBlock CurrentBlock
         {
             get
             {
@@ -102,68 +131,42 @@ namespace TrainController
 
         public void addPassengers()
         {
-<<<<<<< HEAD
 
             Random r = new Random();
             int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity + 1);
-=======
-            
-            Random r = new Random();
-            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity+1);
->>>>>>> prototype
             Train.NumPassengers = newPassengers;
             //Send throughput afterwards
         }
-        public static ITrainController makeTrainController()
-        {
-<<<<<<< HEAD
-            return new TrainController();
-=======
-            Random r = new Random();
-            int newPassengers = r.Next(0, Train.NumPassengers + 1);
-            Train.NumPassengers = newPassengers;
-
->>>>>>> prototype
-        }
+       
         public void removePassengers()
         {
-<<<<<<< HEAD
             Random r = new Random();
             int newPassengers = r.Next(0, Train.NumPassengers + 1);
             Train.NumPassengers = newPassengers;
 
-=======
-            Train.LightsOn = true;
->>>>>>> prototype
         }
 
         public void checkLightsOn()
         {
-<<<<<<< HEAD
             Train.LightsOn = CurrentBlock.hasTunnel();
-=======
-            Train.LightsOn = false;
->>>>>>> prototype
         }
 
    
 
         public void returnFeedback(string Feedback)
         {
-            throw new NotImplementedException();
+            _environment.sendLogEntry(Feedback);
+            if (_tcGUI != null)
+            {
+                _tcGUI.RecLog(Feedback);
+            }
+          
         }
 
         public void doorOpen()
         {
-<<<<<<< HEAD
             Train.DoorsOpen = checkDoorOpen();
 
-=======
-            //if(Train.CurrentVelocity == 0 && CurrentBlock.)
-            //{
-            //    Train.DoorsOpen = true;
-            //}
->>>>>>> prototype
         }
 
         public void doorClose()
@@ -171,14 +174,37 @@ namespace TrainController
             Train.DoorsOpen = false;
         }
 
+        public int Temperature
+        {
+            get { return Temperature; }
+            set { 
+                if(checkTemperature(value))
+                Temperature = value;
+            }
+        }
+
+<<<<<<< HEAD
+        private bool checkTemperature(int temp)
+=======
+        ITrainModel ITrainController.Train
+>>>>>>> CTCOfficePrototype
+        {
+            return temp <= highestTemperature && temp >= lowestTemperature; 
+        }
+
+
         public void sendPower(double speed)
         {
-            throw new NotImplementedException();
+           //CHECK PAPERS ASAP
+            double e = speed - Train.CurrentVelocity;
+            double kp = 0.25;
+            double ki = 1;
+            //need annotations
+            
         }
-<<<<<<< HEAD
-        private bool checkSpeedLimit()
+        private bool checkSpeedLimit(double speed)
         {
-            return SpeedInput <= SpeedLimit;
+            return speed >= SpeedLimit;
         }
         private bool checkDoorOpen()
         {
@@ -189,18 +215,10 @@ namespace TrainController
         public void EmergencyBrakes()
         {
             Train.EmergencyBrake();
-=======
-
-        ITrain ITrainController.Train
-        {
-            get { throw new NotImplementedException(); }
         }
 
-        public void commit()
-        {
-            throw new NotImplementedException();
->>>>>>> prototype
-        }
+        
+
 
     }
 
