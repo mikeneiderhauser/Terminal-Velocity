@@ -11,6 +11,6 @@ namespace SystemScheduler
         string DispatchDatabaseFilename { get; }
         List<IDispatch> DispatchList { get; }
         List<string[]> DispatchDatabaseDataSource { get; }
-        void Remove(int dispatchID);
+        void RemoveDispatch(int dispatchID);
     }
 }

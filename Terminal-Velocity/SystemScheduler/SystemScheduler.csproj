@@ -63,7 +63,7 @@
       <DependentUpon>SystemSchedulerGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="AddEditGUI.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddEditGUI.Designer.cs">
       <DependentUpon>AddEditGUI.cs</DependentUpon>

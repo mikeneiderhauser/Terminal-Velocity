@@ -41,6 +41,8 @@
             this.txtCustom = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.lblAMPM = new System.Windows.Forms.Label();
+            this.cmbAMPM = new System.Windows.Forms.ComboBox();
             this.grpType.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +50,6 @@
             // 
             this.cmbHour.FormattingEnabled = true;
             this.cmbHour.Items.AddRange(new object[] {
-            "0",
             "1",
             "2",
             "3",
@@ -60,22 +61,12 @@
             "9",
             "10",
             "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23"});
+            "12"});
             this.cmbHour.Location = new System.Drawing.Point(69, 19);
             this.cmbHour.Name = "cmbHour";
-            this.cmbHour.Size = new System.Drawing.Size(121, 28);
+            this.cmbHour.Size = new System.Drawing.Size(62, 28);
             this.cmbHour.TabIndex = 0;
+            this.cmbHour.SelectedIndexChanged += new System.EventHandler(this.cmbHour_SelectedIndexChanged);
             // 
             // cmbMinute
             // 
@@ -85,10 +76,11 @@
             "15",
             "30",
             "45"});
-            this.cmbMinute.Location = new System.Drawing.Point(285, 19);
+            this.cmbMinute.Location = new System.Drawing.Point(206, 19);
             this.cmbMinute.Name = "cmbMinute";
-            this.cmbMinute.Size = new System.Drawing.Size(121, 28);
+            this.cmbMinute.Size = new System.Drawing.Size(62, 28);
             this.cmbMinute.TabIndex = 1;
+            this.cmbMinute.SelectedIndexChanged += new System.EventHandler(this.cmbMinute_SelectedIndexChanged);
             // 
             // lblHour
             // 
@@ -102,7 +94,7 @@
             // lblMinute
             // 
             this.lblMinute.AutoSize = true;
-            this.lblMinute.Location = new System.Drawing.Point(218, 22);
+            this.lblMinute.Location = new System.Drawing.Point(139, 22);
             this.lblMinute.Name = "lblMinute";
             this.lblMinute.Size = new System.Drawing.Size(61, 20);
             this.lblMinute.TabIndex = 3;
@@ -156,6 +148,9 @@
             // 
             this.cmbSelect.Enabled = false;
             this.cmbSelect.FormattingEnabled = true;
+            this.cmbSelect.Items.AddRange(new object[] {
+            "Red",
+            "Green"});
             this.cmbSelect.Location = new System.Drawing.Point(131, 119);
             this.cmbSelect.Name = "cmbSelect";
             this.cmbSelect.Size = new System.Drawing.Size(275, 28);
@@ -182,6 +177,7 @@
             // 
             // btnOK
             // 
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Enabled = false;
             this.btnOK.Location = new System.Drawing.Point(19, 210);
             this.btnOK.Name = "btnOK";
@@ -193,6 +189,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(227, 210);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(179, 29);
@@ -201,10 +198,34 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // lblAMPM
+            // 
+            this.lblAMPM.AutoSize = true;
+            this.lblAMPM.Location = new System.Drawing.Point(274, 22);
+            this.lblAMPM.Name = "lblAMPM";
+            this.lblAMPM.Size = new System.Drawing.Size(64, 20);
+            this.lblAMPM.TabIndex = 11;
+            this.lblAMPM.Text = "AM/PM:";
+            // 
+            // cmbAMPM
+            // 
+            this.cmbAMPM.FormattingEnabled = true;
+            this.cmbAMPM.Items.AddRange(new object[] {
+            "AM",
+            "PM"});
+            this.cmbAMPM.Location = new System.Drawing.Point(344, 19);
+            this.cmbAMPM.Name = "cmbAMPM";
+            this.cmbAMPM.Size = new System.Drawing.Size(62, 28);
+            this.cmbAMPM.TabIndex = 12;
+            this.cmbAMPM.SelectedIndexChanged += new System.EventHandler(this.cmbAMPM_SelectedIndexChanged);
+            // 
             // AddEditGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(426, 255);
+            this.Controls.Add(this.cmbAMPM);
+            this.Controls.Add(this.lblAMPM);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtCustom);
@@ -217,7 +238,6 @@
             this.Controls.Add(this.cmbMinute);
             this.Controls.Add(this.cmbHour);
             this.Name = "AddEditGUI";
-            this.Size = new System.Drawing.Size(428, 258);
             this.grpType.ResumeLayout(false);
             this.grpType.PerformLayout();
             this.ResumeLayout(false);
@@ -240,5 +260,7 @@
         private System.Windows.Forms.TextBox txtCustom;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblAMPM;
+        private System.Windows.Forms.ComboBox cmbAMPM;
     }
 }
