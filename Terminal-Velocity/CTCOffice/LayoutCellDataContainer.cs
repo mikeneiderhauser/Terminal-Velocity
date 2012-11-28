@@ -22,7 +22,7 @@ namespace CTCOffice
             _train = null;
         }
 
-        private ITrainModel Train
+        public ITrainModel Train
         {
             get { return _train; }
             set { _train = value; }

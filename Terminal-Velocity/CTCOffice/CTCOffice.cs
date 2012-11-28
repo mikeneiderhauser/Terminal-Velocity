@@ -10,6 +10,7 @@ using Utility;
     See passRequest for clarification
 */
 
+//merge
 namespace CTCOffice
 {
     public class CTCOffice : ICTCOffice
@@ -28,15 +29,31 @@ namespace CTCOffice
         private event EventHandler<EventArgs> RequestQueueIn;
         private bool _processingOutRequests;
         private bool _processingInRequests;
+        private bool _automation;
+
+        private List<ITrainModel> _trains;
+
+        /// <summary>
+        /// Number of Ticks Elapsed to update
+        /// </summary>
+        private double _rate;
+
+        private double _tickCount;
         #endregion
 
+        //confirm merge
         #region Constructor
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
+            _automation = false;
+            _rate = 50;//num of ticks
+            _tickCount = 0;
+            _rate = env.getInterval();
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
 
+            _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
             _env.Tick += new EventHandler<TickEventArgs>(_env_Tick);
 
@@ -47,8 +64,8 @@ namespace CTCOffice
 
             if (_env.TrackModel != null)
             {
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),0);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),1);
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),_env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
             }
             else
             {
@@ -70,6 +87,7 @@ namespace CTCOffice
             //get status from red and green prrimary track controllers (default)
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
             RequestQueueOut(this, EventArgs.Empty);
+
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
@@ -81,6 +99,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void CTCOffice_RequestQueueOut(object sender, EventArgs e)
         {
+            int i = 0;
             //handle sequential sending of the queue to the track controller
             if (!_processingOutRequests)
             {
@@ -88,7 +107,9 @@ namespace CTCOffice
                 _processingOutRequests = true;
                 while (_requestsOut.Count > 0)
                 {
-                    sendRequest(_requestsOut.Dequeue());
+                    IRequest temp = _requestsOut.Dequeue();
+                    sendRequest(temp);
+                    i++;
                 }
                 _processingOutRequests = false;
 
@@ -117,7 +138,12 @@ namespace CTCOffice
                     if ((_requestsIn.Peek()).Info != null)
                     {
                         //if valid return data
-                        internalRequest(_requestsIn.Dequeue());
+                        IRequest r = _requestsIn.Dequeue();
+                        if (_automation)
+                        {
+                            //send request back to system scheduler
+                        }
+                        internalRequest(r);
                     }
                     else
                     {
@@ -130,7 +156,7 @@ namespace CTCOffice
                 //failsafe - check to see if there is a new request while processing... (should nevert hit)
                 if (_requestsIn.Count != 0)
                 {
-                    RequestQueueOut(this, EventArgs.Empty);
+                    RequestQueueIn(this, EventArgs.Empty);
                 }
             }
         }
@@ -191,6 +217,7 @@ namespace CTCOffice
             {
                 StartAutomation(this, EventArgs.Empty);
             }
+            _automation = true;
         }
 
         /// <summary>
@@ -202,6 +229,7 @@ namespace CTCOffice
             {
                 StopAutomation(this, EventArgs.Empty);
             }
+            _automation = false;
         }
 
         /// <summary>
@@ -210,7 +238,9 @@ namespace CTCOffice
         /// <param name="request">Request to send to track controller</param>
         public void sendRequest(IRequest request)
         {
-            int line = determineLine(request);
+            int line = determineLine(request.TrackControllerID);
+                
+                //determineLine(request);
             //figure out a way to determine line from block ID -- Waiting on Track Model
 
             if (line == 0)
@@ -242,7 +272,12 @@ namespace CTCOffice
         /// <param name="e"></param>
         void _env_Tick(object sender, TickEventArgs e)
         {
-            addAutomaticUpdate();
+            _tickCount++;
+            if (_tickCount == _rate)
+            {
+                addAutomaticUpdate();
+            }
+            
         }
 
         /// <summary>
@@ -250,7 +285,8 @@ namespace CTCOffice
         /// </summary>
         private void addAutomaticUpdate()
         {
-            //cannot implement until environment implementation is expanded
+            //cannot implement until there is a way to get all trackcontroller ID's
+            //possibly through route infor (Red/Green) via block through track circuit etc..
         }
 
         /// <summary>
@@ -262,6 +298,20 @@ namespace CTCOffice
         {
             //cannot implement without Track Model Interface
             //red=0....green=1
+            return request.TrainRoute.RouteID;
+        }
+
+        private int determineLine(IRoute route)
+        {
+            if(route == null)
+            {
+                return -1;
+            }
+            return route.RouteID;
+        }
+
+        private int determineLine(int trackControllerID)
+        {
             return 0;
         }
 
@@ -284,6 +334,68 @@ namespace CTCOffice
             return null;
         }
 
+        public void dispatchTrainRequest(IRoute route)
+        {
+            int line = determineLine(route);
+            int id = -1;
+            if (line == 0)
+            {
+                id = _primaryTrackControllerRed.ID;
+            }
+            else if (line == 1)
+            {
+                id = _primaryTrackControllerGreen.ID;
+            }
+            else
+            {
+                _env.sendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
+            }
+
+            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, null));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainOutOfServiceRequest(int trainID, int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainOOS, trackControllerID, trainID, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void assignTrainRouteRequest(int trainID, int trackControllerID, IRoute route, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.AssignTrainRoute, trackControllerID, trainID, 0, 0, route, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainAuthorityRequest(int trainID, int trackControllerID, int authority, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainAuthority, trackControllerID, trainID, authority, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void closeTrackBlockRequest(int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceClose, trackControllerID, 0, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void openTrackBlockRequest(int trackControllerID, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceOpen, trackControllerID, 0, 0, 0, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void setTrainSpeedRequest(int trainID, int trackControllerID, double speed, IBlock block)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null, block));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
+
+        public void trackControllerDataRequest(int trackControllerID)
+        {
+            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, trackControllerID, 0, 0, 0, null, null));
+            RequestQueueOut(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Public Interface

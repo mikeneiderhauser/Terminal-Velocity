@@ -40,11 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBlock.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDispatchDatabase.cs" />
     <Compile Include="IDispatch.cs" />
-    <Compile Include="IRouteInfo.cs" />
+    <Compile Include="IRequestFrame.cs" />
+    <Compile Include="IRouteInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IStatus.cs" />
-    <Compile Include="IBlock.cs" />
     <Compile Include="ISimulationEnvironment.cs" />
     <Compile Include="ICTCOffice.cs" />
     <Compile Include="IRequest.cs" />

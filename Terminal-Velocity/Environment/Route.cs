@@ -8,7 +8,7 @@ using Utility;
 
 namespace SimulationEnvironment
 {
-    class Route : IRoute
+    public class Route : IRoute
     {
         #region Private Class Variables
         /// <summary>

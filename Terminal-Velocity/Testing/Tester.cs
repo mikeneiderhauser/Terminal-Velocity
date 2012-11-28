@@ -106,7 +106,49 @@ namespace Testing
                 case 0: // SystemScheduler
                     break;
                 case 1: // CTCOffice
-                    control = new CTCOffice.CTCOfficeGUI(environment, office);
+                    //using all testing classes the ctc office (created a new instance of ctc)
+
+                    //create environment instance
+                    SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
+
+                    //create testing track model
+                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
+
+                    //creating testing track controllers
+                    CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);
+                    CTCOffice.TestingTrackController primaryGreen = new CTCOffice.TestingTrackController(1);
+
+
+                    env.PrimaryTrackControllerRed = primaryRed;
+                    env.PrimaryTrackControllerGreen = primaryGreen;
+                    env.TrackModel = tm;
+                    
+
+                    //creating office instance
+                    CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
+
+                    //creating testing system scheduler
+                    CTCOffice.TestingSystemScheduler ss = new CTCOffice.TestingSystemScheduler();
+
+                    env.SystemScheduler = ss;
+                    env.CTCOffice = ctc;
+                    
+
+                    //making Request Panel Objects (For red and green)
+                    CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red", primaryRed);
+                    CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green", primaryGreen);
+
+                    //creating office gui
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, ctc);
+
+                    //creating testing gui
+                    control = new CTCOffice.OfficeGUITest(
+                        CTCOfficeGUI, 
+                        RequestRed, 
+                        RequestGreen
+                        );
+                    
+                    //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
                     break;
@@ -114,8 +156,13 @@ namespace Testing
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
+                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
+                    control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
+                    TrainController.TrainController tc = new TrainController.TrainController(environment);
+                    control = new TrainController.TrainControllerUI(tc);
                     break;
             }
 

@@ -39,15 +39,64 @@ namespace CTCOffice
             //show team logo (block out user)
             mainDisplayLogo();            
             disableUserControls();
-            _loginStatusImage.Image = Properties.Resources.red;
+            _loginStatusImage.Image = Utility.Properties.Resources.red;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
             //get line data
             _redLineData = _ctcOffice.getLine(0);
             _greenLineData = _ctcOffice.getLine(1);
 
+            parseLineData();
+
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
+        }
+
+        private void parseLineData()
+        {
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++ )
+            {
+                for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
+                {
+                    PictureBox pane = new PictureBox();
+                    _panelRedLine.Controls.Add(pane);
+                    pane.Name = "_imgGridRed_" + i + "_" + j;
+                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pane.Size = new Size(20, 20);
+                    pane.Location = new Point(x, y);
+                    pane.Image = _redLineData.Layout[i, j].Tile;
+                    pane.Tag = _redLineData.Layout[i, j];
+                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    x += 20;
+                }
+                y += 20;
+                x = 0;
+            }
+
+            x = 0;
+            y = 0;
+
+            for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
+                {
+                    PictureBox pane = new PictureBox();
+                    _panelGreenLine.Controls.Add(pane);
+                    pane.Name = "_imgGridGreen_" + i + "_" + j;
+                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pane.Size = new Size(20, 20);
+                    pane.Location = new Point(x, y);
+                    pane.Image = _greenLineData.Layout[i, j].Tile;
+                    pane.Tag = _greenLineData.Layout[i, j];
+                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    x += 20;
+                }
+                y += 20;
+                x = 0;
+            }
+
         }
 
 
@@ -69,7 +118,7 @@ namespace CTCOffice
                 _ctcOffice.Logout();
                 //disable user controls (lock out op)
                 disableUserControls();
-                _loginStatusImage.Image = Properties.Resources.red;
+                _loginStatusImage.Image = Utility.Properties.Resources.red;
                 _btnLoginLogout.Text = "Login";
                 mainDisplayLogo();
                 //post to log
@@ -82,7 +131,7 @@ namespace CTCOffice
                 {
                     //if login pass (enable controls)
                     enableUserControls();
-                    _loginStatusImage.Image = Properties.Resources.green;
+                    _loginStatusImage.Image = Utility.Properties.Resources.green;
                     //show red line tab
                     showRedLine();
                     //remove password
@@ -94,7 +143,7 @@ namespace CTCOffice
                 {
                     //if login fail (disable controls)
                     disableUserControls();
-                    _loginStatusImage.Image = Properties.Resources.red;
+                    _loginStatusImage.Image = Utility.Properties.Resources.red;
                     _btnLoginLogout.Text = "Login";
                     //post to log
                     _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
@@ -107,9 +156,16 @@ namespace CTCOffice
             }
         }//end button LoginLogout
 
-        private void _btnDispatchTrain_Click(object sender, EventArgs e)
+        private IRoute routeSelection()
         {
 
+            return null;
+        }
+
+        private void _btnDispatchTrain_Click(object sender, EventArgs e)
+        {
+            IRoute route = routeSelection();
+            _ctcOffice.dispatchTrainRequest(route);
         }
 
         private void _btnRefreshView_Click(object sender, EventArgs e)
@@ -238,8 +294,119 @@ namespace CTCOffice
         {
             if (e.Button == MouseButtons.Right)
             {
+                //cast sender as picturebox
+                PictureBox s = (PictureBox)sender;
 
+                //if sender data is not null (valid track piece / train piece)
+                if(s.Tag != null)
+                {
+                    //Cast Tag to Data Container
+                    LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+
+                    //Create right click menu
+                    ContextMenu cm = new ContextMenu();
+                    List<string> trackMenuTitles = new List<string>();
+
+                    //Add Track Menu
+                    MenuItem trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
+                    trackItem.Tag = c;
+
+                    trackMenuTitles.Add("Open Track");
+                    trackMenuTitles.Add("Close Track");
+                    trackMenuTitles.Add("Display Track Info");
+
+                    foreach (string t in trackMenuTitles)
+                    {
+                        MenuItem temp = new MenuItem();
+                        temp.Text = t.ToString();
+                        temp.Tag = c;
+                        temp.Click += HandleMenuClick;
+                        trackItem.MenuItems.Add(temp);
+                    }
+
+                    cm.MenuItems.Add(trackItem);
+
+
+                    //Add Train Menu if Train is contained by block
+                    if (c.Train != null || true)
+                    {
+                        int trainID = -1;
+                        if (c.Train != null)
+                        {
+                            trainID = c.Train.TrainID;
+                        }
+
+                        MenuItem trainItem = new MenuItem("Train (ID: " + trainID + ")");
+                        trainItem.Tag = c;
+                        List<string> trainMenuTitles = new List<string>();
+
+                        trainMenuTitles.Add("Assign Train Route");
+                        trainMenuTitles.Add("Set Train Authority");
+                        trainMenuTitles.Add("Set Train Speed");
+                        trainMenuTitles.Add("Set Train OOS");
+                        trainMenuTitles.Add("Display Train Info");
+
+                        foreach (string t in trainMenuTitles)
+                        {
+                            MenuItem temp = new MenuItem();
+                            temp.Text = t.ToString();
+                            temp.Tag = c;
+                            temp.Click += HandleMenuClick;
+                            trainItem.MenuItems.Add(temp);
+                        }
+
+                        cm.MenuItems.Add(trainItem);
+                    
+                    }
+                    //Show the context menu at cursor click
+                    cm.Show((Control)sender, new Point(e.X, e.Y));
+                
+                }//end if tag != null
+            }//end if right click
+        }
+
+        private void HandleMenuClick(object sender, EventArgs e)
+        {
+            MenuItem s = (MenuItem)sender;
+            LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+
+            
+            if (s.Text.CompareTo("Open Track")==0)
+            {
+                _ctcOffice.openTrackBlockRequest(c.Block.TrackCirID, c.Block);
             }
+            else if (s.Text.CompareTo("Close Track") == 0)
+            {
+                _ctcOffice.closeTrackBlockRequest(c.Block.TrackCirID, c.Block);
+            }
+            else if (s.Text.CompareTo("Display Track Info") == 0)
+            {
+                IBlock block = c.Block;
+            }
+            else if (s.Text.CompareTo("Assign Train Route") == 0)
+            {
+                //get route somehow
+                _ctcOffice.assignTrainRouteRequest(c.Train.TrainID, c.Block.TrackCirID, null, c.Block);
+            }
+            else if (s.Text.CompareTo("Set Train Authority") == 0)
+            {
+                //get authority somehow
+                _ctcOffice.setTrainAuthorityRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
+            }
+            else if (s.Text.CompareTo("Set Train Speed") == 0)
+            {
+                //get speed somehow
+                _ctcOffice.setTrainSpeedRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
+            }
+            else if (s.Text.CompareTo("Set Train OOS") == 0)
+            {
+                _ctcOffice.setTrainOutOfServiceRequest(c.Train.TrainID, c.Block.TrackCirID, c.Block);
+            }
+            else if (s.Text.CompareTo("Display Train Info") == 0)
+            {
+                ITrainModel train = c.Train;
+            }
+            //else do noting
         }
 
         /// <summary>
@@ -270,5 +437,13 @@ namespace CTCOffice
             _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
         }
 
+        public override void Refresh()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(this.Refresh));
+                return;
+            }
+        }
     }//end ctc gui
 }
