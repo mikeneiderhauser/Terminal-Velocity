@@ -35,7 +35,7 @@ namespace Testing
             // Run Unit tests and GUI tests (currently only one)
             else if (args.Length == 2)
             {
-                UnitTestFramework();
+                //UnitTestFramework();
 
                 if (args[0].CompareTo("gui") == 0)
                 {
