@@ -53,12 +53,6 @@
   <ItemGroup>
     <Compile Include="Train.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrackModelGUI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TrackModelGUI.Designer.cs">
-      <DependentUpon>TrackModelGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="TrainGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -74,9 +68,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TrackModelGUI.resx">
-      <DependentUpon>TrackModelGUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TrainGUI.resx">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </EmbeddedResource>
