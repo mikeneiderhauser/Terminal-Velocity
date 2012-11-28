@@ -59,17 +59,18 @@ namespace TrackController
 
         #region Public Methods
 
-        public void ToTrain(int ID, int speedLimit = -1, int authority = -1)
+        public void ToTrain(int ID, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
+
             ITrainModel train;
             if (Trains.TryGetValue(ID, out train))
             {
-                if (speedLimit >= 0)
+                if (speedLimit != Double.NaN)
                 {
                     // set speed
                 }
 
-                if (authority >= 0)
+                if (authority != Int32.MinValue)
                 {
                     // set authority
                 }
