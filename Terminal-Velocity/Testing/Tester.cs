@@ -79,6 +79,8 @@ namespace Testing
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
             TrackController.TrackController next = new TrackController.TrackController(environment, nextCircuit);
 
+            TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
+            environment.TrackModel = TrackMod;
             prev.Previous = null;
             prev.Next = curr;
 

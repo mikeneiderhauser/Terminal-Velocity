@@ -88,5 +88,10 @@ namespace CTCOffice
         {
             throw new NotImplementedException();
         }
+
+        public IBlock requestBlockInfo(int blockID, string line)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
