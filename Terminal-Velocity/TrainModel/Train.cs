@@ -5,7 +5,6 @@ using System.Text;
 
 using Utility;
 using Interfaces;
-using TrainController;
 
 namespace TrainModel
 {
@@ -91,7 +90,7 @@ namespace TrainModel
 
             // TODO: double check constructor
             //_trainController = TrainController.TrainController();
-
+            _trainController = new TrainController.TrainController(_environment);
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
