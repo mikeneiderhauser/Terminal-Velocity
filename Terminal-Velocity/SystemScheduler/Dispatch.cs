@@ -8,7 +8,7 @@ using TerminalVelocity;
 
 namespace SystemScheduler
 {
-    class Dispatch : IDispatch
+    public class Dispatch
     {
 
         # region Private Variables

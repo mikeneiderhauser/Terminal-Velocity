@@ -56,7 +56,7 @@ namespace SystemScheduler
 
         private void CheckForDispatches(DateTime currentTime)
         {
-            foreach (IDispatch singleDispatch in _dispatchDatabase.DispatchList)
+            foreach (Dispatch singleDispatch in _dispatchDatabase.DispatchList)
             {
                 if (singleDispatch.DispatchTime == currentTime)
                 {

@@ -10,14 +10,14 @@ using System.Windows.Forms;
 namespace SystemScheduler
 {
 
-    public class DispatchDatabase : IDispatchDatabase
+    public class DispatchDatabase
     {
 
         # region Private Variables
 
         private ISimulationEnvironment _environment;
         private string _filename;
-        private List<IDispatch> _dispatchlist = new List<IDispatch>();
+        private List<Dispatch> _dispatchlist = new List<Dispatch>();
         private List<string[]> _dispatchDataSource;
 
         # endregion
@@ -40,7 +40,7 @@ namespace SystemScheduler
             get { return _filename; }
         }
 
-        public List<IDispatch> DispatchList
+        public List<Dispatch> DispatchList
         {
             get { return _dispatchlist; }
         }
@@ -107,7 +107,7 @@ namespace SystemScheduler
 
         public void RemoveDispatch(int dispatchID)
         {
-            foreach (IDispatch singleDispatch in _dispatchlist)
+            foreach (Dispatch singleDispatch in _dispatchlist)
             {
                 if (singleDispatch.DispatchID == dispatchID)
                 {
