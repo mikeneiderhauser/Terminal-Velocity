@@ -64,23 +64,21 @@
             // trainInfoTextBox
             // 
             this.trainInfoTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trainInfoTextBox.Location = new System.Drawing.Point(25, 92);
-            this.trainInfoTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trainInfoTextBox.Location = new System.Drawing.Point(19, 75);
             this.trainInfoTextBox.Multiline = true;
             this.trainInfoTextBox.Name = "trainInfoTextBox";
             this.trainInfoTextBox.ReadOnly = true;
             this.trainInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.trainInfoTextBox.Size = new System.Drawing.Size(531, 382);
+            this.trainInfoTextBox.Size = new System.Drawing.Size(399, 311);
             this.trainInfoTextBox.TabIndex = 0;
             this.trainInfoTextBox.TextChanged += new System.EventHandler(this.trainInfoTextBox_TextChanged);
             // 
             // allTrainComboBox
             // 
             this.allTrainComboBox.FormattingEnabled = true;
-            this.allTrainComboBox.Location = new System.Drawing.Point(668, 59);
-            this.allTrainComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.allTrainComboBox.Location = new System.Drawing.Point(501, 48);
             this.allTrainComboBox.Name = "allTrainComboBox";
-            this.allTrainComboBox.Size = new System.Drawing.Size(160, 24);
+            this.allTrainComboBox.Size = new System.Drawing.Size(121, 21);
             this.allTrainComboBox.TabIndex = 1;
             this.allTrainComboBox.SelectedIndexChanged += new System.EventHandler(this.allTrainComboBox_SelectedIndexChanged);
             // 
@@ -110,8 +108,7 @@
             this.tableLayoutPanel1.Controls.Add(this.outputVariableTextBox, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.outputValueTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.positionTextBox, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(600, 92);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(450, 75);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 10;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -124,213 +121,195 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(296, 474);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(222, 385);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // doorsValueText
             // 
-            this.doorsValueText.Location = new System.Drawing.Point(152, 428);
-            this.doorsValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.doorsValueText.Location = new System.Drawing.Point(114, 346);
             this.doorsValueText.Multiline = true;
             this.doorsValueText.Name = "doorsValueText";
             this.doorsValueText.ReadOnly = true;
-            this.doorsValueText.Size = new System.Drawing.Size(137, 38);
+            this.doorsValueText.Size = new System.Drawing.Size(104, 32);
             this.doorsValueText.TabIndex = 19;
             this.doorsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // doorsTextBox
             // 
-            this.doorsTextBox.Location = new System.Drawing.Point(5, 428);
-            this.doorsTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.doorsTextBox.Location = new System.Drawing.Point(4, 346);
             this.doorsTextBox.Multiline = true;
             this.doorsTextBox.Name = "doorsTextBox";
             this.doorsTextBox.ReadOnly = true;
-            this.doorsTextBox.Size = new System.Drawing.Size(136, 38);
+            this.doorsTextBox.Size = new System.Drawing.Size(103, 32);
             this.doorsTextBox.TabIndex = 18;
             this.doorsTextBox.Text = "Doors";
             this.doorsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lightsValueText
             // 
-            this.lightsValueText.Location = new System.Drawing.Point(152, 381);
-            this.lightsValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightsValueText.Location = new System.Drawing.Point(114, 308);
             this.lightsValueText.Multiline = true;
             this.lightsValueText.Name = "lightsValueText";
             this.lightsValueText.ReadOnly = true;
-            this.lightsValueText.Size = new System.Drawing.Size(137, 37);
+            this.lightsValueText.Size = new System.Drawing.Size(104, 31);
             this.lightsValueText.TabIndex = 17;
             this.lightsValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lightsTextBox
             // 
-            this.lightsTextBox.Location = new System.Drawing.Point(5, 381);
-            this.lightsTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightsTextBox.Location = new System.Drawing.Point(4, 308);
             this.lightsTextBox.Multiline = true;
             this.lightsTextBox.Name = "lightsTextBox";
             this.lightsTextBox.ReadOnly = true;
-            this.lightsTextBox.Size = new System.Drawing.Size(136, 37);
+            this.lightsTextBox.Size = new System.Drawing.Size(103, 31);
             this.lightsTextBox.TabIndex = 16;
             this.lightsTextBox.Text = "Lights";
             this.lightsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // numCrewValueText
             // 
-            this.numCrewValueText.Location = new System.Drawing.Point(152, 334);
-            this.numCrewValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numCrewValueText.Location = new System.Drawing.Point(114, 270);
             this.numCrewValueText.Multiline = true;
             this.numCrewValueText.Name = "numCrewValueText";
             this.numCrewValueText.ReadOnly = true;
-            this.numCrewValueText.Size = new System.Drawing.Size(137, 37);
+            this.numCrewValueText.Size = new System.Drawing.Size(104, 31);
             this.numCrewValueText.TabIndex = 15;
             this.numCrewValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // numCrewTextBox
             // 
-            this.numCrewTextBox.Location = new System.Drawing.Point(5, 334);
-            this.numCrewTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numCrewTextBox.Location = new System.Drawing.Point(4, 270);
             this.numCrewTextBox.Multiline = true;
             this.numCrewTextBox.Name = "numCrewTextBox";
             this.numCrewTextBox.ReadOnly = true;
-            this.numCrewTextBox.Size = new System.Drawing.Size(136, 37);
+            this.numCrewTextBox.Size = new System.Drawing.Size(103, 31);
             this.numCrewTextBox.TabIndex = 14;
             this.numCrewTextBox.Text = "Crew";
             this.numCrewTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // numPassengersValueText
             // 
-            this.numPassengersValueText.Location = new System.Drawing.Point(152, 287);
-            this.numPassengersValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numPassengersValueText.Location = new System.Drawing.Point(114, 232);
             this.numPassengersValueText.Multiline = true;
             this.numPassengersValueText.Name = "numPassengersValueText";
             this.numPassengersValueText.ReadOnly = true;
-            this.numPassengersValueText.Size = new System.Drawing.Size(137, 37);
+            this.numPassengersValueText.Size = new System.Drawing.Size(104, 31);
             this.numPassengersValueText.TabIndex = 13;
             this.numPassengersValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // numPassengersTextBox
             // 
-            this.numPassengersTextBox.Location = new System.Drawing.Point(5, 287);
-            this.numPassengersTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numPassengersTextBox.Location = new System.Drawing.Point(4, 232);
             this.numPassengersTextBox.Multiline = true;
             this.numPassengersTextBox.Name = "numPassengersTextBox";
             this.numPassengersTextBox.ReadOnly = true;
-            this.numPassengersTextBox.Size = new System.Drawing.Size(136, 37);
+            this.numPassengersTextBox.Size = new System.Drawing.Size(103, 31);
             this.numPassengersTextBox.TabIndex = 12;
             this.numPassengersTextBox.Text = "Passengers";
             this.numPassengersTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // massValueText
             // 
-            this.massValueText.Location = new System.Drawing.Point(152, 240);
-            this.massValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.massValueText.Location = new System.Drawing.Point(114, 194);
             this.massValueText.Multiline = true;
             this.massValueText.Name = "massValueText";
             this.massValueText.ReadOnly = true;
-            this.massValueText.Size = new System.Drawing.Size(137, 37);
+            this.massValueText.Size = new System.Drawing.Size(104, 31);
             this.massValueText.TabIndex = 11;
             this.massValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // massTextBox
             // 
-            this.massTextBox.Location = new System.Drawing.Point(5, 240);
-            this.massTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.massTextBox.Location = new System.Drawing.Point(4, 194);
             this.massTextBox.Multiline = true;
             this.massTextBox.Name = "massTextBox";
             this.massTextBox.ReadOnly = true;
-            this.massTextBox.Size = new System.Drawing.Size(136, 37);
+            this.massTextBox.Size = new System.Drawing.Size(103, 31);
             this.massTextBox.TabIndex = 10;
             this.massTextBox.Text = "Current Mass";
             this.massTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // gradeValueText
             // 
-            this.gradeValueText.Location = new System.Drawing.Point(152, 193);
-            this.gradeValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gradeValueText.Location = new System.Drawing.Point(114, 156);
             this.gradeValueText.Multiline = true;
             this.gradeValueText.Name = "gradeValueText";
             this.gradeValueText.ReadOnly = true;
-            this.gradeValueText.Size = new System.Drawing.Size(137, 37);
+            this.gradeValueText.Size = new System.Drawing.Size(104, 31);
             this.gradeValueText.TabIndex = 9;
             this.gradeValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // gradeTextBox
             // 
-            this.gradeTextBox.Location = new System.Drawing.Point(5, 193);
-            this.gradeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gradeTextBox.Location = new System.Drawing.Point(4, 156);
             this.gradeTextBox.Multiline = true;
             this.gradeTextBox.Name = "gradeTextBox";
             this.gradeTextBox.ReadOnly = true;
-            this.gradeTextBox.Size = new System.Drawing.Size(136, 37);
+            this.gradeTextBox.Size = new System.Drawing.Size(103, 31);
             this.gradeTextBox.TabIndex = 8;
             this.gradeTextBox.Text = "Current Grade";
             this.gradeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // accelerationValueText
             // 
-            this.accelerationValueText.Location = new System.Drawing.Point(152, 146);
-            this.accelerationValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.accelerationValueText.Location = new System.Drawing.Point(114, 118);
             this.accelerationValueText.Multiline = true;
             this.accelerationValueText.Name = "accelerationValueText";
             this.accelerationValueText.ReadOnly = true;
-            this.accelerationValueText.Size = new System.Drawing.Size(137, 37);
+            this.accelerationValueText.Size = new System.Drawing.Size(104, 31);
             this.accelerationValueText.TabIndex = 7;
             this.accelerationValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // accelerationTextBox
             // 
-            this.accelerationTextBox.Location = new System.Drawing.Point(5, 146);
-            this.accelerationTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.accelerationTextBox.Location = new System.Drawing.Point(4, 118);
             this.accelerationTextBox.Multiline = true;
             this.accelerationTextBox.Name = "accelerationTextBox";
             this.accelerationTextBox.ReadOnly = true;
-            this.accelerationTextBox.Size = new System.Drawing.Size(136, 37);
+            this.accelerationTextBox.Size = new System.Drawing.Size(103, 31);
             this.accelerationTextBox.TabIndex = 6;
             this.accelerationTextBox.Text = "Current Acceleration";
             this.accelerationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // velocityValueText
             // 
-            this.velocityValueText.Location = new System.Drawing.Point(152, 99);
-            this.velocityValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.velocityValueText.Location = new System.Drawing.Point(114, 80);
             this.velocityValueText.Multiline = true;
             this.velocityValueText.Name = "velocityValueText";
             this.velocityValueText.ReadOnly = true;
-            this.velocityValueText.Size = new System.Drawing.Size(137, 37);
+            this.velocityValueText.Size = new System.Drawing.Size(104, 31);
             this.velocityValueText.TabIndex = 5;
             this.velocityValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // velocityTextBox
             // 
-            this.velocityTextBox.Location = new System.Drawing.Point(5, 99);
-            this.velocityTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.velocityTextBox.Location = new System.Drawing.Point(4, 80);
             this.velocityTextBox.Multiline = true;
             this.velocityTextBox.Name = "velocityTextBox";
             this.velocityTextBox.ReadOnly = true;
-            this.velocityTextBox.Size = new System.Drawing.Size(136, 37);
+            this.velocityTextBox.Size = new System.Drawing.Size(103, 31);
             this.velocityTextBox.TabIndex = 4;
             this.velocityTextBox.Text = "Current Velocity";
             this.velocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // positionValueText
             // 
-            this.positionValueText.Location = new System.Drawing.Point(152, 52);
-            this.positionValueText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.positionValueText.Location = new System.Drawing.Point(114, 42);
             this.positionValueText.Multiline = true;
             this.positionValueText.Name = "positionValueText";
             this.positionValueText.ReadOnly = true;
-            this.positionValueText.Size = new System.Drawing.Size(137, 37);
+            this.positionValueText.Size = new System.Drawing.Size(104, 31);
             this.positionValueText.TabIndex = 3;
             this.positionValueText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // outputVariableTextBox
             // 
             this.outputVariableTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outputVariableTextBox.Location = new System.Drawing.Point(5, 5);
-            this.outputVariableTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.outputVariableTextBox.Location = new System.Drawing.Point(4, 4);
             this.outputVariableTextBox.Multiline = true;
             this.outputVariableTextBox.Name = "outputVariableTextBox";
             this.outputVariableTextBox.ReadOnly = true;
-            this.outputVariableTextBox.Size = new System.Drawing.Size(136, 37);
+            this.outputVariableTextBox.Size = new System.Drawing.Size(103, 31);
             this.outputVariableTextBox.TabIndex = 0;
             this.outputVariableTextBox.Text = "Output Variables";
             this.outputVariableTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -338,24 +317,22 @@
             // outputValueTextBox
             // 
             this.outputValueTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outputValueTextBox.Location = new System.Drawing.Point(152, 5);
-            this.outputValueTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.outputValueTextBox.Location = new System.Drawing.Point(114, 4);
             this.outputValueTextBox.Multiline = true;
             this.outputValueTextBox.Name = "outputValueTextBox";
             this.outputValueTextBox.ReadOnly = true;
-            this.outputValueTextBox.Size = new System.Drawing.Size(137, 37);
+            this.outputValueTextBox.Size = new System.Drawing.Size(104, 31);
             this.outputValueTextBox.TabIndex = 1;
             this.outputValueTextBox.Text = "Output Values";
             this.outputValueTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // positionTextBox
             // 
-            this.positionTextBox.Location = new System.Drawing.Point(5, 52);
-            this.positionTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.positionTextBox.Location = new System.Drawing.Point(4, 42);
             this.positionTextBox.Multiline = true;
             this.positionTextBox.Name = "positionTextBox";
             this.positionTextBox.ReadOnly = true;
-            this.positionTextBox.Size = new System.Drawing.Size(136, 37);
+            this.positionTextBox.Size = new System.Drawing.Size(103, 31);
             this.positionTextBox.TabIndex = 2;
             this.positionTextBox.Text = "Current Position";
             this.positionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -368,23 +345,21 @@
             // 
             this.trainLabel.AutoSize = true;
             this.trainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.trainLabel.Location = new System.Drawing.Point(407, 22);
-            this.trainLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.trainLabel.Location = new System.Drawing.Point(305, 18);
             this.trainLabel.Name = "trainLabel";
-            this.trainLabel.Size = new System.Drawing.Size(0, 42);
+            this.trainLabel.Size = new System.Drawing.Size(0, 33);
             this.trainLabel.TabIndex = 3;
             // 
             // TrainGUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.trainLabel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.allTrainComboBox);
             this.Controls.Add(this.trainInfoTextBox);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TrainGUI";
-            this.Size = new System.Drawing.Size(935, 596);
+            this.Size = new System.Drawing.Size(701, 484);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simulationEnvironmentBindingSource)).EndInit();

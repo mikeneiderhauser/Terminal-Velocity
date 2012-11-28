@@ -49,6 +49,7 @@
     <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackController.Test.cs" />
+    <Compile Include="TrainModel.Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.Test.cs" />

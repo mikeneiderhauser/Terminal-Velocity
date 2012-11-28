@@ -95,7 +95,7 @@
             this.trainInformation.Size = new System.Drawing.Size(466, 593);
             this.trainInformation.TabIndex = 3;
             this.trainInformation.TabStop = false;
-            this.trainInformation.Text = "Train Information";
+            this.trainInformation.Text = "Track Controller Information";
             // 
             // blockGrid
             // 

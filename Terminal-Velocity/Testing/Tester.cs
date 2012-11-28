@@ -11,6 +11,7 @@ namespace Testing
 {
     public class Tester
     {
+        [STAThreadAttribute]
         static int Main(String[] args)
         {
             if (args.Length == 0)
@@ -74,9 +75,9 @@ namespace Testing
             // Previous track controller's circuit
             TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
 
-            TrackController.TrackController prev = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController prev = new TrackController.TrackController(environment, prevCircuit);
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
-            TrackController.TrackController next = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController next = new TrackController.TrackController(environment, nextCircuit);
 
             prev.Previous = null;
             prev.Next = curr;
@@ -95,7 +96,7 @@ namespace Testing
             environment.PrimaryTrackControllerRed = prev;
 
             ////////////////////////////////////////////////////////////////////////////////////////
-            //                              Initializations                                       //
+            //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
 
             Form form = new Form();
@@ -155,6 +156,9 @@ namespace Testing
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
+                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
+                    control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
                     TrainController.TrainController tc = new TrainController.TrainController(environment);
