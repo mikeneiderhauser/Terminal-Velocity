@@ -113,6 +113,7 @@ namespace Testing
                     control = new TrackController.TrackControllerUI();
                     break;
                 case 4: // TrainModel
+                    control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
                     break;

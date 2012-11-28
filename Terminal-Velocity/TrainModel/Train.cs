@@ -89,7 +89,8 @@ namespace TrainModel
             _trackModel = environment.TrackModel;
 
             // TODO: double check constructor
-            //_trainController = new ITrainController();
+            _trainController = TrainController.TrainController();
+
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
