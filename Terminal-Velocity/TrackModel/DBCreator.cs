@@ -167,6 +167,15 @@ namespace TrackModel
 				string blockID=fields[2];
 				string lineName=fields[0];
 
+
+                //Once we get our line name, we should check if it's already in the database.
+                //If its already in the database, then we can assume success and just return 0
+                //Maybe this should just be some sort of continue, but I can sort that out later
+                if (blockExists(int.Parse(blockID), line))
+                {
+                    return 0;
+                }
+
 				
 				string infra;
 				if(fields[6].Equals("",StringComparison.OrdinalIgnoreCase))
@@ -450,6 +459,8 @@ namespace TrackModel
                         updateList.Add("UPDATE BLOCKS SET prev=148, dest1=150, dest2=-1, dir='North_AND_South' WHERE line='Green' AND blockID=149");
                         updateList.Add("UPDATE BLOCKS SET prev=149, dest1=29, dest2=-1, dir='Northeast_AND_Southwest' WHERE line='Green' AND blockID=150");
 		}
+
+
 		
 
 		foreach(string s in updateList)
@@ -484,6 +495,33 @@ namespace TrackModel
 	{
 		return -1;
 	}
+
+
+
+    private bool blockExists(int id, string line)
+    {
+        string selectString = "SELECT *" +
+                    "FROM BLOCKS" +
+                    "WHERE blockID=" + id + " AND line='" + line + "'";
+
+        _dbCon.Open();
+        //Initialize command to create BLOCKS TABLE
+        SQLiteCommand selCom = new SQLiteCommand(selectString);
+        selCom.Connection = _dbCon;
+        try
+        {
+            SQLiteDataReader tempReader = selCom.ExecuteReader();
+            bool exists = tempReader.HasRows;
+            tempReader.Close();//Close reader
+            _dbCon.Close();//CLOSE DB
+            return exists;
+        }
+        catch (Exception crap)
+        {
+            _dbCon.Close();
+            return false;
+        }
+    }
 
 	//Properties
         public SQLiteConnection DBCon
