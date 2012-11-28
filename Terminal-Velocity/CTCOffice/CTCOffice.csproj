@@ -57,12 +57,6 @@
     <Compile Include="CTCOfficeGUI.Designer.cs">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="CTCOffice_old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CTCOffice_old.Designer.cs">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
-    </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="OfficeGUITest.cs">
@@ -89,9 +83,6 @@
     <Compile Include="TestingTrainModel.cs" />
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CTCOffice_old.resx">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OfficeGUITest.resx">
       <DependentUpon>OfficeGUITest.cs</DependentUpon>
