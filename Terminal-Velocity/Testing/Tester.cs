@@ -143,7 +143,7 @@ namespace Testing
                     CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green", primaryGreen);
 
                     //creating office gui
-                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, ctc);
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(env, ctc);
 
                     //creating testing gui
                     control = new CTCOffice.OfficeGUITest(
