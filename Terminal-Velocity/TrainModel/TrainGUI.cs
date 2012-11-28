@@ -85,5 +85,10 @@ namespace TrainModel
             selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
         }
+
+        private void trainInfoTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

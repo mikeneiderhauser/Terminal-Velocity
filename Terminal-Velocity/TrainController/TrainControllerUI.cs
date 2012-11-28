@@ -11,12 +11,18 @@ namespace TrainController
 {
     public partial class TrainControllerUI : UserControl
     {
-        TrainController _currentTrainController;
-        public TrainControllerUI()
+        private TrainController _currentTrainController;
+
+        public TrainControllerUI(TrainController tc)
         {
             InitializeComponent();
+            _currentTrainController = tc;
         }
 
+        public void RecLog(string entry)
+        {
+            _listLog.Items.Add(entry);
+        }
      
 
         private void _btnEmergencyBrake_Click(object sender, EventArgs e)
@@ -25,6 +31,21 @@ namespace TrainController
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

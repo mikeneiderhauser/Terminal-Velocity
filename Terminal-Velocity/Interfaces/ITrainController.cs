@@ -7,14 +7,13 @@ namespace Interfaces
 {
    public interface ITrainController
     {
-        ITrain Train { get; }
-        List<IBlock> AuthorityBlocks {get; set;}
+        
+        
         int AuthorityLimit { get; set; }
         double SpeedLimit { get; set; }
-        IBlock CurrentBlock { get; set; }
         int Announcement { set; }
+        double SpeedInput { get; set; }
 
-        
         void addPassengers();
         void removePassengers();
         void checkLightsOn();
