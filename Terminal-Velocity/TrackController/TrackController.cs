@@ -22,7 +22,7 @@ namespace TrackController
         private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, IRoute> _routes;
 
-        private int _ID;
+        private int _id;
 
         #region Constructor(s)
 
@@ -42,10 +42,11 @@ namespace TrackController
             _env = env;
             _env.Tick += _env_Tick;
 
-            _circuit = circuit;
-
-            _ID = -1;
+            _id = -1;
             SetID();
+
+            _circuit = circuit;
+            _circuit.ID = this._id;
 
             // PROTOTYPE - static PLC
             _plc = new PLC();
@@ -62,7 +63,7 @@ namespace TrackController
 
         public int ID
         {
-            get { return _ID; }
+            get { return _id; }
         }
 
         public ITrackController Previous
@@ -117,10 +118,10 @@ namespace TrackController
         {
             if (_prev != null)
             {
-                _ID = _prev.ID + 1;
+                _id = _prev.ID + 1;
             }
             else
-                _ID = 0;
+                _id = 0;
         }
 
         // Private method for handling the request object
@@ -183,10 +184,32 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
+            if (_prev == null)
+            {
+                Dictionary<int, ITrainModel> trains = _circuit.Trains;
+
+                var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+                foreach (KeyValuePair<int, ITrainModel> k in differences)
+                {
+                    _env.AllTrains.Add(k.Value);
+                }
+            }
+            else if (_next == null)
+            {
+                Dictionary<int, ITrainModel> trains = _circuit.Trains;
+
+                var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+                foreach (KeyValuePair<int, ITrainModel> k in differences)
+                {
+                    _env.AllTrains.Remove(k.Value);
+                }
+            }
+
             _trains = _circuit.Trains;
             _blocks = _circuit.Blocks;
 
             PLC_DoWork();
+
         }
 
         #endregion // Events
