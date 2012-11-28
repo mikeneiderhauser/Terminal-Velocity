@@ -3,31 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Utility;
 using Interfaces;
 
-namespace TrainController
+namespace CTCOffice
 {
-   public class TrainController : ITrainController
+    public class TestingTrainController : ITrainController
     {
-        public ISimulationEnvironment _environment
+
+        public TestingTrainController()
         {
-            get { return _environment; }
-            set { _environment = value; }
+
         }
+
         public ITrainModel Train
         {
-            get { return Train; }
+            get { throw new NotImplementedException(); }
         }
 
         public List<IBlock> AuthorityBlocks
         {
             get
             {
-                return AuthorityBlocks;
+                throw new NotImplementedException();
             }
             set
             {
-                AuthorityBlocks = value;
+                throw new NotImplementedException();
             }
         }
 
@@ -35,11 +37,11 @@ namespace TrainController
         {
             get
             {
-                return AuthorityLimit;
+                throw new NotImplementedException();
             }
             set
             {
-                AuthorityLimit = value;
+                throw new NotImplementedException();
             }
         }
 
@@ -47,11 +49,11 @@ namespace TrainController
         {
             get
             {
-                return SpeedLimit;
+                throw new NotImplementedException();
             }
             set
             {
-                SpeedLimit = value;
+                throw new NotImplementedException();
             }
         }
 
@@ -59,44 +61,37 @@ namespace TrainController
         {
             get
             {
-                return CurrentBlock;
+                throw new NotImplementedException();
             }
             set
             {
-                CurrentBlock = value;
+                throw new NotImplementedException();
             }
         }
 
         public int Announcement
         {
-            set { Announcement = value; }
+            set { throw new NotImplementedException(); }
         }
 
         public void addPassengers()
         {
-            
-            Random r = new Random();
-            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity+1);
-            Train.NumPassengers = newPassengers;
-            //Send throughput afterwards
+            throw new NotImplementedException();
         }
 
         public void removePassengers()
         {
-            Random r = new Random();
-            int newPassengers = r.Next(0, Train.NumPassengers + 1);
-            Train.NumPassengers = newPassengers;
-
+            throw new NotImplementedException();
         }
 
         public void lightsOn()
         {
-            Train.LightsOn = true;
+            throw new NotImplementedException();
         }
 
         public void lightsOff()
         {
-            Train.LightsOn = false;
+            throw new NotImplementedException();
         }
 
         public void returnFeedback(string Feedback)
@@ -106,10 +101,7 @@ namespace TrainController
 
         public void doorOpen()
         {
-            //if(Train.CurrentVelocity == 0 && CurrentBlock.)
-            //{
-            //    Train.DoorsOpen = true;
-            //}
+            throw new NotImplementedException();
         }
 
         public void doorClose()
@@ -122,15 +114,9 @@ namespace TrainController
             throw new NotImplementedException();
         }
 
-        ITrainModel ITrainController.Train
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public void commit()
         {
             throw new NotImplementedException();
         }
-
     }
 }
