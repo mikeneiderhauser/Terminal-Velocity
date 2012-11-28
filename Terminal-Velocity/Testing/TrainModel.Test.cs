@@ -15,7 +15,7 @@ namespace Testing
             message = new List<string>();
 
             ISimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            TrainModel.Train train = new TrainModel.Train(0, new TrackModel.Block(0), environment));
+            TrainModel.Train train = new TrainModel.Train(0, new TrackModel.Block(0), environment);
 
             // test that the train ID is zero
             if(train.TrainID == 0)
@@ -54,5 +54,6 @@ namespace Testing
             }
 
             return true;
+        }
     }
 }
