@@ -10,11 +10,16 @@ namespace SystemScheduler
 {
     class Dispatch : IDispatch
     {
+
+        # region Private Variables
+
         private ISimulationEnvironment _environment;
         private DateTime _dispatchTime;
         private int _dispatchID;
         private int _routeType;
         private Interfaces.IRoute _dispatchRoute;
+
+        # endregion
 
         # region Constructors
 
@@ -66,7 +71,6 @@ namespace SystemScheduler
         }
 
         # endregion
-
-        
+                
     }
 }

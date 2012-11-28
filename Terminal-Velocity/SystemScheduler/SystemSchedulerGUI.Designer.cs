@@ -40,7 +40,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(284, 22);
+            this.btnBrowse.Location = new System.Drawing.Point(576, 22);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(103, 26);
             this.btnBrowse.TabIndex = 0;
@@ -53,7 +53,7 @@
             this.txtFilepath.Location = new System.Drawing.Point(15, 22);
             this.txtFilepath.Name = "txtFilepath";
             this.txtFilepath.ReadOnly = true;
-            this.txtFilepath.Size = new System.Drawing.Size(263, 26);
+            this.txtFilepath.Size = new System.Drawing.Size(555, 26);
             this.txtFilepath.TabIndex = 1;
             // 
             // grdDispatches
@@ -61,20 +61,22 @@
             this.grdDispatches.AllowUserToAddRows = false;
             this.grdDispatches.AllowUserToDeleteRows = false;
             this.grdDispatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdDispatches.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.grdDispatches.Location = new System.Drawing.Point(15, 66);
+            this.grdDispatches.MultiSelect = false;
             this.grdDispatches.Name = "grdDispatches";
             this.grdDispatches.ReadOnly = true;
             this.grdDispatches.RowTemplate.Height = 28;
-            this.grdDispatches.Size = new System.Drawing.Size(372, 150);
+            this.grdDispatches.Size = new System.Drawing.Size(664, 208);
             this.grdDispatches.TabIndex = 2;
-            this.grdDispatches.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellContentClick);
+            this.grdDispatches.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellClick);
             // 
             // btnDelete
             // 
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(15, 223);
+            this.btnDelete.Location = new System.Drawing.Point(15, 291);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 26);
+            this.btnDelete.Size = new System.Drawing.Size(210, 27);
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -83,21 +85,24 @@
             // btnEdit
             // 
             this.btnEdit.Enabled = false;
-            this.btnEdit.Location = new System.Drawing.Point(97, 222);
+            this.btnEdit.Location = new System.Drawing.Point(242, 291);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 27);
+            this.btnEdit.Size = new System.Drawing.Size(210, 27);
             this.btnEdit.TabIndex = 4;
             this.btnEdit.Text = "Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(178, 223);
+            this.btnAdd.Enabled = false;
+            this.btnAdd.Location = new System.Drawing.Point(469, 291);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 26);
+            this.btnAdd.Size = new System.Drawing.Size(210, 27);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "Add...";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // dlgOpen
             // 
@@ -114,7 +119,7 @@
             this.Controls.Add(this.txtFilepath);
             this.Controls.Add(this.btnBrowse);
             this.Name = "SystemSchedulerGUI";
-            this.Size = new System.Drawing.Size(406, 281);
+            this.Size = new System.Drawing.Size(693, 333);
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

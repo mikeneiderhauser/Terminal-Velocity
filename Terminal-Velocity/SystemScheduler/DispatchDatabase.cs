@@ -12,10 +12,15 @@ namespace SystemScheduler
 
     public class DispatchDatabase : IDispatchDatabase
     {
+
+        # region Private Variables
+
         private ISimulationEnvironment _environment;
         private string _filename;
         private List<IDispatch> _dispatchlist = new List<IDispatch>();
         private List<string[]> _dispatchDataSource;
+
+        # endregion
 
         # region Constructor(s)
 
@@ -87,18 +92,20 @@ namespace SystemScheduler
         private void UpdateDatabase()
         {
             File.Delete(_filename);
-            File.Create(_filename);
+            //File.Create(_filename);
+            System.IO.StreamWriter file = new System.IO.StreamWriter(_filename);
             foreach (string[] dispatchRecord in _dispatchDataSource)
             {
-                File.AppendText(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," + dispatchRecord[3]);
+                file.WriteLine(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," + dispatchRecord[3]);
             }
+            file.Close();
         }
 
         # endregion
 
         # region Public Methods
 
-        public void Remove(int dispatchID)
+        public void RemoveDispatch(int dispatchID)
         {
             foreach (IDispatch singleDispatch in _dispatchlist)
             {
@@ -116,6 +123,13 @@ namespace SystemScheduler
                     break;
                 }
             }
+            UpdateDatabase();
+        }
+
+        public void AddDispatch(string id, string time, string type, string route)
+        {
+            _dispatchlist.Add(new Dispatch(_environment, id, time, type, route));
+            _dispatchDataSource.Add(new string[] {id, time, type, route});
             UpdateDatabase();
         }
 

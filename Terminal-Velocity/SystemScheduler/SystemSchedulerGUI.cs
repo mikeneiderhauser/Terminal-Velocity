@@ -14,10 +14,15 @@ namespace SystemScheduler
 {
     public partial class SystemSchedulerGUI : UserControl
     {
+
+        # region Private Variables
+
         private ISimulationEnvironment _environment;
         private ICTCOffice _ctcOffice;
         private SystemScheduler _systemScheduler;
         private DateTime _currentTime;
+
+        # endregion
 
         #region Constructor(s)
 
@@ -27,33 +32,6 @@ namespace SystemScheduler
             _environment = env;
             _ctcOffice = ctc;
             _systemScheduler = systemScheduler;
-        }
-
-        # endregion
-
-        # region Events
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            btnDelete.Enabled = false;
-            btnEdit.Enabled = false;
-            dlgOpen.ShowDialog();
-            txtFilepath.Text = dlgOpen.FileName;
-            _systemScheduler.NewFile(txtFilepath.Text);
-            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            _systemScheduler.DispatchDatabase.Remove(int.Parse((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value));
-            grdDispatches.DataSource = null;
-            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
-        }
-
-        private void grdDispatches_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            btnDelete.Enabled = true;
-            btnEdit.Enabled = true;
         }
 
         # endregion
@@ -86,7 +64,95 @@ namespace SystemScheduler
             return table;
         }
 
+        private void UpdateGUI()
+        {
+            grdDispatches.DataSource = null;
+            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
+        }
+
+        private void CheckButtonEnable()
+        {
+            if (txtFilepath.Text != "" && grdDispatches.CurrentRow.Index >= 0)
+            {
+                btnAdd.Enabled = true;
+                btnDelete.Enabled = true;
+                btnEdit.Enabled = true;
+            }
+            else
+            {
+                btnAdd.Enabled = false;
+                btnDelete.Enabled = false;
+                btnEdit.Enabled = false;
+            }
+        }
+
         # endregion
+
+        # region Events
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            dlgOpen.ShowDialog();
+            txtFilepath.Text = dlgOpen.FileName;
+            _systemScheduler.NewFile(txtFilepath.Text);
+            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
+            CheckButtonEnable();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            _systemScheduler.DispatchDatabase.RemoveDispatch(int.Parse((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value));
+            UpdateGUI();
+            CheckButtonEnable();
+        }
+
+        private void grdDispatches_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CheckButtonEnable();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, false, new string[] {""});
+
+            if (objCustomDialogBox.ShowDialog() == DialogResult.OK)
+            {
+                UpdateGUI();
+            }
+            else
+            {
+                MessageBox.Show("You clicked Cancel.");
+            }
+
+            objCustomDialogBox = null;
+            CheckButtonEnable();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, true, new string[] {((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[1, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[2, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[3, grdDispatches.CurrentRow.Index].Value)});
+
+            if (objCustomDialogBox.ShowDialog() == DialogResult.OK)
+            {
+                UpdateGUI();
+            }
+            else
+            {
+                MessageBox.Show("You clicked Cancel.");
+            }
+            
+            objCustomDialogBox = null;
+            CheckButtonEnable();
+        }
+
+        # endregion
+
+        private void grdDispatches_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
 
     }
 }
