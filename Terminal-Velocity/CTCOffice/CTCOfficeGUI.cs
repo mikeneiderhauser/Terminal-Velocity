@@ -158,8 +158,8 @@ namespace CTCOffice
 
         private IRoute routeSelection()
         {
-
-            return null;
+            IRouteInfo rtInfo = _environment.TrackModel.requestRouteInfo(0);
+            return null;//new SimulationEnvironment.Route(RouteTypes.DefinedRoute,rtInfo.,rtInfo.RouteID,rtInfo.BlockList);
         }
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)

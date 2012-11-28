@@ -35,7 +35,7 @@ namespace Testing
             // Run Unit tests and GUI tests (currently only one)
             else if (args.Length == 2)
             {
-                UnitTestFramework();
+                //UnitTestFramework();
 
                 if (args[0].CompareTo("gui") == 0)
                 {
@@ -65,9 +65,11 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
+            
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            //TerminalVelocity.Environment environment = new TerminalVelocity.Environment();
+           
+            /*
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
@@ -96,7 +98,7 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
-
+            */
             ////////////////////////////////////////////////////////////////////////////////////////
             //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
