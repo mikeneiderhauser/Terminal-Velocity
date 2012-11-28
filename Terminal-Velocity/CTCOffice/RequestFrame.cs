@@ -105,41 +105,14 @@ namespace CTCOffice
                 _txtDateTime.Text = "NULL";
             }
 
-            if (request.RequestType != null)
-            {
-                _txtRequestType.Text = request.RequestType.ToString();
-            }
-            else
-            {
-                _txtRequestType.Text = "NULL";
-            }
+            _txtRequestType.Text = request.RequestType.ToString();
+       
+            _txtTrackControllerID.Text = request.TrackControllerID.ToString();
 
-            if (request.TrackControllerID != null)
-            {
-                _txtTrackControllerID.Text = request.TrackControllerID.ToString();
-            }
-            else
-            {
-                _txtTrackControllerID.Text = "NULL";
-            }
+            _txtTrainAuthority.Text = request.TrainAuthority.ToString();
 
-            if (request.TrainAuthority != null)
-            {
-                _txtTrainAuthority.Text = request.TrainAuthority.ToString();
-            }
-            else
-            {
-                _txtTrainAuthority.Text = "NULL";
-            }
+            _txtTrainID.Text = request.TrainID.ToString();
 
-            if (request.TrainID != null)
-            {
-                _txtTrainID.Text = request.TrainID.ToString();
-            }
-            else
-            {
-                _txtTrainID.Text = "NULL";
-            }
 
             if (request.TrainRoute != null)
             {
@@ -150,14 +123,8 @@ namespace CTCOffice
                 _txtTrainRoute.Text = "NULL";
             }
 
-            if (request.TrainSpeed != null)
-            {
-                _txtTrainSpeed.Text = request.TrainSpeed.ToString();
-            }
-            else
-            {
-                _txtTrainSpeed.Text = "NULL";
-            }
+            _txtTrainSpeed.Text = request.TrainSpeed.ToString();
+
         }
 
         private void _btnPrev_Click(object sender, EventArgs e)

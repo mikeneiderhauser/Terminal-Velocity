@@ -50,18 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorityTool.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AuthorityTool.Designer.cs">
+      <DependentUpon>AuthorityTool.cs</DependentUpon>
+    </Compile>
     <Compile Include="CTCOffice.cs" />
     <Compile Include="CTCOfficeGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CTCOfficeGUI.Designer.cs">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CTCOffice_old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CTCOffice_old.Designer.cs">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
     </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
@@ -74,12 +74,27 @@
     <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
-    <Compile Include="RequestEventArgs.cs" />
+    <Compile Include="RequestEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RequestFrame.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="RequestFrame.Designer.cs">
       <DependentUpon>RequestFrame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RoutingTool.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RoutingTool.Designer.cs">
+      <DependentUpon>RoutingTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RoutingToolEventArgs.cs" />
+    <Compile Include="SpeedTool.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpeedTool.Designer.cs">
+      <DependentUpon>SpeedTool.cs</DependentUpon>
     </Compile>
     <Compile Include="TestingBlock.cs" />
     <Compile Include="TestingSystemScheduler.cs" />
@@ -89,9 +104,6 @@
     <Compile Include="TestingTrainModel.cs" />
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CTCOffice_old.resx">
-      <DependentUpon>CTCOffice_old.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OfficeGUITest.resx">
       <DependentUpon>OfficeGUITest.cs</DependentUpon>
@@ -108,6 +120,9 @@
     </Compile>
     <EmbeddedResource Include="RequestFrame.resx">
       <DependentUpon>RequestFrame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RoutingTool.resx">
+      <DependentUpon>RoutingTool.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
