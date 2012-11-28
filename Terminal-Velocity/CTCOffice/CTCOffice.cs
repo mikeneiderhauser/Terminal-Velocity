@@ -6,11 +6,7 @@ using System.Text;
 using Interfaces;
 using Utility;
 
-/*
-    See passRequest for clarification
-*/
 
-//merge
 namespace CTCOffice
 {
     public class CTCOffice : ICTCOffice
@@ -263,6 +259,7 @@ namespace CTCOffice
         /// <param name="request"></param>
         private void internalRequest(IRequest request)
         {
+            //TODO
             IStatus s = request.Info;
         }
 
@@ -276,6 +273,7 @@ namespace CTCOffice
             _tickCount++;
             if (_tickCount == _rate)
             {
+                //TODO
                 //addAutomaticUpdate();
             }
         }
@@ -309,7 +307,6 @@ namespace CTCOffice
         /// <returns></returns>
         private int determineLine(IRequest request)
         {
-            //cannot implement without Track Model Interface
             //red=0....green=1
             if(request.Block != null)
             {
@@ -364,6 +361,7 @@ namespace CTCOffice
         }
 
         #region Request Abstractions
+        //TODO verify BLOCKs
         public void dispatchTrainRequest(IRoute route)
         {
             int line = determineLine(route);
@@ -381,6 +379,7 @@ namespace CTCOffice
                 _env.sendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
             }
 
+            //change block from null to yard
             _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, null));
             RequestQueueOut(this, EventArgs.Empty);
         }

@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorityTool.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AuthorityTool.Designer.cs">
+      <DependentUpon>AuthorityTool.cs</DependentUpon>
+    </Compile>
     <Compile Include="CTCOffice.cs" />
     <Compile Include="CTCOfficeGUI.cs">
       <SubType>UserControl</SubType>
@@ -84,6 +90,12 @@
       <DependentUpon>RoutingTool.cs</DependentUpon>
     </Compile>
     <Compile Include="RoutingToolEventArgs.cs" />
+    <Compile Include="SpeedTool.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpeedTool.Designer.cs">
+      <DependentUpon>SpeedTool.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestingBlock.cs" />
     <Compile Include="TestingSystemScheduler.cs" />
     <Compile Include="TestingTrackController.cs" />

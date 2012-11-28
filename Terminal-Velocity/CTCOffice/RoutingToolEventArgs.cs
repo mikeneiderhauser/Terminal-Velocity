@@ -10,25 +10,18 @@ namespace CTCOffice
 {
     public class RoutingToolEventArgs : EventArgs
     {
-        private IBlock _block;
-        private int _line;
+        private IRoute _route;
 
-        public RoutingToolEventArgs(IBlock b, int line)
+        public RoutingToolEventArgs(IRoute route)
         {
-            _block = b;
-            _line = line;
+            _route = route;
         }
 
-        public IBlock Block
+        public IRoute Route
         {
-            get { return _block; }
-            set { _block = value; }
+            get { return _route; }
+            set { _route = value; }
         }
 
-        public int Line
-        {
-            get { return _line; }
-            set { _line = value; }
-        }
     }
 }
