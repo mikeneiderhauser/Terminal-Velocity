@@ -8,7 +8,7 @@ using Utility;
 
 namespace CTCOffice
 {
-    class Request : IRequest
+    public class Request : IRequest
     {
         #region Private Class Variables
         /// <summary>

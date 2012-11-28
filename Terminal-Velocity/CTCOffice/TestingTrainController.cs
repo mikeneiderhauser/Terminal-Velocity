@@ -11,17 +11,9 @@ namespace CTCOffice
     public class TestingTrainController : ITrainController
     {
 
-        public TestingTrainController()
-        {
+   
 
-        }
-
-        public ITrainModel Train
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public List<IBlock> AuthorityBlocks
+        public double SpeedInput
         {
             get
             {
@@ -31,6 +23,11 @@ namespace CTCOffice
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public void checkLightsOn()
+        {
+            throw new NotImplementedException();
         }
 
         public int AuthorityLimit
@@ -57,18 +54,6 @@ namespace CTCOffice
             }
         }
 
-        public IBlock CurrentBlock
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public int Announcement
         {
             set { throw new NotImplementedException(); }
@@ -80,41 +65,6 @@ namespace CTCOffice
         }
 
         public void removePassengers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void lightsOn()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void lightsOff()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void returnFeedback(string Feedback)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void doorOpen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void doorClose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void sendPower(double Power)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void commit()
         {
             throw new NotImplementedException();
         }

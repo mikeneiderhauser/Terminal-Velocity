@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 using Interfaces;
 using TrackController;
@@ -17,7 +16,6 @@ namespace TrackController
     public partial class TrackControllerUI : UserControl
     {
         private TrackController _current;
-        private int _dirty = 0;
 
         private List<ITrainModel> _trains;
         private List<IBlock> _blocks;
@@ -41,13 +39,17 @@ namespace TrackController
             set { _current = value; }
         }
 
-        private void DoUpdate()
+        public override void Refresh()
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action(this.DoUpdate));
+                this.BeginInvoke(new Action(this.Refresh));
                 return;
             }
+
+            _trains = TC.Trains;
+            _blocks = TC.Blocks;
+            _routes = TC.Routes;
 
             trainGrid.Rows.Clear();
             blockGrid.Rows.Clear();
@@ -80,30 +82,31 @@ namespace TrackController
                     }
                 }
             }
+
+            base.Refresh();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Next;
-            DoUpdate();
+            Refresh();
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
             TC = (TrackController) TC.Previous;
-            DoUpdate();
+            Refresh();
         }
 
+        static int ticks = 0;
         void e_Tick(object sender, Utility.TickEventArgs e)
         {
-            if (!_trains.Equals(TC.Trains))
-                _dirty++;
-            
-            _trains = TC.Trains;
-            _blocks = TC.Blocks;
-            _routes = TC.Routes;
-
-            DoUpdate();
+            ticks++;
+            if (ticks > 10)
+            {
+                Refresh();
+                ticks = 0;
+            }
         }
     }
 }

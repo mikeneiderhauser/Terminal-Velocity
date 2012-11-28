@@ -52,8 +52,6 @@
   <ItemGroup>
     <Compile Include="Dispatch.cs" />
     <Compile Include="DispatchDatabase.cs" />
-    <Compile Include="IDispatch.cs" />
-    <Compile Include="IDispatchDatabase.cs" />
     <Compile Include="SystemScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemSchedulerGUI.cs">

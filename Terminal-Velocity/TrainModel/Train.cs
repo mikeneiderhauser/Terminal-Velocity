@@ -10,8 +10,8 @@ namespace TrainModel
 {
     public class Train : ITrainModel
     {
-        //Commit for Train Class 11/16/2012 4:30
-        // Has public parameters
+        #region Global variables
+
         private int _trainID;
         private const double _length = 32.33; // meters
         private double _totalMass;
@@ -34,11 +34,20 @@ namespace TrainModel
         private ITrainController _trainController;
         private ISimulationEnvironment _environment;
         private ITrackModel _trackModel;
+        private List<ITrainModel> allTrains;
 
+        private int _trackCircuitID;
         private IBlock _currentBlock;
+        private int _currentBlockID;
+        private int _previousBlockID;
         private double _blockLength;
 
-        // Does not have public parameters
+        #endregion
+
+
+
+        #region Constant values
+
         private const double _initialMass = 40900; // kilograms
         private const double _personMass = 90; // kilograms
         private const double _width = 2.65; // meters
@@ -49,8 +58,9 @@ namespace TrainModel
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
         private const double _accelerationGravity = 9.8; // meters/second^2
 
-        //TODO: get list of trains from environment
-        private List<ITrainModel> allTrains;
+        #endregion
+
+
 
         #region Constructors
 
@@ -79,15 +89,16 @@ namespace TrainModel
             _signalPickupFailure = false;
 
             _currentBlock = startingBlock;
+            _previousBlockID = 0;
+            _currentBlockID = _currentBlock.BlockID;
             _blockLength = _currentBlock.BlockSize;
+            _trackCircuitID = _currentBlock.TrackCirID;
 
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
             _trackModel = environment.TrackModel;
-
-            // TODO: double check constructor
-            //_trainController = new ITrainController();
+            _trainController = new TrainController.TrainController(_environment);
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
@@ -96,14 +107,24 @@ namespace TrainModel
         #endregion
 
 
+
         #region Public Methods
 
+
+        /// <summary>
+        /// Applies the maximum deceleration limit to the train to stop it.
+        /// </summary>
         public void EmergencyBrake()
         {
             _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
+        /// <summary>
+        /// Changes the acceleration of the train based on the given power. 
+        /// </summary>
+        /// <param name="power">Power given.</param>
+        /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
             _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
@@ -117,14 +138,17 @@ namespace TrainModel
 
             double newAcceleration = currentForce / _totalMass;
 
+            // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\n";
                 return false;
             }
+
+            // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\n";
                 return false;
             }
 
@@ -145,18 +169,26 @@ namespace TrainModel
         #endregion
 
 
+
         #region Private Methods
 
+        /// <summary>
+        /// Occurs on every tick.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             updateMovement();
         }
 
+        /// <summary>
+        /// Updates the movement of the train. Accounts for slope and changes the block if necessary.
+        /// </summary>
         private void updateMovement()
         {
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
-            
             if (_currentBlock.Grade > 0) // up hill
             {
                 _currentAcceleration -= _accelerationGravity * Math.Sin(angle);
@@ -169,36 +201,38 @@ namespace TrainModel
             _currentVelocity += _currentAcceleration;
             _currentPosition += _currentVelocity;
 
-            // Handles edge of blocks for forwards and backwards
+            // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
             {
-                //_currentBlock = _currentBlock.NEXT method
-                int nextBlockID = _currentBlock.SwitchDest1;
-                _currentBlock = _trackModel.requestBlockInfo(nextBlockID);
+                // get next block ID based on the previous ID
+                int nextBlockID = _currentBlock.nextBlockIndex(_previousBlockID);
+
+                _previousBlockID = _currentBlockID; // previous block is now current block
+
+                // update the current block to be the next block
+                _currentBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
+                _currentBlockID = _currentBlock.BlockID;
                 
+                // update the current position of the train
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
             }
-            else if (_currentPosition < 0)
-            {
-                //_currentBlock = _currentBlock.PREVIOUS method
-                int prevBlockID = _currentBlock.PrevBlockID;
-                _currentBlock = _trackModel.requestBlockInfo(prevBlockID);
 
-                _blockLength = _currentBlock.BlockSize;
-                _currentPosition = _blockLength - _currentPosition * -1;
+
+            // TODO: added implementation
+            if (_trackCircuitID != _currentBlock.TrackCirID)
+            {
+                _trackCircuitID = _currentBlock.TrackCirID;
             }
         }
 
+        /// <summary>
+        /// Calculates the mass of the train based on the number of passengers.
+        /// </summary>
+        /// <returns>The total mass.</returns>
         private double calculateMass()
         {
             return (_initialMass + _personMass * (_numPassengers + _numCrew));
-        }
-
-        //TODO
-        private bool checkFailures()
-        {
-            return false;
         }
 
         #endregion
@@ -370,6 +404,5 @@ namespace TrainModel
         #endregion
 
         #endregion
-
     }
 }

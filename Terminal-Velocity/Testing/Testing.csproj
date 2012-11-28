@@ -49,6 +49,7 @@
     <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackController.Test.cs" />
+    <Compile Include="TrainModel.Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.Test.cs" />
@@ -70,6 +71,10 @@
     <ProjectReference Include="..\SystemScheduler\SystemScheduler.csproj">
       <Project>{0302a665-c11c-483f-94e0-202843124ba5}</Project>
       <Name>SystemScheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminal-Velocity\Terminal-Velocity.csproj">
+      <Project>{920c2fce-2b74-4f45-92bd-d3cae2ad4391}</Project>
+      <Name>Terminal-Velocity</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrackController\TrackController.csproj">
       <Project>{b12e3c6b-35ad-4661-a41e-b5cf8137843e}</Project>

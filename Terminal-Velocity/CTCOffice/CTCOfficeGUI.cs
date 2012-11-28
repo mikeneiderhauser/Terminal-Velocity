@@ -158,8 +158,11 @@ namespace CTCOffice
 
         private IRoute routeSelection()
         {
-
-            return null;
+            IRouteInfo rtInfo = _environment.TrackModel.requestRouteInfo(0);
+            IBlock end = _environment.TrackModel.requestBlockInfo(rtInfo.EndBlock, rtInfo.RouteName);
+            List<IBlock> blocks = rtInfo.BlockList.ToList();
+            
+            return new SimulationEnvironment.Route(RouteTypes.DefinedRoute,end,rtInfo.RouteID,blocks);
         }
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
@@ -328,7 +331,7 @@ namespace CTCOffice
 
 
                     //Add Train Menu if Train is contained by block
-                    if (c.Train != null)
+                    if (c.Train != null || true)
                     {
                         int trainID = -1;
                         if (c.Train != null)
@@ -370,37 +373,41 @@ namespace CTCOffice
             MenuItem s = (MenuItem)sender;
             LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
 
+            
             if (s.Text.CompareTo("Open Track")==0)
             {
-                //_ctcOffice.closeTrackBlockRequest(0, c.Block);
+                _ctcOffice.openTrackBlockRequest(c.Block.TrackCirID, c.Block);
             }
             else if (s.Text.CompareTo("Close Track") == 0)
             {
-
+                _ctcOffice.closeTrackBlockRequest(c.Block.TrackCirID, c.Block);
             }
             else if (s.Text.CompareTo("Display Track Info") == 0)
             {
-
+                IBlock block = c.Block;
             }
             else if (s.Text.CompareTo("Assign Train Route") == 0)
             {
-
+                //get route somehow
+                _ctcOffice.assignTrainRouteRequest(c.Train.TrainID, c.Block.TrackCirID, null, c.Block);
             }
             else if (s.Text.CompareTo("Set Train Authority") == 0)
             {
-
+                //get authority somehow
+                _ctcOffice.setTrainAuthorityRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
             }
             else if (s.Text.CompareTo("Set Train Speed") == 0)
             {
-
+                //get speed somehow
+                _ctcOffice.setTrainSpeedRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
             }
             else if (s.Text.CompareTo("Set Train OOS") == 0)
             {
-
+                _ctcOffice.setTrainOutOfServiceRequest(c.Train.TrainID, c.Block.TrackCirID, c.Block);
             }
             else if (s.Text.CompareTo("Display Train Info") == 0)
             {
-
+                ITrainModel train = c.Train;
             }
             //else do noting
         }

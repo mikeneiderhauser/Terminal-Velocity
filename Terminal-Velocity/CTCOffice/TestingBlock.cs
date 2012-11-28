@@ -195,5 +195,11 @@ namespace CTCOffice
             return false;
         }
         #endregion
+
+
+        public int nextBlockIndex(int prevBlockIndex)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

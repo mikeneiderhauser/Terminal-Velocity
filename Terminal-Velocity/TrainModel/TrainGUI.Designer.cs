@@ -71,6 +71,7 @@
             this.trainInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.trainInfoTextBox.Size = new System.Drawing.Size(399, 311);
             this.trainInfoTextBox.TabIndex = 0;
+            this.trainInfoTextBox.TextChanged += new System.EventHandler(this.trainInfoTextBox_TextChanged);
             // 
             // allTrainComboBox
             // 

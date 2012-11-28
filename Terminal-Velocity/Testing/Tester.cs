@@ -35,7 +35,7 @@ namespace Testing
             // Run Unit tests and GUI tests (currently only one)
             else if (args.Length == 2)
             {
-                UnitTestFramework();
+                //UnitTestFramework();
 
                 if (args[0].CompareTo("gui") == 0)
                 {
@@ -65,9 +65,11 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
+            
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            //TerminalVelocity.Environment environment = new TerminalVelocity.Environment();
+           
+            /*
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
@@ -75,10 +77,12 @@ namespace Testing
             // Previous track controller's circuit
             TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
 
-            TrackController.TrackController prev = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController prev = new TrackController.TrackController(environment, prevCircuit);
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
-            TrackController.TrackController next = new TrackController.TrackController(environment, currCircuit);
+            TrackController.TrackController next = new TrackController.TrackController(environment, nextCircuit);
 
+            TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
+            environment.TrackModel = TrackMod;
             prev.Previous = null;
             prev.Next = curr;
 
@@ -94,9 +98,9 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
-
+            */
             ////////////////////////////////////////////////////////////////////////////////////////
-            //                              Initializations                                       //
+            //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
 
             Form form = new Form();
@@ -143,7 +147,7 @@ namespace Testing
                     CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green", primaryGreen);
 
                     //creating office gui
-                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(environment, ctc);
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(env, ctc);
 
                     //creating testing gui
                     control = new CTCOffice.OfficeGUITest(
@@ -160,8 +164,13 @@ namespace Testing
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
+                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
+                    control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
+                    TrainController.TrainController tc = new TrainController.TrainController(environment);
+                    control = new TrainController.TrainControllerUI(tc);
                     break;
             }
 

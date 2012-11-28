@@ -48,8 +48,10 @@ namespace TrackController
         {
         }
 
+        #pragma warning disable 0169
         internal class Action
         {
+
             private List<Edge> _edges;
 
             public Action(List<Edge> edges)
@@ -65,5 +67,6 @@ namespace TrackController
             {
             }
         }
+        #pragma warning restore 0169
     }
 }

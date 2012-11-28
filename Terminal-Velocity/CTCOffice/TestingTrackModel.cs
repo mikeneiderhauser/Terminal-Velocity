@@ -76,7 +76,6 @@ namespace CTCOffice
             {
                 return _greenLineLayout;
             }
-            return null;
         }
 
         public bool requestUpdateSwitch(IBlock bToUpdate)
@@ -85,6 +84,11 @@ namespace CTCOffice
         }
 
         public bool requestUpdateBlock(IBlock blockToChange)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IBlock requestBlockInfo(int blockID, string line)
         {
             throw new NotImplementedException();
         }
