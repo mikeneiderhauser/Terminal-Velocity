@@ -157,6 +157,8 @@ namespace Testing
                 case 4: // TrainModel
                     break;
                 case 5: // TrainController
+                    TrainController.TrainController tc = new TrainController.TrainController(environment);
+                    control = new TrainController.TrainControllerUI(tc);
                     break;
             }
 

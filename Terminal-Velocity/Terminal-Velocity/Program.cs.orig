@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Interfaces;
+using Utility;
+
+namespace TerminalVelocity
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+<<<<<<< HEAD
+            Environment e = new Environment();
+=======
+            SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
+>>>>>>> prototype
+            //ITrackController first = Setup_Track_Controllers();
+        }
+    }
+}

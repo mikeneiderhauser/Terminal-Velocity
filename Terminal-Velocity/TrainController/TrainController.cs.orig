@@ -183,7 +183,11 @@ namespace TrainController
             }
         }
 
+<<<<<<< HEAD
         private bool checkTemperature(int temp)
+=======
+        ITrainModel ITrainController.Train
+>>>>>>> CTCOfficePrototype
         {
             return temp <= highestTemperature && temp >= lowestTemperature; 
         }
