@@ -46,7 +46,29 @@ namespace TrackModel
 	{
 		_blockID=bID;
 	}
-		
+
+    public int nextBlockIndex(int prevBlockIndex)
+    {
+        //Were starting in the yard
+        if (_blockID == 0)
+        {
+            if (_line.Equals("Red", StringComparison.OrdinalIgnoreCase))
+            {
+                return 9;//Only exit from yard on red line is to block 9
+            }
+            else//Assume line is green
+            {
+                return 62;//Only exit from yard on green line is block 62
+            }
+        }
+        else
+        {
+            if (prevBlockIndex == _prevBlockID)
+                return _switchDest1;
+            else
+                return _prevBlockID;
+        }
+    }
 		
 	//Public methods
         public bool hasSwitch()

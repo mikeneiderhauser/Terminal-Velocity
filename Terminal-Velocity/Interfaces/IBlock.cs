@@ -34,6 +34,7 @@ namespace Interfaces
         bool runsNorthWest();
         bool runsSouthEast();
         bool runsSouthWest();
+        int nextBlockIndex(int prevBlockIndex);
     }
 
 public enum DirEnum 
