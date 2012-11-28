@@ -199,6 +199,12 @@ namespace TrainModel
             }
 
             _currentVelocity += _currentAcceleration;
+
+            if (_currentVelocity < 0)
+            {
+                _currentVelocity = 0;
+            }
+
             _currentPosition += _currentVelocity;
 
             // Handles edge of block, only going forward
