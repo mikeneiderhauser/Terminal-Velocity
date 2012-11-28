@@ -155,6 +155,8 @@ namespace Testing
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
+                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
                     control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
