@@ -85,11 +85,14 @@ namespace CTCOffice
             _processingInRequests = false;
 
             //get status from red and green prrimary track controllers (default)
+            //NO LONGER NEEDED 11/27/2012 8:39 PM
+            /*
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
             RequestQueueOut(this, EventArgs.Empty);
 
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
             RequestQueueOut(this, EventArgs.Empty);
+             */
         }
 
         /// <summary>
@@ -238,7 +241,7 @@ namespace CTCOffice
         /// <param name="request">Request to send to track controller</param>
         public void sendRequest(IRequest request)
         {
-            int line = determineLine(request.TrackControllerID);
+            int line = determineLine(request.Block);
                 
                 //determineLine(request);
             //figure out a way to determine line from block ID -- Waiting on Track Model
@@ -277,7 +280,6 @@ namespace CTCOffice
             {
                 addAutomaticUpdate();
             }
-            
         }
 
         /// <summary>
@@ -298,7 +300,12 @@ namespace CTCOffice
         {
             //cannot implement without Track Model Interface
             //red=0....green=1
-            return request.TrainRoute.RouteID;
+            if(request.Block != null)
+            {
+                return determineLine(request.Block);
+            }
+
+            return determineLine(request.TrainRoute);
         }
 
         private int determineLine(IRoute route)
@@ -310,9 +317,20 @@ namespace CTCOffice
             return route.RouteID;
         }
 
-        private int determineLine(int trackControllerID)
+        private int determineLine(IBlock block)
         {
-            return 0;
+            if (block != null)
+            {
+                if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 || block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                {
+                    return 0;
+                }
+                else if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 || block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                {
+                    return 1;
+                } 
+            }
+            return -1;
         }
 
         /// <summary>
@@ -334,6 +352,7 @@ namespace CTCOffice
             return null;
         }
 
+        #region Request Abstractions
         public void dispatchTrainRequest(IRoute route)
         {
             int line = determineLine(route);
@@ -396,6 +415,7 @@ namespace CTCOffice
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, trackControllerID, 0, 0, 0, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
+        #endregion
         #endregion
 
         #region Public Interface
