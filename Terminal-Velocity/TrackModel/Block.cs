@@ -44,7 +44,7 @@ namespace TrackModel
 
 	public Block(int bID)
 	{
-		_blockID=bID;
+        throw new Exception("Don't use this constructor please.  Instead, use TrackModel.requestBlockInfo(0,\"LineName\")");
 	}
 
     public int nextBlockIndex(int prevBlockIndex)

@@ -224,6 +224,7 @@ namespace TrackModel
                     curSection = fields[1];
 
                     TrackController.TrackCircuit temp = new TrackController.TrackCircuit(_env);
+                    TrackController.TrackController tempCon = new TrackController.TrackController(_env,temp);
                     _trackCirList.Add(temp);
                 }
 
