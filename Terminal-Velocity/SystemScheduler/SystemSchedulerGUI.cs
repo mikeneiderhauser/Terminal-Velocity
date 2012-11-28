@@ -19,36 +19,19 @@ namespace SystemScheduler
         private SystemScheduler _systemScheduler;
         private DateTime _currentTime;
 
-        public SystemSchedulerGUI(ISimulationEnvironment env, ICTCOffice ctc)
+        #region Constructor(s)
+
+        public SystemSchedulerGUI(ISimulationEnvironment env, SystemScheduler systemScheduler, ICTCOffice ctc)
         {
             InitializeComponent();
             _environment = env;
             _ctcOffice = ctc;
-            _systemScheduler = new SystemScheduler(_environment, _ctcOffice);
-            _currentTime = DateTime.Now;
-            _currentTime.AddMilliseconds(_currentTime.Millisecond * -1);
-
-            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Bollocks);
+            _systemScheduler = systemScheduler;
         }
 
-        void _environment_Bollocks(object sender, TickEventArgs e)
-        {
-            _currentTime = _currentTime.AddMilliseconds(100);
-            if (((_currentTime.Minute % 15) == 0) && (_currentTime.Second == 0) && (_currentTime.Millisecond == 0))
-            {
-                CheckForDispatches(_currentTime);
-            }
-        }
+        # endregion
 
-        private void CheckForDispatches(DateTime currentTime)
-        {
-            foreach (IDispatch singleDispatch in _systemScheduler.DispatchDatabase.DispatchList)
-            {
-                if (singleDispatch.DispatchTime == currentTime) {
-                    
-                }
-            }
-        }
+        # region Events
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -57,18 +40,53 @@ namespace SystemScheduler
             dlgOpen.ShowDialog();
             txtFilepath.Text = dlgOpen.FileName;
             _systemScheduler.NewFile(txtFilepath.Text);
-            grdDispatches.DataSource = _systemScheduler.DispatchDatabase.DispatchDatabaseDataSource;
+            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            _systemScheduler.DispatchDatabase.Remove((int)grdDispatches[0, grdDispatches.CurrentRow.Index].Value);
+            _systemScheduler.DispatchDatabase.Remove(int.Parse((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value));
+            grdDispatches.DataSource = null;
+            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
         }
 
         private void grdDispatches_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             btnDelete.Enabled = true;
             btnEdit.Enabled = true;
-        }            
+        }
+
+        # endregion
+
+        # region Private Methods
+
+        private DataTable ConvertListToDataTable(List<string[]> list)
+        {
+            DataTable table = new DataTable();
+
+            int columns = 0;
+            foreach (var array in list)
+            {
+                if (array.Length > columns)
+                {
+                    columns = array.Length;
+                }
+            }
+
+            for (int i = 0; i < columns; i++)
+            {
+                table.Columns.Add();
+            }
+
+            foreach (var array in list)
+            {
+                table.Rows.Add(array);
+            }
+
+            return table;
+        }
+
+        # endregion
+
     }
 }

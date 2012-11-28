@@ -11,6 +11,7 @@ namespace Testing
 {
     public class Tester
     {
+        [STAThreadAttribute]
         static int Main(String[] args)
         {
             if (args.Length == 0)
@@ -103,6 +104,10 @@ namespace Testing
             switch (test)
             {
                 case 0: // SystemScheduler
+
+                    SystemScheduler.SystemScheduler testSystemScheduler = new SystemScheduler.SystemScheduler(environment, office);
+                    control = new SystemScheduler.SystemSchedulerGUI(environment, testSystemScheduler, office);
+
                     break;
                 case 1: // CTCOffice
                     //using all testing classes the ctc office (created a new instance of ctc)

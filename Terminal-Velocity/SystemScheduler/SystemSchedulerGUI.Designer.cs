@@ -31,10 +31,6 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtFilepath = new System.Windows.Forms.TextBox();
             this.grdDispatches = new System.Windows.Forms.DataGridView();
-            this.DispatchID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DispatchTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DispatchRouteType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DispatchRoute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -65,11 +61,6 @@
             this.grdDispatches.AllowUserToAddRows = false;
             this.grdDispatches.AllowUserToDeleteRows = false;
             this.grdDispatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdDispatches.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DispatchID,
-            this.DispatchTime,
-            this.DispatchRouteType,
-            this.DispatchRoute});
             this.grdDispatches.Location = new System.Drawing.Point(15, 66);
             this.grdDispatches.Name = "grdDispatches";
             this.grdDispatches.ReadOnly = true;
@@ -77,31 +68,6 @@
             this.grdDispatches.Size = new System.Drawing.Size(372, 150);
             this.grdDispatches.TabIndex = 2;
             this.grdDispatches.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellContentClick);
-            // 
-            // DispatchID
-            // 
-            this.DispatchID.HeaderText = "Dispatch ID";
-            this.DispatchID.Name = "DispatchID";
-            this.DispatchID.ReadOnly = true;
-            // 
-            // DispatchTime
-            // 
-            this.DispatchTime.HeaderText = "Dispatch Time";
-            this.DispatchTime.Name = "DispatchTime";
-            this.DispatchTime.ReadOnly = true;
-            // 
-            // DispatchRouteType
-            // 
-            this.DispatchRouteType.HeaderText = "DispatchRouteType";
-            this.DispatchRouteType.Name = "DispatchRouteType";
-            this.DispatchRouteType.ReadOnly = true;
-            this.DispatchRouteType.Visible = false;
-            // 
-            // DispatchRoute
-            // 
-            this.DispatchRoute.HeaderText = "Dispatch Route";
-            this.DispatchRoute.Name = "DispatchRoute";
-            this.DispatchRoute.ReadOnly = true;
             // 
             // btnDelete
             // 
@@ -164,9 +130,5 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DispatchID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DispatchTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DispatchRouteType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DispatchRoute;
     }
 }

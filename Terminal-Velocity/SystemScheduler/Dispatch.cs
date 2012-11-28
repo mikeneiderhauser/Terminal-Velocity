@@ -15,7 +15,35 @@ namespace SystemScheduler
         private int _dispatchID;
         private int _routeType;
         private Interfaces.IRoute _dispatchRoute;
-        
+
+        # region Constructors
+
+        public Dispatch(ISimulationEnvironment env, string id, string time, string type, string route)
+        {
+            _environment = env;
+            _dispatchTime = DateTime.Parse(time);
+            _dispatchID = int.Parse(id);
+            _routeType = int.Parse(type);
+            if (_routeType == 0)
+            {
+                List<IBlock> stops = new List<IBlock>();
+                IBlock last = null;
+                foreach (string blockID in route.Split('|'))
+                {
+                    //stops.Add(_environment.TrackModel.requestBlockInfo(int.Parse(blockID)));
+                    //last = _environment.TrackModel.requestBlockInfo(int.Parse(blockID));
+                }
+                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.PointRoute, last, -1, stops);
+            }
+            else
+            {
+                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.DefinedRoute, null, int.Parse(route), null);
+            }
+        }
+
+        # endregion
+
+        # region Properties
 
         public DateTime DispatchTime
         {
@@ -37,27 +65,8 @@ namespace SystemScheduler
             get { return _dispatchRoute; }
         }
 
-        public Dispatch(ISimulationEnvironment env, string time, string id, string type, string route)
-        {
-            _environment = env;
-            _dispatchTime = DateTime.Parse(time);
-            _dispatchID = int.Parse(id);
-            _routeType = int.Parse(type);
-            if (_routeType == 0)
-            {
-                List<IBlock> stops = null;
-                IBlock last = null;
-                foreach (string blockID in route.Split('|'))
-                {
-                    stops.Add(_environment.TrackModel.requestBlockInfo(int.Parse(blockID)));
-                    last = _environment.TrackModel.requestBlockInfo(int.Parse(blockID));
-                }
-                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.PointRoute, last, 0, stops);
-            }
-            else
-            {
-                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.DefinedRoute, null, int.Parse(route), null);
-            }
-        }
+        # endregion
+
+        
     }
 }
