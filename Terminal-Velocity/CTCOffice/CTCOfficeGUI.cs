@@ -274,7 +274,7 @@ namespace CTCOffice
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
-            if (!_routingToolOpen)
+            if (!_routingToolOpen && _routeTool != null)
             {
                 //Todo -> verify Yard Line
                 IBlock block = _environment.TrackModel.requestBlockInfo(0, "Red");
