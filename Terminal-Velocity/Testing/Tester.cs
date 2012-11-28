@@ -79,7 +79,15 @@ namespace Testing
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
             TrackController.TrackController next = new TrackController.TrackController(environment, nextCircuit);
 
+            //Create TrackModel
             TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
+            //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
+            bool res=TrackMod.provideInputFile("red.csv");
+            //Console.WriteLine("Res was "+res);
+            res=TrackMod.provideInputFile("green.csv");
+            //Console.WriteLine("Res was " + res);
+
+
             environment.TrackModel = TrackMod;
             prev.Previous = null;
             prev.Next = curr;
@@ -153,6 +161,7 @@ namespace Testing
                     //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
+                    control=new TrackModel.TrackModelGUI(environment,TrackMod);
                     break;
                 case 3: // TrackController
                     control = new TrackController.TrackControllerUI(environment);

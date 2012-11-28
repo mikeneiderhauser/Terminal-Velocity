@@ -123,12 +123,14 @@ namespace TrackModel
 
 		if(fPath==null)
 		{
+            //Console.WriteLine("Input fPath was null");
 			return -1;
 		}
 
 		//Check that file exists
 		if(!File.Exists(fPath))
 		{
+            //Console.WriteLine("File apparently doesnt exist");
 			return -1;
 		}
 
@@ -193,13 +195,16 @@ namespace TrackModel
                                 		int res=insertCommand.ExecuteNonQuery();//Exec CREATE
 						//Console.WriteLine(res);
          	                        	_dbCon.Close();//CLOSE DB
-                 	               		if(res!=1)
-                        	                	return -1;
+                                        if (res != 1)
+                                        {
+                                            //Console.WriteLine("Database insert failed");
+                                            return -1;
+                                        }
                         		}
                         		catch(Exception crap)
                         		{
                                 		_dbCon.Close();
-						//Console.WriteLine(crap.Message.ToString());
+						            //Console.WriteLine(crap.Message.ToString());
                                 		return -1;
                         		}
 			}//End if statement for valid data line
@@ -443,7 +448,7 @@ namespace TrackModel
                         updateList.Add("UPDATE BLOCKS SET prev=146, dest1=148, dest2=-1, dir='North_AND_South' WHERE line='Green' AND blockID=147");
                         updateList.Add("UPDATE BLOCKS SET prev=147, dest1=149, dest2=-1, dir='North_AND_South' WHERE line='Green' AND blockID=148");
                         updateList.Add("UPDATE BLOCKS SET prev=148, dest1=150, dest2=-1, dir='North_AND_South' WHERE line='Green' AND blockID=149");
-                        updateList.Add("UPDATE BLOCKS SET prev=149, dest1=29, dest2=-1, dir=Northeast_AND_Southwest WHERE line='Green' AND blockID=150");
+                        updateList.Add("UPDATE BLOCKS SET prev=149, dest1=29, dest2=-1, dir='Northeast_AND_Southwest' WHERE line='Green' AND blockID=150");
 		}
 		
 
@@ -458,8 +463,11 @@ namespace TrackModel
                             int res=updateCommand.ExecuteNonQuery();//Exec update
                             //Console.WriteLine(res);
                             _dbCon.Close();//CLOSE DB
-                            if(res!=1)
-                                 return -1;
+                            if (res != 1)
+                            {
+                                //Console.WriteLine("Database UPDATE failed");
+                                return -1;
+                            }
                        }
                        catch(Exception crap)
                        {

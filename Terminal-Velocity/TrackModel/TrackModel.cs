@@ -32,7 +32,7 @@ namespace TrackModel
         public bool provideInputFile(string fName)
         {
             int res=_dbCreator.parseInputFile(fName);
-
+            //Console.WriteLine("Inside TrackModel, res was: " + res);
             if (res == 0)
                 return true;
             else
@@ -85,8 +85,11 @@ namespace TrackModel
 
 	public IBlock[,] requestTrackGrid(int routeID)
 	{
-		if(routeID!=0 && routeID!=1)
-			return null;
+        if (routeID != 0 && routeID != 1)
+        {
+            //Console.WriteLine("Given invalid routeID in requestTrackGrid: "+routeID);
+            return null;
+        }
 
 		IBlock[,] temp=new IBlock[46,38];
 
@@ -206,7 +209,7 @@ namespace TrackModel
 
 		}
 
-        return null;
+        return temp;
 	}
 
 	public bool requestUpdateSwitch(IBlock bToUpdate)
