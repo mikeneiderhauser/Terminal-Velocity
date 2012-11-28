@@ -84,7 +84,7 @@ namespace TrackModel
                 if (res != 0)
                     return -1;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 return -1;
@@ -105,7 +105,7 @@ namespace TrackModel
                 else
                     return 0;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 return -1;
@@ -196,7 +196,7 @@ namespace TrackModel
                         if (res != 1)
                             return -1;
                     }
-                    catch (Exception crap)
+                    catch (Exception)
                     {
                         _dbCon.Close();
                         //Console.WriteLine(crap.Message.ToString());
@@ -461,7 +461,7 @@ namespace TrackModel
                     if (res != 1)
                         return -1;
                 }
-                catch (Exception crap)
+                catch (Exception)
                 {
                     _dbCon.Close();
                     //Console.WriteLine(crap.Message.ToString());

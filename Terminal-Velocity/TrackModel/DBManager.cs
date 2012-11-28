@@ -104,7 +104,7 @@ namespace TrackModel
                 _dbCon.Close();//CLOSE DB
                 return exists;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 return false;
@@ -131,7 +131,7 @@ namespace TrackModel
                 _dbCon.Close();//CLOSE DB
                 return exists;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 return false;
@@ -216,7 +216,7 @@ namespace TrackModel
                 _dbCon.Close();//CLOSE DB
                 return tempReader;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 return null;
@@ -244,7 +244,7 @@ namespace TrackModel
                 else
                     return true;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
@@ -272,7 +272,7 @@ namespace TrackModel
                 else
                     return true;
             }
-            catch (Exception crap)
+            catch (Exception)
             {
                 _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
