@@ -101,6 +101,26 @@ namespace SystemScheduler
             file.Close();
         }
 
+        private string getFreeID()
+        {
+            int i = 0;
+            int f = -1;
+            while (i == 0)
+            {
+                f = f + 1;
+                i = f;
+                foreach (Dispatch funtime in _dispatchlist)
+                {
+                    if (funtime.DispatchID == i)
+                    {
+                        i = 0;
+                        break;
+                    }
+                }
+            }
+            return i.ToString();
+        }
+
         # endregion
 
         # region Public Methods
@@ -128,6 +148,10 @@ namespace SystemScheduler
 
         public void AddDispatch(string id, string time, string type, string route)
         {
+            if (int.Parse(id) == -1)
+            {
+                id = getFreeID();
+            }
             _dispatchlist.Add(new Dispatch(_environment, id, time, type, route));
             _dispatchDataSource.Add(new string[] {id, time, type, route});
             UpdateDatabase();

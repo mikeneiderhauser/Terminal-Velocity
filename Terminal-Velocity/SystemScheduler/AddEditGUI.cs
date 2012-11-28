@@ -20,6 +20,7 @@ namespace SystemScheduler
         private DispatchDatabase _dispatchDatabase;
         private ISimulationEnvironment _environment;
         private string[] _incomingData;
+        private bool _isEdit;
 
         # endregion
 
@@ -30,6 +31,7 @@ namespace SystemScheduler
             _environment = env;
             _dispatchDatabase = dispatchDatabase;
             _incomingData = data;
+            _isEdit = isEdit;
             InitializeComponent();
 
             if (isEdit)
@@ -113,7 +115,28 @@ namespace SystemScheduler
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            _dispatchDatabase.AddDispatch("20", "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "0", txtCustom.Text);
+            if (_isEdit == true)
+            {
+                _dispatchDatabase.RemoveDispatch(int.Parse(_incomingData[0]));
+                AddNewDispatch(_incomingData[0]);
+            }
+            else
+            {
+                AddNewDispatch("-1");
+                
+            }            
+        }
+
+        private void AddNewDispatch(string balls)
+        {
+            if (rdbCustom.Checked == true)
+            {
+                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "0", txtCustom.Text);
+            }
+            else
+            {
+                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "1", cmbSelect.SelectedIndex.ToString());
+            }
         }
 
         private void cmbHour_SelectedIndexChanged(object sender, EventArgs e)

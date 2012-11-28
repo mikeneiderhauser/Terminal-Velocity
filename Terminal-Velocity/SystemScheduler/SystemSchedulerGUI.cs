@@ -92,8 +92,6 @@ namespace SystemScheduler
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            btnDelete.Enabled = false;
-            btnEdit.Enabled = false;
             dlgOpen.ShowDialog();
             txtFilepath.Text = dlgOpen.FileName;
             _systemScheduler.NewFile(txtFilepath.Text);
@@ -148,11 +146,6 @@ namespace SystemScheduler
         }
 
         # endregion
-
-        private void grdDispatches_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
     }
 }

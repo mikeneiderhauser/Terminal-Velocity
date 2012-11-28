@@ -70,6 +70,7 @@
             this.grdDispatches.Size = new System.Drawing.Size(664, 208);
             this.grdDispatches.TabIndex = 2;
             this.grdDispatches.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellClick);
+
             // 
             // btnDelete
             // 
