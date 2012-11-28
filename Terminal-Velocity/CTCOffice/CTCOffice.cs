@@ -94,6 +94,9 @@ namespace CTCOffice
             RequestQueueOut(this, EventArgs.Empty);
              */
         }
+        #endregion
+
+        #region Functions
 
         /// <summary>
         /// Function to handle queue out
@@ -102,7 +105,6 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void CTCOffice_RequestQueueOut(object sender, EventArgs e)
         {
-            int i = 0;
             //handle sequential sending of the queue to the track controller
             if (!_processingOutRequests)
             {
@@ -112,7 +114,6 @@ namespace CTCOffice
                 {
                     IRequest temp = _requestsOut.Dequeue();
                     sendRequest(temp);
-                    i++;
                 }
                 _processingOutRequests = false;
 
@@ -138,14 +139,17 @@ namespace CTCOffice
                 _processingInRequests = true;
                 while (_requestsIn.Count > 0)
                 {
+                    //check if return data is not null then handle request
                     if ((_requestsIn.Peek()).Info != null)
                     {
                         //if valid return data
                         IRequest r = _requestsIn.Dequeue();
+                        /* Feature not needed at this time
                         if (_automation)
                         {
                             //send request back to system scheduler
                         }
+                         */
                         internalRequest(r);
                     }
                     else
@@ -163,10 +167,7 @@ namespace CTCOffice
                 }
             }
         }
-        #endregion
-
-        #region Functions
-
+        
         /// <summary>
         /// Function to login the operator
         /// </summary>
@@ -242,9 +243,6 @@ namespace CTCOffice
         public void sendRequest(IRequest request)
         {
             int line = determineLine(request.Block);
-                
-                //determineLine(request);
-            //figure out a way to determine line from block ID -- Waiting on Track Model
 
             if (line == 0)
             {
@@ -265,7 +263,7 @@ namespace CTCOffice
         /// <param name="request"></param>
         private void internalRequest(IRequest request)
         {
-            //handle request property (Status)Info here
+            IStatus s = request.Info;
         }
 
         /// <summary>
@@ -278,7 +276,7 @@ namespace CTCOffice
             _tickCount++;
             if (_tickCount == _rate)
             {
-                addAutomaticUpdate();
+                //addAutomaticUpdate();
             }
         }
 
@@ -287,8 +285,21 @@ namespace CTCOffice
         /// </summary>
         private void addAutomaticUpdate()
         {
-            //cannot implement until there is a way to get all trackcontroller ID's
-            //possibly through route infor (Red/Green) via block through track circuit etc..
+            ITrackModel tm = _env.TrackModel;
+            if (tm != null)
+            {
+                IRouteInfo redInfo = tm.requestRouteInfo(0);
+                foreach (IBlock b in redInfo.BlockList)
+                {
+                    trackControllerDataRequest(b.TrackCirID);
+                }
+
+                IRouteInfo greenInfo = tm.requestRouteInfo(1);
+                foreach (IBlock b in greenInfo.BlockList)
+                {
+                    trackControllerDataRequest(b.TrackCirID);
+                }
+            }
         }
 
         /// <summary>

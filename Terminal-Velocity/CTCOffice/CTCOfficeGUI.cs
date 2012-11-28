@@ -19,6 +19,14 @@ namespace CTCOffice
         private int _speedState;
         private LineData _redLineData;
         private LineData _greenLineData;
+        private bool _inRoutingPoint;
+        private IRoute _routingToolRoute;
+        private bool _routingToolOpen;
+        private event EventHandler<EventArgs> RoutingEvent;
+
+        private double _rate;
+
+        private double _tickCount;
 
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
         {
@@ -27,7 +35,14 @@ namespace CTCOffice
             _ctcOffice = ctc;
             _environment = env;
             _speedState = 0;
+            _inRoutingPoint = false;
+            _routingToolRoute = null;
+            _routingToolOpen = false;
+            _rate = 50;
+            _tickCount = 0;
 
+            RoutingEvent += new EventHandler<EventArgs>(CTCOfficeGUI_RoutingEvent);
+            
             //subscribe to Environment Tick
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
@@ -107,7 +122,11 @@ namespace CTCOffice
         /// <param name="e"></param>
         void _environment_Tick(object sender, TickEventArgs e)
         {
-            //throw new NotImplementedException();
+            _tickCount++;
+            if (_tickCount == _rate)
+            {
+                //updateMetrics();
+            }
         }
 
         private void _btnLoginLogout_Click(object sender, EventArgs e)
@@ -158,12 +177,65 @@ namespace CTCOffice
 
         private IRoute routeSelection()
         {
-            IRouteInfo rtInfo = _environment.TrackModel.requestRouteInfo(0);
-            IBlock end = _environment.TrackModel.requestBlockInfo(rtInfo.EndBlock, rtInfo.RouteName);
-            List<IBlock> blocks = rtInfo.BlockList.ToList();
-            
-            return new SimulationEnvironment.Route(RouteTypes.DefinedRoute,end,rtInfo.RouteID,blocks);
+            _routingToolOpen = true;
+            Form popup = new Form();
+            RoutingTool rt = new RoutingTool(this, _ctcOffice);
+
+            rt.EnablePointSelection += new EventHandler<EventArgs>(rt_EnablePointSelection);
+            rt.SubmitRoute += new EventHandler<RoutingToolEventArgs>(rt_SubmitRoute);
+
+            popup.Controls.Add(rt);
+            popup.Text = "Routing Tool";
+            popup.AutoSize = true;
+            popup.Show();
+
+            //while (_routingToolRoute == null) ;
+
+            IRoute route = _routingToolRoute;
+
+            return route;
         }
+
+        void rt_SubmitRoute(object sender, RoutingToolEventArgs e)
+        {
+            if (e.Block != null)
+            {
+                //figure out a way to make a list of blocks
+                _routingToolRoute = new SimulationEnvironment.Route(RouteTypes.PointRoute, e.Block, -1, null);
+            }
+            else
+            {
+                string line = "";
+                if (e.Line == 0)
+                {
+                    line = "Red";
+                }
+                else if (e.Line == 1)
+                {
+                    line = "Green";
+                }
+                else
+                {
+                    line = "INVALID";
+                }
+
+                IBlock end = _environment.TrackModel.requestBlockInfo(_environment.TrackModel.requestRouteInfo(e.Line).EndBlock, line);
+                List<IBlock> blocks = _environment.TrackModel.requestRouteInfo(e.Line).BlockList.ToList();
+                _routingToolRoute = new SimulationEnvironment.Route(RouteTypes.DefinedRoute, end, e.Line, blocks);
+            }
+        }
+
+        //event that is caught from routing tool
+        void rt_EnablePointSelection(object sender, EventArgs e)
+        {
+            _inRoutingPoint = true;
+        }
+
+        void CTCOfficeGUI_RoutingEvent(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
@@ -366,7 +438,26 @@ namespace CTCOffice
                 
                 }//end if tag != null
             }//end if right click
-        }
+            else if (e.Button == MouseButtons.Left)
+            {
+                //only process info if in sub menu
+                if (_inRoutingPoint)
+                {
+                    PictureBox s = (PictureBox)sender;
+                    //if sender data is not null (valid track piece / train piece)
+                    if (s.Tag != null)
+                    {
+                        //Cast Tag to Data Container
+                        LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Block Selectoion");
+                        _inRoutingPoint = false;
+                    }
+                }//end if RoutingPoint
+            }//end if Mouse Button
+        }//end event
 
         private void HandleMenuClick(object sender, EventArgs e)
         {
