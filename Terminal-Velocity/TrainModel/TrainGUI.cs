@@ -13,12 +13,20 @@ namespace TrainModel
 {
     public partial class TrainGUI : UserControl
     {
+        #region Global variables
+
         private int numTrains;
         private int timer;
 
         private Train selectedTrain;
         private List<ITrainModel> allTrains;
         private ISimulationEnvironment _environment;
+
+        #endregion
+
+
+
+        #region Constructors
 
         public TrainGUI(ISimulationEnvironment environment)
         {
@@ -39,11 +47,17 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
         }
 
+        #endregion
+
+
+
+        #region Private methods
+
         /// <summary>
         /// Displays error message when a failure occurs.
         /// </summary>
         /// <param name="error"></param>
-        public void DisplayError(string error)
+        private void DisplayError(string error)
         {
             MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -56,6 +70,7 @@ namespace TrainModel
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             timer++;
+
             if (timer % 10 == 0)
             {
                 timer = 0;
@@ -75,12 +90,34 @@ namespace TrainModel
             }
         }
 
-
         /// <summary>
         /// Updates the GUI with the information for the selected train.
         /// </summary>
         private void UpdateGUI()
         {
+            // check if trains have been added or removed from list
+            if (numTrains != allTrains.Count)
+            {
+                PopulateComboBox(allTrains);
+                numTrains = allTrains.Count;
+            }
+
+            // checks for any failures
+            if (selectedTrain.BrakeFailure)
+            {
+                DisplayError("CRITICAL ERROR: Brake failure for " + selectedTrain.ToString());
+            }
+
+            if (selectedTrain.EngineFailure)
+            {
+                DisplayError("CRITICAL ERROR: Engine failure for " + selectedTrain.ToString());
+            }
+
+            if (selectedTrain.SignalPickupFailure)
+            {
+                DisplayError("CRITICAL ERROR: Signal pickup failure for " + selectedTrain.ToString());
+            }
+
             trainLabel.Text = selectedTrain.ToString();
             trainInfoTextBox.Text = selectedTrain.InformationLog;
 
@@ -114,13 +151,6 @@ namespace TrainModel
         /// <param name="e"></param>
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // check if trains have been added or removed from list
-            if (numTrains != allTrains.Count)
-            {
-                PopulateComboBox(allTrains);
-                numTrains = allTrains.Count;
-            }
-
             selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
         }
@@ -129,5 +159,7 @@ namespace TrainModel
         {
 
         }
+
+        #endregion
     }
 }

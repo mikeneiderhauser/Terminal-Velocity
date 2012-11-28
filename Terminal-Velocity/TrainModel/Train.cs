@@ -38,6 +38,8 @@ namespace TrainModel
 
         private int _trackCircuitID;
         private IBlock _currentBlock;
+        private int _currentBlockID;
+        private int _previousBlockID;
         private double _blockLength;
 
         #endregion
@@ -87,8 +89,10 @@ namespace TrainModel
             _signalPickupFailure = false;
 
             _currentBlock = startingBlock;
-            _trackCircuitID = _currentBlock.TrackCirID;
+            _previousBlockID = 0;
+            _currentBlockID = _currentBlock.BlockID;
             _blockLength = _currentBlock.BlockSize;
+            _trackCircuitID = _currentBlock.TrackCirID;
 
             _environment = environment;
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
@@ -185,7 +189,6 @@ namespace TrainModel
         {
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
-            
             if (_currentBlock.Grade > 0) // up hill
             {
                 _currentAcceleration -= _accelerationGravity * Math.Sin(angle);
@@ -198,26 +201,25 @@ namespace TrainModel
             _currentVelocity += _currentAcceleration;
             _currentPosition += _currentVelocity;
 
-            // Handles edge of blocks for forwards and backwards
+            // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
             {
-                //_currentBlock = _currentBlock.NEXT method
-                int nextBlockID = _currentBlock.SwitchDest1;
-                _currentBlock = _trackModel.requestBlockInfo(nextBlockID);
+                // get next block ID based on the previous ID
+                int nextBlockID = _currentBlock.nextBlockIndex(_previousBlockID);
+
+                _previousBlockID = _currentBlockID; // previous block is now current block
+
+                // update the current block to be the next block
+                _currentBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
+                _currentBlockID = _currentBlock.BlockID;
                 
+                // update the current position of the train
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
             }
-            else if (_currentPosition < 0)
-            {
-                //_currentBlock = _currentBlock.PREVIOUS method
-                int prevBlockID = _currentBlock.PrevBlockID;
-                _currentBlock = _trackModel.requestBlockInfo(prevBlockID);
 
-                _blockLength = _currentBlock.BlockSize;
-                _currentPosition = _blockLength - _currentPosition * -1;
-            }
 
+            // TODO: added implementation
             if (_trackCircuitID != _currentBlock.TrackCirID)
             {
                 _trackCircuitID = _currentBlock.TrackCirID;
@@ -402,6 +404,5 @@ namespace TrainModel
         #endregion
 
         #endregion
-
     }
 }
