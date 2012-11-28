@@ -22,10 +22,14 @@ namespace TrackModel
 		
 		
 	//Public methods
-        public String createQueryString(string qType, int ID)
+        public String createQueryString(string qType, int ID, string line)
         {
 		//Check basic ID validity
 			//We need to allow zero's--> Route 0 is red, and Block 0 is yard
+
+            
+
+
 		if(ID<0)
 		{
 			return null;
@@ -38,12 +42,16 @@ namespace TrackModel
 		else if(qType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase))//Format for block
 		{
                       //Test whether block exists
-                        bool exists=blockExists(ID,"Red");
+            if (!line.Equals("Red", StringComparison.OrdinalIgnoreCase) && !line.Equals("Green", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+                        bool exists=blockExists(ID,line);
                         if(exists)
                         {
                                 string blockQuery=      "SELECT *"+
                                                         "FROM BLOCKS"+
-                                                        "WHERE blockID="+ID+" AND line='Red'";
+                                                        "WHERE blockID="+ID+" AND line='"+line+"'";
                                 return blockQuery;
                         }
                         else

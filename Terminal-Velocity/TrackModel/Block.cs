@@ -46,7 +46,11 @@ namespace TrackModel
 	{
 		_blockID=bID;
 	}
-		
+
+    public int nextBlockIndex(int prevBlockIndex)
+    {
+        return 0;
+    }
 		
 	//Public methods
         public bool hasSwitch()
