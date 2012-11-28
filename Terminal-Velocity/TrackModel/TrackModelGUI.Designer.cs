@@ -1,4 +1,4 @@
-﻿namespace TrainModel
+﻿namespace TrackModel
 {
     partial class TrackModelGUI
     {
@@ -57,7 +57,7 @@
             this.BlockInfoTitle.Size = new System.Drawing.Size(106, 25);
             this.BlockInfoTitle.TabIndex = 0;
             this.BlockInfoTitle.Text = "Block Info";
-            this.BlockInfoTitle.Click += new System.EventHandler(this.label1_Click);
+            //this.BlockInfoTitle.Click += new System.EventHandler(this.label1_Click);
             // 
             // lblBlockID
             // 
@@ -85,7 +85,7 @@
             this.lblHeater.Size = new System.Drawing.Size(42, 13);
             this.lblHeater.TabIndex = 3;
             this.lblHeater.Text = "Heater:";
-            this.lblHeater.Click += new System.EventHandler(this.label4_Click);
+            //this.lblHeater.Click += new System.EventHandler(this.label4_Click);
             // 
             // lblCircuit
             // 
@@ -131,6 +131,7 @@
             this.loadFileBtn.TabIndex = 8;
             this.loadFileBtn.Text = "Load File";
             this.loadFileBtn.UseVisualStyleBackColor = true;
+            this.loadFileBtn.Click += new System.EventHandler(this.loadFileBtn_Click);
             // 
             // trackDisplayPanel
             // 

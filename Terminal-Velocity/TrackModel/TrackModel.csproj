@@ -59,7 +59,9 @@
     <Compile Include="Block.cs" />
     <Compile Include="RouteInfo.cs" />
     <Compile Include="TrackModel.cs" />
-    <Compile Include="TrackModelGUI.cs" />
+    <Compile Include="TrackModelGUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TrackModelGUI.designer.cs">
       <DependentUpon>TrackModelGUI.cs</DependentUpon>
     </Compile>

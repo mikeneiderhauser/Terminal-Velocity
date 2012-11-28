@@ -6,22 +6,32 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Interfaces;
 
-namespace TrainModel
+namespace TrackModel
 {
     public partial class TrackModelGUI : UserControl
     {
-        public TrackModelGUI()
+        //Private variables
+        private TrackModel _tm;
+        private ISimulationEnvironment _environment;
+
+        //Constructor
+        public TrackModelGUI(ISimulationEnvironment env, TrackModel tm)
         {
+            //var initialization
+            _environment = env;
+            _tm = tm;
+
+            //Subscribe to an environment Tick
+            //_environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+
+            //Component initialization
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void label4_Click(object sender, EventArgs e)
+        private void loadFileBtn_Click(object sender, EventArgs e)
         {
 
         }
