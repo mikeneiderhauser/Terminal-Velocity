@@ -10,7 +10,7 @@ namespace CTCOffice
 {
     public class SpeedToolEventArgs : EventArgs
     {
-        public double _speed;
+        private double _speed;
 
         public SpeedToolEventArgs(double speed)
         {

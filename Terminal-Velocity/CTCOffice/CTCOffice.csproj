@@ -57,6 +57,7 @@
     <Compile Include="AuthorityTool.Designer.cs">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
     </Compile>
+    <Compile Include="AuthorityToolEventArgs.cs" />
     <Compile Include="CTCOffice.cs" />
     <Compile Include="CTCOfficeGUI.cs">
       <SubType>UserControl</SubType>
@@ -104,6 +105,9 @@
     <Compile Include="TestingTrackModel.cs" />
     <Compile Include="TestingTrainController.cs" />
     <Compile Include="TestingTrainModel.cs" />
+    <EmbeddedResource Include="AuthorityTool.resx">
+      <DependentUpon>AuthorityTool.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </EmbeddedResource>

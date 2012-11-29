@@ -104,7 +104,7 @@ namespace CTCOffice
             }
 
             //hide this gui
-            this.Hide();
+            this.ParentForm.Hide();
             //show ctc gui
             _ctcGui.Show();
         }

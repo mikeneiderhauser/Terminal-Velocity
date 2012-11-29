@@ -16,11 +16,15 @@ namespace CTCOffice
     {
 
         private ISimulationEnvironment _env;
+        private CTCOfficeGUI _ctcGui;
+        private CTCOffice _ctc;
         public event EventHandler<SpeedToolEventArgs> SubmitSpeed;
 
-        public SpeedTool(ISimulationEnvironment env)
+        public SpeedTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env)
         {
             InitializeComponent();
+            _ctcGui = ctcgui;
+            _ctc = ctc;
             _env = env;
         }
 
@@ -64,6 +68,11 @@ namespace CTCOffice
             }
 
             return speed;
+        }
+
+        private void _lblUnits_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

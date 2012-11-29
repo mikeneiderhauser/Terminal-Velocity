@@ -32,6 +32,8 @@ namespace CTCOffice
 
         private List<ITrainModel> _trains;
 
+        
+
         /// <summary>
         /// Number of Ticks Elapsed to update
         /// </summary>
@@ -311,15 +313,35 @@ namespace CTCOffice
             _populationBlock = false;
         }
 
-        private void AddTrainsToTrack()
+        public void AddTrainsToTrack()
         {
             List<ITrainModel> trains = new List<ITrainModel>(_env.AllTrains);
 
             foreach (LayoutCellDataContainer c in _redLineData.Layout)
             {
-                foreach (ITrainModel t in trains)
+                if (c.Block != null)
                 {
-                    
+                    foreach (ITrainModel t in trains)
+                    {
+                        if (t.CurrentBlock == c.Block)
+                        {
+                            c.Tile = Utility.Properties.Resources.RedTrack_Train;
+                        }
+                    }
+                }
+            }
+
+            foreach (LayoutCellDataContainer c in _greenLineData.Layout)
+            {
+                if (c.Block != null)
+                {
+                    foreach (ITrainModel t in trains)
+                    {
+                        if (t.CurrentBlock == c.Block)
+                        {
+                            c.Tile = Utility.Properties.Resources.GreenTrack_Train;
+                        }
+                    }
                 }
             }
         }

@@ -69,7 +69,7 @@ namespace Testing
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
            
-            /*
+            
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
@@ -106,7 +106,7 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
-            */
+            
             ////////////////////////////////////////////////////////////////////////////////////////
             //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ namespace Testing
                     SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
 
                     //create testing track model
-                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
+                    //CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
 
                     //creating testing track controllers
                     CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);
@@ -133,7 +133,7 @@ namespace Testing
 
                     env.PrimaryTrackControllerRed = primaryRed;
                     env.PrimaryTrackControllerGreen = primaryGreen;
-                    env.TrackModel = tm;
+                    env.TrackModel = TrackMod;
                     
 
                     //creating office instance
