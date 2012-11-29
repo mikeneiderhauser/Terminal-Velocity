@@ -362,7 +362,8 @@ namespace CTCOffice
 
         void at_SubmitAuthority(object sender, AuthorityToolEventArgs e)
         {
-            throw new NotImplementedException();
+            int authority = e.Authority;
+            _ctcOffice.setTrainAuthorityRequest(_lastRightClickContainer.Train.TrainID, _lastRightClickContainer.Block.TrackCirID, authority, _lastRightClickContainer.Block);
         }
 
         void popup_AuthorityTool_FormClosed(object sender, FormClosedEventArgs e)
@@ -549,7 +550,7 @@ namespace CTCOffice
 
 
                         //Add Train Menu if Train is contained by block
-                        if (c.Train != null || true)
+                        if (c.Train != null)
                         {
                             int trainID = -1;
                             if (c.Train != null)

@@ -40,6 +40,7 @@ namespace CTCOffice
             {
                 //invalid do nothing (message box should alread appear)
                 _env.sendLogEntry("CTCOffice:SpeedTool: Operator inserted invalid Speed.");
+                MessageBox.Show("Speed cannot be negative! Please enter a positive double.");
             }
             else
             {

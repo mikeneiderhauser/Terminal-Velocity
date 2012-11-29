@@ -17,7 +17,7 @@ namespace CTCOffice
             _authority = authority;
         }
 
-        public int Speed
+        public int Authority
         {
             get { return _authority; }
             set { _authority = value; }
