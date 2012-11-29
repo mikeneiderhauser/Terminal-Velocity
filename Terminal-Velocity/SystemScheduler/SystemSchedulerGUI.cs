@@ -92,8 +92,19 @@ namespace SystemScheduler
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            dlgOpen.ShowDialog();
-            txtFilepath.Text = dlgOpen.FileName;
+            GetSchedulerFile();
+        }
+
+        private void GetSchedulerFile()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(this.GetSchedulerFile));
+                return;
+            }
+
+            //dlgOpen.ShowDialog();
+            txtFilepath.Text = @"D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\SystemScheduler\Resources\KillMe.csv";//hardcoded dlgOpen.FileName;
             _systemScheduler.NewFile(txtFilepath.Text);
             grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
             CheckButtonEnable();

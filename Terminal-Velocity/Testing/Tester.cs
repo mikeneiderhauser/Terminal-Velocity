@@ -11,7 +11,7 @@ namespace Testing
 {
     public class Tester
     {
-        [STAThreadAttribute]
+        [STAThread]
         static int Main(String[] args)
         {
             if (args.Length == 0)
