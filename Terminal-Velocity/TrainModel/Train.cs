@@ -247,26 +247,41 @@ namespace TrainModel
 
         #region Properties
 
+        /// <summary>
+        /// Get the ID of the train.
+        /// </summary>
         public int TrainID
         {
             get { return _trainID; }
         }
 
+        /// <summary>
+        /// Get the length of the train.
+        /// </summary>
         public double Length
         {
             get { return _length; }
         }
 
+        /// <summary>
+        /// Get the total mass of the train, including passengers.
+        /// </summary>
         public double TotalMass
         {
             get { return _totalMass; }
         }
 
+        /// <summary>
+        /// Get the information log.
+        /// </summary>
         public string InformationLog
         {
             get { return _informationLog; }
         }
 
+        /// <summary>
+        /// Get and set the lights.
+        /// </summary>
         public bool LightsOn
         {
             get { return _lightsOn; }
@@ -282,6 +297,9 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Get and set the doors.
+        /// </summary>
         public bool DoorsOpen
         {
             get { return _doorsOpen; }
@@ -297,6 +315,9 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Get and set the temperature of the train.
+        /// </summary>
         public int Temperature
         {
             get { return _temperature; }
@@ -307,26 +328,41 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Get the current acceleration of the train.
+        /// </summary>
         public double CurrentAcceleration
         {
             get { return _currentAcceleration; }
         }
 
+        /// <summary>
+        /// Get the current velocity of the train.
+        /// </summary>
         public double CurrentVelocity
         {
             get { return _currentVelocity; }
         }
 
+        /// <summary>
+        /// Get the current position of the train along the block.
+        /// </summary>
         public double CurrentPosition
         {
             get { return _currentPosition; }
         }
 
+        /// <summary>
+        /// Get the maximum capacity.
+        /// </summary>
         public int MaxCapacity
         {
             get { return _maxCapacity; }
         }
 
+        /// <summary>
+        /// Get and set the number of passengers. Updates the mass.
+        /// </summary>
         public int NumPassengers
         {
             get { return _numPassengers; }
@@ -348,6 +384,9 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Get and set the number of crew members. Updates the mass.
+        /// </summary>
         public int NumCrew
         {
             get { return _numCrew; }
@@ -369,22 +408,33 @@ namespace TrainModel
             }
         }
 
-        // TODO
+        /// <summary>
+        /// Get if there is a brake failure.
+        /// </summary>
         public bool BrakeFailure
         {
             get { return _brakeFailure; }
         }
 
+        /// <summary>
+        /// Get if there is an engine failure.
+        /// </summary>
         public bool EngineFailure
         {
             get { return _engineFailure; }
         }
 
+        /// <summary>
+        /// Get if there is a signal pickup failure.
+        /// </summary>
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
         }
 
+        /// <summary>
+        /// Get the current block for the train.
+        /// </summary>
         public IBlock CurrentBlock
         {
             get { return _currentBlock; }
@@ -395,12 +445,18 @@ namespace TrainModel
 
         #region Track Controller communication parameters
 
+        /// <summary>
+        /// Get and set the train controller's speed limit.
+        /// </summary>
         public double SpeedLimit
         {
             get { return _trainController.SpeedLimit; }
             set { _trainController.SpeedLimit = value; }
         }
 
+        /// <summary>
+        /// Get and set the train controller's authority limit.
+        /// </summary>
         public int AuthorityLimit
         {
             get { return _trainController.AuthorityLimit; }
