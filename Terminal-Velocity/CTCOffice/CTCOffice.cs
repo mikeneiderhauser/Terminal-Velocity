@@ -15,8 +15,10 @@ namespace CTCOffice
         private ISimulationEnvironment _env;
         private ITrackController _primaryTrackControllerRed;
         private LineData _redLineData;
+        private LineData _redLineDataBackup;
         private ITrackController _primaryTrackControllerGreen;
         private LineData _greenLineData;
+        private LineData _greenLineDataBackup;
         private Operator _op;
 
         private Queue<IRequest> _requestsOut;
@@ -26,6 +28,7 @@ namespace CTCOffice
         private bool _processingOutRequests;
         private bool _processingInRequests;
         private bool _automation;
+        private bool _populationBlock;
 
         private List<ITrainModel> _trains;
 
@@ -61,7 +64,9 @@ namespace CTCOffice
             if (_env.TrackModel != null)
             {
                 _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),_env);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
+                _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _greenLineData= new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
             }
             else
             {
@@ -80,15 +85,7 @@ namespace CTCOffice
             _processingOutRequests = false;
             _processingInRequests = false;
 
-            //get status from red and green prrimary track controllers (default)
-            //NO LONGER NEEDED 11/27/2012 8:39 PM
-            /*
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
-            RequestQueueOut(this, EventArgs.Empty);
-
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
-            RequestQueueOut(this, EventArgs.Empty);
-             */
+            _populationBlock = false;
         }
         #endregion
 
@@ -296,6 +293,33 @@ namespace CTCOffice
                 foreach (IBlock b in greenInfo.BlockList)
                 {
                     trackControllerDataRequest(b.TrackCirID);
+                }
+            }
+        }
+
+        private void PopulateTrack()
+        {
+            _populationBlock = true;
+            _redLineDataBackup = _redLineData;
+            _greenLineDataBackup = _greenLineData;
+
+            _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+            _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+
+            AddTrainsToTrack();
+
+            _populationBlock = false;
+        }
+
+        private void AddTrainsToTrack()
+        {
+            List<ITrainModel> trains = new List<ITrainModel>(_env.AllTrains);
+
+            foreach (LayoutCellDataContainer c in _redLineData.Layout)
+            {
+                foreach (ITrainModel t in trains)
+                {
+                    
                 }
             }
         }
