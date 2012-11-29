@@ -85,5 +85,7 @@ namespace Interfaces
         /// </summary>
         /// <param name="sender">ref to caller</param>
         void startTick(object sender);
+
+        void Dispatch(IRequest request);
     }
 }

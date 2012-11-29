@@ -297,18 +297,21 @@ namespace CTCOffice
             }
         }
 
-        private void PopulateTrack()
+        public void PopulateTrack()
         {
-            _populationBlock = true;
-            _redLineDataBackup = _redLineData;
-            _greenLineDataBackup = _greenLineData;
+            if (!_populationBlock)
+            {
+                _populationBlock = true;
+                _redLineDataBackup = _redLineData;
+                _greenLineDataBackup = _greenLineData;
 
-            _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-            _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
 
-            AddTrainsToTrack();
+                AddTrainsToTrack();
 
-            _populationBlock = false;
+                _populationBlock = false;
+            }
         }
 
         public void AddTrainsToTrack()
@@ -321,7 +324,7 @@ namespace CTCOffice
                 {
                     foreach (ITrainModel t in trains)
                     {
-                        if (t.CurrentBlock == c.Block)
+                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.RedTrack_Train;
                         }
@@ -335,13 +338,14 @@ namespace CTCOffice
                 {
                     foreach (ITrainModel t in trains)
                     {
-                        if (t.CurrentBlock == c.Block)
+                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.GreenTrack_Train;
                         }
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -373,7 +377,7 @@ namespace CTCOffice
         {
             if (block != null)
             {
-                if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 || block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 || block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
                 {
                     return 0;
                 }
@@ -439,7 +443,9 @@ namespace CTCOffice
             }
 
             //change block from null to yard
-            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, null));
+            IRequest r = new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock);
+            
+            _requestsOut.Enqueue(r);
             RequestQueueOut(this, EventArgs.Empty);
         }
 

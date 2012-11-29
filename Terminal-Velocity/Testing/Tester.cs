@@ -214,6 +214,9 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
+                case 10:
+                    new PrototypeDemo();
+                    break;
             }
 
             form.Controls.Add(control);

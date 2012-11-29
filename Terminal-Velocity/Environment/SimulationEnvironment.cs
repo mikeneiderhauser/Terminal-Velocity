@@ -155,6 +155,11 @@ namespace SimulationEnvironment
                 sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
             }
         }
+
+        public void Dispatch(IRequest request)
+        {
+            
+        }
         #endregion
     }
 }

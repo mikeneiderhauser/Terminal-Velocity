@@ -100,6 +100,12 @@ namespace TrainModel
         /// </summary>
         private void UpdateGUI()
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(this.UpdateGUI));
+                return;
+            }
+
             // check if trains have been added or removed from list
             if (numTrains != allTrains.Count)
             {
