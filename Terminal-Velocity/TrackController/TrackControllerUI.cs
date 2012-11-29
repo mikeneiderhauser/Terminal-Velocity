@@ -55,6 +55,8 @@ namespace TrackController
             blockGrid.Rows.Clear();
             switchGrid.Rows.Clear();
 
+            tcListBoxInfo.Items.Clear();
+
             { // Setup the TrainGrid
                 for (int i = 0; i < _trains.Count; i++)
                 {
@@ -83,19 +85,33 @@ namespace TrackController
                 }
             }
 
+            { // Setup the ListBox with information about the controller
+                tcListBoxInfo.Items.Add(string.Format("Track Controller: {0}", _current.ID));
+            }
+
             base.Refresh();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            TC = (TrackController) TC.Next;
-            Refresh();
+            if (TC.Next == null)
+                MessageBox.Show("No next Track Controller!");
+            else
+            {
+                TC = (TrackController)TC.Next;
+                Refresh();
+            }
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
-            TC = (TrackController) TC.Previous;
-            Refresh();
+            if (TC.Previous == null)
+                MessageBox.Show("No prior Track Controller!");
+            else
+            {
+                TC = (TrackController)TC.Previous;
+                Refresh();
+            }
         }
 
         static int ticks = 0;

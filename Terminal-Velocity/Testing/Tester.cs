@@ -69,13 +69,12 @@ namespace Testing
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
 
-
+            // Previous track controller's circuit
+            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
             TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment);
-            // Previous track controller's circuit
-            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
 
             TrackController.TrackController prev = new TrackController.TrackController(environment, prevCircuit);
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);

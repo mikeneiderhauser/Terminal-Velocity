@@ -82,7 +82,6 @@ namespace TrackController
             set 
             { 
                 _next = value;
-                SetID();
             }
         }
 
