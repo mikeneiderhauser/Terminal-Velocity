@@ -443,7 +443,9 @@ namespace CTCOffice
             }
 
             //change block from null to yard
-            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock));
+            IRequest r = new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock);
+            
+            _requestsOut.Enqueue(r);
             RequestQueueOut(this, EventArgs.Empty);
         }
 
