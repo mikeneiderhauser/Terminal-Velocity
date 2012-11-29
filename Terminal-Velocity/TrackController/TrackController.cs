@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Interfaces;
+using TrainModel;
 using Utility;
 
 namespace TrackController
@@ -134,6 +135,7 @@ namespace TrackController
         }
 
         // Private method for handling the request object
+        static int trainCount = 0;
         private void HandleRequest(IRequest request)
         {
             switch (request.RequestType)
@@ -145,8 +147,15 @@ namespace TrackController
                             if (request.Info != null)
                                 request.Info.Trains = Trains;
                         }
-                        return;
                     }
+                    break;
+                case RequestTypes.DispatchTrain:
+                    {
+                        IBlock start;
+                        _circuit.Blocks.TryGetValue(0, out start);
+                        _env.addTrain(new TrainModel.Train(trainCount++, start, _env));
+                    }
+                    break;
                 case RequestTypes.TrackMaintenanceClose:
                     break;
                 case RequestTypes.TrackMaintenanceOpen:
