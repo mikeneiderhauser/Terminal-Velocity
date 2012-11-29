@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this._btnEmergencyBrakes = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this._btnDoorOpen = new System.Windows.Forms.Button();
+            this._btnDoorClose = new System.Windows.Forms.Button();
+            this._btnSubmit = new System.Windows.Forms.Button();
             this.SpeedInput = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.TemperatureInput = new System.Windows.Forms.TextBox();
             this.SpeedLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.TemperatureLabel = new System.Windows.Forms.Label();
             this._listLog = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
@@ -51,32 +49,35 @@
             this._btnEmergencyBrakes.UseVisualStyleBackColor = true;
             this._btnEmergencyBrakes.Click += new System.EventHandler(this._btnEmergencyBrake_Click);
             // 
-            // button3
+            // _btnDoorOpen
             // 
-            this.button3.Location = new System.Drawing.Point(92, 221);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this._btnDoorOpen.Location = new System.Drawing.Point(92, 221);
+            this._btnDoorOpen.Name = "_btnDoorOpen";
+            this._btnDoorOpen.Size = new System.Drawing.Size(90, 23);
+            this._btnDoorOpen.TabIndex = 4;
+            this._btnDoorOpen.Text = "Door Open";
+            this._btnDoorOpen.UseVisualStyleBackColor = true;
+            this._btnDoorOpen.Click += new System.EventHandler(this._btnDoorOpen_Click);
             // 
-            // button4
+            // _btnDoorClose
             // 
-            this.button4.Location = new System.Drawing.Point(92, 276);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this._btnDoorClose.Location = new System.Drawing.Point(224, 221);
+            this._btnDoorClose.Name = "_btnDoorClose";
+            this._btnDoorClose.Size = new System.Drawing.Size(89, 23);
+            this._btnDoorClose.TabIndex = 5;
+            this._btnDoorClose.Text = "Door Close";
+            this._btnDoorClose.UseVisualStyleBackColor = true;
+            this._btnDoorClose.Click += new System.EventHandler(this._btnDoorClose_Click);
             // 
-            // button5
+            // _btnSubmit
             // 
-            this.button5.Location = new System.Drawing.Point(224, 338);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
+            this._btnSubmit.Location = new System.Drawing.Point(402, 346);
+            this._btnSubmit.Name = "_btnSubmit";
+            this._btnSubmit.Size = new System.Drawing.Size(75, 23);
+            this._btnSubmit.TabIndex = 6;
+            this._btnSubmit.Text = "Submit";
+            this._btnSubmit.UseVisualStyleBackColor = true;
+            this._btnSubmit.Click += new System.EventHandler(this._btnSubmit_Click);
             // 
             // SpeedInput
             // 
@@ -84,21 +85,13 @@
             this.SpeedInput.Name = "SpeedInput";
             this.SpeedInput.Size = new System.Drawing.Size(100, 22);
             this.SpeedInput.TabIndex = 7;
-            this.SpeedInput.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // textBox2
+            // TemperatureInput
             // 
-            this.textBox2.Location = new System.Drawing.Point(199, 170);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
-            this.textBox2.TabIndex = 8;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(199, 126);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 22);
-            this.textBox3.TabIndex = 9;
+            this.TemperatureInput.Location = new System.Drawing.Point(199, 126);
+            this.TemperatureInput.Name = "TemperatureInput";
+            this.TemperatureInput.Size = new System.Drawing.Size(100, 22);
+            this.TemperatureInput.TabIndex = 9;
             // 
             // SpeedLabel
             // 
@@ -108,25 +101,15 @@
             this.SpeedLabel.Size = new System.Drawing.Size(49, 17);
             this.SpeedLabel.TabIndex = 10;
             this.SpeedLabel.Text = "Speed";
-            this.SpeedLabel.Click += new System.EventHandler(this.label1_Click);
             // 
-            // label2
+            // TemperatureLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(92, 131);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 17);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "label2";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(92, 175);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 17);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "label3";
+            this.TemperatureLabel.AutoSize = true;
+            this.TemperatureLabel.Location = new System.Drawing.Point(92, 131);
+            this.TemperatureLabel.Name = "TemperatureLabel";
+            this.TemperatureLabel.Size = new System.Drawing.Size(90, 17);
+            this.TemperatureLabel.TabIndex = 11;
+            this.TemperatureLabel.Text = "Temperature";
             // 
             // _listLog
             // 
@@ -136,22 +119,19 @@
             this._listLog.Name = "_listLog";
             this._listLog.Size = new System.Drawing.Size(120, 84);
             this._listLog.TabIndex = 13;
-            this._listLog.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // TrainControllerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._listLog);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.TemperatureLabel);
             this.Controls.Add(this.SpeedLabel);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.TemperatureInput);
             this.Controls.Add(this.SpeedInput);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this._btnSubmit);
+            this.Controls.Add(this._btnDoorClose);
+            this.Controls.Add(this._btnDoorOpen);
             this.Controls.Add(this._btnEmergencyBrakes);
             this.Name = "TrainControllerUI";
             this.Size = new System.Drawing.Size(909, 428);
@@ -163,15 +143,13 @@
         #endregion
 
         private System.Windows.Forms.Button _btnEmergencyBrakes;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button _btnDoorOpen;
+        private System.Windows.Forms.Button _btnDoorClose;
+        private System.Windows.Forms.Button _btnSubmit;
         private System.Windows.Forms.TextBox SpeedInput;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox TemperatureInput;
         private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label TemperatureLabel;
         private System.Windows.Forms.ListBox _listLog;
     }
 }

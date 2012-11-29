@@ -72,7 +72,7 @@ namespace TrainModel
         {
             _trainID = trainID;
             _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\n";
+            _informationLog = "Created at " + DateTime.Now + ".\r\n";
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -116,7 +116,7 @@ namespace TrainModel
         /// </summary>
         public void EmergencyBrake()
         {
-            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
+            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\r\n";
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
@@ -127,32 +127,32 @@ namespace TrainModel
         /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\r\n";
 
             double currentForce = 0;
+            double newAcceleration = _physicalAccelerationLimit;
 
-            if (_currentVelocity > 0 || _currentVelocity < 0)
+            if (_currentVelocity > 0)
             {
                 currentForce = power / _currentVelocity;
+                newAcceleration = currentForce / _totalMass;
             }
-
-            double newAcceleration = currentForce / _totalMass;
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\r\n";
                 return false;
             }
 
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\n";
+            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\r\n";
             _currentAcceleration = newAcceleration;
             return true;
         }
@@ -291,9 +291,9 @@ namespace TrainModel
                 _informationLog += "Train " + _trainID;
 
                 if (_lightsOn)
-                    _informationLog += " lights were turned on.\n";
+                    _informationLog += " lights were turned on.\r\n";
                 else
-                    _informationLog += " lights were turned off.\n";
+                    _informationLog += " lights were turned off.\r\n";
             }
         }
 
@@ -309,9 +309,9 @@ namespace TrainModel
                 _informationLog += "Train " + _trainID;
 
                 if (_doorsOpen)
-                    _informationLog += " doors were opened.\n";
+                    _informationLog += " doors were opened.\r\n";
                 else
-                    _informationLog += " doors were closed.\n";
+                    _informationLog += " doors were closed.\r\n";
             }
         }
 
@@ -375,10 +375,10 @@ namespace TrainModel
                 if (difference < 0) // people get off train
                 {
                     difference *= -1;
-                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\n";
+                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\r\n";
                 }
                 else // people get on train
-                    _informationLog += difference + " passengers got on Train " + _trainID + ".\n";
+                    _informationLog += difference + " passengers got on Train " + _trainID + ".\r\n";
 
                 _totalMass = calculateMass();
             }
@@ -399,10 +399,10 @@ namespace TrainModel
                 if (difference < 0) // people get off train
                 {
                     difference *= -1;
-                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\n";
+                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\r\n";
                 }
                 else // people get on train
-                    _informationLog += difference + " crew members got on Train " + _trainID + ".\n";
+                    _informationLog += difference + " crew members got on Train " + _trainID + ".\r\n";
 
                 _totalMass = calculateMass();
             }
