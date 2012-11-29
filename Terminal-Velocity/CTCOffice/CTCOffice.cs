@@ -373,7 +373,7 @@ namespace CTCOffice
         {
             if (block != null)
             {
-                if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 || block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 || block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
                 {
                     return 0;
                 }
@@ -439,7 +439,7 @@ namespace CTCOffice
             }
 
             //change block from null to yard
-            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, null));
+            _requestsOut.Enqueue(new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
