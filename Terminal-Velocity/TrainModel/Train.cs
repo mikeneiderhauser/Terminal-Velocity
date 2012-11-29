@@ -130,7 +130,7 @@ namespace TrainModel
             _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
 
             double currentForce = 0;
-            double newAcceleration = 0.5;
+            double newAcceleration = _physicalAccelerationLimit;
 
             if (_currentVelocity > 0)
             {
