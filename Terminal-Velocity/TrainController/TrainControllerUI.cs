@@ -30,24 +30,25 @@ namespace TrainController
             _currentTrainController.EmergencyBrakes();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
+        private void _btnDoorOpen_Click(object sender, EventArgs e)
+        {
+            _currentTrainController.doorOpen();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void _btnDoorClose_Click(object sender, EventArgs e)
         {
-
+            _currentTrainController.doorClose();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void _btnSubmit_Click(object sender, EventArgs e)
         {
+            _currentTrainController.SpeedInput = Double.Parse(SpeedInput.Text);
+            _currentTrainController.Temperature = Int16.Parse(TemperatureInput.Text);
+            SpeedInput.Text = "0.0";
+            TemperatureInput.Text = "70";
 
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+    
     }
 }
