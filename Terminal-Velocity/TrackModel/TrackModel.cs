@@ -22,7 +22,7 @@ namespace TrackModel
         public TrackModel(ISimulationEnvironment environment)
         {
 		_env=environment;
-		_dbCreator=new DBCreator("",_env);
+		_dbCreator=new DBCreator("");
 		_dbManager=new DBManager(_dbCreator.DBCon);
 
 		//_environment.Tick+=
@@ -39,7 +39,7 @@ namespace TrackModel
                 return false;
         }
 
-	public IBlock requestBlockInfo(int blockID,string line)
+	public IBlock requestBlockInfo(int blockID, string line)
 	{
 		//Dont request patently invalid blocks
 		if(blockID<0)
@@ -48,27 +48,17 @@ namespace TrackModel
 		string blockQuery=_dbManager.createQueryString("BLOCK",blockID,line);
 
 		//Check query return val
-        if (blockQuery == null)
-        {
-            //Console.WriteLine("createQueryString returned null");
-            return null;
-        }
+		if(blockQuery==null)
+			return null;
+
 		//Get data reader for query
         SQLiteDataReader queryReader = _dbManager.runQuery(blockQuery);
 
 		//Check exec return val
-        if (queryReader == null)
-        {
-            //Console.WriteLine("runQuery returned null");
-            return null;
-        }
+		if(queryReader==null)
+			return null;
 
 		IBlock temp=_dbManager.formatBlockQueryResults(queryReader);
-
-        _dbCreator.DBCon.Close();
-
-        //if (temp == null)
-            //Console.WriteLine("formatBlockQueryResults returned null");
 		return temp;
 	}
 

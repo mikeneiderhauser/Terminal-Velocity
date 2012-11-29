@@ -43,8 +43,6 @@
     <Compile Include="IBlock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDispatchDatabase.cs" />
-    <Compile Include="IDispatch.cs" />
     <Compile Include="IRequestFrame.cs" />
     <Compile Include="IRouteInfo.cs">
       <SubType>Code</SubType>

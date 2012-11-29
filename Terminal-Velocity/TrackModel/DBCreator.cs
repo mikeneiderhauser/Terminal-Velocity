@@ -14,23 +14,9 @@ namespace TrackModel
     {
         //Private parameters
 	private SQLiteConnection _dbCon;
-    private static int _curCirID=-1;
-    private static List<TrackController.TrackCircuit> _trackCirList=null;
-    private ISimulationEnvironment _env;
 
-        public DBCreator(string fPath,ISimulationEnvironment environment)
+        public DBCreator(string fPath)
         {
-            //Store environment reference
-            _env = environment;
-
-            //Init initial circuitID
-            if (_curCirID == -1)
-            {
-                _curCirID = 0;
-                _trackCirList=new List<TrackController.TrackCircuit>();
-            }
-
-
 		//fPath is the filename of the database to connect to.
 		//Check filepath's legit'ness, give it the default otherwise
 		if(fPath==null || fPath.Equals(""))
@@ -130,10 +116,6 @@ namespace TrackModel
 	public int parseInputFile(string fPath)
 	{
 		//If our constructor failed, return an error code please
-
-        //Used to compare against next section
-        string curSection = "";
-
 		if(_dbCon==null)
 		{
 			return -3;
@@ -194,8 +176,7 @@ namespace TrackModel
                     return 0;
                 }
 
-		
-		
+				
 				string infra;
 				if(fields[6].Equals("",StringComparison.OrdinalIgnoreCase))
 				{
@@ -208,29 +189,8 @@ namespace TrackModel
 				string sElev=fields[9];
 				string grade=fields[4];
 				string blockSize=fields[3];
-
-
-                int trackCirID = -1;
-                //Initialize trackCirID field for each block
-                if (curSection.Equals(fields[1], StringComparison.OrdinalIgnoreCase))
-                {
-                    trackCirID = _curCirID;
-                }
-                else
-                {
-                    //Update ID information
-                    _curCirID++;
-                    trackCirID = _curCirID;
-                    curSection = fields[1];
-
-                    TrackController.TrackCircuit temp = new TrackController.TrackCircuit(_env);
-                    TrackController.TrackController tempCon = new TrackController.TrackController(_env,temp);
-                    _trackCirList.Add(temp);
-                }
-
-
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID, locX, locY) VALUES(" +
-						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',"+trackCirID+", -1, -1)";
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
+						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1)";
 				//Console.WriteLine(singleInsert);
 				prevID=blockID;
 				_dbCon.Open();

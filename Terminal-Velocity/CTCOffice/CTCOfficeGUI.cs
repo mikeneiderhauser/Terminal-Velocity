@@ -14,12 +14,36 @@ namespace CTCOffice
 {
     public partial class CTCOfficeGUI : UserControl
     {
+        //TODO Create Speed Tool and Authority Tool
+
+        private enum RoutingMode
+        {
+            Dispatch,
+            Update
+        }
+
+        //Typical Globals
         private ISimulationEnvironment _environment;
         private CTCOffice _ctcOffice;
         private int _speedState;
         private LineData _redLineData;
         private LineData _greenLineData;
 
+        //Global Time Extension
+        private double _rate;
+        private double _tickCount;
+
+        //routing variables
+        private bool _inRoutingPoint;
+        private bool _routingToolOpen;
+        private RoutingTool _routeTool;
+        private RoutingMode _routeToolMode;
+        public event EventHandler<EventArgs> RoutingToolResponse;
+
+        //last item selected
+        LayoutCellDataContainer _lastRightClickContainer;
+
+        #region Constructor
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
         {
             InitializeComponent();
@@ -28,6 +52,17 @@ namespace CTCOffice
             _environment = env;
             _speedState = 0;
 
+            _rate = 50;
+            _tickCount = 0;
+
+            //init routing vars
+            _routeTool = null;
+            _inRoutingPoint = false;
+            _routingToolOpen = false;
+            _routeToolMode = RoutingMode.Dispatch;
+
+            _lastRightClickContainer = null;
+            
             //subscribe to Environment Tick
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
@@ -42,20 +77,23 @@ namespace CTCOffice
             _loginStatusImage.Image = Utility.Properties.Resources.red;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
-            //get line data
-            _redLineData = _ctcOffice.getLine(0);
-            _greenLineData = _ctcOffice.getLine(1);
-
+            //populate red line and green line panel
             parseLineData();
 
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
         }
+        #endregion
 
         private void parseLineData()
         {
             int x = 0;
             int y = 0;
+
+            //get line data
+            _redLineData = _ctcOffice.getLine(0);
+            _greenLineData = _ctcOffice.getLine(1);
+
             for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++ )
             {
                 for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
@@ -99,7 +137,6 @@ namespace CTCOffice
 
         }
 
-
         /// <summary>
         /// Function to handle Environment Tick
         /// </summary>
@@ -107,7 +144,11 @@ namespace CTCOffice
         /// <param name="e"></param>
         void _environment_Tick(object sender, TickEventArgs e)
         {
-            //throw new NotImplementedException();
+            _tickCount++;
+            if (_tickCount == _rate)
+            {
+                //updateMetrics();
+            }
         }
 
         private void _btnLoginLogout_Click(object sender, EventArgs e)
@@ -156,30 +197,106 @@ namespace CTCOffice
             }
         }//end button LoginLogout
 
-        private IRoute routeSelection()
+        #region Routes
+        private void OpenRoutingTool(IBlock start, RoutingMode requestMode)
         {
+            _routingToolOpen = true;
+            _routeToolMode = requestMode;
 
-            return null;
+            Form popup = new Form();
+            RoutingTool rt = new RoutingTool(this, _ctcOffice, _environment, start);
+
+            //set ctc gui ref
+            _routeTool = rt;
+
+            rt.EnablePointSelection += new EventHandler<EventArgs>(rt_EnablePointSelection);
+            rt.SubmitRoute += new EventHandler<RoutingToolEventArgs>(rt_SubmitRoute);
+
+            popup.Controls.Add(rt);
+            popup.Text = "Routing Tool";
+            popup.AutoSize = true;
+
+            popup.FormClosed += new FormClosedEventHandler(popup_FormClosed);
+            popup.Show();
         }
+
+        void popup_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _routeTool = null;
+            _routingToolOpen = false;
+        }
+
+        /// <summary>
+        /// Event Sent by routing tool.. caught by ctc gui.  enables the point selection of a route
+        /// </summary>
+        /// <param name="sender">RoutingTool</param>
+        /// <param name="e">Standard Event Args</param>
+        void rt_EnablePointSelection(object sender, EventArgs e)
+        {
+            //enable left clicking on the blocks
+            _inRoutingPoint = true;
+            MessageBox.Show("Please select an end block for the point route");
+        }
+
+        private void rt_SubmitRoute(object sender, RoutingToolEventArgs e)
+        {
+            IRoute r = e.Route;
+
+            if (_routeToolMode == RoutingMode.Dispatch)
+            {
+                //dispatch train request
+                _ctcOffice.dispatchTrainRequest(r);
+
+                //close routing tool
+                if (_routeTool != null)
+                {
+                    _routeTool.ParentForm.Close();
+                }
+            }
+            else if (_routeToolMode == RoutingMode.Update)
+            {
+                //assign route request
+                _ctcOffice.assignTrainRouteRequest(
+                    _lastRightClickContainer.Train.TrainID,
+                    _lastRightClickContainer.Block.TrackCirID,
+                    r,
+                    _lastRightClickContainer.Block
+                    );
+
+                //close routing tool
+                if (_routeTool != null)
+                {
+                    _routeTool.ParentForm.Close();
+                }
+            }
+        }
+        #endregion
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
-            IRoute route = routeSelection();
-            _ctcOffice.dispatchTrainRequest(route);
+            if (!_routingToolOpen)
+            {
+                //Todo -> verify Yard Line
+                IBlock block = _environment.TrackModel.requestBlockInfo(0, "Red");
+                OpenRoutingTool(block, RoutingMode.Dispatch);
+            }
+            //_ctcOffice.dispatchTrainRequest(route);
         }
 
         private void _btnRefreshView_Click(object sender, EventArgs e)
         {
-
+            //TODO
         }
 
         private void _btnSchedule_1_Click(object sender, EventArgs e)
         {
+            //TODO
             //show system scheduker
         }
 
         private void _btnSchedule_2_Click(object sender, EventArgs e)
         {
+            //TODO
             //show system scheduler
         }
 
@@ -292,7 +409,7 @@ namespace CTCOffice
 
         private void _layoutPiece_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && !_routingToolOpen)
             {
                 //cast sender as picturebox
                 PictureBox s = (PictureBox)sender;
@@ -313,7 +430,7 @@ namespace CTCOffice
 
                     trackMenuTitles.Add("Open Track");
                     trackMenuTitles.Add("Close Track");
-                    trackMenuTitles.Add("Display Track Info");
+                    //trackMenuTitles.Add("Display Track Info");
 
                     foreach (string t in trackMenuTitles)
                     {
@@ -344,7 +461,7 @@ namespace CTCOffice
                         trainMenuTitles.Add("Set Train Authority");
                         trainMenuTitles.Add("Set Train Speed");
                         trainMenuTitles.Add("Set Train OOS");
-                        trainMenuTitles.Add("Display Train Info");
+                        //trainMenuTitles.Add("Display Train Info");
 
                         foreach (string t in trainMenuTitles)
                         {
@@ -363,14 +480,36 @@ namespace CTCOffice
                 
                 }//end if tag != null
             }//end if right click
-        }
+            else if (e.Button == MouseButtons.Left)
+            {
+                //only process info if in sub menu
+                if (_inRoutingPoint && _routeTool!=null && _routingToolOpen)
+                {
+                    PictureBox s = (PictureBox)sender;
+                    //if sender data is not null (valid track piece / train piece)
+                    if (s.Tag != null)
+                    {
+                        //Cast Tag to Data Container
+                        LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
+                        _routeTool.EndBlock = c.Block;
+                        RoutingToolResponse(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid Block Selection. Please select another block!");
+                    }
+                }//end if RoutingPoint
+            }//end if Mouse Button
+        }//end event
 
         private void HandleMenuClick(object sender, EventArgs e)
         {
             MenuItem s = (MenuItem)sender;
             LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
 
-            
+            //assing last right click container
+            _lastRightClickContainer = c;
+
             if (s.Text.CompareTo("Open Track")==0)
             {
                 _ctcOffice.openTrackBlockRequest(c.Block.TrackCirID, c.Block);
@@ -381,20 +520,24 @@ namespace CTCOffice
             }
             else if (s.Text.CompareTo("Display Track Info") == 0)
             {
+                //TODO
                 IBlock block = c.Block;
             }
             else if (s.Text.CompareTo("Assign Train Route") == 0)
             {
                 //get route somehow
-                _ctcOffice.assignTrainRouteRequest(c.Train.TrainID, c.Block.TrackCirID, null, c.Block);
+                OpenRoutingTool(c.Block, RoutingMode.Update);
+                //_ctcOffice.assignTrainRouteRequest(c.Train.TrainID, c.Block.TrackCirID, null, c.Block);
             }
             else if (s.Text.CompareTo("Set Train Authority") == 0)
             {
+                //TODO
                 //get authority somehow
                 _ctcOffice.setTrainAuthorityRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
             }
             else if (s.Text.CompareTo("Set Train Speed") == 0)
             {
+                //TODO
                 //get speed somehow
                 _ctcOffice.setTrainSpeedRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
             }
@@ -404,11 +547,13 @@ namespace CTCOffice
             }
             else if (s.Text.CompareTo("Display Train Info") == 0)
             {
+                //TODO
                 ITrainModel train = c.Train;
             }
             //else do noting
         }
 
+        #region Global Time Button Handlers
         /// <summary>
         /// Function to set simulation speed to normal (wall speed)
         /// </summary>
@@ -436,6 +581,7 @@ namespace CTCOffice
             //only allow 1 button to be controllable
             _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
         }
+        #endregion
 
         public override void Refresh()
         {
