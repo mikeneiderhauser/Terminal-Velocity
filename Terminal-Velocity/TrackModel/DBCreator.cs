@@ -97,8 +97,8 @@ namespace TrackModel
 			//After creating the database, first insert the YARD block
             if(_dbCon.State!=System.Data.ConnectionState.Open)
 			    _dbCon.Open();
-			string yardRed="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'Red','NONE')";
-            string yardGreen = "INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'Green','NONE')";
+			string yardRed="INSERT INTO BLOCKS(blockID, line, infra, dir, state) VALUES(0,'Red','NONE','North','Healthy')";
+            string yardGreen = "INSERT INTO BLOCKS(blockID, line, infra, dir, state) VALUES(0,'Green','NONE','North','Healthy')";
 			SQLiteCommand insRedCommand=new SQLiteCommand(yardRed);
             SQLiteCommand insGreenCommand = new SQLiteCommand(yardRed);
 			insRedCommand.Connection=_dbCon;
@@ -199,8 +199,8 @@ namespace TrackModel
 				string sElev=fields[9];
 				string grade=fields[4];
 				string blockSize=fields[3];
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
-						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1)";
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY) VALUES(" +
+						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',-1,-1,-1)";
 				//Console.WriteLine(singleInsert);
 				prevID=blockID;
                 if(_dbCon.State!=System.Data.ConnectionState.Open)
