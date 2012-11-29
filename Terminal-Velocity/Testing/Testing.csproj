@@ -144,10 +144,12 @@
     <None Include="App.config" />
     <None Include="green.csv" />
     <None Include="red.csv" />
+    <None Include="Resources\green.csv" />
+    <None Include="Resources\red.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

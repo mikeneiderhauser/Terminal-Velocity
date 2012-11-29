@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Windows.Forms;
+using System.IO;
 
 using Interfaces;
 
@@ -82,9 +83,10 @@ namespace Testing
             //Create TrackModel
             TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
             //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
-            bool res=TrackMod.provideInputFile("red.csv");
+            
+            bool res=TrackMod.provideInputFile(@"..\..\Resources\red.csv");
             //Console.WriteLine("Res was "+res);
-            res=TrackMod.provideInputFile("green.csv");
+            res=TrackMod.provideInputFile(@"..\..\green.csv");
             //Console.WriteLine("Res was " + res);
 
             environment.TrackModel = TrackMod;
