@@ -50,7 +50,7 @@ namespace Testing
             {
                 if (args[0].CompareTo("unit") == 0)
                 {
-                    UnitTestFramework();
+                    //UnitTestFramework();
 
                     Console.WriteLine("\n\nPress enter to continue...");
                     Console.ReadLine();

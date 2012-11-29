@@ -127,30 +127,42 @@ namespace TrainModel
                 }
             }
 
-            trainLabel.Text = selectedTrain.ToString();
-            trainInfoTextBox.Text = selectedTrain.InformationLog;
+            if (selectedTrain != null)
+            {
+                trainLabel.Text = selectedTrain.ToString();
+                trainInfoTextBox.Text = selectedTrain.InformationLog;
 
-            positionValueText.Text = selectedTrain.CurrentPosition.ToString();
-            velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
-            accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
+                positionValueText.Text = selectedTrain.CurrentPosition.ToString();
+                velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
+                accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
 
-            gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
-            massValueText.Text = selectedTrain.TotalMass.ToString();
+                gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
+                massValueText.Text = selectedTrain.TotalMass.ToString();
 
-            numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
-            numCrewValueText.Text = selectedTrain.NumCrew.ToString();
+                numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
+                numCrewValueText.Text = selectedTrain.NumCrew.ToString();
 
-            // set values for lights
-            if (selectedTrain.LightsOn)
-                lightsValueText.Text = "On";
-            else
-                lightsValueText.Text = "Off";
+                // set values for lights
+                if (selectedTrain.LightsOn)
+                {
+                    lightsValueText.Text = "On";
+                }
+                else
+                {
+                    lightsValueText.Text = "Off";
+                }
 
-            // set values for doors
-            if (selectedTrain.DoorsOpen)
-                doorsValueText.Text = "Open";
-            else
-                doorsValueText.Text = "Closed";
+                // set values for doors
+                if (selectedTrain.DoorsOpen)
+                {
+                    doorsValueText.Text = "Open";
+                }
+                else
+                {
+                    doorsValueText.Text = "Closed";
+                }
+
+            }
         }
 
         /// <summary>

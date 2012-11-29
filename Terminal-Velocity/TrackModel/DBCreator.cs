@@ -97,15 +97,19 @@ namespace TrackModel
 			//After creating the database, first insert the YARD block
             if(_dbCon.State!=System.Data.ConnectionState.Open)
 			    _dbCon.Open();
-			string yardIns="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'YARD','NONE')";
-			SQLiteCommand insCommand=new SQLiteCommand(yardIns);
-			insCommand.Connection=_dbCon;
+			string yardRed="INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'Red','NONE')";
+            string yardGreen = "INSERT INTO BLOCKS(blockID, line, infra) VALUES(0,'Green','NONE')";
+			SQLiteCommand insRedCommand=new SQLiteCommand(yardRed);
+            SQLiteCommand insGreenCommand = new SQLiteCommand(yardRed);
+			insRedCommand.Connection=_dbCon;
+            insGreenCommand.Connection = _dbCon;
 			try
 			{
-				int res=insCommand.ExecuteNonQuery();//Exec insert yard statement
+				int res1=insRedCommand.ExecuteNonQuery();//Exec insert yard statement
+                int res2 = insGreenCommand.ExecuteNonQuery();
 				if(_dbCon.State!=System.Data.ConnectionState.Closed)
                     _dbCon.Close();
-				if(res!=1)
+				if(res1!=1 || res2!=1)
 					return -1;
 				else
 					return 0;
