@@ -54,6 +54,9 @@ namespace CTCOffice
         LayoutCellDataContainer _lastRightClickContainer;
         private EventHandler _layoutPiece_MouseHover;
 
+
+        public event EventHandler<ShowTrainEventArgs> ShowTrain;
+
         #region Constructor
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
         {
@@ -656,7 +659,10 @@ namespace CTCOffice
             else if (s.Text.CompareTo("Display Train Info") == 0)
             {
                 //TODO
-                ITrainModel train = c.Train;
+                if (ShowTrain != null)
+                {
+                    ShowTrain(this, new ShowTrainEventArgs(c.Train));
+                }
             }
             //else do noting
         }

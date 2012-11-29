@@ -92,6 +92,7 @@
       <DependentUpon>RoutingTool.cs</DependentUpon>
     </Compile>
     <Compile Include="RoutingToolEventArgs.cs" />
+    <Compile Include="ShowTrainEventArgs.cs" />
     <Compile Include="SpeedTool.cs">
       <SubType>UserControl</SubType>
     </Compile>

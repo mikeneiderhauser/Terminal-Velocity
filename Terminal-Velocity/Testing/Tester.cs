@@ -188,64 +188,7 @@ namespace Testing
 
                 case 10: // PROTOTYPE
 
-                    // UNFINISHED
-                    #region CTC Form
-
-                    Form formCTC = new Form();
-                    UserControl controlCTC = new UserControl();
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Track form
-
-                    Form formTrack = new Form();
-                    UserControl controlTrack = new UserControl();
-                    controlTrack = new TrackModel.TrackModelGUI(environment, TrackMod);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Track Controller form
-
-                    Form formTrackController = new Form();
-                    UserControl controlTrackController = new UserControl();
-                    controlTrackController = new TrackController.TrackControllerUI(environment);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Train Model form
-
-                    Form formTrain = new Form();
-                    UserControl controlTrain = new UserControl();
-                    controlTrain = new TrainModel.TrainGUI(environment);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Train Controller form
-
-                    Form formTrainController = new Form();
-                    UserControl controlTrainController = new UserControl();
-                    
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Scheduler form
-
-                    Form formScheduler = new Form();
-                    UserControl controlScheduler = new UserControl();
-
-                    #endregion
-
-
+                    new PrototypeDemo();
                     break;
             }
 
@@ -255,6 +198,11 @@ namespace Testing
                 form.AutoSize = true;
                 form.ShowDialog();
             }
+        }
+
+        static void controlCTC_ShowTrain(object sender, CTCOffice.ShowTrainEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         static void UnitTestFramework()

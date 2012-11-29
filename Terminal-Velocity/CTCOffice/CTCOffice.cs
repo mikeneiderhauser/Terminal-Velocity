@@ -32,8 +32,6 @@ namespace CTCOffice
 
         private List<ITrainModel> _trains;
 
-        
-
         /// <summary>
         /// Number of Ticks Elapsed to update
         /// </summary>

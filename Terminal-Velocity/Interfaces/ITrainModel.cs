@@ -24,6 +24,7 @@ namespace Interfaces
         bool EngineFailure { get; }
         bool SignalPickupFailure { get; }
         IBlock CurrentBlock { get; }
+        ITrainController TrainController { get; }
 
         bool ChangeMovement(double power);
         void EmergencyBrake();
