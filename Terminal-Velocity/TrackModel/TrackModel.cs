@@ -48,17 +48,27 @@ namespace TrackModel
 		string blockQuery=_dbManager.createQueryString("BLOCK",blockID,line);
 
 		//Check query return val
-		if(blockQuery==null)
-			return null;
-
+        if (blockQuery == null)
+        {
+            //Console.WriteLine("createQueryString returned null");
+            return null;
+        }
 		//Get data reader for query
         SQLiteDataReader queryReader = _dbManager.runQuery(blockQuery);
 
 		//Check exec return val
-		if(queryReader==null)
-			return null;
+        if (queryReader == null)
+        {
+            //Console.WriteLine("runQuery returned null");
+            return null;
+        }
 
 		IBlock temp=_dbManager.formatBlockQueryResults(queryReader);
+
+        _dbCreator.DBCon.Close();
+
+        //if (temp == null)
+            //Console.WriteLine("formatBlockQueryResults returned null");
 		return temp;
 	}
 
