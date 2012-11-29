@@ -42,6 +42,8 @@ namespace TrainModel
         private int _previousBlockID;
         private double _blockLength;
 
+        private double _timeInterval;
+
         #endregion
 
 
@@ -102,6 +104,8 @@ namespace TrainModel
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
+
+            _timeInterval = (double)(environment.getInterval() / 1000.0);
         }
 
         #endregion
@@ -187,6 +191,8 @@ namespace TrainModel
         /// </summary>
         private void updateMovement()
         {
+            _timeInterval = (double)(_environment.getInterval() / 1000.0); // milliseconds to seconds
+
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
             if (_currentBlock.Grade > 0) // up hill
@@ -198,14 +204,14 @@ namespace TrainModel
                 _currentAcceleration += _accelerationGravity * Math.Sin(angle);
             }
 
-            _currentVelocity += _currentAcceleration;
+            _currentVelocity += _currentAcceleration * _timeInterval;
 
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
             }
 
-            _currentPosition += _currentVelocity;
+            _currentPosition += _currentVelocity * _timeInterval;
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
@@ -218,7 +224,7 @@ namespace TrainModel
                 // update the current block to be the next block
                 _currentBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
                 _currentBlockID = _currentBlock.BlockID;
-                
+
                 // update the current position of the train
                 _currentPosition = _currentPosition - _blockLength;
                 _blockLength = _currentBlock.BlockSize;
