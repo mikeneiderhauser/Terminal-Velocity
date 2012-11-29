@@ -179,9 +179,8 @@ namespace CTCOffice
             if (_tickCount >= _rate)
             {
                 //updateMetrics();
-                //_ctcOffice.AddTrainsToTrack();
-                parseLineData();
                 _ctcOffice.PopulateTrack();
+                parseLineData();
                 _tickCount = 0;
             }
         }
