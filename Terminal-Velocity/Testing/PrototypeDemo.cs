@@ -135,7 +135,8 @@ namespace Testing
         {
             Form formTrainController = new Form();
             UserControl controlTrainController = null;
-            controlTrainController = new TrainController.TrainControllerUI(e.TrainModel.TrainController, _env);
+            TrainController.TrainController tc = (TrainController.TrainController)e.TrainModel.TrainController;
+            controlTrainController = new TrainController.TrainControllerUI(tc, _env);
             formTrainController.Controls.Add(controlTrainController);
             formTrainController.AutoSize = true;
             formTrainController.ShowDialog();

@@ -200,11 +200,6 @@ namespace Testing
             }
         }
 
-        static void controlCTC_ShowTrain(object sender, CTCOffice.ShowTrainEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         static void UnitTestFramework()
         {
             int totalPass = 0;
