@@ -61,10 +61,11 @@ namespace TrackController
                 for (int i = 0; i < _trains.Count; i++)
                 {
                     trainGrid.Rows.Add();
-                    trainGrid.Rows[i].Cells[0].Value = _trains[i].TrainID;
-                    trainGrid.Rows[i].Cells[1].Value = "Route...";
-                    trainGrid.Rows[i].Cells[2].Value = _trains[i].CurrentVelocity;
-                    trainGrid.Rows[i].Cells[3].Value = "Authority...";
+                    trainGrid.Rows[i].SetValues(_trains[i].TrainID,
+                                                "RouteID",
+                                                _trains[i].CurrentVelocity,
+                                                "10");
+
                 }
             }
 
@@ -72,21 +73,15 @@ namespace TrackController
                 for (int i = 0; i < _blocks.Count; i++)
                 {
                     blockGrid.Rows.Add();
-                    blockGrid.Rows[i].Cells[0].Value = _blocks[i].BlockID;
-                    blockGrid.Rows[i].Cells[1].Value = "Info...";
-                    blockGrid.Rows[i].Cells[2].Value = "Info...";
-                    blockGrid.Rows[i].Cells[3].Value = "Info...";
-
-                    if (_blocks[i].hasSwitch())
-                    {
-                        switchGrid.Rows.Add();
-                        switchGrid.Rows[switchGrid.Rows.Count - 1].Cells[0].Value = _blocks[i].BlockID;
-                    }
+                    blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(), 
+                                                Enum.GetName(typeof(StateEnum), _blocks[i].State));
                 }
             }
 
             { // Setup the ListBox with information about the controller
                 tcListBoxInfo.Items.Add(string.Format("Track Controller: {0}", _current.ID));
+                tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
+                tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
             }
 
             base.Refresh();

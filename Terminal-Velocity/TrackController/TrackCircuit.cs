@@ -20,10 +20,13 @@ namespace TrackController
 
         #region Constructor(s)
 
-        public TrackCircuit(ISimulationEnvironment env)
+        public TrackCircuit(ISimulationEnvironment env, List<IBlock> blocks)
         {
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
+
+            foreach (IBlock b in blocks)
+                _blocks.Add(b.BlockID, b);
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -83,11 +86,11 @@ namespace TrackController
 
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            // foreach train in environment,
-            // if train is in area of control, add train
-
-            //ITrain train = null;
-            //_trains.Add(trainID, train);
+            foreach (ITrainModel t in _env.AllTrains)
+            {
+                if (_blocks.ContainsKey(t.CurrentBlock.BlockID))
+                    _trains.Add(t.TrainID, t);
+            }
         }
 
         #endregion // Events

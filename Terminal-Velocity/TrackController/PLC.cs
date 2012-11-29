@@ -9,12 +9,15 @@ namespace TrackController
 {
     public class PLC
     {
+        private ITrackCircuit _circuit;
+
         /// <summary>
         /// Construct a new instance of a PLC
         /// </summary>
         /// <param name="filename">The file containing the program to load</param>
-        public PLC(string filename = "ladder.xml")
+        public PLC(ITrackCircuit circuit, string filename = "ladder.xml")
         {
+            _circuit = circuit;
         }
 
         /// <summary>
@@ -25,6 +28,24 @@ namespace TrackController
         /// <param name="routes">The routes ub quetstion</param>
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes)
         {
+            // Get speed limit from TrackModel
+            double speedLimit = 10.0;
+            int authority = 10;
+
+            foreach (IBlock b in blocks)
+            {
+                if (b.State == StateEnum.BrokenTrackFailure)
+                {
+                    // Stop all trains
+                    speedLimit = 0;
+                    authority = 0;
+                }
+            }
+
+            foreach (ITrainModel t in trains)
+            {
+                _circuit.ToTrain(t.TrainID, speedLimit, authority); 
+            }
         }
 
         /// <summary>

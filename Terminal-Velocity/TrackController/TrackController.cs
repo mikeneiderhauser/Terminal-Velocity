@@ -49,7 +49,7 @@ namespace TrackController
             _circuit.ID = this._id;
 
             // PROTOTYPE - static PLC
-            _plc = new PLC();
+            _plc = new PLC(_circuit);
         }
 
         #endregion // Constructor(s)
@@ -106,7 +106,7 @@ namespace TrackController
 
         public void LoadPLCProgram(string filename)
         {
-            _plc = new PLC(filename);
+            _plc = new PLC(_circuit, filename);
         }
 
         #endregion // Public Methods
