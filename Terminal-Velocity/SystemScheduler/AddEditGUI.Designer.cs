@@ -146,7 +146,6 @@
             // 
             // cmbSelect
             // 
-            this.cmbSelect.Enabled = false;
             this.cmbSelect.FormattingEnabled = true;
             this.cmbSelect.Items.AddRange(new object[] {
             "Red",
@@ -196,7 +195,6 @@
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // lblAMPM
             // 

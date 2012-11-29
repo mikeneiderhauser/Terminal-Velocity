@@ -92,6 +92,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CTCOffice\CTCOffice.csproj">
+      <Project>{8B7B6259-91F9-4DB2-AED3-E20FAC7AC986}</Project>
+      <Name>CTCOffice</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
       <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
       <Name>SimulationEnvironment</Name>

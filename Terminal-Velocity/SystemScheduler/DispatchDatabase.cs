@@ -60,7 +60,7 @@ namespace SystemScheduler
             _dispatchDataSource = fileData;
             foreach (string[] singleDispatch in fileData)
             {
-                _dispatchlist.Add(new Dispatch(_environment, singleDispatch[0], singleDispatch[1], singleDispatch[2], singleDispatch[3]));
+                _dispatchlist.Add(new Dispatch(_environment, singleDispatch[0], singleDispatch[1], singleDispatch[2], singleDispatch[3], singleDispatch[4]));
             }
         }
 
@@ -92,11 +92,10 @@ namespace SystemScheduler
         private void UpdateDatabase()
         {
             File.Delete(_filename);
-            //File.Create(_filename);
             System.IO.StreamWriter file = new System.IO.StreamWriter(_filename);
             foreach (string[] dispatchRecord in _dispatchDataSource)
             {
-                file.WriteLine(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," + dispatchRecord[3]);
+                file.WriteLine(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," + dispatchRecord[3] + "," + dispatchRecord[4]);
             }
             file.Close();
         }
@@ -146,14 +145,14 @@ namespace SystemScheduler
             UpdateDatabase();
         }
 
-        public void AddDispatch(string id, string time, string type, string route)
+        public void AddDispatch(string id, string time, string type, string color, string route)
         {
             if (int.Parse(id) == -1)
             {
                 id = getFreeID();
             }
-            _dispatchlist.Add(new Dispatch(_environment, id, time, type, route));
-            _dispatchDataSource.Add(new string[] {id, time, type, route});
+            _dispatchlist.Add(new Dispatch(_environment, id, time, type, color, route));
+            _dispatchDataSource.Add(new string[] {id, time, type, color, route});
             UpdateDatabase();
         }
 

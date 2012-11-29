@@ -18,25 +18,27 @@ namespace SystemScheduler
         private int _dispatchID;
         private int _routeType;
         private Interfaces.IRoute _dispatchRoute;
+        private string _color;
 
         # endregion
 
         # region Constructors
 
-        public Dispatch(ISimulationEnvironment env, string id, string time, string type, string route)
+        public Dispatch(ISimulationEnvironment env, string id, string time, string type, string color, string route)
         {
             _environment = env;
             _dispatchTime = DateTime.Parse(time);
             _dispatchID = int.Parse(id);
             _routeType = int.Parse(type);
+            _color = color;
             if (_routeType == 0)
             {
                 List<IBlock> stops = new List<IBlock>();
                 IBlock last = null;
                 foreach (string blockID in route.Split('|'))
                 {
-                    //stops.Add(_environment.TrackModel.requestBlockInfo(int.Parse(blockID)));
-                    //last = _environment.TrackModel.requestBlockInfo(int.Parse(blockID));
+                    stops.Add(_environment.TrackModel.requestBlockInfo(int.Parse(blockID), _color));
+                    last = _environment.TrackModel.requestBlockInfo(int.Parse(blockID), _color);
                 }
                 _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.PointRoute, last, -1, stops);
             }
@@ -49,6 +51,11 @@ namespace SystemScheduler
         # endregion
 
         # region Properties
+
+        public string Color
+        {
+            get { return _color; }
+        }
 
         public DateTime DispatchTime
         {

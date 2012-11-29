@@ -130,7 +130,7 @@ namespace SystemScheduler
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, true, new string[] {((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[1, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[2, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[3, grdDispatches.CurrentRow.Index].Value)});
+            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, true, new string[] { ((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[1, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[2, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[3, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[4, grdDispatches.CurrentRow.Index].Value) });
 
             if (objCustomDialogBox.ShowDialog() == DialogResult.OK)
             {

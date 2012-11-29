@@ -60,7 +60,17 @@ namespace SystemScheduler
             {
                 if (singleDispatch.DispatchTime == currentTime)
                 {
-                    
+                    if (singleDispatch.DispatchRoute.RouteID == 0)
+                    {
+                        if (singleDispatch.Color.Equals("Red"))
+                        {
+                            _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10, singleDispatch.DispatchRoute, _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                        }
+                        else
+                        {
+                            _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerGreen.ID, -1, 10, 10, singleDispatch.DispatchRoute, _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                        }
+                    }
                 }
             }
         }

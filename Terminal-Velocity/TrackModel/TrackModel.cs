@@ -39,7 +39,7 @@ namespace TrackModel
                 return false;
         }
 
-	public IBlock requestBlockInfo(int blockID,string line)
+	public IBlock requestBlockInfo(int blockID, string line)
 	{
 		//Dont request patently invalid blocks
 		if(blockID<0)

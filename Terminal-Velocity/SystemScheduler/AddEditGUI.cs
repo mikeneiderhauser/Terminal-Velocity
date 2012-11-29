@@ -39,6 +39,14 @@ namespace SystemScheduler
                 DateTime tempDateTime = DateTime.Parse(data[1]);
                 cmbHour.SelectedIndex = (tempDateTime.Hour % 12) - 1;
                 cmbMinute.SelectedIndex = (int)(tempDateTime.Minute / 15);
+                if (data[3].Equals("Red"))
+                {
+                    cmbSelect.SelectedIndex = 0;
+                }
+                else
+                {
+                    cmbSelect.SelectedIndex = 1;
+                }
                 if (tempDateTime.Hour > 11)
                 {
                     cmbAMPM.SelectedIndex = 1;
@@ -51,7 +59,7 @@ namespace SystemScheduler
                 {
                     rdbDefined.Checked = false;
                     rdbCustom.Checked = true;
-                    txtCustom.Text = data[3];
+                    txtCustom.Text = data[4];
                 }
                 else
                 {
@@ -68,13 +76,25 @@ namespace SystemScheduler
 
         private void checkOKEnable()
         {
-            if (((cmbHour.SelectedIndex != -1) && (cmbMinute.SelectedIndex != -1) && (cmbAMPM.SelectedIndex != -1)) && (((rdbCustom.Checked == true) && (txtCustom.Text != "")) || ((rdbDefined.Checked == true) && (cmbSelect.SelectedIndex != -1))))
+            if (((cmbHour.SelectedIndex != -1) && (cmbMinute.SelectedIndex != -1) && (cmbAMPM.SelectedIndex != -1)) && ((rdbCustom.Checked == true) || (rdbDefined.Checked == true)) && (cmbSelect.SelectedIndex != -1))
             {
                 btnOK.Enabled = true;
             }
             else
             {
                 btnOK.Enabled = false;
+            }
+        }
+
+        private void AddNewDispatch(string balls)
+        {
+            if (rdbCustom.Checked == true)
+            {
+                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "0", (string)cmbSelect.SelectedItem, txtCustom.Text);
+            }
+            else
+            {
+                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "1", (string)cmbSelect.SelectedItem, cmbSelect.SelectedIndex.ToString());
             }
         }
 
@@ -86,14 +106,11 @@ namespace SystemScheduler
         {
             txtCustom.Enabled = false;
             txtCustom.Text = "";
-            cmbSelect.Enabled = true;
             checkOKEnable();
         }
 
         private void rdbCustom_CheckedChanged(object sender, EventArgs e)
         {
-            cmbSelect.Enabled = false;
-            cmbSelect.SelectedIndex = -1;
             txtCustom.Enabled = true;
             checkOKEnable();
         }
@@ -108,11 +125,6 @@ namespace SystemScheduler
             checkOKEnable();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            //close the window?
-        }
-
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (_isEdit == true)
@@ -123,20 +135,7 @@ namespace SystemScheduler
             else
             {
                 AddNewDispatch("-1");
-                
             }            
-        }
-
-        private void AddNewDispatch(string balls)
-        {
-            if (rdbCustom.Checked == true)
-            {
-                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "0", txtCustom.Text);
-            }
-            else
-            {
-                _dispatchDatabase.AddDispatch(balls, "11/27/2012 " + (string)cmbHour.SelectedItem + ":" + (string)cmbMinute.SelectedItem + ":00 " + (string)cmbAMPM.SelectedItem, "1", cmbSelect.SelectedIndex.ToString());
-            }
         }
 
         private void cmbHour_SelectedIndexChanged(object sender, EventArgs e)
