@@ -84,6 +84,7 @@ namespace CTCOffice
             _ctcOffice.Logout();
             //change button text
             _btnLoginLogout.Text = "Login";
+
             
             //show team logo (block out user)
             mainDisplayLogo();            
@@ -101,6 +102,12 @@ namespace CTCOffice
 
         private void parseLineData()
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(this.parseLineData));
+                return;
+            }
+
             int x = 0;
             int y = 0;
 
@@ -172,8 +179,9 @@ namespace CTCOffice
             if (_tickCount >= _rate)
             {
                 //updateMetrics();
-                _ctcOffice.AddTrainsToTrack();
+                //_ctcOffice.AddTrainsToTrack();
                 parseLineData();
+                _ctcOffice.PopulateTrack();
                 _tickCount = 0;
             }
         }

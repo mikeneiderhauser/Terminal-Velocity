@@ -297,18 +297,21 @@ namespace CTCOffice
             }
         }
 
-        private void PopulateTrack()
+        public void PopulateTrack()
         {
-            _populationBlock = true;
-            _redLineDataBackup = _redLineData;
-            _greenLineDataBackup = _greenLineData;
+            if (!_populationBlock)
+            {
+                _populationBlock = true;
+                _redLineDataBackup = _redLineData;
+                _greenLineDataBackup = _greenLineData;
 
-            _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-            _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
 
-            AddTrainsToTrack();
+                AddTrainsToTrack();
 
-            _populationBlock = false;
+                _populationBlock = false;
+            }
         }
 
         public void AddTrainsToTrack()
@@ -321,7 +324,7 @@ namespace CTCOffice
                 {
                     foreach (ITrainModel t in trains)
                     {
-                        if (t.CurrentBlock == c.Block)
+                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.RedTrack_Train;
                         }
@@ -335,13 +338,14 @@ namespace CTCOffice
                 {
                     foreach (ITrainModel t in trains)
                     {
-                        if (t.CurrentBlock == c.Block)
+                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.GreenTrack_Train;
                         }
                     }
                 }
             }
+
         }
 
         /// <summary>

@@ -48,6 +48,8 @@ namespace Testing
             createCTCOffice();
             createSystemScheduler();
 
+            TrainModel.Train t = new TrainModel.Train(999,_env.TrackModel.requestBlockInfo(0,"Red"), _env);
+            _env.addTrain(t);
 
             Thread t6 = new Thread(new ThreadStart(this.createTrackForm));
             t6.Start();
