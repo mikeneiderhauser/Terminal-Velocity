@@ -21,6 +21,16 @@ namespace Testing
             SimulationEnvironment.SimulationEnvironment Proto_environment = new SimulationEnvironment.SimulationEnvironment();
             _env = Proto_environment;
 
+            //Create TrackModel
+            TrackModel.TrackModel Proto_TrackMod = new TrackModel.TrackModel(Proto_environment);
+            //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
+            bool Proto_res = Proto_TrackMod.provideInputFile("red.csv");
+            //Console.WriteLine("Res was "+res);
+            Proto_res = Proto_TrackMod.provideInputFile("green.csv");
+            //Console.WriteLine("Res was " + res);
+
+            Proto_environment.TrackModel = Proto_TrackMod;
+
             // Our track circuit
             TrackController.TrackCircuit Proto_currCircuit = new TrackController.TrackCircuit(Proto_environment);
             // Next track controller's circuit
@@ -32,16 +42,7 @@ namespace Testing
             TrackController.TrackController Proto_curr = new TrackController.TrackController(Proto_environment, Proto_currCircuit);
             TrackController.TrackController Proto_next = new TrackController.TrackController(Proto_environment, Proto_nextCircuit);
 
-            //Create TrackModel
-            TrackModel.TrackModel Proto_TrackMod = new TrackModel.TrackModel(Proto_environment);
-            //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
-            bool Proto_res = Proto_TrackMod.provideInputFile("red.csv");
-            //Console.WriteLine("Res was "+res);
-            Proto_res = Proto_TrackMod.provideInputFile("green.csv");
-            //Console.WriteLine("Res was " + res);
-
-
-            Proto_environment.TrackModel = Proto_TrackMod;
+            
             Proto_prev.Previous = null;
             Proto_prev.Next = Proto_curr;
 
