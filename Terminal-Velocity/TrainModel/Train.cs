@@ -98,7 +98,7 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
             _trackModel = environment.TrackModel;
-            _trainController = new TrainController.TrainController(_environment);
+            _trainController = new TrainController.TrainController(_environment, this);
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
