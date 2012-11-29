@@ -45,7 +45,7 @@ namespace CTCOffice
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _automation = false;
-            _rate = 50;//num of ticks
+            _rate = 100;//num of ticks
             _tickCount = 0;
             _rate = env.getInterval();
             _env = env;

@@ -66,7 +66,7 @@ namespace CTCOffice
             _environment = env;
             _speedState = 0;
 
-            _rate = 50;
+            _rate = 100;
             _tickCount = 0;
 
             //init routing vars
@@ -100,6 +100,7 @@ namespace CTCOffice
         }
         #endregion
 
+        System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
         private void parseLineData()
         {
             if (this.InvokeRequired)
@@ -108,17 +109,21 @@ namespace CTCOffice
                 return;
             }
 
+            watch.Reset();
+            watch.Start();
+
             int x = 0;
             int y = 0;
 
+            
             LineData red = _ctcOffice.getLine(0);
             LineData green = _ctcOffice.getLine(1);
 
             if (_redLineData != red)
             {
-
                 _redLineData = red;
 
+                _panelRedLine.Controls.Clear();
                 for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++)
                 {
                     for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
@@ -146,6 +151,7 @@ namespace CTCOffice
             {
                 _greenLineData = green;
 
+                _panelGreenLine.Controls.Clear();
                 for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
                 {
                     for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
@@ -166,6 +172,8 @@ namespace CTCOffice
                     x = 0;
                 }
             }//end process green
+            watch.Stop();
+            Console.WriteLine(string.Format("{0} seconds {1} ms", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds));
         }//end ParseLineData
 
         /// <summary>
