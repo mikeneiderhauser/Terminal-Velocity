@@ -40,6 +40,16 @@ namespace CTCOffice
         private RoutingMode _routeToolMode;
         public event EventHandler<EventArgs> RoutingToolResponse;
 
+        //speedtool vars
+        private double _newSpeed;
+        private bool _speedToolOpen;
+        private SpeedTool _speedTool;
+
+        //authoritytool vars
+        private int _newAuthority;
+        private bool _authorityToolOpen;
+        private AuthorityTool _authorityTool;
+
         //last item selected
         LayoutCellDataContainer _lastRightClickContainer;
         private EventHandler _layoutPiece_MouseHover;
@@ -91,54 +101,62 @@ namespace CTCOffice
             int x = 0;
             int y = 0;
 
-            //get line data
-            _redLineData = _ctcOffice.getLine(0);
-            _greenLineData = _ctcOffice.getLine(1);
+            LineData red = _ctcOffice.getLine(0);
+            LineData green = _ctcOffice.getLine(1);
 
-            for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++ )
+            if (_redLineData != red)
             {
-                for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
+
+                _redLineData = red;
+
+                for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++)
                 {
-                    PictureBox pane = new PictureBox();
-                    _panelRedLine.Controls.Add(pane);
-                    pane.Name = "_imgGridRed_" + i + "_" + j;
-                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pane.Size = new Size(20, 20);
-                    pane.Location = new Point(x, y);
-                    pane.Image = _redLineData.Layout[i, j].Tile;
-                    pane.Tag = _redLineData.Layout[i, j];
-                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
-                    //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
-                    x += 20;
+                    for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
+                    {
+                        PictureBox pane = new PictureBox();
+                        _panelRedLine.Controls.Add(pane);
+                        pane.Name = "_imgGridRed_" + i + "_" + j;
+                        pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pane.Size = new Size(20, 20);
+                        pane.Location = new Point(x, y);
+                        pane.Image = _redLineData.Layout[i, j].Tile;
+                        pane.Tag = _redLineData.Layout[i, j];
+                        pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                        //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                        x += 20;
+                    }
+                    y += 20;
+                    x = 0;
                 }
-                y += 20;
                 x = 0;
-            }
+                y = 0;
+            }//ed process red line
 
-            x = 0;
-            y = 0;
-
-            for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
+            if (_greenLineData != green)
             {
-                for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
-                {
-                    PictureBox pane = new PictureBox();
-                    _panelGreenLine.Controls.Add(pane);
-                    pane.Name = "_imgGridGreen_" + i + "_" + j;
-                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pane.Size = new Size(20, 20);
-                    pane.Location = new Point(x, y);
-                    pane.Image = _greenLineData.Layout[i, j].Tile;
-                    pane.Tag = _greenLineData.Layout[i, j];
-                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
-                    //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
-                    x += 20;
-                }
-                y += 20;
-                x = 0;
-            }
+                _greenLineData = green;
 
-        }
+                for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
+                {
+                    for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
+                    {
+                        PictureBox pane = new PictureBox();
+                        _panelGreenLine.Controls.Add(pane);
+                        pane.Name = "_imgGridGreen_" + i + "_" + j;
+                        pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pane.Size = new Size(20, 20);
+                        pane.Location = new Point(x, y);
+                        pane.Image = _greenLineData.Layout[i, j].Tile;
+                        pane.Tag = _greenLineData.Layout[i, j];
+                        pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                        //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                        x += 20;
+                    }
+                    y += 20;
+                    x = 0;
+                }
+            }//end process green
+        }//end ParseLineData
 
         /// <summary>
         /// Function to handle Environment Tick
@@ -151,6 +169,7 @@ namespace CTCOffice
             if (_tickCount == _rate)
             {
                 //updateMetrics();
+                parseLineData();
             }
         }
 
@@ -409,7 +428,6 @@ namespace CTCOffice
                 }
             }
         }
-
 
         private void _layoutPiece_MouseClick(object sender, MouseEventArgs e)
         {

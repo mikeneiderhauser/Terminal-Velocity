@@ -96,6 +96,7 @@
     <Compile Include="SpeedTool.Designer.cs">
       <DependentUpon>SpeedTool.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpeedToolEventArgs.cs" />
     <Compile Include="TestingBlock.cs" />
     <Compile Include="TestingSystemScheduler.cs" />
     <Compile Include="TestingTrackController.cs" />
@@ -123,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RoutingTool.resx">
       <DependentUpon>RoutingTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpeedTool.resx">
+      <DependentUpon>SpeedTool.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
