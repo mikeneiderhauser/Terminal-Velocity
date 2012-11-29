@@ -38,7 +38,7 @@ namespace TrackModel
             if (getFName.ShowDialog() == DialogResult.OK)
             {
                 string fName = getFName.FileName;
-                bool res=_tm.provideInputFile(fName);
+                //bool res=_tm.provideInputFile(fName);
 
             }
         }
