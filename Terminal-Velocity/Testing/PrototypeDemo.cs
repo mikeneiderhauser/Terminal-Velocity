@@ -21,8 +21,11 @@ namespace Testing
         TrackController.TrackController _prev;
         TrackController.TrackController _curr;
         TrackController.TrackController _next;
+        SystemScheduler.SystemSchedulerGUI _ssGUI;
         CTCOffice.CTCOffice _office;
         SystemScheduler.SystemScheduler _scheduler;
+
+        Form _scheduleHook;
 
 
         public PrototypeDemo()
@@ -170,11 +173,34 @@ namespace Testing
             controlCTC = new CTCOffice.CTCOfficeGUI(_env, _office);
 
             controlCTC.ShowTrain += new EventHandler<CTCOffice.ShowTrainEventArgs>(controlCTC_ShowTrain);
+            controlCTC.ShowSchedule += new EventHandler<EventArgs>(controlCTC_ShowSchedule);
 
             formCTC.Text = "CTC Office";
             formCTC.Controls.Add(controlCTC);
             formCTC.AutoSize = true;
             formCTC.ShowDialog();
+        }
+
+        void controlCTC_ShowSchedule(object sender, EventArgs e)
+        {
+            showSchedule();
+        }
+
+        void showSchedule()
+        {
+            if (_scheduleHook.InvokeRequired)
+            {
+                _scheduleHook.BeginInvoke(new Action(this.showSchedule));
+                return;
+            }
+
+            if (_scheduleHook != null)
+            {
+                _scheduleHook.TopMost = true;
+                _scheduleHook.Show();
+                _scheduleHook.TopMost = false;
+                
+            }
         }
 
         void controlCTC_ShowTrain(object sender, CTCOffice.ShowTrainEventArgs e)
@@ -209,6 +235,7 @@ namespace Testing
             formScheduler.Text = "System Scheduler";
             formScheduler.Controls.Add(controlScheduler);
             formScheduler.AutoSize = true;
+            _scheduleHook = formScheduler;
             formScheduler.ShowDialog();
         }
         #endregion

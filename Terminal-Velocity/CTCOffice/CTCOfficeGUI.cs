@@ -56,6 +56,7 @@ namespace CTCOffice
 
 
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
+        public event EventHandler<EventArgs> ShowSchedule;
 
         #region Constructor
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
@@ -412,12 +413,20 @@ namespace CTCOffice
         {
             //TODO
             //show system scheduker
+            if (ShowSchedule != null)
+            {
+                ShowSchedule(this, EventArgs.Empty);
+            }
         }
 
         private void _btnSchedule_2_Click(object sender, EventArgs e)
         {
             //TODO
             //show system scheduler
+            if (ShowSchedule != null)
+            {
+                ShowSchedule(this, EventArgs.Empty);
+            }
         }
 
         private void _btnRefreshMetrics_Click(object sender, EventArgs e)
@@ -584,7 +593,7 @@ namespace CTCOffice
                             trainMenuTitles.Add("Set Train Authority");
                             trainMenuTitles.Add("Set Train Speed");
                             trainMenuTitles.Add("Set Train OOS");
-                            //trainMenuTitles.Add("Display Train Info");
+                            trainMenuTitles.Add("Display Train Info");
 
                             foreach (string t in trainMenuTitles)
                             {

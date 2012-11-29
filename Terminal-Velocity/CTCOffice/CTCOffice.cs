@@ -327,6 +327,7 @@ namespace CTCOffice
                         if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.RedTrack_Train;
+                            c.Train = t;
                         }
                     }
                 }
@@ -341,6 +342,7 @@ namespace CTCOffice
                         if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
                             c.Tile = Utility.Properties.Resources.GreenTrack_Train;
+                            c.Train = t;
                         }
                     }
                 }
