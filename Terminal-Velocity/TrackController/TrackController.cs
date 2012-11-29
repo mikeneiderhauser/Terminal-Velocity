@@ -193,17 +193,17 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            if (_prev == null)
-            {
-                Dictionary<int, ITrainModel> trains = _circuit.Trains;
+            //if (_prev == null)
+            //{
+            //    Dictionary<int, ITrainModel> trains = _circuit.Trains;
 
-                var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
-                foreach (KeyValuePair<int, ITrainModel> k in differences)
-                {
-                    _env.AllTrains.Add(k.Value);
-                }
-            }
-            else if (_next == null)
+            //    var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+            //    foreach (KeyValuePair<int, ITrainModel> k in differences)
+            //    {
+            //        _env.AllTrains.Add(k.Value);
+            //    }
+            //}
+            if (_next == null)
             {
                 Dictionary<int, ITrainModel> trains = _circuit.Trains;
 
