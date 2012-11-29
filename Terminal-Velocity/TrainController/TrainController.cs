@@ -11,12 +11,20 @@ namespace TrainController
     {
         private TrainControllerUI _tcGUI;
         private ISimulationEnvironment _environment;
+        private ITrainModel _train;
+        private IBlock _currentBlock;
+        private int _authorityLimit;
+        private double _speedLimit;
+        private double _speedInput;
+        private int _announcement;
 
-        public TrainController(ISimulationEnvironment env)
+
+        public TrainController(ISimulationEnvironment env, ITrainModel tm)
         {
             _environment = env;
             _environment.Tick += _environment_Tick;
             _tcGUI = null;
+            Train = tm;
         }
 
         void _environment_Tick(object sender, Utility.TickEventArgs e)
@@ -32,8 +40,8 @@ namespace TrainController
 
         private ITrainModel Train
         {
-            get { return Train; }
-            set { Train = value; }
+            get { return _train; }
+            set { _train = value; }
         }
 
         private const int highestTemperature = 75;
@@ -55,35 +63,36 @@ namespace TrainController
                 if (SpeedInput <= SpeedLimit)
                     sendPower(SpeedInput);
             }
-            
+            /*if (!CurrentBlock.Equals(Train.currentBlock))
+            {
+                AuthorityLimit--;
+                CurrentBlock = Train.currentBlock;
+                if(checkStationNearby()) {
+                    start slowing down each tick;
+                    }
+            } */
+
         }
 
 
-        //private bool checkBlockHasEnded()
+        //private bool checkStationNearby()
         //{
-        //    Train.
+        //    for(int i = 0; i<authoritylimit; i++) {
+        //      figure a way to fetch n blocks
+        //          if(block.hasStation())
+        //              return true
         //}
-        private List<IBlock> AuthorityBlocks
-        {
-            get
-            {
-                return AuthorityBlocks;
-            }
-            set
-            {
-                AuthorityBlocks = value;
-            }
-        }
+
 
         public int AuthorityLimit
         {
             get
             {
-                return AuthorityLimit;
+                return _authorityLimit;
             }
             set
             {
-                AuthorityLimit = value;
+                _authorityLimit = value;
             }
         }
 
@@ -91,21 +100,21 @@ namespace TrainController
         {
             get
             {
-                return SpeedLimit;
+                return _speedLimit;
             }
             set
             {
-                SpeedLimit = value;
-              
+                _speedLimit = value;
+
             }
         }
         public double SpeedInput
         {
-            get { return SpeedInput; }
-            set 
+            get { return _speedInput; }
+            set
             {
                 if (!checkSpeedLimit(value))
-                    SpeedInput = value;
+                    _speedInput = value;
                 else
                     returnFeedback("Speed not implemented because it was over the speed limit");
             }
@@ -116,17 +125,17 @@ namespace TrainController
         {
             get
             {
-                return CurrentBlock;
+                return _currentBlock;
             }
             set
             {
-                CurrentBlock = value;
+                _currentBlock = value;
             }
         }
 
         public int Announcement
         {
-            set { Announcement = value; }
+            set { _announcement = value; }
         }
 
         public void addPassengers()
@@ -137,7 +146,7 @@ namespace TrainController
             Train.NumPassengers = newPassengers;
             //Send throughput afterwards
         }
-       
+
         public void removePassengers()
         {
             Random r = new Random();
@@ -151,7 +160,7 @@ namespace TrainController
             Train.LightsOn = CurrentBlock.hasTunnel();
         }
 
-   
+
 
         public void returnFeedback(string Feedback)
         {
@@ -160,7 +169,7 @@ namespace TrainController
             {
                 _tcGUI.RecLog(Feedback);
             }
-          
+
         }
 
         public void doorOpen()
@@ -177,26 +186,28 @@ namespace TrainController
         public int Temperature
         {
             get { return Temperature; }
-            set { 
-                if(checkTemperature(value))
-                Temperature = value;
+            set
+            {
+                if (checkTemperature(value))
+                    Temperature = value;
             }
         }
 
         private bool checkTemperature(int temp)
         {
-            return temp <= highestTemperature && temp >= lowestTemperature; 
+            return temp <= highestTemperature && temp >= lowestTemperature;
         }
 
 
         public void sendPower(double speed)
         {
-           //CHECK PAPERS ASAP
+
             double e = speed - Train.CurrentVelocity;
-            //double kp = 0.25;
-            //double ki = 1;
-            //need annotations
-            
+            double kp = 1;
+            double ki = 1;
+            Train.ChangeMovement(kp * e);
+            returnFeedback(kp * e + "kW of power sent to the engine");
+
         }
         private bool checkSpeedLimit(double speed)
         {
@@ -207,13 +218,13 @@ namespace TrainController
             //write log here
             return Train.CurrentVelocity == 0;
         }
-     
+
         public void EmergencyBrakes()
         {
             Train.EmergencyBrake();
         }
 
-        
+
 
 
     }
