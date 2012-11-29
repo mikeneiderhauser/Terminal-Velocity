@@ -47,9 +47,12 @@ namespace TrackController
                 return;
             }
 
-            foreach (string s in _current.Messages)
-                messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
-            _current.Messages = new List<string>();
+            if (messageTextBox != null)
+            {
+                foreach (string s in _current.Messages)
+                    messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
+                _current.Messages = new List<string>();
+            }
 
             _trains = TC.Trains;
             _blocks = TC.Blocks;
