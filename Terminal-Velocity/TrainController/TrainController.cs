@@ -17,6 +17,8 @@ namespace TrainController
         private double _speedLimit;
         private double _speedInput;
         private int _announcement;
+        private int _temperature;
+        private string _log;
 
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
@@ -83,6 +85,12 @@ namespace TrainController
         //              return true
         //}
 
+        public string getLog(string parameter)
+        {
+            string local = parameter;
+            return local;
+        }
+
 
         public int AuthorityLimit
         {
@@ -93,6 +101,7 @@ namespace TrainController
             set
             {
                 _authorityLimit = value;
+                returnFeedback("Authority limit set to " + value + "\r");
             }
         }
 
@@ -105,6 +114,7 @@ namespace TrainController
             set
             {
                 _speedLimit = value;
+                returnFeedback("Speed limit set to " + value + "\r");
 
             }
         }
@@ -116,7 +126,7 @@ namespace TrainController
                 if (!checkSpeedLimit(value))
                     _speedInput = value;
                 else
-                    returnFeedback("Speed not implemented because it was over the speed limit");
+                    returnFeedback("Speed not implemented because it was over the speed limit\r");
             }
         }
 
@@ -131,6 +141,12 @@ namespace TrainController
             {
                 _currentBlock = value;
             }
+        }
+
+        public string Log
+        {
+            get { return _log; }
+            set { _log = value; }
         }
 
         public int Announcement
@@ -165,37 +181,40 @@ namespace TrainController
         public void returnFeedback(string Feedback)
         {
             _environment.sendLogEntry(Feedback);
-            if (_tcGUI != null)
-            {
-                _tcGUI.RecLog(Feedback);
-            }
+            _log += Feedback;
+            
 
         }
 
         public void doorOpen()
         {
             Train.DoorsOpen = checkDoorOpen();
+            returnFeedback("Door opening command issued. \r\n");
 
         }
 
         public void doorClose()
         {
             Train.DoorsOpen = false;
+            returnFeedback("Door closing command issued. \r\n");
         }
 
         public int Temperature
         {
-            get { return Temperature; }
+            get { return _temperature; }
             set
             {
                 if (checkTemperature(value))
-                    Temperature = value;
+                    _temperature = value;
             }
         }
 
         private bool checkTemperature(int temp)
         {
-            return temp <= highestTemperature && temp >= lowestTemperature;
+            bool ret = temp <= highestTemperature && temp >= lowestTemperature;
+            if (!ret)
+                returnFeedback("Temperature invalid. Please inform a value between 65 and 75\r");
+            return ret;
         }
 
 
@@ -203,10 +222,11 @@ namespace TrainController
         {
 
             double e = speed - Train.CurrentVelocity;
+            e = e / 3.6;
             double kp = 1;
             double ki = 1;
             Train.ChangeMovement(kp * e);
-            returnFeedback(kp * e + "kW of power sent to the engine");
+            returnFeedback(kp * e + "kW of power sent to the engine\r");
 
         }
         private bool checkSpeedLimit(double speed)
@@ -215,8 +235,16 @@ namespace TrainController
         }
         private bool checkDoorOpen()
         {
-            //write log here
-            return Train.CurrentVelocity == 0;
+            bool ret = Train.CurrentVelocity == 0;
+            if(!ret)
+            {
+                returnFeedback("Doors can't open because the train is in movement.");
+            }
+            else
+            {
+                returnFeedback("Doors opened.");
+            }
+            return ret; 
         }
 
         public void EmergencyBrakes()

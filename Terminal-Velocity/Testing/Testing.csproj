@@ -110,13 +110,16 @@
       <Name>TrainController</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrainModel\TrainModel.csproj">
-      <Project>{1a092719-340a-4c70-98d5-fc9ac09e2e87}</Project>
+      <Project>{66ee0e67-8abc-4764-b68d-ae0ccdb63128}</Project>
       <Name>TrainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
       <Name>Utility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
