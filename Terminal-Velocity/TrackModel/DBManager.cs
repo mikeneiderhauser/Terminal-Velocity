@@ -50,7 +50,7 @@ namespace TrackModel
                 if (exists)
                 {
                     string blockQuery = "SELECT *" +
-                                            "FROM BLOCKS" +
+                                            "FROM BLOCKS " +
                                             "WHERE blockID=" + ID + " AND line='" + line + "'";
                     return blockQuery;
                 }
@@ -116,7 +116,7 @@ namespace TrackModel
         private bool blockExists(int id, string line)
         {
             string selectString = "SELECT *" +
-                        "FROM BLOCKS" +
+                        "FROM BLOCKS " +
                         "WHERE blockID=" + id + " AND line='" + line + "'";
 
             _dbCon.Open();
@@ -213,7 +213,7 @@ namespace TrackModel
             try
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
-                _dbCon.Close();//CLOSE DB
+                //_dbCon.Close();//CLOSE DB
                 return tempReader;
             }
             catch (Exception)
@@ -289,61 +289,56 @@ namespace TrackModel
         {
             Block tempBlock = null;
             int i = 0;
-            while (bR.Read())
+            if (!bR.IsClosed)
             {
-                //Get all fields for a given block
-                string bID = bR.GetString(bR.GetOrdinal("blockID"));
-                string line = bR.GetString(bR.GetOrdinal("line"));
-                string infra = bR.GetString(bR.GetOrdinal("infra"));
-                string sE = bR.GetString(bR.GetOrdinal("starting_elev"));
-                string grade = bR.GetString(bR.GetOrdinal("grade"));
-                string locX = bR.GetString(bR.GetOrdinal("locX"));
-                string locY = bR.GetString(bR.GetOrdinal("locY"));
-                string bSize = bR.GetString(bR.GetOrdinal("bSize"));
-                string dir = bR.GetString(bR.GetOrdinal("dir"));
-                string state = bR.GetString(bR.GetOrdinal("state"));
-                string prev = bR.GetString(bR.GetOrdinal("prev"));
-                string dest1 = bR.GetString(bR.GetOrdinal("dest1"));
-                string dest2 = bR.GetString(bR.GetOrdinal("dest2"));
-                string trackCirID = bR.GetString(bR.GetOrdinal("trackCirID"));
+                while (bR.Read())
+                {
+                    //Get all fields for a given block
+                    string line = null, infra = null, grade = null, locX = null, locY = null, bSize = null, dir = null;
+                    string state = null, prev = null, dest1 = null, dest2 = null, trackCirID = null;
 
-                //////////////////////////////////////////////////////////////////////
-                //Parse fields that must be provided as a different type
-                string[] infraFinal = infra.Split(';');
-                DirEnum dirFinal = (DirEnum)Enum.Parse(typeof(DirEnum), dir, true);
-                StateEnum stateFinal = (StateEnum)Enum.Parse(typeof(StateEnum), state, true);
-                int bIDFinal;
-                bool bIDRes = int.TryParse(bID, out bIDFinal);
-                if (!bIDRes) { bIDFinal = -1; }
-                double sEFinal;
-                bool sERes = double.TryParse(sE, out sEFinal);
-                if (!sERes) { sEFinal = -1.0; }
-                double gradeFinal;
-                bool gradeRes = double.TryParse(grade, out gradeFinal);
-                if (!gradeRes) { gradeFinal = -1.0; }
-                int[] locFinal = new int[2];
-                bool locXRes = int.TryParse(locX, out locFinal[0]);
-                if (!locXRes) { locFinal[0] = -1; }
-                bool locYRes = int.TryParse(locY, out locFinal[1]);
-                if (!locYRes) { locFinal[1] = -1; }
-                double bSizeFinal;
-                bool bSizeRes = double.TryParse(bSize, out bSizeFinal);
-                if (!bSizeRes) { bSizeFinal = -1.0; }
-                int prevFinal;
-                bool prevRes = int.TryParse(prev, out prevFinal);
-                if (!prevRes) { prevFinal = -1; }
-                int dest1Final;
-                bool dest1Res = int.TryParse(dest1, out dest1Final);
-                if (!dest1Res) { dest1Final = -1; }
-                int dest2Final;
-                bool dest2Res = int.TryParse(dest2, out dest2Final);
-                if (!dest2Res) { dest2Final = -1; }
-                int trackCirIDFinal;
-                bool trackCirIDRes = int.TryParse(trackCirID, out trackCirIDFinal);
-                if (!trackCirIDRes) { trackCirIDFinal = -1; }
+                    int bIDFinal = -1, locXFinal=-1, locYFinal=-1;
+                    double sEFinal = -1.0, gradeFinal=-1.0, bSizeFinal=-1.0;
+                    int prevFinal = -1, dest1Final = -1, dest2Final = -1;
+                    int trackCirIDFinal = -1;
+                    try
+                    {
+                        bIDFinal = bR.GetInt32(bR.GetOrdinal("blockID"));
+                        line = bR.GetString(bR.GetOrdinal("line"));
+                        infra = bR.GetString(bR.GetOrdinal("infra"));
+                        sEFinal = bR.GetDouble(bR.GetOrdinal("starting_elev"));
+                        gradeFinal = bR.GetDouble(bR.GetOrdinal("grade"));
+                        locXFinal = bR.GetInt32(bR.GetOrdinal("locX"));
+                        locYFinal = bR.GetInt32(bR.GetOrdinal("locY"));
+                        bSizeFinal = bR.GetDouble(bR.GetOrdinal("bSize"));
+                        dir = bR.GetString(bR.GetOrdinal("dir"));
+                        state = bR.GetString(bR.GetOrdinal("state"));
+                        prevFinal = bR.GetInt32(bR.GetOrdinal("prev"));
+                        dest1Final = bR.GetInt32(bR.GetOrdinal("dest1"));
+                        dest2Final = bR.GetInt32(bR.GetOrdinal("dest2"));
+                        trackCirIDFinal = bR.GetInt32(bR.GetOrdinal("trackCirID"));
+                    }
+                    catch (Exception e)
+                    {
+                        //Console.WriteLine("Exception was raised");
+                    }
+                    //////////////////////////////////////////////////////////////////////
+                    //Parse fields that must be provided as a different type
+                    string[] infraFinal = infra.Split(';');
+                    DirEnum dirFinal = (DirEnum)Enum.Parse(typeof(DirEnum), dir, true);
+                    StateEnum stateFinal = (StateEnum)Enum.Parse(typeof(StateEnum), state, true);
 
-                tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal, dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
-                i++;//Inc counter
+                    int[] locFinal = new int[2];
+                    locFinal[0] = locXFinal;
+                    locFinal[1] = locYFinal;
+
+                    tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal, dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
+                    i++;//Inc counter
+                }
+            }
+            else
+            {
+                //Console.WriteLine("Reader was closed, this was a mistake.");
             }
 
             if (i != 1)

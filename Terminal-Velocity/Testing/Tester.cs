@@ -87,7 +87,6 @@ namespace Testing
             res=TrackMod.provideInputFile("green.csv");
             //Console.WriteLine("Res was " + res);
 
-
             environment.TrackModel = TrackMod;
             prev.Previous = null;
             prev.Next = curr;

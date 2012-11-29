@@ -229,8 +229,8 @@ namespace TrackModel
                 }
 
 
-				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID) VALUES(" +
-						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',"+trackCirID+")";
+				string singleInsert="INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID, locX, locY) VALUES(" +
+						blockID+", '"+lineName+"', '"+infra+"', "+sElev+", "+grade+", "+blockSize+",'North', 'Healthy',"+trackCirID+", -1, -1)";
 				//Console.WriteLine(singleInsert);
 				prevID=blockID;
 				_dbCon.Open();
