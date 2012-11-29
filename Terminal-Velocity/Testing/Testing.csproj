@@ -105,7 +105,7 @@
       <Name>TrainController</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrainModel\TrainModel.csproj">
-      <Project>{1a092719-340a-4c70-98d5-fc9ac09e2e87}</Project>
+      <Project>{66ee0e67-8abc-4764-b68d-ae0ccdb63128}</Project>
       <Name>TrainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">

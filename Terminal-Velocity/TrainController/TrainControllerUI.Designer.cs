@@ -36,7 +36,7 @@
             this.TemperatureInput = new System.Windows.Forms.TextBox();
             this.SpeedLabel = new System.Windows.Forms.Label();
             this.TemperatureLabel = new System.Windows.Forms.Label();
-            this._listLog = new System.Windows.Forms.ListBox();
+            this._logOutput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // _btnEmergencyBrakes
@@ -71,7 +71,7 @@
             // 
             // _btnSubmit
             // 
-            this._btnSubmit.Location = new System.Drawing.Point(402, 346);
+            this._btnSubmit.Location = new System.Drawing.Point(158, 308);
             this._btnSubmit.Name = "_btnSubmit";
             this._btnSubmit.Size = new System.Drawing.Size(75, 23);
             this._btnSubmit.TabIndex = 6;
@@ -111,20 +111,21 @@
             this.TemperatureLabel.TabIndex = 11;
             this.TemperatureLabel.Text = "Temperature";
             // 
-            // _listLog
+            // _logOutput
             // 
-            this._listLog.FormattingEnabled = true;
-            this._listLog.ItemHeight = 16;
-            this._listLog.Location = new System.Drawing.Point(703, 108);
-            this._listLog.Name = "_listLog";
-            this._listLog.Size = new System.Drawing.Size(120, 84);
-            this._listLog.TabIndex = 13;
+            this._logOutput.Location = new System.Drawing.Point(412, 29);
+            this._logOutput.Multiline = true;
+            this._logOutput.Name = "_logOutput";
+            this._logOutput.ReadOnly = true;
+            this._logOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this._logOutput.Size = new System.Drawing.Size(466, 380);
+            this._logOutput.TabIndex = 12;
             // 
             // TrainControllerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this._listLog);
+            this.Controls.Add(this._logOutput);
             this.Controls.Add(this.TemperatureLabel);
             this.Controls.Add(this.SpeedLabel);
             this.Controls.Add(this.TemperatureInput);
@@ -150,6 +151,6 @@
         private System.Windows.Forms.TextBox TemperatureInput;
         private System.Windows.Forms.Label SpeedLabel;
         private System.Windows.Forms.Label TemperatureLabel;
-        private System.Windows.Forms.ListBox _listLog;
+        private System.Windows.Forms.TextBox _logOutput;
     }
 }
