@@ -65,11 +65,11 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
-            
+
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-           
-            
+
+
             // Our track circuit
             TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
@@ -84,9 +84,9 @@ namespace Testing
             //Create TrackModel
             TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
             //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
-            bool res=TrackMod.provideInputFile("red.csv");
+            bool res = TrackMod.provideInputFile("red.csv");
             //Console.WriteLine("Res was "+res);
-            res=TrackMod.provideInputFile("green.csv");
+            res = TrackMod.provideInputFile("green.csv");
             //Console.WriteLine("Res was " + res);
 
 
@@ -106,7 +106,7 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
-            
+
             ////////////////////////////////////////////////////////////////////////////////////////
             //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ namespace Testing
                     env.PrimaryTrackControllerRed = primaryRed;
                     env.PrimaryTrackControllerGreen = primaryGreen;
                     env.TrackModel = tm;
-                    
+
 
                     //creating office instance
                     CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
@@ -148,26 +148,26 @@ namespace Testing
 
                     env.SystemScheduler = ss;
                     env.CTCOffice = ctc;
-                    
+
 
                     //making Request Panel Objects (For red and green)
                     CTCOffice.RequestFrame RequestRed = new CTCOffice.RequestFrame("Red", primaryRed);
                     CTCOffice.RequestFrame RequestGreen = new CTCOffice.RequestFrame("Green", primaryGreen);
 
                     //creating office gui
-                    CTCOffice.CTCOfficeGUI CTCOfficeGUI= new CTCOffice.CTCOfficeGUI(env, ctc);
+                    CTCOffice.CTCOfficeGUI CTCOfficeGUI = new CTCOffice.CTCOfficeGUI(env, ctc);
 
                     //creating testing gui
                     control = new CTCOffice.OfficeGUITest(
-                        CTCOfficeGUI, 
-                        RequestRed, 
+                        CTCOfficeGUI,
+                        RequestRed,
                         RequestGreen
                         );
-                    
+
                     //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
-                    control=new TrackModel.TrackModelGUI(environment,TrackMod);
+                    control = new TrackModel.TrackModelGUI(environment, TrackMod);
                     break;
                 case 3: // TrackController
                     control = new TrackController.TrackControllerUI(environment);
@@ -185,11 +185,76 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
+
+                case 10: // PROTOTYPE
+
+                    // UNFINISHED
+                    #region CTC Form
+
+                    Form formCTC = new Form();
+                    UserControl controlCTC = new UserControl();
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Track form
+
+                    Form formTrack = new Form();
+                    UserControl controlTrack = new UserControl();
+                    controlTrack = new TrackModel.TrackModelGUI(environment, TrackMod);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Track Controller form
+
+                    Form formTrackController = new Form();
+                    UserControl controlTrackController = new UserControl();
+                    controlTrackController = new TrackController.TrackControllerUI(environment);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Train Model form
+
+                    Form formTrain = new Form();
+                    UserControl controlTrain = new UserControl();
+                    controlTrain = new TrainModel.TrainGUI(environment);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Train Controller form
+
+                    Form formTrainController = new Form();
+                    UserControl controlTrainController = new UserControl();
+                    
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Scheduler form
+
+                    Form formScheduler = new Form();
+                    UserControl controlScheduler = new UserControl();
+
+                    #endregion
+
+
+                    break;
             }
 
-            form.Controls.Add(control);
-            form.AutoSize = true;
-            form.ShowDialog();
+            if (test != 10)
+            {
+                form.Controls.Add(control);
+                form.AutoSize = true;
+                form.ShowDialog();
+            }
         }
 
         static void UnitTestFramework()
