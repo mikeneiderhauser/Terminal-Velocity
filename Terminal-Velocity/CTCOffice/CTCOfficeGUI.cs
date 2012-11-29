@@ -42,6 +42,7 @@ namespace CTCOffice
 
         //last item selected
         LayoutCellDataContainer _lastRightClickContainer;
+        private EventHandler _layoutPiece_MouseHover;
 
         #region Constructor
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
@@ -107,6 +108,7 @@ namespace CTCOffice
                     pane.Image = _redLineData.Layout[i, j].Tile;
                     pane.Tag = _redLineData.Layout[i, j];
                     pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
                     x += 20;
                 }
                 y += 20;
@@ -129,6 +131,7 @@ namespace CTCOffice
                     pane.Image = _greenLineData.Layout[i, j].Tile;
                     pane.Tag = _greenLineData.Layout[i, j];
                     pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                    //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
                     x += 20;
                 }
                 y += 20;
@@ -406,6 +409,7 @@ namespace CTCOffice
                 }
             }
         }
+
 
         private void _layoutPiece_MouseClick(object sender, MouseEventArgs e)
         {

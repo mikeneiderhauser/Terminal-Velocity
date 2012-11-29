@@ -374,11 +374,26 @@ namespace CTCOffice
         {
             if (line == 0)
             {
-                return _redLineData;
+                if (_populationBlock)
+                {
+                    return _greenLineDataBackup;
+                }
+                else
+                {
+                    return _redLineData;
+                }
             }
             else if (line ==1)
             {
-                return _greenLineData;
+                if (_populationBlock)
+                {
+
+                    return _greenLineDataBackup;
+                }
+                else
+                {
+                    return _greenLineData;
+                }
             }
 
             return null;
