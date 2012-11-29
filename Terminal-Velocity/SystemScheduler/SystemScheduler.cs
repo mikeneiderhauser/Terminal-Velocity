@@ -5,6 +5,7 @@ using System.Text;
 
 using Interfaces;
 using Utility;
+using System.Windows.Forms;
 
 namespace SystemScheduler
 {
@@ -102,6 +103,10 @@ namespace SystemScheduler
             {
                 _enabled = true;
                 _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10, _dispatchDatabase.DispatchList[0].DispatchRoute, _env.TrackModel.requestBlockInfo(0, _dispatchDatabase.DispatchList[0].Color)));
+            }
+            else
+            {
+                MessageBox.Show("Please load a dispatch database file before\nenabling the automated System Scheduler.");
             }
         }
 
