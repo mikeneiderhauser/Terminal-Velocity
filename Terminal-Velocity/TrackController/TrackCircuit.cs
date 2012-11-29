@@ -64,18 +64,19 @@ namespace TrackController
 
         public void ToTrain(int ID, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
+            Dictionary<int, ITrainModel> snapshot = Trains;
 
             ITrainModel train;
-            if (Trains.TryGetValue(ID, out train))
+            if (snapshot.TryGetValue(ID, out train))
             {
                 if (speedLimit != Double.NaN)
                 {
-                    // set speed
+                    train.TrainController.SpeedLimit = speedLimit;
                 }
 
                 if (authority != Int32.MinValue)
                 {
-                    // set authority
+                    train.TrainController.AuthorityLimit = authority;
                 }
             }
         }
@@ -86,6 +87,7 @@ namespace TrackController
 
         private void _env_Tick(object sender, TickEventArgs e)
         {
+            _trains.Clear();
             foreach (ITrainModel t in _env.AllTrains)
             {
                 if (_blocks.ContainsKey(t.CurrentBlock.BlockID))

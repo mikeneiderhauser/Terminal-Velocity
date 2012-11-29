@@ -63,8 +63,8 @@ namespace TrackController
                     trainGrid.Rows.Add();
                     trainGrid.Rows[i].SetValues(_trains[i].TrainID,
                                                 "RouteID",
-                                                _trains[i].CurrentVelocity,
-                                                "10");
+                                                _trains[i].TrainController.SpeedLimit,
+                                                _trains[i].TrainController.AuthorityLimit);
 
                 }
             }
@@ -112,12 +112,7 @@ namespace TrackController
         static int ticks = 0;
         void e_Tick(object sender, Utility.TickEventArgs e)
         {
-            ticks++;
-            if (ticks > 10)
-            {
-                Refresh();
-                ticks = 0;
-            }
+            Refresh();
         }
     }
 }

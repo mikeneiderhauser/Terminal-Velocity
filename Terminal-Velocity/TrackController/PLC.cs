@@ -37,7 +37,7 @@ namespace TrackController
                 if (b.State == StateEnum.BrokenTrackFailure)
                 {
                     // Stop all trains
-                    speedLimit = 0;
+                    speedLimit = 0D;
                     authority = 0;
                 }
             }

@@ -66,7 +66,7 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
-            /*
+
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
 
@@ -185,6 +185,9 @@ namespace Testing
                     break;
                 case 3: // TrackController
                     ITrainModel t = new TrainModel.Train(0, b0, environment);
+
+                    environment.AllTrains.Add(t);
+
                     prevCircuit.Trains.Add(0, t);
 
                     control = new TrackController.TrackControllerUI(environment);
@@ -211,23 +214,11 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
-            */
-            switch(test)
-            {
-                case 10: // PROTOTYPE
-
-                    new PrototypeDemo();
-                    break;
             }
 
-            if (test != 10)
-            {
-                /*
-                form.Controls.Add(control);
-                form.AutoSize = true;
-                form.ShowDialog();
-                */
-            }
+            form.Controls.Add(control);
+            form.AutoSize = true;
+            form.ShowDialog();
         }
 
         static void UnitTestFramework()

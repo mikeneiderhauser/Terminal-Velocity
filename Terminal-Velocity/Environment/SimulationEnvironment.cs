@@ -21,7 +21,7 @@ namespace SimulationEnvironment
         private SystemLog _sysLog;
         
         private long _total;
-        private long _interval = 100;
+        private long _interval = 500;
         private Timer _timer = new Timer();
         #endregion
 
