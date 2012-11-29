@@ -72,7 +72,7 @@ namespace TrainModel
         {
             _trainID = trainID;
             _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\n";
+            _informationLog = "Created at " + DateTime.Now + ".\r\n";
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -98,7 +98,7 @@ namespace TrainModel
             _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
 
             _trackModel = environment.TrackModel;
-            _trainController = new TrainController.TrainController(_environment);
+            _trainController = new TrainController.TrainController(_environment, this);
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
@@ -116,7 +116,7 @@ namespace TrainModel
         /// </summary>
         public void EmergencyBrake()
         {
-            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\n";
+            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\r\n";
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
@@ -127,32 +127,32 @@ namespace TrainModel
         /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\n";
+            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\r\n";
 
             double currentForce = 0;
+            double newAcceleration = _physicalAccelerationLimit;
 
-            if (_currentVelocity > 0 || _currentVelocity < 0)
+            if (_currentVelocity > 0)
             {
                 currentForce = power / _currentVelocity;
+                newAcceleration = currentForce / _totalMass;
             }
-
-            double newAcceleration = currentForce / _totalMass;
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\r\n";
                 return false;
             }
 
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\n";
+                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\n";
+            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\r\n";
             _currentAcceleration = newAcceleration;
             return true;
         }
@@ -199,6 +199,12 @@ namespace TrainModel
             }
 
             _currentVelocity += _currentAcceleration;
+
+            if (_currentVelocity < 0)
+            {
+                _currentVelocity = 0;
+            }
+
             _currentPosition += _currentVelocity;
 
             // Handles edge of block, only going forward
@@ -241,26 +247,41 @@ namespace TrainModel
 
         #region Properties
 
+        /// <summary>
+        /// Get the ID of the train.
+        /// </summary>
         public int TrainID
         {
             get { return _trainID; }
         }
 
+        /// <summary>
+        /// Get the length of the train.
+        /// </summary>
         public double Length
         {
             get { return _length; }
         }
 
+        /// <summary>
+        /// Get the total mass of the train, including passengers.
+        /// </summary>
         public double TotalMass
         {
             get { return _totalMass; }
         }
 
+        /// <summary>
+        /// Get the information log.
+        /// </summary>
         public string InformationLog
         {
             get { return _informationLog; }
         }
 
+        /// <summary>
+        /// Get and set the lights.
+        /// </summary>
         public bool LightsOn
         {
             get { return _lightsOn; }
@@ -270,12 +291,15 @@ namespace TrainModel
                 _informationLog += "Train " + _trainID;
 
                 if (_lightsOn)
-                    _informationLog += " lights were turned on.\n";
+                    _informationLog += " lights were turned on.\r\n";
                 else
-                    _informationLog += " lights were turned off.\n";
+                    _informationLog += " lights were turned off.\r\n";
             }
         }
 
+        /// <summary>
+        /// Get and set the doors.
+        /// </summary>
         public bool DoorsOpen
         {
             get { return _doorsOpen; }
@@ -285,12 +309,15 @@ namespace TrainModel
                 _informationLog += "Train " + _trainID;
 
                 if (_doorsOpen)
-                    _informationLog += " doors were opened.\n";
+                    _informationLog += " doors were opened.\r\n";
                 else
-                    _informationLog += " doors were closed.\n";
+                    _informationLog += " doors were closed.\r\n";
             }
         }
 
+        /// <summary>
+        /// Get and set the temperature of the train.
+        /// </summary>
         public int Temperature
         {
             get { return _temperature; }
@@ -301,26 +328,41 @@ namespace TrainModel
             }
         }
 
+        /// <summary>
+        /// Get the current acceleration of the train.
+        /// </summary>
         public double CurrentAcceleration
         {
             get { return _currentAcceleration; }
         }
 
+        /// <summary>
+        /// Get the current velocity of the train.
+        /// </summary>
         public double CurrentVelocity
         {
             get { return _currentVelocity; }
         }
 
+        /// <summary>
+        /// Get the current position of the train along the block.
+        /// </summary>
         public double CurrentPosition
         {
             get { return _currentPosition; }
         }
 
+        /// <summary>
+        /// Get the maximum capacity.
+        /// </summary>
         public int MaxCapacity
         {
             get { return _maxCapacity; }
         }
 
+        /// <summary>
+        /// Get and set the number of passengers. Updates the mass.
+        /// </summary>
         public int NumPassengers
         {
             get { return _numPassengers; }
@@ -333,15 +375,18 @@ namespace TrainModel
                 if (difference < 0) // people get off train
                 {
                     difference *= -1;
-                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\n";
+                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\r\n";
                 }
                 else // people get on train
-                    _informationLog += difference + " passengers got on Train " + _trainID + ".\n";
+                    _informationLog += difference + " passengers got on Train " + _trainID + ".\r\n";
 
                 _totalMass = calculateMass();
             }
         }
 
+        /// <summary>
+        /// Get and set the number of crew members. Updates the mass.
+        /// </summary>
         public int NumCrew
         {
             get { return _numCrew; }
@@ -354,31 +399,42 @@ namespace TrainModel
                 if (difference < 0) // people get off train
                 {
                     difference *= -1;
-                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\n";
+                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\r\n";
                 }
                 else // people get on train
-                    _informationLog += difference + " crew members got on Train " + _trainID + ".\n";
+                    _informationLog += difference + " crew members got on Train " + _trainID + ".\r\n";
 
                 _totalMass = calculateMass();
             }
         }
 
-        // TODO
+        /// <summary>
+        /// Get if there is a brake failure.
+        /// </summary>
         public bool BrakeFailure
         {
             get { return _brakeFailure; }
         }
 
+        /// <summary>
+        /// Get if there is an engine failure.
+        /// </summary>
         public bool EngineFailure
         {
             get { return _engineFailure; }
         }
 
+        /// <summary>
+        /// Get if there is a signal pickup failure.
+        /// </summary>
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
         }
 
+        /// <summary>
+        /// Get the current block for the train.
+        /// </summary>
         public IBlock CurrentBlock
         {
             get { return _currentBlock; }
@@ -389,12 +445,18 @@ namespace TrainModel
 
         #region Track Controller communication parameters
 
+        /// <summary>
+        /// Get and set the train controller's speed limit.
+        /// </summary>
         public double SpeedLimit
         {
             get { return _trainController.SpeedLimit; }
             set { _trainController.SpeedLimit = value; }
         }
 
+        /// <summary>
+        /// Get and set the train controller's authority limit.
+        /// </summary>
         public int AuthorityLimit
         {
             get { return _trainController.AuthorityLimit; }

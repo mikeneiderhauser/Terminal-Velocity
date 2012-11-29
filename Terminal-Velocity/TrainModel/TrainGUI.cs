@@ -40,7 +40,12 @@ namespace TrainModel
 
             PopulateComboBox(allTrains);
 
-            selectedTrain = (Train)allTrainComboBox.SelectedItem;
+            if (allTrains != null && allTrains.Count > 0)
+            {
+                selectedTrain = (Train)allTrains[0];
+                allTrainComboBox.SelectedItem = selectedTrain;
+            }
+
             UpdateGUI();
 
             _environment = environment;
@@ -84,7 +89,7 @@ namespace TrainModel
         /// <param name="allTrains"></param>
         private void PopulateComboBox(List<ITrainModel> allTrains)
         {
-            foreach(Train train in allTrains)
+            foreach (Train train in allTrains)
             {
                 allTrainComboBox.Items.Add(train);
             }
@@ -102,20 +107,24 @@ namespace TrainModel
                 numTrains = allTrains.Count;
             }
 
-            // checks for any failures
-            if (selectedTrain.BrakeFailure)
+            // check for errors in all trains
+            foreach (Train train in allTrains)
             {
-                DisplayError("CRITICAL ERROR: Brake failure for " + selectedTrain.ToString());
-            }
+                // checks for any failures
+                if (train.BrakeFailure)
+                {
+                    DisplayError("CRITICAL ERROR: Brake failure for " + train.ToString());
+                }
 
-            if (selectedTrain.EngineFailure)
-            {
-                DisplayError("CRITICAL ERROR: Engine failure for " + selectedTrain.ToString());
-            }
+                if (train.EngineFailure)
+                {
+                    DisplayError("CRITICAL ERROR: Engine failure for " + train.ToString());
+                }
 
-            if (selectedTrain.SignalPickupFailure)
-            {
-                DisplayError("CRITICAL ERROR: Signal pickup failure for " + selectedTrain.ToString());
+                if (train.SignalPickupFailure)
+                {
+                    DisplayError("CRITICAL ERROR: Signal pickup failure for " + train.ToString());
+                }
             }
 
             trainLabel.Text = selectedTrain.ToString();
@@ -124,10 +133,10 @@ namespace TrainModel
             positionValueText.Text = selectedTrain.CurrentPosition.ToString();
             velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
             accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
-            
+
             gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
             massValueText.Text = selectedTrain.TotalMass.ToString();
-            
+
             numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
             numCrewValueText.Text = selectedTrain.NumCrew.ToString();
 

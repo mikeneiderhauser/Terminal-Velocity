@@ -13,7 +13,8 @@
     <RootNamespace>TrainModel</RootNamespace>
     <AssemblyName>TrainModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -53,12 +54,6 @@
   <ItemGroup>
     <Compile Include="Train.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrackModelGUI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TrackModelGUI.Designer.cs">
-      <DependentUpon>TrackModelGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="TrainGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,10 +68,8 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TrackModelGUI.resx">
-      <DependentUpon>TrackModelGUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TrainGUI.resx">
       <DependentUpon>TrainGUI.cs</DependentUpon>
     </EmbeddedResource>

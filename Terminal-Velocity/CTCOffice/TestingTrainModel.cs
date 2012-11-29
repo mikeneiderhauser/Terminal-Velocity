@@ -135,5 +135,11 @@ namespace CTCOffice
         {
             throw new NotImplementedException();
         }
+
+
+        public IBlock CurrentBlock
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

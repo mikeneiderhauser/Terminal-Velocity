@@ -81,7 +81,15 @@ namespace Testing
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
             TrackController.TrackController next = new TrackController.TrackController(environment, nextCircuit);
 
+            //Create TrackModel
             TrackModel.TrackModel TrackMod = new TrackModel.TrackModel(environment);
+            //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
+            bool res=TrackMod.provideInputFile("red.csv");
+            //Console.WriteLine("Res was "+res);
+            res=TrackMod.provideInputFile("green.csv");
+            //Console.WriteLine("Res was " + res);
+
+
             environment.TrackModel = TrackMod;
             prev.Previous = null;
             prev.Next = curr;
@@ -155,18 +163,28 @@ namespace Testing
                     //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
+                    control=new TrackModel.TrackModelGUI(environment,TrackMod);
                     break;
                 case 3: // TrackController
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
-                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
-                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
+                    int[] loc = new int[2];
+                    loc[0] = 10;
+                    loc[1] = 10;
+                    TrackModel.Block start = new TrackModel.Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red");
+                    environment.addTrain(new TrainModel.Train(0, start, environment));
+                    environment.addTrain(new TrainModel.Train(1, start, environment));
+
+                    TrainModel.Train train0 = (TrainModel.Train)environment.AllTrains[0];
+                    train0.LightsOn = true;
+                    train0.NumCrew = 2;
+                    train0.NumPassengers = 24;
                     control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
-                    TrainController.TrainController tc = new TrainController.TrainController(environment);
-                    control = new TrainController.TrainControllerUI(tc);
+                    //TrainController.TrainController tc = new TrainController.TrainController(environment);
+                    //control = new TrainController.TrainControllerUI(tc);
                     break;
             }
 
