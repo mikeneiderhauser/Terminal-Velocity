@@ -24,6 +24,8 @@ namespace TrackController
 
         private int _id;
 
+        private List<string> _messages;
+
         #region Constructor(s)
 
         /// <summary>
@@ -50,6 +52,8 @@ namespace TrackController
 
             // PROTOTYPE - static PLC
             _plc = new PLC(_circuit);
+
+            _messages = new List<string>();
         }
 
         #endregion // Constructor(s)
@@ -98,6 +102,12 @@ namespace TrackController
         public List<IRoute> Routes
         {
             get { return _routes.Values.ToList<IRoute>(); }
+        }
+
+        public List<string> Messages
+        {
+            get { return _messages; }
+            set { _messages = value; }
         }
 
         #endregion // Public Properties
@@ -171,9 +181,9 @@ namespace TrackController
             List<ITrainModel> st = Trains;
             List<IRoute> sr = Routes;
 
-            _plc.ToggleLights(sb, st, sr);
-            _plc.DoSwitch(sb, st, sr);
-            _plc.IsSafe(sb, st, sr);
+            _plc.ToggleLights(sb, st, sr, _messages);
+            _plc.DoSwitch(sb, st, sr, _messages);
+            _plc.IsSafe(sb, st, sr, _messages);
         }
 
         #endregion // Private Methods
