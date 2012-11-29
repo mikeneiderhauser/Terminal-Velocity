@@ -173,6 +173,11 @@ namespace Testing
                     TrackModel.Block start = new TrackModel.Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red");
                     environment.addTrain(new TrainModel.Train(0, start, environment));
                     environment.addTrain(new TrainModel.Train(1, start, environment));
+
+                    TrainModel.Train train0 = (TrainModel.Train)environment.AllTrains[0];
+                    train0.LightsOn = true;
+                    train0.NumCrew = 2;
+                    train0.NumPassengers = 24;
                     control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
