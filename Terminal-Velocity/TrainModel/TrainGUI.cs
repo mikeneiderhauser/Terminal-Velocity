@@ -40,7 +40,9 @@ namespace TrainModel
 
             PopulateComboBox(allTrains);
 
-            selectedTrain = (Train)allTrainComboBox.SelectedItem;
+            if(allTrains != null && allTrains.Count > 0)
+                selectedTrain = (Train)allTrains[0];
+            
             UpdateGUI();
 
             _environment = environment;
