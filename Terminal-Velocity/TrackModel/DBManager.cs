@@ -92,7 +92,8 @@ namespace TrackModel
                         "FROM ROUTES " +
                         "WHERE routeID=" + id;
 
-            _dbCon.Open();
+            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
             SQLiteCommand selCom = new SQLiteCommand(selectString);
             selCom.Connection = _dbCon;
@@ -101,12 +102,14 @@ namespace TrackModel
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
                 tempReader.Close();//Close reader
-                _dbCon.Close();//CLOSE DB
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();//CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 return false;
             }
 
@@ -118,8 +121,8 @@ namespace TrackModel
             string selectString = "SELECT *" +
                         "FROM BLOCKS " +
                         "WHERE blockID=" + id + " AND line='" + line + "'";
-
-            _dbCon.Open();
+            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
             SQLiteCommand selCom = new SQLiteCommand(selectString);
             selCom.Connection = _dbCon;
@@ -128,12 +131,14 @@ namespace TrackModel
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
                 tempReader.Close();//Close reader
-                _dbCon.Close();//CLOSE DB
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();//CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 return false;
             }
         }
@@ -206,7 +211,8 @@ namespace TrackModel
         //and classes used for this type of thing in C#
         public SQLiteDataReader runQuery(string sqlQuery)
         {
-            _dbCon.Open();
+            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
             SQLiteCommand selCom = new SQLiteCommand(sqlQuery);
             selCom.Connection = _dbCon;
@@ -218,7 +224,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 return null;
             }
 
@@ -230,15 +237,16 @@ namespace TrackModel
             if (_dbCon == null)
                 return false;
 
-
-            _dbCon.Open();
+            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                _dbCon.Open();
             SQLiteCommand updateCom = new SQLiteCommand(sqlUpdate);
             updateCom.Connection = _dbCon;
             try
             {
                 int res = updateCom.ExecuteNonQuery();//Exec CREATE
                 //Console.WriteLine(res);
-                _dbCon.Close();//CLOSE DB
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();//CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -246,7 +254,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
@@ -259,14 +268,16 @@ namespace TrackModel
             if (_dbCon == null)
                 return false;
 
-            _dbCon.Open();
+            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                _dbCon.Open();
             SQLiteCommand insertCom = new SQLiteCommand(sqlInsert);
             insertCom.Connection = _dbCon;
             try
             {
                 int res = insertCom.ExecuteNonQuery();//Exec insert
                 //Console.WriteLine(res);
-                _dbCon.Close();//CLOSE DB
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();//CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -274,7 +285,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
@@ -401,7 +413,8 @@ namespace TrackModel
             //If we didnt find any blocks, give up.
             if (nBlocks == 0)
             {
-                _dbCon.Close();
+                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                    _dbCon.Close();
                 return null;
             }
 
@@ -420,6 +433,7 @@ namespace TrackModel
             int eID = 0;
 
             RouteInfo tempRoute = new RouteInfo(rID, rName, nBlocks, blocks, sID, eID);
+            if(_dbCon.State!=System.Data.ConnectionState.Closed)
             _dbCon.Close();
             return tempRoute;
 
