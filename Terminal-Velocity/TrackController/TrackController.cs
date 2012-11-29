@@ -151,8 +151,7 @@ namespace TrackController
                     break;
                 case RequestTypes.DispatchTrain:
                     {
-                        IBlock start;
-                        _circuit.Blocks.TryGetValue(0, out start);
+                        IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
                         _env.addTrain(new TrainModel.Train(trainCount++, start, _env));
                     }
                     break;

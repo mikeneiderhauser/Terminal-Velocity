@@ -67,8 +67,8 @@ namespace TrackController
                     trainGrid.Rows.Add();
                     trainGrid.Rows[i].SetValues(_trains[i].TrainID,
                                                 "RouteID",
-                                                _trains[i].TrainController.SpeedLimit,
-                                                _trains[i].TrainController.AuthorityLimit);
+                                                _trains[i].TrainController.AuthorityLimit,
+                                                _trains[i].CurrentVelocity);
 
                 }
             }
