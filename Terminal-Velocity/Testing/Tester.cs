@@ -172,8 +172,8 @@ namespace Testing
                     control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
-                    TrainController.TrainController tc = new TrainController.TrainController(environment);
-                    control = new TrainController.TrainControllerUI(tc);
+                    //TrainController.TrainController tc = new TrainController.TrainController(environment);
+                    //control = new TrainController.TrainControllerUI(tc);
                     break;
             }
 
