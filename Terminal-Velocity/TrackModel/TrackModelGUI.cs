@@ -47,9 +47,25 @@ namespace TrackModel
         {
             Graphics g = trackDisplayPanel.CreateGraphics();
             Pen pen = new Pen(Color.Black, 4);
-            Brush brush = new SolidBrush(this.BackColor);
+            Brush brush = new SolidBrush(Color.Red);
 
-            g.DrawRectangle(pen, 100, 100, 100, 100);
+            int totalH=trackDisplayPanel.Height;
+            int totalW = trackDisplayPanel.Width;
+
+            IBlock[,] temp = _tm.requestTrackGrid(0);//Get red's track grid
+            int numRows=temp.GetUpperBound(0);
+            int numCols = temp.GetUpperBound(1);
+
+            int squareHeight = totalH / numRows;
+            int squareWidth = totalW / numCols;
+            for (int i = 0; i < numRows; i++)
+            {
+                for (int j = 0; j < numCols; j++)
+                {
+                    if(temp[i,j]!=null)
+                        g.FillRectangle(brush,j*squareWidth,i*squareHeight, squareWidth, squareHeight);
+                }
+            }
         }
     }
 }
