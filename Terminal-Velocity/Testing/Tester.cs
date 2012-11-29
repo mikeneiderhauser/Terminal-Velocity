@@ -66,17 +66,29 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
-            /*
+
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
 
+            IBlock b0 = new TrackModel.Block(0, StateEnum.Healthy, -1, 0, 0, new int[] { 0, 0 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b1 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 1, 1 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b2 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 2, 2 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b3 = new TrackModel.Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new int[] { 3, 3 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
 
-            // Our track circuit
-            TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
-            // Next track controller's circuit
-            TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment);
+            List<IBlock> sectionA = new List<IBlock>();
+            sectionA.Add(b0);
+            List<IBlock> sectionB = new List<IBlock>();
+            sectionB.Add(b1);
+            sectionB.Add(b2);
+            List<IBlock> sectionC = new List<IBlock>();
+            sectionC.Add(b3);
+
             // Previous track controller's circuit
-            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
+            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment, sectionA);
+            // Our track circuit
+            TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment, sectionB);
+            // Next track controller's circuit
+            TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment, sectionC);
 
             TrackController.TrackController prev = new TrackController.TrackController(environment, prevCircuit);
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
@@ -172,6 +184,12 @@ namespace Testing
                     control = new TrackModel.TrackModelGUI(environment, TrackMod);
                     break;
                 case 3: // TrackController
+                    ITrainModel t = new TrainModel.Train(0, b0, environment);
+
+                    environment.AllTrains.Add(t);
+
+                    prevCircuit.Trains.Add(0, t);
+
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
@@ -196,23 +214,11 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
-            */
-            switch(test)
-            {
-                case 10: // PROTOTYPE
-
-                    new PrototypeDemo();
-                    break;
             }
 
-            if (test != 10)
-            {
-                /*
-                form.Controls.Add(control);
-                form.AutoSize = true;
-                form.ShowDialog();
-                */
-            }
+            form.Controls.Add(control);
+            form.AutoSize = true;
+            form.ShowDialog();
         }
 
         static void UnitTestFramework()

@@ -84,12 +84,25 @@ namespace Testing
 
         public void createTrackController()
         {
+            IBlock b0 = new TrackModel.Block(0, StateEnum.Healthy, -1, 0, 0, new int[] { 0, 0 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b1 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 1, 1 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b2 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 2, 2 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b3 = new TrackModel.Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new int[] { 3, 3 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+
+            List<IBlock> sectionA = new List<IBlock>();
+            sectionA.Add(b0);
+            List<IBlock> sectionB = new List<IBlock>();
+            sectionB.Add(b1);
+            sectionB.Add(b2);
+            List<IBlock> sectionC = new List<IBlock>();
+            sectionC.Add(b3);
+
             // Track Controller
-            _currCircuit = new TrackController.TrackCircuit(_env);
+            _currCircuit = new TrackController.TrackCircuit(_env, sectionA);
             // Next track controller's circuit
-            _nextCircuit = new TrackController.TrackCircuit(_env);
+            _nextCircuit = new TrackController.TrackCircuit(_env, sectionB);
             // Previous track controller's circuit
-            _prevCircuit = new TrackController.TrackCircuit(_env);
+            _prevCircuit = new TrackController.TrackCircuit(_env, sectionC);
 
             _prev = new TrackController.TrackController(_env, _prevCircuit);
             _curr = new TrackController.TrackController(_env, _currCircuit);

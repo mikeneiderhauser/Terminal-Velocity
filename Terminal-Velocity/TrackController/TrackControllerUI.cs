@@ -47,6 +47,10 @@ namespace TrackController
                 return;
             }
 
+            foreach (string s in _current.Messages)
+                messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
+            _current.Messages = new List<string>();
+
             _trains = TC.Trains;
             _blocks = TC.Blocks;
             _routes = TC.Routes;
@@ -55,14 +59,17 @@ namespace TrackController
             blockGrid.Rows.Clear();
             switchGrid.Rows.Clear();
 
+            tcListBoxInfo.Items.Clear();
+
             { // Setup the TrainGrid
                 for (int i = 0; i < _trains.Count; i++)
                 {
                     trainGrid.Rows.Add();
-                    trainGrid.Rows[i].Cells[0].Value = _trains[i].TrainID;
-                    trainGrid.Rows[i].Cells[1].Value = "Route...";
-                    trainGrid.Rows[i].Cells[2].Value = _trains[i].CurrentVelocity;
-                    trainGrid.Rows[i].Cells[3].Value = "Authority...";
+                    trainGrid.Rows[i].SetValues(_trains[i].TrainID,
+                                                "RouteID",
+                                                _trains[i].TrainController.SpeedLimit,
+                                                _trains[i].TrainController.AuthorityLimit);
+
                 }
             }
 
@@ -70,17 +77,15 @@ namespace TrackController
                 for (int i = 0; i < _blocks.Count; i++)
                 {
                     blockGrid.Rows.Add();
-                    blockGrid.Rows[i].Cells[0].Value = _blocks[i].BlockID;
-                    blockGrid.Rows[i].Cells[1].Value = "Info...";
-                    blockGrid.Rows[i].Cells[2].Value = "Info...";
-                    blockGrid.Rows[i].Cells[3].Value = "Info...";
-
-                    if (_blocks[i].hasSwitch())
-                    {
-                        switchGrid.Rows.Add();
-                        switchGrid.Rows[switchGrid.Rows.Count - 1].Cells[0].Value = _blocks[i].BlockID;
-                    }
+                    blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(), 
+                                                Enum.GetName(typeof(StateEnum), _blocks[i].State));
                 }
+            }
+
+            { // Setup the ListBox with information about the controller
+                tcListBoxInfo.Items.Add(string.Format("Track Controller: {0}", _current.ID));
+                tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
+                tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
             }
 
             base.Refresh();
@@ -88,25 +93,30 @@ namespace TrackController
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            TC = (TrackController) TC.Next;
-            Refresh();
+            if (TC.Next == null)
+                MessageBox.Show("No next Track Controller!");
+            else
+            {
+                TC = (TrackController)TC.Next;
+                Refresh();
+            }
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
-            TC = (TrackController) TC.Previous;
-            Refresh();
+            if (TC.Previous == null)
+                MessageBox.Show("No prior Track Controller!");
+            else
+            {
+                TC = (TrackController)TC.Previous;
+                Refresh();
+            }
         }
 
         static int ticks = 0;
         void e_Tick(object sender, Utility.TickEventArgs e)
         {
-            ticks++;
-            if (ticks > 10)
-            {
-                Refresh();
-                ticks = 0;
-            }
+            Refresh();
         }
     }
 }

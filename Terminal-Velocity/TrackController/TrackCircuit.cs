@@ -20,10 +20,13 @@ namespace TrackController
 
         #region Constructor(s)
 
-        public TrackCircuit(ISimulationEnvironment env)
+        public TrackCircuit(ISimulationEnvironment env, List<IBlock> blocks)
         {
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
+
+            foreach (IBlock b in blocks)
+                _blocks.Add(b.BlockID, b);
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -61,18 +64,19 @@ namespace TrackController
 
         public void ToTrain(int ID, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
+            Dictionary<int, ITrainModel> snapshot = Trains;
 
             ITrainModel train;
-            if (Trains.TryGetValue(ID, out train))
+            if (snapshot.TryGetValue(ID, out train))
             {
                 if (speedLimit != Double.NaN)
                 {
-                    // set speed
+                    train.TrainController.SpeedLimit = speedLimit;
                 }
 
                 if (authority != Int32.MinValue)
                 {
-                    // set authority
+                    train.TrainController.AuthorityLimit = authority;
                 }
             }
         }
@@ -83,11 +87,12 @@ namespace TrackController
 
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            // foreach train in environment,
-            // if train is in area of control, add train
-
-            //ITrain train = null;
-            //_trains.Add(trainID, train);
+            _trains.Clear();
+            foreach (ITrainModel t in _env.AllTrains)
+            {
+                if (_blocks.ContainsKey(t.CurrentBlock.BlockID))
+                    _trains.Add(t.TrainID, t);
+            }
         }
 
         #endregion // Events
