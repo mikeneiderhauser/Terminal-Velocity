@@ -39,8 +39,17 @@ namespace TrackModel
             {
                 string fName = getFName.FileName;
                 bool res=_tm.provideInputFile(fName);
-
+      
             }
+        }
+
+        private void trackDisplayPanel_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = trackDisplayPanel.CreateGraphics();
+            Pen pen = new Pen(Color.Black, 4);
+            Brush brush = new SolidBrush(this.BackColor);
+
+            g.DrawRectangle(pen, 100, 100, 100, 100);
         }
     }
 }

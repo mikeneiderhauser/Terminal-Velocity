@@ -57,7 +57,6 @@
             this.BlockInfoTitle.Size = new System.Drawing.Size(106, 25);
             this.BlockInfoTitle.TabIndex = 0;
             this.BlockInfoTitle.Text = "Block Info";
-            //this.BlockInfoTitle.Click += new System.EventHandler(this.label1_Click);
             // 
             // lblBlockID
             // 
@@ -85,7 +84,6 @@
             this.lblHeater.Size = new System.Drawing.Size(42, 13);
             this.lblHeater.TabIndex = 3;
             this.lblHeater.Text = "Heater:";
-            //this.lblHeater.Click += new System.EventHandler(this.label4_Click);
             // 
             // lblCircuit
             // 
@@ -140,6 +138,7 @@
             this.trackDisplayPanel.Name = "trackDisplayPanel";
             this.trackDisplayPanel.Size = new System.Drawing.Size(385, 317);
             this.trackDisplayPanel.TabIndex = 9;
+            this.trackDisplayPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.trackDisplayPanel_Paint);
             // 
             // valBlockID
             // 
