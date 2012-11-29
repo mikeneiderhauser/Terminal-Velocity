@@ -141,5 +141,10 @@ namespace CTCOffice
         {
             get { throw new NotImplementedException(); }
         }
+
+        public ITrainController TrainController
+        {
+            get { return null; }
+        }
     }
 }

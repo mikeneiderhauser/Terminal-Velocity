@@ -318,17 +318,20 @@ namespace TrackModel
                         bIDFinal = bR.GetInt32(bR.GetOrdinal("blockID"));
                         line = bR.GetString(bR.GetOrdinal("line"));
                         infra = bR.GetString(bR.GetOrdinal("infra"));
-                        sEFinal = bR.GetDouble(bR.GetOrdinal("starting_elev"));
-                        gradeFinal = bR.GetDouble(bR.GetOrdinal("grade"));
-                        locXFinal = bR.GetInt32(bR.GetOrdinal("locX"));
-                        locYFinal = bR.GetInt32(bR.GetOrdinal("locY"));
-                        bSizeFinal = bR.GetDouble(bR.GetOrdinal("bSize"));
                         dir = bR.GetString(bR.GetOrdinal("dir"));
                         state = bR.GetString(bR.GetOrdinal("state"));
-                        prevFinal = bR.GetInt32(bR.GetOrdinal("prev"));
-                        dest1Final = bR.GetInt32(bR.GetOrdinal("dest1"));
-                        dest2Final = bR.GetInt32(bR.GetOrdinal("dest2"));
-                        trackCirIDFinal = bR.GetInt32(bR.GetOrdinal("trackCirID"));
+                        if (bIDFinal != 0)
+                        {
+                            sEFinal = bR.GetDouble(bR.GetOrdinal("starting_elev"));
+                            gradeFinal = bR.GetDouble(bR.GetOrdinal("grade"));
+                            locXFinal = bR.GetInt32(bR.GetOrdinal("locX"));
+                            locYFinal = bR.GetInt32(bR.GetOrdinal("locY"));
+                            bSizeFinal = bR.GetDouble(bR.GetOrdinal("bSize"));
+                            prevFinal = bR.GetInt32(bR.GetOrdinal("prev"));
+                            dest1Final = bR.GetInt32(bR.GetOrdinal("dest1"));
+                            dest2Final = bR.GetInt32(bR.GetOrdinal("dest2"));
+                            trackCirIDFinal = bR.GetInt32(bR.GetOrdinal("trackCirID"));
+                        }
                     }
                     catch (Exception e)
                     {
@@ -340,6 +343,7 @@ namespace TrackModel
                     DirEnum dirFinal = (DirEnum)Enum.Parse(typeof(DirEnum), dir, true);
                     StateEnum stateFinal = (StateEnum)Enum.Parse(typeof(StateEnum), state, true);
 
+                    
                     int[] locFinal = new int[2];
                     locFinal[0] = locXFinal;
                     locFinal[1] = locYFinal;
@@ -383,18 +387,22 @@ namespace TrackModel
                 bIDFinal = rr.GetInt32(rr.GetOrdinal("blockID"));
                 string line = rr.GetString(rr.GetOrdinal("line"));
                 string infra = rr.GetString(rr.GetOrdinal("infra"));
-                sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
-                gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
-                locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
-                locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
-
-                bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
                 string dir = rr.GetString(rr.GetOrdinal("dir"));
                 string state = rr.GetString(rr.GetOrdinal("state"));
-                prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
-                dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
-                dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
-                trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
+                if (bIDFinal != 0)
+                {
+                    sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
+                    gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
+                    locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
+                    locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
+
+                    bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
+
+                    prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
+                    dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
+                    dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
+                    trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
+                }
 
                 //////////////////////////////////////////////////////////////////////
                 //Parse fields that must be provided as a different type

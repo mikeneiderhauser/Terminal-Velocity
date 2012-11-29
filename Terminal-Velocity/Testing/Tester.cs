@@ -28,6 +28,7 @@ namespace Testing
                 Console.WriteLine(" ->  3      TrackController");
                 Console.WriteLine(" ->  4      TrainModel");
                 Console.WriteLine(" ->  5      TrainController");
+                Console.WriteLine(" -> 10      PROTOTYPEDEMO");
 
                 Console.WriteLine("\n\nPress enter to continue...");
                 Console.ReadLine();
@@ -49,7 +50,7 @@ namespace Testing
             {
                 if (args[0].CompareTo("unit") == 0)
                 {
-                    UnitTestFramework();
+                    //UnitTestFramework();
 
                     Console.WriteLine("\n\nPress enter to continue...");
                     Console.ReadLine();
@@ -65,7 +66,7 @@ namespace Testing
             //                              Initializations                                       //
             ////////////////////////////////////////////////////////////////////////////////////////
 
-
+            /*
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
 
@@ -118,6 +119,7 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
+
 
             ////////////////////////////////////////////////////////////////////////////////////////
             //                            End Initializations                                     //
@@ -209,75 +211,22 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
-
+            */
+            switch(test)
+            {
                 case 10: // PROTOTYPE
 
-                    // UNFINISHED
-                    #region CTC Form
-
-                    Form formCTC = new Form();
-                    UserControl controlCTC = new UserControl();
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Track form
-
-                    Form formTrack = new Form();
-                    UserControl controlTrack = new UserControl();
-                    controlTrack = new TrackModel.TrackModelGUI(environment, TrackMod);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Track Controller form
-
-                    Form formTrackController = new Form();
-                    UserControl controlTrackController = new UserControl();
-                    controlTrackController = new TrackController.TrackControllerUI(environment);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Train Model form
-
-                    Form formTrain = new Form();
-                    UserControl controlTrain = new UserControl();
-                    controlTrain = new TrainModel.TrainGUI(environment);
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Train Controller form
-
-                    Form formTrainController = new Form();
-                    UserControl controlTrainController = new UserControl();
-                    
-
-                    #endregion
-
-
-                    // UNFINISHED
-                    #region Scheduler form
-
-                    Form formScheduler = new Form();
-                    UserControl controlScheduler = new UserControl();
-
-                    #endregion
-
-
+                    new PrototypeDemo();
                     break;
             }
 
             if (test != 10)
             {
+                /*
                 form.Controls.Add(control);
                 form.AutoSize = true;
                 form.ShowDialog();
+                */
             }
         }
 

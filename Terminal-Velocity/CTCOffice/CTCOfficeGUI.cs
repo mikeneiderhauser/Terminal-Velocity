@@ -40,8 +40,22 @@ namespace CTCOffice
         private RoutingMode _routeToolMode;
         public event EventHandler<EventArgs> RoutingToolResponse;
 
+        //speedtool vars
+        private double _newSpeed;
+        private bool _speedToolOpen;
+        private SpeedTool _speedTool;
+
+        //authoritytool vars
+        private int _newAuthority;
+        private bool _authorityToolOpen;
+        private AuthorityTool _authorityTool;
+
         //last item selected
         LayoutCellDataContainer _lastRightClickContainer;
+        private EventHandler _layoutPiece_MouseHover;
+
+
+        public event EventHandler<ShowTrainEventArgs> ShowTrain;
 
         #region Constructor
         public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
@@ -90,52 +104,62 @@ namespace CTCOffice
             int x = 0;
             int y = 0;
 
-            //get line data
-            _redLineData = _ctcOffice.getLine(0);
-            _greenLineData = _ctcOffice.getLine(1);
+            LineData red = _ctcOffice.getLine(0);
+            LineData green = _ctcOffice.getLine(1);
 
-            for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++ )
+            if (_redLineData != red)
             {
-                for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
+
+                _redLineData = red;
+
+                for (int i = 0; i <= _redLineData.Layout.GetUpperBound(0); i++)
                 {
-                    PictureBox pane = new PictureBox();
-                    _panelRedLine.Controls.Add(pane);
-                    pane.Name = "_imgGridRed_" + i + "_" + j;
-                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pane.Size = new Size(20, 20);
-                    pane.Location = new Point(x, y);
-                    pane.Image = _redLineData.Layout[i, j].Tile;
-                    pane.Tag = _redLineData.Layout[i, j];
-                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
-                    x += 20;
+                    for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
+                    {
+                        PictureBox pane = new PictureBox();
+                        _panelRedLine.Controls.Add(pane);
+                        pane.Name = "_imgGridRed_" + i + "_" + j;
+                        pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pane.Size = new Size(20, 20);
+                        pane.Location = new Point(x, y);
+                        pane.Image = _redLineData.Layout[i, j].Tile;
+                        pane.Tag = _redLineData.Layout[i, j];
+                        pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                        //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                        x += 20;
+                    }
+                    y += 20;
+                    x = 0;
                 }
-                y += 20;
                 x = 0;
-            }
+                y = 0;
+            }//ed process red line
 
-            x = 0;
-            y = 0;
-
-            for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
+            if (_greenLineData != green)
             {
-                for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
-                {
-                    PictureBox pane = new PictureBox();
-                    _panelGreenLine.Controls.Add(pane);
-                    pane.Name = "_imgGridGreen_" + i + "_" + j;
-                    pane.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pane.Size = new Size(20, 20);
-                    pane.Location = new Point(x, y);
-                    pane.Image = _greenLineData.Layout[i, j].Tile;
-                    pane.Tag = _greenLineData.Layout[i, j];
-                    pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
-                    x += 20;
-                }
-                y += 20;
-                x = 0;
-            }
+                _greenLineData = green;
 
-        }
+                for (int i = 0; i <= _greenLineData.Layout.GetUpperBound(0); i++)
+                {
+                    for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
+                    {
+                        PictureBox pane = new PictureBox();
+                        _panelGreenLine.Controls.Add(pane);
+                        pane.Name = "_imgGridGreen_" + i + "_" + j;
+                        pane.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pane.Size = new Size(20, 20);
+                        pane.Location = new Point(x, y);
+                        pane.Image = _greenLineData.Layout[i, j].Tile;
+                        pane.Tag = _greenLineData.Layout[i, j];
+                        pane.MouseClick += new MouseEventHandler(this._layoutPiece_MouseClick);
+                        //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                        x += 20;
+                    }
+                    y += 20;
+                    x = 0;
+                }
+            }//end process green
+        }//end ParseLineData
 
         /// <summary>
         /// Function to handle Environment Tick
@@ -145,9 +169,12 @@ namespace CTCOffice
         void _environment_Tick(object sender, TickEventArgs e)
         {
             _tickCount++;
-            if (_tickCount == _rate)
+            if (_tickCount >= _rate)
             {
                 //updateMetrics();
+                _ctcOffice.AddTrainsToTrack();
+                parseLineData();
+                _tickCount = 0;
             }
         }
 
@@ -197,7 +224,7 @@ namespace CTCOffice
             }
         }//end button LoginLogout
 
-        #region Routes
+        #region Route Tool
         private void OpenRoutingTool(IBlock start, RoutingMode requestMode)
         {
             _routingToolOpen = true;
@@ -216,14 +243,8 @@ namespace CTCOffice
             popup.Text = "Routing Tool";
             popup.AutoSize = true;
 
-            popup.FormClosed += new FormClosedEventHandler(popup_FormClosed);
+            popup.FormClosed += new FormClosedEventHandler(popup_RoutingTool_FormClosed);
             popup.Show();
-        }
-
-        void popup_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            _routeTool = null;
-            _routingToolOpen = false;
         }
 
         /// <summary>
@@ -270,7 +291,91 @@ namespace CTCOffice
                 }
             }
         }
+
+        void popup_RoutingTool_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _routeTool = null;
+            _routingToolOpen = false;
+        }
         #endregion
+
+        #region Speed Tool
+        private void OpenSpeedTool()
+        {
+            if (_speedToolOpen)
+            {
+                popup_SpeedTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
+            }
+
+            _speedToolOpen = true;
+            Form popup = new Form();
+            SpeedTool st = new SpeedTool(this, _ctcOffice, _environment);
+            _speedTool = st;
+
+            st.SubmitSpeed += new EventHandler<SpeedToolEventArgs>(st_SubmitSpeed);
+            popup.Controls.Add(st);
+            popup.Text = "Speed Tool";
+            popup.AutoSize = true;
+
+            popup.FormClosed += new FormClosedEventHandler(popup_SpeedTool_FormClosed);
+            popup.Show();
+        }
+
+        void st_SubmitSpeed(object sender, SpeedToolEventArgs e)
+        {
+            double speed = e.Speed;
+            
+            _ctcOffice.setTrainSpeedRequest(_lastRightClickContainer.Train.TrainID, _lastRightClickContainer.Block.TrackCirID, speed, _lastRightClickContainer.Block);
+            if (_speedTool != null)
+            {
+                _speedTool.ParentForm.Close();
+            }
+        }
+
+        void popup_SpeedTool_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _speedTool = null;
+            _speedToolOpen = false;
+        }
+        #endregion
+
+        #region Authority Tool
+        private void OpenAuthorityTool()
+        {
+            if (_authorityToolOpen)
+            {
+                popup_AuthorityTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
+            }
+
+            _authorityToolOpen = true;
+
+            Form popup = new Form();
+            AuthorityTool at = new AuthorityTool(this, _ctcOffice, _environment);
+
+            _authorityTool = at;
+            at.SubmitAuthority += new EventHandler<AuthorityToolEventArgs>(at_SubmitAuthority);
+            popup.Controls.Add(at);
+            popup.Text = "Authority Tool";
+            popup.AutoSize = true;
+
+
+            popup.FormClosed += new FormClosedEventHandler(popup_AuthorityTool_FormClosed);
+            popup.Show();
+        }
+
+        void at_SubmitAuthority(object sender, AuthorityToolEventArgs e)
+        {
+            int authority = e.Authority;
+            _ctcOffice.setTrainAuthorityRequest(_lastRightClickContainer.Train.TrainID, _lastRightClickContainer.Block.TrackCirID, authority, _lastRightClickContainer.Block);
+        }
+
+        void popup_AuthorityTool_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _authorityTool = null;
+            _authorityToolOpen = false;
+        }
+        #endregion
+
 
         private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
@@ -417,67 +522,70 @@ namespace CTCOffice
                 //if sender data is not null (valid track piece / train piece)
                 if(s.Tag != null)
                 {
+                    //TODO check if block is null
                     //Cast Tag to Data Container
                     LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
 
-                    //Create right click menu
-                    ContextMenu cm = new ContextMenu();
-                    List<string> trackMenuTitles = new List<string>();
-
-                    //Add Track Menu
-                    MenuItem trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
-                    trackItem.Tag = c;
-
-                    trackMenuTitles.Add("Open Track");
-                    trackMenuTitles.Add("Close Track");
-                    //trackMenuTitles.Add("Display Track Info");
-
-                    foreach (string t in trackMenuTitles)
+                    if (c.Block != null)
                     {
-                        MenuItem temp = new MenuItem();
-                        temp.Text = t.ToString();
-                        temp.Tag = c;
-                        temp.Click += HandleMenuClick;
-                        trackItem.MenuItems.Add(temp);
-                    }
+                        //Create right click menu
+                        ContextMenu cm = new ContextMenu();
+                        List<string> trackMenuTitles = new List<string>();
 
-                    cm.MenuItems.Add(trackItem);
+                        //Add Track Menu
+                        MenuItem trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
+                        trackItem.Tag = c;
 
+                        trackMenuTitles.Add("Open Track");
+                        trackMenuTitles.Add("Close Track");
+                        //trackMenuTitles.Add("Display Track Info");
 
-                    //Add Train Menu if Train is contained by block
-                    if (c.Train != null || true)
-                    {
-                        int trainID = -1;
-                        if (c.Train != null)
-                        {
-                            trainID = c.Train.TrainID;
-                        }
-
-                        MenuItem trainItem = new MenuItem("Train (ID: " + trainID + ")");
-                        trainItem.Tag = c;
-                        List<string> trainMenuTitles = new List<string>();
-
-                        trainMenuTitles.Add("Assign Train Route");
-                        trainMenuTitles.Add("Set Train Authority");
-                        trainMenuTitles.Add("Set Train Speed");
-                        trainMenuTitles.Add("Set Train OOS");
-                        //trainMenuTitles.Add("Display Train Info");
-
-                        foreach (string t in trainMenuTitles)
+                        foreach (string t in trackMenuTitles)
                         {
                             MenuItem temp = new MenuItem();
                             temp.Text = t.ToString();
                             temp.Tag = c;
                             temp.Click += HandleMenuClick;
-                            trainItem.MenuItems.Add(temp);
+                            trackItem.MenuItems.Add(temp);
                         }
 
-                        cm.MenuItems.Add(trainItem);
-                    
+                        cm.MenuItems.Add(trackItem);
+
+
+                        //Add Train Menu if Train is contained by block
+                        if (c.Train != null)
+                        {
+                            int trainID = -1;
+                            if (c.Train != null)
+                            {
+                                trainID = c.Train.TrainID;
+                            }
+
+                            MenuItem trainItem = new MenuItem("Train (ID: " + trainID + ")");
+                            trainItem.Tag = c;
+                            List<string> trainMenuTitles = new List<string>();
+
+                            trainMenuTitles.Add("Assign Train Route");
+                            trainMenuTitles.Add("Set Train Authority");
+                            trainMenuTitles.Add("Set Train Speed");
+                            trainMenuTitles.Add("Set Train OOS");
+                            //trainMenuTitles.Add("Display Train Info");
+
+                            foreach (string t in trainMenuTitles)
+                            {
+                                MenuItem temp = new MenuItem();
+                                temp.Text = t.ToString();
+                                temp.Tag = c;
+                                temp.Click += HandleMenuClick;
+                                trainItem.MenuItems.Add(temp);
+                            }
+
+                            cm.MenuItems.Add(trainItem);
+
+                        }
+                        //Show the context menu at cursor click
+                        cm.Show((Control)sender, new Point(e.X, e.Y));
                     }
-                    //Show the context menu at cursor click
-                    cm.Show((Control)sender, new Point(e.X, e.Y));
-                
                 }//end if tag != null
             }//end if right click
             else if (e.Button == MouseButtons.Left)
@@ -491,8 +599,15 @@ namespace CTCOffice
                     {
                         //Cast Tag to Data Container
                         LayoutCellDataContainer c = (LayoutCellDataContainer)s.Tag;
-                        _routeTool.EndBlock = c.Block;
-                        RoutingToolResponse(this, EventArgs.Empty);
+                        if (c.Block != null)
+                        {
+                            _routeTool.EndBlock = c.Block;
+                            RoutingToolResponse(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Block Selection. Please select another block!");
+                        }
                     }
                     else
                     {
@@ -531,15 +646,11 @@ namespace CTCOffice
             }
             else if (s.Text.CompareTo("Set Train Authority") == 0)
             {
-                //TODO
-                //get authority somehow
-                _ctcOffice.setTrainAuthorityRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
+                OpenAuthorityTool();
             }
             else if (s.Text.CompareTo("Set Train Speed") == 0)
             {
-                //TODO
-                //get speed somehow
-                _ctcOffice.setTrainSpeedRequest(c.Train.TrainID, c.Block.TrackCirID, -1, c.Block);
+                OpenSpeedTool();
             }
             else if (s.Text.CompareTo("Set Train OOS") == 0)
             {
@@ -548,7 +659,10 @@ namespace CTCOffice
             else if (s.Text.CompareTo("Display Train Info") == 0)
             {
                 //TODO
-                ITrainModel train = c.Train;
+                if (ShowTrain != null)
+                {
+                    ShowTrain(this, new ShowTrainEventArgs(c.Train));
+                }
             }
             //else do noting
         }

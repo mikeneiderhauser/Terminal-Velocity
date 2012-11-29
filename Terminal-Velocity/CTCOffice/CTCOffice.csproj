@@ -57,6 +57,7 @@
     <Compile Include="AuthorityTool.Designer.cs">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
     </Compile>
+    <Compile Include="AuthorityToolEventArgs.cs" />
     <Compile Include="CTCOffice.cs" />
     <Compile Include="CTCOfficeGUI.cs">
       <SubType>UserControl</SubType>
@@ -91,18 +92,23 @@
       <DependentUpon>RoutingTool.cs</DependentUpon>
     </Compile>
     <Compile Include="RoutingToolEventArgs.cs" />
+    <Compile Include="ShowTrainEventArgs.cs" />
     <Compile Include="SpeedTool.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SpeedTool.Designer.cs">
       <DependentUpon>SpeedTool.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpeedToolEventArgs.cs" />
     <Compile Include="TestingBlock.cs" />
     <Compile Include="TestingSystemScheduler.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />
     <Compile Include="TestingTrainController.cs" />
     <Compile Include="TestingTrainModel.cs" />
+    <EmbeddedResource Include="AuthorityTool.resx">
+      <DependentUpon>AuthorityTool.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RoutingTool.resx">
       <DependentUpon>RoutingTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpeedTool.resx">
+      <DependentUpon>SpeedTool.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

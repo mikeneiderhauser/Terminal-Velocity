@@ -446,6 +446,11 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        public ITrainController TrainController
+        {
+            get { return _trainController; }
+        }
+
         // TODO: double check that it works
         // for track controller communications
 

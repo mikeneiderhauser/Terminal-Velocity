@@ -15,8 +15,10 @@ namespace CTCOffice
         private ISimulationEnvironment _env;
         private ITrackController _primaryTrackControllerRed;
         private LineData _redLineData;
+        private LineData _redLineDataBackup;
         private ITrackController _primaryTrackControllerGreen;
         private LineData _greenLineData;
+        private LineData _greenLineDataBackup;
         private Operator _op;
 
         private Queue<IRequest> _requestsOut;
@@ -26,6 +28,7 @@ namespace CTCOffice
         private bool _processingOutRequests;
         private bool _processingInRequests;
         private bool _automation;
+        private bool _populationBlock;
 
         private List<ITrainModel> _trains;
 
@@ -61,7 +64,9 @@ namespace CTCOffice
             if (_env.TrackModel != null)
             {
                 _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),_env);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
+                _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _greenLineData= new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
             }
             else
             {
@@ -80,15 +85,7 @@ namespace CTCOffice
             _processingOutRequests = false;
             _processingInRequests = false;
 
-            //get status from red and green prrimary track controllers (default)
-            //NO LONGER NEEDED 11/27/2012 8:39 PM
-            /*
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData,_primaryTrackControllerRed.ID,-1,-1,-1,null,null));
-            RequestQueueOut(this, EventArgs.Empty);
-
-            _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, _primaryTrackControllerGreen.ID, -1, -1,-1, null, null));
-            RequestQueueOut(this, EventArgs.Empty);
-             */
+            _populationBlock = false;
         }
         #endregion
 
@@ -300,6 +297,53 @@ namespace CTCOffice
             }
         }
 
+        private void PopulateTrack()
+        {
+            _populationBlock = true;
+            _redLineDataBackup = _redLineData;
+            _greenLineDataBackup = _greenLineData;
+
+            _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+            _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+
+            AddTrainsToTrack();
+
+            _populationBlock = false;
+        }
+
+        public void AddTrainsToTrack()
+        {
+            List<ITrainModel> trains = new List<ITrainModel>(_env.AllTrains);
+
+            foreach (LayoutCellDataContainer c in _redLineData.Layout)
+            {
+                if (c.Block != null)
+                {
+                    foreach (ITrainModel t in trains)
+                    {
+                        if (t.CurrentBlock == c.Block)
+                        {
+                            c.Tile = Utility.Properties.Resources.RedTrack_Train;
+                        }
+                    }
+                }
+            }
+
+            foreach (LayoutCellDataContainer c in _greenLineData.Layout)
+            {
+                if (c.Block != null)
+                {
+                    foreach (ITrainModel t in trains)
+                    {
+                        if (t.CurrentBlock == c.Block)
+                        {
+                            c.Tile = Utility.Properties.Resources.GreenTrack_Train;
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// logic to determine which track line
         /// </summary>
@@ -350,11 +394,26 @@ namespace CTCOffice
         {
             if (line == 0)
             {
-                return _redLineData;
+                if (_populationBlock)
+                {
+                    return _greenLineDataBackup;
+                }
+                else
+                {
+                    return _redLineData;
+                }
             }
             else if (line ==1)
             {
-                return _greenLineData;
+                if (_populationBlock)
+                {
+
+                    return _greenLineDataBackup;
+                }
+                else
+                {
+                    return _greenLineData;
+                }
             }
 
             return null;
