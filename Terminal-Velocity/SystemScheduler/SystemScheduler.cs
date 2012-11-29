@@ -15,7 +15,7 @@ namespace SystemScheduler
 
         private ISimulationEnvironment _env;
         private ICTCOffice _ctc;
-        private DispatchDatabase _dispatchDatabase;
+        private DispatchDatabase _dispatchDatabase = null;
         private DateTime _currentTime;
         private bool _enabled = false;
 
@@ -98,7 +98,11 @@ namespace SystemScheduler
 
         void _ctc_StartAutomation(object sender, EventArgs e)
         {
-            _enabled = true;
+            if (_dispatchDatabase != null)
+            {
+                _enabled = true;
+                _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10, _dispatchDatabase.DispatchList[0].DispatchRoute, _env.TrackModel.requestBlockInfo(0, _dispatchDatabase.DispatchList[0].Color)));
+            }
         }
 
         #endregion // Events
