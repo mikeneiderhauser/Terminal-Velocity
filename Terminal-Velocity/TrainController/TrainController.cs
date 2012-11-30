@@ -46,6 +46,7 @@ namespace TrainController
             set { _train = value; }
         }
 
+
         private const int highestTemperature = 75;
         private const int lowestTemperature = 65;
 
@@ -114,6 +115,7 @@ namespace TrainController
             set
             {
                 _speedLimit = value;
+                SpeedInput = value;
                 integral = 0;
                 returnFeedback("Speed limit set to " + value + "\r\n");
 
@@ -224,7 +226,8 @@ namespace TrainController
 
         public void sendPower(double speed)
         {
-           double _timeInterval = (double)Environment.getInterval() / 1000;
+           
+            double _timeInterval = (double)Environment.getInterval() / 1000;
             double finalPower = 0;
             double e = speed - Train.CurrentVelocity;
             e = e / (3.6*_timeInterval);
@@ -238,7 +241,7 @@ namespace TrainController
         }
         private bool checkSpeedLimit(double speed)
         {
-            return speed >= SpeedLimit;
+            return speed > SpeedLimit;
         }
         private bool checkDoorOpen()
         {

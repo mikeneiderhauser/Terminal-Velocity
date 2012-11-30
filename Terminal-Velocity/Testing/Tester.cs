@@ -70,10 +70,10 @@ namespace Testing
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
 
-            IBlock b0 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 0, 0 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b1 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 1, 1 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b2 = new TrackModel.Block(3, StateEnum.Healthy, 2, 0, 0, new int[] { 2, 2 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b3 = new TrackModel.Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new int[] { 3, 3 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b0 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 0, 0 }, 10, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b1 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 1, 1 }, 10, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b2 = new TrackModel.Block(3, StateEnum.Healthy, 2, 0, 0, new int[] { 2, 2 }, 10, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b3 = new TrackModel.Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new int[] { 3, 3 }, 10, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
 
             List<IBlock> sectionA = new List<IBlock>();
             sectionA.Add(b0);
@@ -218,6 +218,8 @@ namespace Testing
                     new PrototypeDemo();
                     break;
             }
+
+            environment.Start();
 
             form.Controls.Add(control);
             form.AutoSize = true;

@@ -90,7 +90,8 @@ namespace TrackController
             _trains.Clear();
             foreach (ITrainModel t in _env.AllTrains)
             {
-                if (_blocks.ContainsKey(t.CurrentBlock.BlockID))
+                if (!_trains.ContainsKey(t.TrainID) &&
+                    _blocks.ContainsKey(t.CurrentBlock.BlockID))
                     _trains.Add(t.TrainID, t);
             }
         }

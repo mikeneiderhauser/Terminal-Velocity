@@ -44,6 +44,8 @@ namespace Interfaces
         /// </summary>
         List<ITrainModel> AllTrains { get; }
 
+        void Start();
+
         /// <summary>
         /// Function to add train to AllTrains
         /// </summary>

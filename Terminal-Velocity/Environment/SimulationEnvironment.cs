@@ -21,7 +21,7 @@ namespace SimulationEnvironment
         private SystemLog _sysLog;
         
         private long _total;
-        private long _interval = 500;
+        private long _interval = 250;
         private Timer _timer = new Timer();
         #endregion
 
@@ -30,12 +30,16 @@ namespace SimulationEnvironment
         {
             _timer.Interval = _interval;
             _timer.Elapsed += _timer_Elapsed;
-            _timer.Start();
 
             _allTrains = new List<ITrainModel>();
             _sysLog = new SystemLog();
         }
         #endregion
+
+        public void Start()
+        {
+            _timer.Start();
+        }
 
         #region Public Property
         public ICTCOffice CTCOffice
