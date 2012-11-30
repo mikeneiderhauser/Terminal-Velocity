@@ -86,6 +86,10 @@ namespace Interfaces
         /// <param name="sender">ref to caller</param>
         void startTick(object sender);
 
+        /// <summary>
+        /// Function to dispatch train (sim yard)
+        /// </summary>
+        /// <param name="request"></param>
         void Dispatch(IRequest request);
     }
 }

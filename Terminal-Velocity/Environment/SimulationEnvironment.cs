@@ -158,7 +158,27 @@ namespace SimulationEnvironment
 
         public void Dispatch(IRequest request)
         {
-            
+            Random random = new Random();
+            int randomNumber = 0;
+            bool uniqueID = true; //unique until invalidated
+
+            do
+            {
+                randomNumber = random.Next(0, 500); // well over total number of blocks.. 1 train per block
+                foreach (ITrainModel t in _allTrains)
+                {
+                    if (t.TrainID == randomNumber)
+                    {
+                        uniqueID = false;
+                    }
+                }
+
+            } while (!uniqueID);
+
+            //IBlock start = this.TrackModel.requestBlockInfo(0, "Red");
+            //this.addTrain(new TrainModel.Train(randomNumber, start, this));
+
+
         }
         #endregion
     }
