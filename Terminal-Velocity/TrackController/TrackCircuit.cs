@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Interfaces;
 using Utility;
 
@@ -10,13 +7,10 @@ namespace TrackController
 {
     public class TrackCircuit : ITrackCircuit
     {
-        private ISimulationEnvironment _env;
-        private ITrackController _trackController;
+        private readonly Dictionary<int, IBlock> _blocks;
+        private readonly ISimulationEnvironment _env;
 
-        private int _id;
-
-        private Dictionary<int, ITrainModel> _trains;
-        private Dictionary<int, IBlock> _blocks;
+        private readonly Dictionary<int, ITrainModel> _trains;
 
         #region Constructor(s)
 
@@ -36,11 +30,8 @@ namespace TrackController
 
         #region Public Properties
 
-        public int ID
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
+        public ITrackController TrackController { get; set; }
+        public int ID { get; set; }
 
         public Dictionary<int, ITrainModel> Trains
         {
@@ -50,12 +41,6 @@ namespace TrackController
         public Dictionary<int, IBlock> Blocks
         {
             get { return _blocks; }
-        }
-
-        public ITrackController TrackController
-        {
-            get { return _trackController; }
-            set { _trackController = value; }
         }
 
         #endregion // Public Properties

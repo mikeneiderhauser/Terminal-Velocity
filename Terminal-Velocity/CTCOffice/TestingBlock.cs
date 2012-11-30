@@ -1,31 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Utility;
 using Interfaces;
 
 namespace CTCOffice
 {
-    class TestingBlock : IBlock
+    internal class TestingBlock : IBlock
     {
-        private int _id;
-        private int _prevID;
-        private StateEnum _state;
-        private double _size;
-        string _line;
-        int[] _location;
+        private readonly int _id;
+        private readonly string _line;
+        private readonly int[] _location;
+        private readonly int _prevID;
 
         public TestingBlock(string line, int id, int prevID, double size, int[] loc)
         {
             _line = line;
             _id = id;
             _prevID = prevID;
-            _state = StateEnum.Healthy;
-            _size = size;
+            State = StateEnum.Healthy;
+            BlockSize = size;
             _location = loc;
-            
         }
 
         public int BlockID
@@ -33,17 +25,7 @@ namespace CTCOffice
             get { return _id; }
         }
 
-        public StateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-            }
-        }
+        public StateEnum State { get; set; }
 
         public int PrevBlockID
         {
@@ -65,17 +47,7 @@ namespace CTCOffice
             get { return _location; }
         }
 
-        public double BlockSize
-        {
-            get
-            {
-                return _size;
-            }
-            set
-            {
-                _size = value;
-            }
-        }
+        public double BlockSize { get; set; }
 
         public DirEnum Direction
         {
@@ -84,10 +56,7 @@ namespace CTCOffice
 
         public int SwitchDest1
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
             set
             {
                 //not needed for ctc office testing
@@ -96,10 +65,7 @@ namespace CTCOffice
 
         public int SwitchDest2
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
             set
             {
                 //not needed for CTC Office Testing
@@ -129,7 +95,13 @@ namespace CTCOffice
             get { return _line; }
         }
 
+        public int nextBlockIndex(int prevBlockIndex)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Bool Attribs
+
         public bool hasSwitch()
         {
             return false;
@@ -194,12 +166,7 @@ namespace CTCOffice
         {
             return false;
         }
+
         #endregion
-
-
-        public int nextBlockIndex(int prevBlockIndex)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

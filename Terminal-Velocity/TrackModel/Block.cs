@@ -1,50 +1,43 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Interfaces;
-using Utility;
 
 namespace TrackModel
 {
-
     public class Block : IBlock
     {
         //Private parameters
-        private int _blockID;
-        private StateEnum _stateAttributes;
-        private int _prevBlockID;
-        private double _startingElev;
-        private double _grade;
-        private int[] _location;
-        private double _bSize;
-        private DirEnum _direction;
-        private string[] _attributes;
+        private readonly string[] _attributes;
+        private readonly int _blockID;
+        private readonly DirEnum _direction;
+        private readonly double _grade;
+        private readonly string _line;
+        private readonly int[] _location;
+        private readonly int _prevBlockID;
+        private readonly double _startingElev;
         private int _switchDest1;
-        private int _switchDest2;
-        private int _trackCirID;
-        private string _line;
 
-        public Block(int bID, StateEnum state, int pBID, double sElev, double g, int[] loc, double bS, DirEnum dir, string[] atts, int d1, int d2, int tCID, string l)
+        public Block(int bID, StateEnum state, int pBID, double sElev, double g, int[] loc, double bS, DirEnum dir,
+                     string[] atts, int d1, int d2, int tCID, string l)
         {
             _blockID = bID;
-            _stateAttributes = state;
+            State = state;
             _prevBlockID = pBID;
             _startingElev = sElev;
             _grade = g;
             _location = loc;
-            _bSize = bS;
+            BlockSize = bS;
             _direction = dir;
             _attributes = atts;
             _switchDest1 = d1;
-            _switchDest2 = d2;
-            _trackCirID = tCID;
+            SwitchDest2 = d2;
+            TrackCirID = tCID;
             _line = l;
         }
 
         public Block(int bID)
         {
-            throw new Exception("Don't use this constructor please.  Instead, use TrackModel.requestBlockInfo(0,\"LineName\")");
+            throw new Exception(
+                "Don't use this constructor please.  Instead, use TrackModel.requestBlockInfo(0,\"LineName\")");
         }
 
         public int nextBlockIndex(int prevBlockIndex)
@@ -54,11 +47,11 @@ namespace TrackModel
             {
                 if (_line.Equals("Red", StringComparison.OrdinalIgnoreCase))
                 {
-                    return 9;//Only exit from yard on red line is to block 9
+                    return 9; //Only exit from yard on red line is to block 9
                 }
-                else//Assume line is green
+                else //Assume line is green
                 {
-                    return 62;//Only exit from yard on green line is block 62
+                    return 62; //Only exit from yard on green line is block 62
                 }
             }
             else
@@ -84,8 +77,6 @@ namespace TrackModel
             return false;
 
             //Alternate implementation involves checking if switchDest2=-1
-
-
         }
 
         public bool hasTunnel()
@@ -99,7 +90,6 @@ namespace TrackModel
             }
 
             return false;
-
         }
 
         public bool hasHeater()
@@ -237,24 +227,15 @@ namespace TrackModel
             }
         }
 
-
-
         #region Properties
+
         public int BlockID
         {
             get { return _blockID; }
         }
 
 
-        public StateEnum State
-        {
-            get { return _stateAttributes; }
-
-            set
-            {
-                _stateAttributes = value;
-            }
-        }
+        public StateEnum State { get; set; }
 
         public int PrevBlockID
         {
@@ -276,14 +257,7 @@ namespace TrackModel
             get { return _location; }
         }
 
-        public double BlockSize
-        {
-            get { return _bSize; }
-            set
-            {
-                _bSize = value;
-            }
-        }
+        public double BlockSize { get; set; }
 
         public DirEnum Direction
         {
@@ -293,30 +267,12 @@ namespace TrackModel
         public int SwitchDest1
         {
             get { return _switchDest1; }
-            set
-            {
-                _switchDest1 = value;
-            }
+            set { _switchDest1 = value; }
         }
 
-        public int SwitchDest2
-        {
-            get { return _switchDest2; }
-            set
-            {
-                _switchDest2 = value;
-            }
-        }
+        public int SwitchDest2 { get; set; }
 
-        public int TrackCirID
-        {
-            get { return _trackCirID; }
-            set
-            {
-                _trackCirID = value;
-            }
-
-        }
+        public int TrackCirID { get; set; }
 
         public string[] AttrArray
         {
@@ -327,6 +283,7 @@ namespace TrackModel
         {
             get { return _line; }
         }
+
         #endregion
     }
 }

@@ -1,66 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Interfaces;
-using Utility;
 
 namespace CTCOffice
 {
     public class Request : IRequest
     {
         #region Private Class Variables
-        /// <summary>
-        /// Holds the type of request
-        /// </summary>
-        private RequestTypes _requestType;
 
         /// <summary>
-        /// Holds the track controller id number that the request is meant for
+        ///     Holds the Block information that the request is meant for
         /// </summary>
-        private int _trackControllerID;
+        private readonly IBlock _block;
 
         /// <summary>
-        /// Holds the train ID the request is meant for
+        ///     Holds the time of the request
         /// </summary>
-        private int _trainID;
+        private readonly DateTime _issueDateTime; // automatically populated
 
         /// <summary>
-        /// Holds the Authority limit (set authority) or the speed limit (setSpeed)
+        ///     Holds the type of request
         /// </summary>
-        private int _trainAuthority;
+        private readonly RequestTypes _requestType;
 
         /// <summary>
-        /// Holds the speed to set to the train in a request
+        ///     Holds the track controller id number that the request is meant for
         /// </summary>
-        private double _trainSpeed;
+        private readonly int _trackControllerID;
 
         /// <summary>
-        /// Holds train routing information
+        ///     Holds the Authority limit (set authority) or the speed limit (setSpeed)
         /// </summary>
-        private IRoute _trainRoute;
+        private readonly int _trainAuthority;
 
         /// <summary>
-        /// Holds the time of the request
+        ///     Holds the train ID the request is meant for
         /// </summary>
-        private DateTime _issueDateTime; // automatically populated
+        private readonly int _trainID;
 
         /// <summary>
-        /// holds the status information from request
+        ///     Holds train routing information
         /// </summary>
-        private IStatus _info; // added by TC
+        private readonly IRoute _trainRoute;
 
         /// <summary>
-        /// Holds the Block information that the request is meant for
+        ///     Holds the speed to set to the train in a request
         /// </summary>
-        private IBlock _block;
+        private readonly double _trainSpeed;
+
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Constructor for Request
+        ///     Constructor for Request
         /// </summary>
         /// <param name="request">request type (enum)</param>
         /// <param name="trackControllerID">track controller id</param>
@@ -69,8 +61,8 @@ namespace CTCOffice
         /// <param name="route">route information</param>
         /// <param name="block">block information</param>
         public Request(RequestTypes request, int trackControllerID,
-            int trainID, int authority, double speed, IRoute route,
-            IBlock block)
+                       int trainID, int authority, double speed, IRoute route,
+                       IBlock block)
         {
             _requestType = request;
             _trackControllerID = trackControllerID;
@@ -79,15 +71,16 @@ namespace CTCOffice
             _trainRoute = route;
             _block = block;
             _issueDateTime = DateTime.Now;
-            _info = null;
+            Info = null;
             _trainSpeed = speed;
         }
 
         #endregion
 
         #region Public Properties
+
         /// <summary>
-        /// Property for _trackControllerID
+        ///     Property for _trackControllerID
         /// </summary>
         public int TrackControllerID
         {
@@ -95,7 +88,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _trainID
+        ///     Property for _trainID
         /// </summary>
         public int TrainID
         {
@@ -103,7 +96,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _trainAuthority
+        ///     Property for _trainAuthority
         /// </summary>
         public int TrainAuthority
         {
@@ -111,7 +104,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _trainSpeed
+        ///     Property for _trainSpeed
         /// </summary>
         public double TrainSpeed
         {
@@ -119,7 +112,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _trainRoute
+        ///     Property for _trainRoute
         /// </summary>
         public IRoute TrainRoute
         {
@@ -127,7 +120,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _issueDateTime
+        ///     Property for _issueDateTime
         /// </summary>
         public DateTime IssueDateTime
         {
@@ -135,7 +128,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Property for _block
+        ///     Property for _block
         /// </summary>
         public IBlock Block
         {
@@ -143,21 +136,18 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// property for _info
+        ///     property for _info
         /// </summary>
-        public IStatus Info
-        {
-            get { return _info; }
-            set { _info = value; }
-        }
+        public IStatus Info { get; set; }
 
         /// <summary>
-        /// Property for _requestType
+        ///     Property for _requestType
         /// </summary>
         public RequestTypes RequestType
         {
             get { return _requestType; }
         }
+
         #endregion
     }
 }

@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
 using Interfaces;
-using Utility;
 
 namespace CTCOffice
 {
     public partial class SpeedTool : UserControl
     {
-
-        private ISimulationEnvironment _env;
-        private CTCOfficeGUI _ctcGui;
+        private readonly ISimulationEnvironment _env;
         private CTCOffice _ctc;
-        public event EventHandler<SpeedToolEventArgs> SubmitSpeed;
+        private CTCOfficeGUI _ctcGui;
 
         public SpeedTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env)
         {
@@ -28,9 +18,10 @@ namespace CTCOffice
             _env = env;
         }
 
+        public event EventHandler<SpeedToolEventArgs> SubmitSpeed;
+
         private void _txtSpeed_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void _btnSubmit_Click(object sender, EventArgs e)
@@ -59,7 +50,6 @@ namespace CTCOffice
             {
                 if (double.TryParse(_txtSpeed.Text, out speed))
                 {
-
                 }
             }
             catch (Exception ex)
@@ -73,7 +63,6 @@ namespace CTCOffice
 
         private void _lblUnits_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

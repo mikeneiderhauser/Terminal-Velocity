@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Interfaces;
-using TerminalVelocity;
-
+using SimulationEnvironment;
 
 namespace SystemScheduler
 {
     public class Dispatch
     {
-
         # region Private Variables
 
-        private ISimulationEnvironment _environment;
-        private DateTime _dispatchTime;
-        private int _dispatchID;
-        private int _routeType;
-        private Interfaces.IRoute _dispatchRoute;
-        private string _color;
+        private readonly string _color;
+        private readonly int _dispatchID;
+        private readonly IRoute _dispatchRoute;
+        private readonly DateTime _dispatchTime;
+        private readonly ISimulationEnvironment _environment;
+        private readonly int _routeType;
 
         # endregion
 
@@ -33,18 +29,18 @@ namespace SystemScheduler
             _color = color;
             if (_routeType == 0)
             {
-                List<IBlock> stops = new List<IBlock>();
+                var stops = new List<IBlock>();
                 IBlock last = null;
                 foreach (string blockID in route.Split('|'))
                 {
                     stops.Add(_environment.TrackModel.requestBlockInfo(int.Parse(blockID), _color));
                     last = _environment.TrackModel.requestBlockInfo(int.Parse(blockID), _color);
                 }
-                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.PointRoute, last, -1, stops);
+                _dispatchRoute = new Route(RouteTypes.PointRoute, last, -1, stops);
             }
             else
             {
-                _dispatchRoute = new SimulationEnvironment.Route(RouteTypes.DefinedRoute, null, int.Parse(route), null);
+                _dispatchRoute = new Route(RouteTypes.DefinedRoute, null, int.Parse(route), null);
             }
         }
 
@@ -72,12 +68,11 @@ namespace SystemScheduler
             get { return _routeType; }
         }
 
-        public Interfaces.IRoute DispatchRoute
+        public IRoute DispatchRoute
         {
             get { return _dispatchRoute; }
         }
 
         # endregion
-                
     }
 }

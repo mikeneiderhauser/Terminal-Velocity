@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Interfaces;
-using Utility;
 
 namespace TrackModel
 {
-
     public class RouteInfo : IRouteInfo
     {
         //Private parameters
-        private int _routeID;
-        private string _routeName;
-        private int _numBlocks;
-        private Block[] _blockList;
-        private int _startBlockID;
-        private int _endBlockID;
+        private readonly Block[] _blockList;
+        private readonly int _endBlockID;
+        private readonly int _numBlocks;
+        private readonly int _routeID;
+        private readonly string _routeName;
+        private readonly int _startBlockID;
 
         public RouteInfo(int rID, string rName, int nBlocks, Block[] blocks, int sID, int eID)
         {
@@ -29,6 +23,7 @@ namespace TrackModel
         }
 
         #region Properties
+
         public int RouteID
         {
             get { return _routeID; }
@@ -58,6 +53,7 @@ namespace TrackModel
         {
             get { return _blockList; }
         }
+
         #endregion
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Utility;
 using Interfaces;
+using Utility;
 
 namespace TrainModel
 {
@@ -12,41 +9,37 @@ namespace TrainModel
     {
         #region Global variables
 
-        private int _trainID;
         private const double _length = 32.33; // meters
-        private double _totalMass;
-        private string _informationLog;
-        private bool _lightsOn;
-        private bool _doorsOpen;
-        private int _temperature;
-        private double _currentAcceleration;
-        private double _currentVelocity;
-        private double _currentPosition;
 
         private const int _maxCapacity = 222; // 74 seated, 148 standing
-        private int _numPassengers;
-        private int _numCrew;
 
-        private bool _brakeFailure;
-        private bool _engineFailure;
-        private bool _signalPickupFailure;
-
-        private ITrainController _trainController;
-        private ISimulationEnvironment _environment;
-        private ITrackModel _trackModel;
-        private List<ITrainModel> allTrains;
-
-        private int _trackCircuitID;
+        private readonly bool _brakeFailure;
+        private readonly bool _engineFailure;
+        private readonly ISimulationEnvironment _environment;
+        private readonly bool _signalPickupFailure;
+        private readonly ITrackModel _trackModel;
+        private readonly ITrainController _trainController;
+        private readonly int _trainID;
+        private double _blockLength;
+        private double _currentAcceleration;
         private IBlock _currentBlock;
         private int _currentBlockID;
+        private double _currentPosition;
+        private double _currentVelocity;
+        private bool _doorsOpen;
+        private string _informationLog;
+        private bool _lightsOn;
+        private int _numCrew;
+        private int _numPassengers;
         private int _previousBlockID;
-        private double _blockLength;
+        private int _temperature;
 
         private double _timeInterval;
+        private double _totalMass;
+        private int _trackCircuitID;
+        private List<ITrainModel> allTrains;
 
         #endregion
-
-
 
         #region Constant values
 
@@ -62,13 +55,11 @@ namespace TrainModel
 
         #endregion
 
-
-
         #region Constructors
 
         /// <summary>
-        /// This constructor is used when passenger, crew, and temperature information is not given.
-        /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
+        ///     This constructor is used when passenger, crew, and temperature information is not given.
+        ///     It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
         public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
@@ -97,7 +88,7 @@ namespace TrainModel
             _trackCircuitID = _currentBlock.TrackCirID;
 
             _environment = environment;
-            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+            _environment.Tick += _environment_Tick;
 
             _trackModel = environment.TrackModel;
             _trainController = new TrainController.TrainController(_environment, this);
@@ -105,18 +96,15 @@ namespace TrainModel
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
 
-            _timeInterval = (double)(environment.getInterval() / 1000.0);
+            _timeInterval = (environment.getInterval()/1000.0);
         }
 
         #endregion
 
-
-
         #region Public Methods
 
-
         /// <summary>
-        /// Applies the maximum deceleration limit to the train to stop it.
+        ///     Applies the maximum deceleration limit to the train to stop it.
         /// </summary>
         public void EmergencyBrake()
         {
@@ -125,7 +113,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Changes the acceleration of the train based on the given power. 
+        ///     Changes the acceleration of the train based on the given power.
         /// </summary>
         /// <param name="power">Power given.</param>
         /// <returns>True if successful, false otherwise.</returns>
@@ -138,8 +126,8 @@ namespace TrainModel
 
             if (_currentVelocity > 0)
             {
-                currentForce = power / _currentVelocity;
-                newAcceleration = currentForce / _totalMass;
+                currentForce = power/_currentVelocity;
+                newAcceleration = currentForce/_totalMass;
             }
 
             // check that the new acceleration does not exceed the physical limit
@@ -149,7 +137,7 @@ namespace TrainModel
                 return false;
             }
 
-            // check that the new deceleration does not exceed the physical limit
+                // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
                 _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
@@ -162,7 +150,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// This overrides the regular ToString() method for a Train.
+        ///     This overrides the regular ToString() method for a Train.
         /// </summary>
         /// <returns>Returns "Train " + trainID</returns>
         public override string ToString()
@@ -172,12 +160,10 @@ namespace TrainModel
 
         #endregion
 
-
-
         #region Private Methods
 
         /// <summary>
-        /// Occurs on every tick.
+        ///     Occurs on every tick.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -187,31 +173,31 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Updates the movement of the train. Accounts for slope and changes the block if necessary.
+        ///     Updates the movement of the train. Accounts for slope and changes the block if necessary.
         /// </summary>
         private void updateMovement()
         {
-            _timeInterval = (double)(_environment.getInterval() / 1000.0); // milliseconds to seconds
+            _timeInterval = (_environment.getInterval()/1000.0); // milliseconds to seconds
 
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
             if (_currentBlock.Grade > 0) // up hill
             {
-                _currentAcceleration -= _accelerationGravity * Math.Sin(angle);
+                _currentAcceleration -= _accelerationGravity*Math.Sin(angle);
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                _currentAcceleration += _accelerationGravity * Math.Sin(angle);
+                _currentAcceleration += _accelerationGravity*Math.Sin(angle);
             }
 
-            _currentVelocity += _currentAcceleration * _timeInterval;
+            _currentVelocity += _currentAcceleration*_timeInterval;
 
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
             }
 
-            _currentPosition += _currentVelocity * _timeInterval;
+            _currentPosition += _currentVelocity*_timeInterval;
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
@@ -239,22 +225,20 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Calculates the mass of the train based on the number of passengers.
+        ///     Calculates the mass of the train based on the number of passengers.
         /// </summary>
         /// <returns>The total mass.</returns>
         private double calculateMass()
         {
-            return (_initialMass + _personMass * (_numPassengers + _numCrew));
+            return (_initialMass + _personMass*(_numPassengers + _numCrew));
         }
 
         #endregion
 
-
-
         #region Properties
 
         /// <summary>
-        /// Get the ID of the train.
+        ///     Get the ID of the train.
         /// </summary>
         public int TrainID
         {
@@ -262,7 +246,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the length of the train.
+        ///     Get the length of the train.
         /// </summary>
         public double Length
         {
@@ -270,7 +254,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the total mass of the train, including passengers.
+        ///     Get the total mass of the train, including passengers.
         /// </summary>
         public double TotalMass
         {
@@ -278,7 +262,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the information log.
+        ///     Get the information log.
         /// </summary>
         public string InformationLog
         {
@@ -286,7 +270,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the lights.
+        ///     Get and set the lights.
         /// </summary>
         public bool LightsOn
         {
@@ -304,7 +288,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the doors.
+        ///     Get and set the doors.
         /// </summary>
         public bool DoorsOpen
         {
@@ -322,7 +306,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the temperature of the train.
+        ///     Get and set the temperature of the train.
         /// </summary>
         public int Temperature
         {
@@ -335,7 +319,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the current acceleration of the train.
+        ///     Get the current acceleration of the train.
         /// </summary>
         public double CurrentAcceleration
         {
@@ -343,7 +327,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the current velocity of the train.
+        ///     Get the current velocity of the train.
         /// </summary>
         public double CurrentVelocity
         {
@@ -351,7 +335,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the current position of the train along the block.
+        ///     Get the current position of the train along the block.
         /// </summary>
         public double CurrentPosition
         {
@@ -359,7 +343,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the maximum capacity.
+        ///     Get the maximum capacity.
         /// </summary>
         public int MaxCapacity
         {
@@ -367,7 +351,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the number of passengers. Updates the mass.
+        ///     Get and set the number of passengers. Updates the mass.
         /// </summary>
         public int NumPassengers
         {
@@ -391,7 +375,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the number of crew members. Updates the mass.
+        ///     Get and set the number of crew members. Updates the mass.
         /// </summary>
         public int NumCrew
         {
@@ -415,7 +399,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get if there is a brake failure.
+        ///     Get if there is a brake failure.
         /// </summary>
         public bool BrakeFailure
         {
@@ -423,7 +407,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get if there is an engine failure.
+        ///     Get if there is an engine failure.
         /// </summary>
         public bool EngineFailure
         {
@@ -431,7 +415,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get if there is a signal pickup failure.
+        ///     Get if there is a signal pickup failure.
         /// </summary>
         public bool SignalPickupFailure
         {
@@ -439,7 +423,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get the current block for the train.
+        ///     Get the current block for the train.
         /// </summary>
         public IBlock CurrentBlock
         {
@@ -451,13 +435,10 @@ namespace TrainModel
             get { return _trainController; }
         }
 
-        // TODO: double check that it works
-        // for track controller communications
-
         #region Track Controller communication parameters
 
         /// <summary>
-        /// Get and set the train controller's speed limit.
+        ///     Get and set the train controller's speed limit.
         /// </summary>
         public double SpeedLimit
         {
@@ -466,7 +447,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Get and set the train controller's authority limit.
+        ///     Get and set the train controller's authority limit.
         /// </summary>
         public int AuthorityLimit
         {
@@ -475,6 +456,9 @@ namespace TrainModel
         }
 
         #endregion
+
+        // TODO: double check that it works
+        // for track controller communications
 
         #endregion
     }

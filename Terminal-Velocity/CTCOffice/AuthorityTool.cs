@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
 using Interfaces;
-using Utility;
 
 namespace CTCOffice
 {
     public partial class AuthorityTool : UserControl
     {
-        private ISimulationEnvironment _env;
-        private CTCOfficeGUI _ctcgui;
         private CTCOffice _ctc;
+        private CTCOfficeGUI _ctcgui;
+        private ISimulationEnvironment _env;
 
-        public event EventHandler<AuthorityToolEventArgs> SubmitAuthority;
         public AuthorityTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env)
         {
             InitializeComponent();
@@ -26,6 +17,8 @@ namespace CTCOffice
             _ctcgui = ctcgui;
             _env = env;
         }
+
+        public event EventHandler<AuthorityToolEventArgs> SubmitAuthority;
 
         private void _btnSubmit_Click(object sender, EventArgs e)
         {

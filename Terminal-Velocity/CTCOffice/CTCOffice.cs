@@ -1,51 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Interfaces;
 using Utility;
-
+using Utility.Properties;
 
 namespace CTCOffice
 {
     public class CTCOffice : ICTCOffice
     {
         #region Private Variables
-        private ISimulationEnvironment _env;
-        private ITrackController _primaryTrackControllerRed;
-        private LineData _redLineData;
-        private LineData _redLineDataBackup;
-        private ITrackController _primaryTrackControllerGreen;
-        private LineData _greenLineData;
-        private LineData _greenLineDataBackup;
-        private Operator _op;
 
-        private Queue<IRequest> _requestsOut;
-        private Queue<IRequest> _requestsIn;
-        private event EventHandler<EventArgs> RequestQueueOut;
-        private event EventHandler<EventArgs> RequestQueueIn;
-        private bool _processingOutRequests;
-        private bool _processingInRequests;
-        private bool _automation;
-        private bool _populationBlock;
-
-        private List<ITrainModel> _trains;
+        private readonly ISimulationEnvironment _env;
+        private readonly Operator _op;
+        private readonly ITrackController _primaryTrackControllerGreen;
+        private readonly ITrackController _primaryTrackControllerRed;
 
         /// <summary>
-        /// Number of Ticks Elapsed to update
+        ///     Number of Ticks Elapsed to update
         /// </summary>
-        private double _rate;
+        private readonly double _rate;
+
+        private readonly Queue<IRequest> _requestsIn;
+        private readonly Queue<IRequest> _requestsOut;
+        private bool _automation;
+        private LineData _greenLineData;
+        private LineData _greenLineDataBackup;
+        private bool _populationBlock;
+        private bool _processingInRequests;
+        private bool _processingOutRequests;
+        private LineData _redLineData;
+        private LineData _redLineDataBackup;
 
         private double _tickCount;
+        private List<ITrainModel> _trains;
+        private event EventHandler<EventArgs> RequestQueueOut;
+        private event EventHandler<EventArgs> RequestQueueIn;
+
         #endregion
 
-        //confirm merge
         #region Constructor
+
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
             _automation = false;
-            _rate = 100;//num of ticks
+            _rate = 100; //num of ticks
             _tickCount = 0;
             _rate = env.getInterval();
             _env = env;
@@ -54,7 +52,7 @@ namespace CTCOffice
 
             _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
-            _env.Tick += new EventHandler<TickEventArgs>(_env_Tick);
+            _env.Tick += _env_Tick;
 
             //create new operator object
             _op = new Operator();
@@ -63,10 +61,10 @@ namespace CTCOffice
 
             if (_env.TrackModel != null)
             {
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0),_env);
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
                 _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _greenLineData= new LineData(_env.TrackModel.requestTrackGrid(1), _env);
-                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1),_env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
             }
             else
             {
@@ -76,10 +74,10 @@ namespace CTCOffice
             //create queues
             _requestsOut = new Queue<IRequest>();
             _requestsIn = new Queue<IRequest>();
-            
+
             //create queue events
-            RequestQueueIn += new EventHandler<EventArgs>(CTCOffice_RequestQueueIn);
-            RequestQueueOut += new EventHandler<EventArgs>(CTCOffice_RequestQueueOut);
+            RequestQueueIn += CTCOffice_RequestQueueIn;
+            RequestQueueOut += CTCOffice_RequestQueueOut;
 
             //create queue processing flags / mutex
             _processingOutRequests = false;
@@ -87,12 +85,13 @@ namespace CTCOffice
 
             _populationBlock = false;
         }
+
         #endregion
 
         #region Functions
 
         /// <summary>
-        /// Function to handle queue out
+        ///     Function to handle queue out
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +119,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Function to handle Queue In
+        ///     Function to handle Queue In
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -160,9 +159,9 @@ namespace CTCOffice
                 }
             }
         }
-        
+
         /// <summary>
-        /// Function to login the operator
+        ///     Function to login the operator
         /// </summary>
         /// <param name="username">Passed in Operator Entered Username</param>
         /// <param name="password">Passed in Operator Entered Password</param>
@@ -174,7 +173,7 @@ namespace CTCOffice
             status = _op.isAuth();
             if (status)
             {
-                _env.sendLogEntry((string)"CTCOffice: User Logged in with username->" + username + ".");
+                _env.sendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
             }
             else
             {
@@ -184,7 +183,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Function to log the operator out
+        ///     Function to log the operator out
         /// </summary>
         /// <returns>Always True</returns>
         public bool Logout()
@@ -197,7 +196,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Function to determine if Operator is authorized to use CTC
+        ///     Function to determine if Operator is authorized to use CTC
         /// </summary>
         /// <returns></returns>
         public bool isAuth()
@@ -206,7 +205,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Function to throw the event to the System Scheduler to start automated scheduling
+        ///     Function to throw the event to the System Scheduler to start automated scheduling
         /// </summary>
         public void StartScheduling()
         {
@@ -218,7 +217,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Function to throw the event to the System Scheduler to start automated scheduling
+        ///     Function to throw the event to the System Scheduler to start automated scheduling
         /// </summary>
         public void StopScheduling()
         {
@@ -230,7 +229,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Sends a request to the primary track controller. Has logic to determine with primary track controller
+        ///     Sends a request to the primary track controller. Has logic to determine with primary track controller
         /// </summary>
         /// <param name="request">Request to send to track controller</param>
         public void sendRequest(IRequest request)
@@ -246,12 +245,11 @@ namespace CTCOffice
             {
                 //greenline
                 _primaryTrackControllerGreen.Request = request;
-
             }
         }
 
         /// <summary>
-        /// Function to handle return request
+        ///     Function to handle return request
         /// </summary>
         /// <param name="request"></param>
         private void internalRequest(IRequest request)
@@ -261,11 +259,11 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Do Processing on Tick
+        ///     Do Processing on Tick
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void _env_Tick(object sender, TickEventArgs e)
+        private void _env_Tick(object sender, TickEventArgs e)
         {
             _tickCount++;
             if (_tickCount == _rate)
@@ -276,7 +274,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Calculates if the CTC should ask the track controllers for data.
+        ///     Calculates if the CTC should ask the track controllers for data.
         /// </summary>
         private void addAutomaticUpdate()
         {
@@ -316,7 +314,7 @@ namespace CTCOffice
 
         public void AddTrainsToTrack()
         {
-            List<ITrainModel> trains = new List<ITrainModel>(_env.AllTrains);
+            var trains = new List<ITrainModel>(_env.AllTrains);
 
             foreach (LayoutCellDataContainer c in _redLineData.Layout)
             {
@@ -326,7 +324,7 @@ namespace CTCOffice
                     {
                         if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
-                            c.Tile = Utility.Properties.Resources.RedTrack_Train;
+                            c.Tile = Resources.RedTrack_Train;
                             c.Train = t;
                         }
                     }
@@ -341,24 +339,23 @@ namespace CTCOffice
                     {
                         if (t.CurrentBlock.BlockID == c.Block.BlockID)
                         {
-                            c.Tile = Utility.Properties.Resources.GreenTrack_Train;
+                            c.Tile = Resources.GreenTrack_Train;
                             c.Train = t;
                         }
                     }
                 }
             }
-
         }
 
         /// <summary>
-        /// logic to determine which track line
+        ///     logic to determine which track line
         /// </summary>
         /// <param name="request">Request to process</param>
         /// <returns></returns>
         private int determineLine(IRequest request)
         {
             //red=0....green=1
-            if(request.Block != null)
+            if (request.Block != null)
             {
                 return determineLine(request.Block);
             }
@@ -368,7 +365,7 @@ namespace CTCOffice
 
         private int determineLine(IRoute route)
         {
-            if(route == null)
+            if (route == null)
             {
                 return -1;
             }
@@ -379,20 +376,22 @@ namespace CTCOffice
         {
             if (block != null)
             {
-                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 || block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
+                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 ||
+                    block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
                 {
                     return 0;
                 }
-                else if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 || block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                else if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 ||
+                         block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
                 {
                     return 1;
-                } 
+                }
             }
             return -1;
         }
 
         /// <summary>
-        /// Function to return line data to gui
+        ///     Function to return line data to gui
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
@@ -409,11 +408,10 @@ namespace CTCOffice
                     return _redLineData;
                 }
             }
-            else if (line ==1)
+            else if (line == 1)
             {
                 if (_populationBlock)
                 {
-
                     return _greenLineDataBackup;
                 }
                 else
@@ -426,6 +424,7 @@ namespace CTCOffice
         }
 
         #region Request Abstractions
+
         //TODO verify BLOCKs
         public void dispatchTrainRequest(IRoute route)
         {
@@ -446,7 +445,7 @@ namespace CTCOffice
 
             //change block from null to yard
             IRequest r = new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock);
-            
+
             _requestsOut.Enqueue(r);
             RequestQueueOut(this, EventArgs.Empty);
         }
@@ -459,13 +458,15 @@ namespace CTCOffice
 
         public void assignTrainRouteRequest(int trainID, int trackControllerID, IRoute route, IBlock block)
         {
-            _requestsOut.Enqueue(new Request(RequestTypes.AssignTrainRoute, trackControllerID, trainID, 0, 0, route, block));
+            _requestsOut.Enqueue(new Request(RequestTypes.AssignTrainRoute, trackControllerID, trainID, 0, 0, route,
+                                             block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
         public void setTrainAuthorityRequest(int trainID, int trackControllerID, int authority, IBlock block)
         {
-            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainAuthority, trackControllerID, trainID, authority, 0, null, block));
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainAuthority, trackControllerID, trainID, authority, 0,
+                                             null, block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
@@ -483,7 +484,8 @@ namespace CTCOffice
 
         public void setTrainSpeedRequest(int trainID, int trackControllerID, double speed, IBlock block)
         {
-            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null, block));
+            _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null,
+                                             block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
@@ -492,16 +494,19 @@ namespace CTCOffice
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, trackControllerID, 0, 0, 0, null, null));
             RequestQueueOut(this, EventArgs.Empty);
         }
+
         #endregion
+
         #endregion
 
         #region Public Interface
+
         public event EventHandler<EventArgs> StartAutomation;
 
         public event EventHandler<EventArgs> StopAutomation;
 
         /// <summary>
-        /// Pass request from System Scheduler to Track Controller via send request
+        ///     Pass request from System Scheduler to Track Controller via send request
         /// </summary>
         /// <param name="request"></param>
         public void passRequest(IRequest request)
@@ -516,7 +521,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Sends Request to CTC for processing.  Will only process if request.Info is not null
+        ///     Sends Request to CTC for processing.  Will only process if request.Info is not null
         /// </summary>
         /// <param name="request">request to process</param>
         public void handleResponse(IRequest request)
@@ -529,6 +534,9 @@ namespace CTCOffice
                 RequestQueueIn(this, EventArgs.Empty);
             }
         }
+
         #endregion
+
+        //confirm merge
     }
 }

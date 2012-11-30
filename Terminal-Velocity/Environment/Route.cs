@@ -1,41 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Interfaces;
-using Utility;
 
 namespace SimulationEnvironment
 {
     public class Route : IRoute
     {
         #region Private Class Variables
-        /// <summary>
-        /// Holds the route type
-        /// </summary>
-        private RouteTypes _routeType;
 
         /// <summary>
-        /// Holds the destination block of the route
+        ///     Holds the destination block of the route
         /// </summary>
-        private IBlock _endBlock;
+        private readonly IBlock _endBlock;
 
         /// <summary>
-        /// holds the DB ID of the route
+        ///     Holds the list of blocks contained by the route
         /// </summary>
-        private int _routeID;
+        private readonly List<IBlock> _routeBlocks;
 
         /// <summary>
-        /// Holds the list of blocks contained by the route
+        ///     holds the DB ID of the route
         /// </summary>
-        private List<IBlock> _routeBlocks;
+        private readonly int _routeID;
+
+        /// <summary>
+        ///     Holds the route type
+        /// </summary>
+        private readonly RouteTypes _routeType;
+
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Default Constructor of Route
+        ///     Default Constructor of Route
         /// </summary>
         /// <param name="rt">Route Type</param>
         /// <param name="end">destination block given PointRoute</param>
@@ -48,19 +45,21 @@ namespace SimulationEnvironment
             _routeID = ID;
             _routeBlocks = blocks;
         }
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
-        /// Property that contains the type of route
+        ///     Property that contains the type of route
         /// </summary>
         public RouteTypes RouteType
         {
             get { return _routeType; }
         }
-        
+
         /// <summary>
-        /// Property that contains the destination block given PointRoute
+        ///     Property that contains the destination block given PointRoute
         /// </summary>
         public IBlock EndBlock
         {
@@ -68,7 +67,7 @@ namespace SimulationEnvironment
         }
 
         /// <summary>
-        /// Property that contains the ID op the route (id of DB entry)
+        ///     Property that contains the ID op the route (id of DB entry)
         /// </summary>
         public int RouteID
         {
@@ -76,12 +75,13 @@ namespace SimulationEnvironment
         }
 
         /// <summary>
-        /// Property that contains a list of blocks contained by the route (given DefinedRoute)
+        ///     Property that contains a list of blocks contained by the route (given DefinedRoute)
         /// </summary>
         public List<IBlock> RouteBlocks
         {
             get { return _routeBlocks; }
         }
+
         #endregion
     }
 }

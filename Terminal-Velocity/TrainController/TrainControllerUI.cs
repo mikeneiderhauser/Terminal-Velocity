@@ -1,34 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using Interfaces;
 using Utility;
 
 namespace TrainController
 {
     public partial class TrainControllerUI : UserControl
     {
-        private TrainController _currentTrainController;
+        private readonly TrainController _currentTrainController;
+        private readonly ISimulationEnvironment _environment;
         private int timer;
-        private Interfaces.ISimulationEnvironment _environment;
 
-        public TrainControllerUI(TrainController tc, Interfaces.ISimulationEnvironment env)
+        public TrainControllerUI(TrainController tc, ISimulationEnvironment env)
         {
             InitializeComponent();
             _currentTrainController = tc;
-            
+
 
             timer = 0;
 
-            
 
             _environment = env;
-            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
-            
+            _environment.Tick += _environment_Tick;
         }
 
 
@@ -36,7 +29,7 @@ namespace TrainController
         {
             timer++;
 
-            if (timer % 10 == 0)
+            if (timer%10 == 0)
             {
                 timer = 0;
                 UpdateGUI(sender, e);
@@ -54,8 +47,6 @@ namespace TrainController
 
             _logOutput.Text = _currentTrainController.Log;
         }
-
-   
 
 
         private void _btnEmergencyBrake_Click(object sender, EventArgs e)
@@ -80,8 +71,6 @@ namespace TrainController
             _currentTrainController.Temperature = Int16.Parse(TemperatureInput.Text);
             SpeedInput.Text = "0.0";
             TemperatureInput.Text = "70";
-
         }
-    
     }
 }

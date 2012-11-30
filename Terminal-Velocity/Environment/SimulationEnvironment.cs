@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
-
 using Interfaces;
 using Utility;
 
@@ -12,20 +9,19 @@ namespace SimulationEnvironment
     public class SimulationEnvironment : ISimulationEnvironment
     {
         #region Private Variables
+
+        private readonly List<ITrainModel> _allTrains;
+        private readonly SystemLog _sysLog;
+
+        private readonly Timer _timer = new Timer();
         private ICTCOffice _CTCOffice;
-        private ISystemScheduler _systemScheduler;
-        private ITrackController _primaryTCRed;
-        private ITrackController _primaryTCGreen;
-        private ITrackModel _trackModel;
-        private List<ITrainModel> _allTrains;
-        private SystemLog _sysLog;
-        
-        private long _total;
         private long _interval = 250;
-        private Timer _timer = new Timer();
+        private long _total;
+
         #endregion
 
         #region Constructor
+
         public SimulationEnvironment()
         {
             _timer.Interval = _interval;
@@ -34,6 +30,7 @@ namespace SimulationEnvironment
             _allTrains = new List<ITrainModel>();
             _sysLog = new SystemLog();
         }
+
         #endregion
 
         public void Start()
@@ -42,52 +39,38 @@ namespace SimulationEnvironment
         }
 
         #region Public Property
+
         public ICTCOffice CTCOffice
         {
             get { return _CTCOffice; }
             set { _CTCOffice = value; }
         }
 
-        public ISystemScheduler SystemScheduler
-        {
-            get { return _systemScheduler; }
-            set { _systemScheduler = value; }
-        }
+        public ISystemScheduler SystemScheduler { get; set; }
 
-        public ITrackController PrimaryTrackControllerRed
-        {
-            get { return _primaryTCRed; }
-            set { _primaryTCRed = value; }
-        }
+        public ITrackController PrimaryTrackControllerRed { get; set; }
 
-        public ITrackController PrimaryTrackControllerGreen
-        {
-            get { return _primaryTCGreen; }
-            set { _primaryTCGreen = value; }
-        }
+        public ITrackController PrimaryTrackControllerGreen { get; set; }
 
-        public ITrackModel TrackModel
-        {
-            get { return _trackModel; }
-            set { _trackModel = value; }
-        }
+        public ITrackModel TrackModel { get; set; }
 
 
         public List<ITrainModel> AllTrains
         {
             get { return _allTrains; }
         }
+
         #endregion
 
         #region Events
 
         /// <summary>
-        /// Tick For Interface
+        ///     Tick For Interface
         /// </summary>
         public event EventHandler<TickEventArgs> Tick;
 
         /// <summary>
-        /// The on tick event.  Fires every time a clock interval elapses.
+        ///     The on tick event.  Fires every time a clock interval elapses.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnTick(TickEventArgs e)
@@ -98,14 +81,16 @@ namespace SimulationEnvironment
             }
         }
 
-        void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             _total += _interval;
-            this.OnTick(new TickEventArgs(_total));
+            OnTick(new TickEventArgs(_total));
         }
+
         #endregion
 
         #region Functions
+
         public void addTrain(ITrainModel train)
         {
             _allTrains.Add(train);
@@ -126,12 +111,12 @@ namespace SimulationEnvironment
 
         public void setInterval(long interval)
         {
-            _timer.Interval = (double)interval;
+            _timer.Interval = interval;
         }
 
         public long getInterval()
         {
-            return (long)_timer.Interval;
+            return (long) _timer.Interval;
         }
 
         public void stopTick(object sender)
@@ -162,7 +147,7 @@ namespace SimulationEnvironment
 
         public void Dispatch(IRequest request)
         {
-            Random random = new Random();
+            var random = new Random();
             int randomNumber = 0;
             bool uniqueID = true; //unique until invalidated
 
@@ -176,14 +161,12 @@ namespace SimulationEnvironment
                         uniqueID = false;
                     }
                 }
-
             } while (!uniqueID);
 
             //IBlock start = this.TrackModel.requestBlockInfo(0, "Red");
             //this.addTrain(new TrainModel.Train(randomNumber, start, this));
-
-
         }
+
         #endregion
     }
 }

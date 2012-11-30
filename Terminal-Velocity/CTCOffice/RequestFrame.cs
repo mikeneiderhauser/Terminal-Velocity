@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
-using Utility;
 using Interfaces;
 
 namespace CTCOffice
 {
     public partial class RequestFrame : UserControl
     {
-        private string _ptc;
-        private List<IRequest> requests;
-        private int current, counter;
-        private TestingTrackController _ptco;
+        private readonly string _ptc;
+        private readonly TestingTrackController _ptco;
+        private readonly List<IRequest> requests;
+        private int counter;
+        private int current;
 
         public RequestFrame(string primaryTrackController, TestingTrackController tc)
         {
@@ -26,7 +20,7 @@ namespace CTCOffice
             _ptc = primaryTrackController;
             _ptco = tc;
 
-            _ptco.RequestRec += new EventHandler<RequestEventArgs>(_ptco_RequestRec);
+            _ptco.RequestRec += _ptco_RequestRec;
 
             current = 0;
             counter = 0;
@@ -45,10 +39,9 @@ namespace CTCOffice
 
             //disable for now
             _btnToFile.Enabled = false;
-            
         }
 
-        void _ptco_RequestRec(object sender, RequestEventArgs e)
+        private void _ptco_RequestRec(object sender, RequestEventArgs e)
         {
             newRequest(e.Request);
         }
@@ -73,7 +66,7 @@ namespace CTCOffice
             //set counter var
             counter = requests.Count;
             //set current index
-            current = counter-1;
+            current = counter - 1;
             if (current < 0)
             {
                 current = 0;
@@ -106,7 +99,7 @@ namespace CTCOffice
             }
 
             _txtRequestType.Text = request.RequestType.ToString();
-       
+
             _txtTrackControllerID.Text = request.TrackControllerID.ToString();
 
             _txtTrainAuthority.Text = request.TrainAuthority.ToString();
@@ -124,7 +117,6 @@ namespace CTCOffice
             }
 
             _txtTrainSpeed.Text = request.TrainSpeed.ToString();
-
         }
 
         private void _btnPrev_Click(object sender, EventArgs e)

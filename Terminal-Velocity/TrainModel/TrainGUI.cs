@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Interfaces;
 using Utility;
@@ -15,16 +10,14 @@ namespace TrainModel
     {
         #region Global variables
 
+        private readonly ISimulationEnvironment _environment;
+        private readonly List<ITrainModel> allTrains;
         private int numTrains;
-        private int timer;
 
         private Train selectedTrain;
-        private List<ITrainModel> allTrains;
-        private ISimulationEnvironment _environment;
+        private int timer;
 
         #endregion
-
-
 
         #region Constructors
 
@@ -32,7 +25,7 @@ namespace TrainModel
         {
             InitializeComponent();
 
-            allTrainComboBox.SelectedIndexChanged += new EventHandler(allTrainComboBox_SelectedIndexChanged);
+            allTrainComboBox.SelectedIndexChanged += allTrainComboBox_SelectedIndexChanged;
             allTrains = environment.AllTrains;
             numTrains = allTrains.Count;
 
@@ -42,24 +35,22 @@ namespace TrainModel
 
             if (allTrains != null && allTrains.Count > 0)
             {
-                selectedTrain = (Train)allTrains[0];
+                selectedTrain = (Train) allTrains[0];
                 allTrainComboBox.SelectedItem = selectedTrain;
             }
 
             UpdateGUI();
 
             _environment = environment;
-            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+            _environment.Tick += _environment_Tick;
         }
 
         #endregion
 
-
-
         #region Private methods
 
         /// <summary>
-        /// Displays error message when a failure occurs.
+        ///     Displays error message when a failure occurs.
         /// </summary>
         /// <param name="error"></param>
         private void DisplayError(string error)
@@ -68,7 +59,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Updates the GUI every 10 ticks. HARDCODED
+        ///     Updates the GUI every 10 ticks. HARDCODED
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -76,7 +67,7 @@ namespace TrainModel
         {
             timer++;
 
-            if (timer % 10 == 0)
+            if (timer%10 == 0)
             {
                 timer = 0;
                 UpdateGUI();
@@ -84,7 +75,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Populates the combobox using the list of all trains.
+        ///     Populates the combobox using the list of all trains.
         /// </summary>
         /// <param name="allTrains"></param>
         private void PopulateComboBox(List<ITrainModel> allTrains)
@@ -96,13 +87,13 @@ namespace TrainModel
         }
 
         /// <summary>
-        /// Updates the GUI with the information for the selected train.
+        ///     Updates the GUI with the information for the selected train.
         /// </summary>
         private void UpdateGUI()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke(new Action(this.UpdateGUI));
+                BeginInvoke(new Action(UpdateGUI));
                 return;
             }
 
@@ -119,17 +110,17 @@ namespace TrainModel
                 // checks for any failures
                 if (train.BrakeFailure)
                 {
-                    DisplayError("CRITICAL ERROR: Brake failure for " + train.ToString());
+                    DisplayError("CRITICAL ERROR: Brake failure for " + train);
                 }
 
                 if (train.EngineFailure)
                 {
-                    DisplayError("CRITICAL ERROR: Engine failure for " + train.ToString());
+                    DisplayError("CRITICAL ERROR: Engine failure for " + train);
                 }
 
                 if (train.SignalPickupFailure)
                 {
-                    DisplayError("CRITICAL ERROR: Signal pickup failure for " + train.ToString());
+                    DisplayError("CRITICAL ERROR: Signal pickup failure for " + train);
                 }
             }
 
@@ -167,24 +158,22 @@ namespace TrainModel
                 {
                     doorsValueText.Text = "Closed";
                 }
-
             }
         }
 
         /// <summary>
-        /// Detects when the selected index of the combo box changes, and updates the GUI.
+        ///     Detects when the selected index of the combo box changes, and updates the GUI.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedTrain = (Train)allTrainComboBox.SelectedItem;
+            selectedTrain = (Train) allTrainComboBox.SelectedItem;
             UpdateGUI();
         }
 
         private void trainInfoTextBox_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         #endregion

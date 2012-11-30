@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Interfaces;
-using Utility;
 using System.IO;
 using System.Windows.Forms;
+using Interfaces;
 
 namespace SystemScheduler
 {
-
     public class DispatchDatabase
     {
-
         # region Private Variables
 
-        private ISimulationEnvironment _environment;
-        private string _filename;
-        private List<Dispatch> _dispatchlist = new List<Dispatch>();
+        private readonly List<Dispatch> _dispatchlist = new List<Dispatch>();
+        private readonly ISimulationEnvironment _environment;
+        private readonly string _filename;
         private List<string[]> _dispatchDataSource;
 
         # endregion
@@ -28,7 +23,7 @@ namespace SystemScheduler
         {
             _environment = env;
             _filename = filename;
-            this.ParseFile(_filename);
+            ParseFile(_filename);
         }
 
         # endregion
@@ -58,19 +53,20 @@ namespace SystemScheduler
         {
             List<string[]> fileData = ParseCSV(filename);
             _dispatchDataSource = fileData;
-            foreach (string[] singleDispatch in fileData)
+            foreach (var singleDispatch in fileData)
             {
-                _dispatchlist.Add(new Dispatch(_environment, singleDispatch[0], singleDispatch[1], singleDispatch[2], singleDispatch[3], singleDispatch[4]));
+                _dispatchlist.Add(new Dispatch(_environment, singleDispatch[0], singleDispatch[1], singleDispatch[2],
+                                               singleDispatch[3], singleDispatch[4]));
             }
         }
 
         private List<string[]> ParseCSV(string path)
         {
-            List<string[]> parsedData = new List<string[]>();
+            var parsedData = new List<string[]>();
 
             try
             {
-                using (StreamReader readFile = new StreamReader(path))
+                using (var readFile = new StreamReader(path))
                 {
                     string line;
                     string[] row;
@@ -92,10 +88,11 @@ namespace SystemScheduler
         private void UpdateDatabase()
         {
             File.Delete(_filename);
-            System.IO.StreamWriter file = new System.IO.StreamWriter(_filename);
-            foreach (string[] dispatchRecord in _dispatchDataSource)
+            var file = new StreamWriter(_filename);
+            foreach (var dispatchRecord in _dispatchDataSource)
             {
-                file.WriteLine(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," + dispatchRecord[3] + "," + dispatchRecord[4]);
+                file.WriteLine(dispatchRecord[0] + "," + dispatchRecord[1] + "," + dispatchRecord[2] + "," +
+                               dispatchRecord[3] + "," + dispatchRecord[4]);
             }
             file.Close();
         }
@@ -134,7 +131,7 @@ namespace SystemScheduler
                     break;
                 }
             }
-            foreach (string[] singleDispatch in _dispatchDataSource)
+            foreach (var singleDispatch in _dispatchDataSource)
             {
                 if (int.Parse(singleDispatch[0]) == dispatchID)
                 {
@@ -152,12 +149,10 @@ namespace SystemScheduler
                 id = getFreeID();
             }
             _dispatchlist.Add(new Dispatch(_environment, id, time, type, color, route));
-            _dispatchDataSource.Add(new string[] {id, time, type, color, route});
+            _dispatchDataSource.Add(new[] {id, time, type, color, route});
             UpdateDatabase();
         }
 
         # endregion
-
     }
-
 }

@@ -1,40 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CTCOffice
 {
-    class Operator
+    internal class Operator
     {
         #region Private Class Variables
 
         /// <summary>
-        /// Holds the user entered username
+        ///     Holds the correct password
         /// </summary>
-        private string _username;
+        private string _authPassword;
 
         /// <summary>
-        /// Holds the user entered password
-        /// </summary>
-        private string _password;
-
-        /// <summary>
-        /// Holds the correct username
+        ///     Holds the correct username
         /// </summary>
         private string _authUsername;
 
         /// <summary>
-        /// Holds the correct password
+        ///     Holds the user entered password
         /// </summary>
-        private string _authPassword;
+        private string _password;
+
+        /// <summary>
+        ///     Holds the user entered username
+        /// </summary>
+        private string _username;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Defualt constructor for the Operator
+        ///     Defualt constructor for the Operator
         /// </summary>
         public Operator()
         {
@@ -43,11 +40,13 @@ namespace CTCOffice
             _authPassword = null;
             _authUsername = null;
         }
+
         #endregion
 
         #region Public Functions
+
         /// <summary>
-        /// submits the user entered credentials
+        ///     submits the user entered credentials
         /// </summary>
         /// <param name="username">user entered username</param>
         /// <param name="password">user entered password</param>
@@ -58,7 +57,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// clears the user entered credentials
+        ///     clears the user entered credentials
         /// </summary>
         public void logout()
         {
@@ -67,7 +66,7 @@ namespace CTCOffice
         }
 
         /// <summary>
-        /// Checks to see if the user is logged in
+        ///     Checks to see if the user is logged in
         /// </summary>
         /// <returns></returns>
         public Boolean isAuth()
@@ -91,8 +90,9 @@ namespace CTCOffice
         #endregion
 
         #region Protected Functions
+
         /// <summary>
-        /// Sets the correct credentials
+        ///     Sets the correct credentials
         /// </summary>
         /// <param name="username">correct username</param>
         /// <param name="password">correct password</param>
@@ -103,6 +103,5 @@ namespace CTCOffice
         }
 
         #endregion
-
     }
 }

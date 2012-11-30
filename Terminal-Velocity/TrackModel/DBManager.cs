@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Data.SQLite;
-using System.Data.SqlClient;
 using Interfaces;
-using Utility;
 
 namespace TrackModel
 {
-
     public class DBManager
     {
         //Private parameters
-        private SQLiteConnection _dbCon;
+        private readonly SQLiteConnection _dbCon;
 
         public DBManager(SQLiteConnection con)
         {
@@ -28,21 +24,21 @@ namespace TrackModel
             //We need to allow zero's--> Route 0 is red, and Block 0 is yard
 
 
-
-
             if (ID < 0)
             {
                 return null;
             }
 
-            if (!qType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase) && !qType.Equals("ROUTE", StringComparison.OrdinalIgnoreCase))
+            if (!qType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase) &&
+                !qType.Equals("ROUTE", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
-            else if (qType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase))//Format for block
+            else if (qType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase)) //Format for block
             {
                 //Test whether block exists
-                if (!line.Equals("Red", StringComparison.OrdinalIgnoreCase) && !line.Equals("Green", StringComparison.OrdinalIgnoreCase))
+                if (!line.Equals("Red", StringComparison.OrdinalIgnoreCase) &&
+                    !line.Equals("Green", StringComparison.OrdinalIgnoreCase))
                 {
                     return null;
                 }
@@ -50,17 +46,15 @@ namespace TrackModel
                 if (exists)
                 {
                     string blockQuery = "SELECT *" +
-                                            "FROM BLOCKS " +
-                                            "WHERE blockID=" + ID + " AND line='" + line + "'";
+                                        "FROM BLOCKS " +
+                                        "WHERE blockID=" + ID + " AND line='" + line + "'";
                     return blockQuery;
                 }
                 else
                     return null;
-
             }
-            else//(qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase))//Format for ROUTE
+            else //(qType.Equals("ROUTE",StringComparison.OrdinalIgnoreCase))//Format for ROUTE
             {
-
                 //Only accept 0 or 1 for route id's
                 string routeName;
                 if (ID == 0)
@@ -80,8 +74,8 @@ namespace TrackModel
                 //Routes right now only exists as the set of
                 //BLOCK table tuples sharing a line name.
                 string routeQuery = "SELECT *" +
-                                        "FROM BLOCKS " +
-                                        "WHERE line='" + routeName + "'";
+                                    "FROM BLOCKS " +
+                                    "WHERE line='" + routeName + "'";
                 return routeQuery;
             }
         }
@@ -89,55 +83,53 @@ namespace TrackModel
         private bool routeExists(int id)
         {
             string selectString = "SELECT *" +
-                        "FROM ROUTES " +
-                        "WHERE routeID=" + id;
+                                  "FROM ROUTES " +
+                                  "WHERE routeID=" + id;
 
-            if(_dbCon.State!=System.Data.ConnectionState.Open)
+            if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
-            SQLiteCommand selCom = new SQLiteCommand(selectString);
+            var selCom = new SQLiteCommand(selectString);
             selCom.Connection = _dbCon;
             try
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close();//Close reader
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
-                    _dbCon.Close();//CLOSE DB
+                tempReader.Close(); //Close reader
+                if (_dbCon.State != ConnectionState.Closed)
+                    _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 return false;
             }
-
-
         }
 
         private bool blockExists(int id, string line)
         {
             string selectString = "SELECT *" +
-                        "FROM BLOCKS " +
-                        "WHERE blockID=" + id + " AND line='" + line + "'";
-            if(_dbCon.State!=System.Data.ConnectionState.Open)
+                                  "FROM BLOCKS " +
+                                  "WHERE blockID=" + id + " AND line='" + line + "'";
+            if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
-            SQLiteCommand selCom = new SQLiteCommand(selectString);
+            var selCom = new SQLiteCommand(selectString);
             selCom.Connection = _dbCon;
             try
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close();//Close reader
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
-                    _dbCon.Close();//CLOSE DB
+                tempReader.Close(); //Close reader
+                if (_dbCon.State != ConnectionState.Closed)
+                    _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 return false;
             }
@@ -160,7 +152,8 @@ namespace TrackModel
                 return null;
 
             //if updateType was an unexpected value, quit out
-            if (!updateType.Equals("SWITCH", StringComparison.OrdinalIgnoreCase) && !updateType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase))
+            if (!updateType.Equals("SWITCH", StringComparison.OrdinalIgnoreCase) &&
+                !updateType.Equals("BLOCK", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
@@ -168,11 +161,11 @@ namespace TrackModel
             {
                 //Create switch update string
                 string updateString = "UPDATE BLOCKS " +
-                            "SET dest1=" + bToUpdate.SwitchDest2 + ", dest2=" + bToUpdate.SwitchDest1 +
-                            " WHERE blockID=" + bID + " AND line='" + line + "'";
+                                      "SET dest1=" + bToUpdate.SwitchDest2 + ", dest2=" + bToUpdate.SwitchDest1 +
+                                      " WHERE blockID=" + bID + " AND line='" + line + "'";
                 return updateString;
             }
-            else//updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
+            else //updateType.Equals("BLOCK",StringComparison.OrdinalIgnoreCase)
             {
                 //blocks are allowed to update heater, track circuit info, state
                 //To get the heater information, we have to turn the whole attributes
@@ -190,8 +183,9 @@ namespace TrackModel
 
                 //Create block update string			
                 string updateString = "UPDATE BLOCKS " +
-                            "SET state='" + bToUpdate.State + "', trackCirID=" + bToUpdate.TrackCirID + ", infra='" + attrString + "' " +
-                            " WHERE blockID=" + bID + " AND line='" + line + "'";
+                                      "SET state='" + bToUpdate.State + "', trackCirID=" + bToUpdate.TrackCirID +
+                                      ", infra='" + attrString + "' " +
+                                      " WHERE blockID=" + bID + " AND line='" + line + "'";
                 return updateString;
             }
         }
@@ -211,10 +205,10 @@ namespace TrackModel
         //and classes used for this type of thing in C#
         public SQLiteDataReader runQuery(string sqlQuery)
         {
-            if(_dbCon.State!=System.Data.ConnectionState.Open)
+            if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
             //Initialize command to create BLOCKS TABLE
-            SQLiteCommand selCom = new SQLiteCommand(sqlQuery);
+            var selCom = new SQLiteCommand(sqlQuery);
             selCom.Connection = _dbCon;
             try
             {
@@ -224,11 +218,10 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 return null;
             }
-
         }
 
 
@@ -237,16 +230,16 @@ namespace TrackModel
             if (_dbCon == null)
                 return false;
 
-            if(_dbCon.State!=System.Data.ConnectionState.Open)
+            if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
-            SQLiteCommand updateCom = new SQLiteCommand(sqlUpdate);
+            var updateCom = new SQLiteCommand(sqlUpdate);
             updateCom.Connection = _dbCon;
             try
             {
-                int res = updateCom.ExecuteNonQuery();//Exec CREATE
+                int res = updateCom.ExecuteNonQuery(); //Exec CREATE
                 //Console.WriteLine(res);
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
-                    _dbCon.Close();//CLOSE DB
+                if (_dbCon.State != ConnectionState.Closed)
+                    _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -254,13 +247,11 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
-
-
         }
 
         public bool runInsert(string sqlInsert)
@@ -268,16 +259,16 @@ namespace TrackModel
             if (_dbCon == null)
                 return false;
 
-            if(_dbCon.State!=System.Data.ConnectionState.Open)
+            if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
-            SQLiteCommand insertCom = new SQLiteCommand(sqlInsert);
+            var insertCom = new SQLiteCommand(sqlInsert);
             insertCom.Connection = _dbCon;
             try
             {
-                int res = insertCom.ExecuteNonQuery();//Exec insert
+                int res = insertCom.ExecuteNonQuery(); //Exec insert
                 //Console.WriteLine(res);
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
-                    _dbCon.Close();//CLOSE DB
+                if (_dbCon.State != ConnectionState.Closed)
+                    _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -285,12 +276,11 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
-
         }
 
 
@@ -309,8 +299,8 @@ namespace TrackModel
                     string line = null, infra = null, grade = null, locX = null, locY = null, bSize = null, dir = null;
                     string state = null, prev = null, dest1 = null, dest2 = null, trackCirID = null;
 
-                    int bIDFinal = -1, locXFinal=-1, locYFinal=-1;
-                    double sEFinal = -1.0, gradeFinal=-1.0, bSizeFinal=-1.0;
+                    int bIDFinal = -1, locXFinal = -1, locYFinal = -1;
+                    double sEFinal = -1.0, gradeFinal = -1.0, bSizeFinal = -1.0;
                     int prevFinal = -1, dest1Final = -1, dest2Final = -1;
                     int trackCirIDFinal = -1;
                     try
@@ -340,16 +330,17 @@ namespace TrackModel
                     //////////////////////////////////////////////////////////////////////
                     //Parse fields that must be provided as a different type
                     string[] infraFinal = infra.Split(';');
-                    DirEnum dirFinal = (DirEnum)Enum.Parse(typeof(DirEnum), dir, true);
-                    StateEnum stateFinal = (StateEnum)Enum.Parse(typeof(StateEnum), state, true);
+                    var dirFinal = (DirEnum) Enum.Parse(typeof (DirEnum), dir, true);
+                    var stateFinal = (StateEnum) Enum.Parse(typeof (StateEnum), state, true);
 
-                    
-                    int[] locFinal = new int[2];
+
+                    var locFinal = new int[2];
                     locFinal[0] = locXFinal;
                     locFinal[1] = locYFinal;
 
-                    tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal, dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
-                    i++;//Inc counter
+                    tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
+                                          dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
+                    i++; //Inc counter
                 }
             }
             else
@@ -368,18 +359,17 @@ namespace TrackModel
         //runQuery above (and used in fQR above)
         public RouteInfo formatRouteQueryResults(SQLiteDataReader rr)
         {
-
             if (rr == null)
                 return null;
             //Temp list used to store blocks, since we dont know
             //ahead of time how many to expect
-            List<Block> blockList = new List<Block>();
+            var blockList = new List<Block>();
             int nBlocks = 0;
 
             //We need to get our list of blocks, and the number of blocks
-            int bIDFinal = -1, locXFinal=-1, locYFinal=-1;
-            double sEFinal = -1.0, gradeFinal=-0.0, bSizeFinal=-1.0;
-            int dest1Final = -1, dest2Final = -1, prevFinal=-1;
+            int bIDFinal = -1, locXFinal = -1, locYFinal = -1;
+            double sEFinal = -1.0, gradeFinal = -0.0, bSizeFinal = -1.0;
+            int dest1Final = -1, dest2Final = -1, prevFinal = -1;
             int trackCirIDFinal = -1;
             while (rr.Read())
             {
@@ -407,21 +397,22 @@ namespace TrackModel
                 //////////////////////////////////////////////////////////////////////
                 //Parse fields that must be provided as a different type
                 string[] infraFinal = infra.Split(';');
-                DirEnum dirFinal = (DirEnum)Enum.Parse(typeof(DirEnum), dir, true);
-                StateEnum stateFinal = (StateEnum)Enum.Parse(typeof(StateEnum), state, true);
+                var dirFinal = (DirEnum) Enum.Parse(typeof (DirEnum), dir, true);
+                var stateFinal = (StateEnum) Enum.Parse(typeof (StateEnum), state, true);
 
-                int[] locFinal = new int[2];
+                var locFinal = new int[2];
                 locFinal[0] = locXFinal;
                 locFinal[1] = locYFinal;
 
-                blockList.Add(new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal, dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line));
+                blockList.Add(new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
+                                        dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line));
                 nBlocks++;
             }
 
             //If we didnt find any blocks, give up.
             if (nBlocks == 0)
             {
-                if(_dbCon.State!=System.Data.ConnectionState.Closed)
+                if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 return null;
             }
@@ -440,17 +431,14 @@ namespace TrackModel
             int sID = 0;
             int eID = 0;
 
-            RouteInfo tempRoute = new RouteInfo(rID, rName, nBlocks, blocks, sID, eID);
-            if(_dbCon.State!=System.Data.ConnectionState.Closed)
-            _dbCon.Close();
+            var tempRoute = new RouteInfo(rID, rName, nBlocks, blocks, sID, eID);
+            if (_dbCon.State != ConnectionState.Closed)
+                _dbCon.Close();
             return tempRoute;
-
         }
 
-
-
         #region Properties
-        #endregion
 
+        #endregion
     }
 }

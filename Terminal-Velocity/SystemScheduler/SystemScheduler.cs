@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Interfaces;
-using Utility;
 using System.Windows.Forms;
+using CTCOffice;
+using Interfaces;
 
 namespace SystemScheduler
 {
     public class SystemScheduler : ISystemScheduler
     {
-
         # region Private Variables
 
-        private ISimulationEnvironment _env;
-        private ICTCOffice _ctc;
-        private DispatchDatabase _dispatchDatabase = null;
+        private readonly ICTCOffice _ctc;
+        private readonly ISimulationEnvironment _env;
         private DateTime _currentTime;
-        private bool _enabled = false;
+        private DispatchDatabase _dispatchDatabase;
+        private bool _enabled;
 
         # endregion
 
@@ -29,19 +24,21 @@ namespace SystemScheduler
             _env = env;
             _ctc = ctc;
             _currentTime = DateTime.Now;
-            _currentTime.AddMilliseconds(_currentTime.Millisecond * -1);
-            _env.Tick += new EventHandler<TickEventArgs>(_environment_Bollocks);
-            _ctc.StartAutomation += new EventHandler<EventArgs>(_ctc_StartAutomation);
-            _ctc.StopAutomation += new EventHandler<EventArgs>(_ctc_StopAutomation);
+            _currentTime.AddMilliseconds(_currentTime.Millisecond*-1);
+            _env.Tick += _environment_Bollocks;
+            _ctc.StartAutomation += _ctc_StartAutomation;
+            _ctc.StopAutomation += _ctc_StopAutomation;
         }
 
         #endregion // Constructor(s)
 
         #region Public Properties
+
         public DispatchDatabase DispatchDatabase
         {
             get { return _dispatchDatabase; }
         }
+
         #endregion // Public Properties
 
         #region Public Methods
@@ -65,11 +62,15 @@ namespace SystemScheduler
                     {
                         if (singleDispatch.Color.Equals("Red"))
                         {
-                            _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10, singleDispatch.DispatchRoute, _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                            _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID,
+                                                         -1, 10, 10, singleDispatch.DispatchRoute,
+                                                         _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
                         }
                         else
                         {
-                            _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerGreen.ID, -1, 10, 10, singleDispatch.DispatchRoute, _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                            _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerGreen.ID,
+                                                         -1, 10, 10, singleDispatch.DispatchRoute,
+                                                         _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
                         }
                     }
                 }
@@ -80,29 +81,31 @@ namespace SystemScheduler
 
         #region Events
 
-        void _environment_Bollocks(object sender, EventArgs e)
+        private void _environment_Bollocks(object sender, EventArgs e)
         {
             _currentTime = _currentTime.AddMilliseconds(100);
-            if (_enabled == true)
+            if (_enabled)
             {
-                if (((_currentTime.Minute % 15) == 0) && (_currentTime.Second == 0) && (_currentTime.Millisecond == 0))
+                if (((_currentTime.Minute%15) == 0) && (_currentTime.Second == 0) && (_currentTime.Millisecond == 0))
                 {
                     CheckForDispatches(_currentTime);
                 }
             }
         }
 
-        void _ctc_StopAutomation(object sender, EventArgs e)
+        private void _ctc_StopAutomation(object sender, EventArgs e)
         {
             _enabled = false;
         }
 
-        void _ctc_StartAutomation(object sender, EventArgs e)
+        private void _ctc_StartAutomation(object sender, EventArgs e)
         {
             if (_dispatchDatabase != null)
             {
                 _enabled = true;
-                _ctc.passRequest(new CTCOffice.Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10, _dispatchDatabase.DispatchList[0].DispatchRoute, _env.TrackModel.requestBlockInfo(0, _dispatchDatabase.DispatchList[0].Color)));
+                _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10,
+                                             _dispatchDatabase.DispatchList[0].DispatchRoute,
+                                             _env.TrackModel.requestBlockInfo(0, _dispatchDatabase.DispatchList[0].Color)));
             }
             else
             {
@@ -111,6 +114,5 @@ namespace SystemScheduler
         }
 
         #endregion // Events
-
     }
 }

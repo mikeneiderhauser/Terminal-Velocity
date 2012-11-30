@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Utility;
 using Interfaces;
 
 namespace CTCOffice
 {
     public class TestingTrackController : ITrackController
     {
-        public event EventHandler<RequestEventArgs> RequestRec;
+        private readonly List<IBlock> _blocks;
 
-        private List<ITrainModel> _trains;
-        private List<IBlock> _blocks;
-        private List<IRoute> _routes;
+        private readonly int _id;
+        private readonly List<IRoute> _routes;
+        private readonly List<ITrainModel> _trains;
 
-        private int _id;
         public TestingTrackController(int id)
         {
             _id = id;
@@ -30,14 +25,6 @@ namespace CTCOffice
             set { handleRequest(value); }
         }
 
-        private void handleRequest(IRequest value)
-        {
-            if (RequestRec != null)
-            {
-                RequestRec(this, new RequestEventArgs(value));
-            }
-        }
-
         public int ID
         {
             get { return _id; }
@@ -45,10 +32,7 @@ namespace CTCOffice
 
         public ITrackController Previous
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
             set
             {
                 //do nothing
@@ -57,10 +41,7 @@ namespace CTCOffice
 
         public ITrackController Next
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
             set
             {
                 //do nothing
@@ -82,12 +63,22 @@ namespace CTCOffice
             get { return _routes; }
         }
 
-        public void Recieve(object data)
+        public void LoadPLCProgram(string filename)
         {
             //not used for CTC Testing. Required for interface
         }
 
-        public void LoadPLCProgram(string filename)
+        public event EventHandler<RequestEventArgs> RequestRec;
+
+        private void handleRequest(IRequest value)
+        {
+            if (RequestRec != null)
+            {
+                RequestRec(this, new RequestEventArgs(value));
+            }
+        }
+
+        public void Recieve(object data)
         {
             //not used for CTC Testing. Required for interface
         }

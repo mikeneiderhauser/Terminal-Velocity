@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
 using Interfaces;
-using Utility;
 
 namespace SystemScheduler
 {
     public partial class SystemSchedulerGUI : UserControl
     {
-
         # region Private Variables
 
-        private ISimulationEnvironment _environment;
+        private readonly ISimulationEnvironment _environment;
+        private readonly SystemScheduler _systemScheduler;
         private ICTCOffice _ctcOffice;
-        private SystemScheduler _systemScheduler;
         private DateTime _currentTime;
 
         # endregion
@@ -40,7 +33,7 @@ namespace SystemScheduler
 
         private DataTable ConvertListToDataTable(List<string[]> list)
         {
-            DataTable table = new DataTable();
+            var table = new DataTable();
 
             int columns = 0;
             foreach (var array in list)
@@ -67,7 +60,8 @@ namespace SystemScheduler
         private void UpdateGUI()
         {
             grdDispatches.DataSource = null;
-            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
+            grdDispatches.DataSource =
+                ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
         }
 
         private void CheckButtonEnable()
@@ -97,22 +91,26 @@ namespace SystemScheduler
 
         private void GetSchedulerFile()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke(new Action(this.GetSchedulerFile));
+                BeginInvoke(new Action(GetSchedulerFile));
                 return;
             }
 
             //dlgOpen.ShowDialog();
-            txtFilepath.Text = @"D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\SystemScheduler\Resources\KillMe.csv";//hardcoded dlgOpen.FileName;
+            txtFilepath.Text =
+                @"D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\SystemScheduler\Resources\KillMe.csv";
+                //hardcoded dlgOpen.FileName;
             _systemScheduler.NewFile(txtFilepath.Text);
-            grdDispatches.DataSource = ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
+            grdDispatches.DataSource =
+                ConvertListToDataTable(_systemScheduler.DispatchDatabase.DispatchDatabaseDataSource);
             CheckButtonEnable();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            _systemScheduler.DispatchDatabase.RemoveDispatch(int.Parse((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value));
+            _systemScheduler.DispatchDatabase.RemoveDispatch(
+                int.Parse((string) grdDispatches[0, grdDispatches.CurrentRow.Index].Value));
             UpdateGUI();
             CheckButtonEnable();
         }
@@ -124,7 +122,7 @@ namespace SystemScheduler
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, false, new string[] {""});
+            var objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, false, new[] {""});
 
             if (objCustomDialogBox.ShowDialog() == DialogResult.OK)
             {
@@ -141,7 +139,20 @@ namespace SystemScheduler
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            AddEditGUI objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, true, new string[] { ((string)grdDispatches[0, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[1, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[2, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[3, grdDispatches.CurrentRow.Index].Value), ((string)grdDispatches[4, grdDispatches.CurrentRow.Index].Value) });
+            var objCustomDialogBox = new AddEditGUI(_environment, _systemScheduler.DispatchDatabase, true,
+                                                    new[]
+                                                        {
+                                                            ((string)
+                                                             grdDispatches[0, grdDispatches.CurrentRow.Index].Value),
+                                                            ((string)
+                                                             grdDispatches[1, grdDispatches.CurrentRow.Index].Value),
+                                                            ((string)
+                                                             grdDispatches[2, grdDispatches.CurrentRow.Index].Value),
+                                                            ((string)
+                                                             grdDispatches[3, grdDispatches.CurrentRow.Index].Value),
+                                                            ((string)
+                                                             grdDispatches[4, grdDispatches.CurrentRow.Index].Value)
+                                                        });
 
             if (objCustomDialogBox.ShowDialog() == DialogResult.OK)
             {
@@ -151,12 +162,11 @@ namespace SystemScheduler
             {
                 MessageBox.Show("You clicked Cancel.");
             }
-            
+
             objCustomDialogBox = null;
             CheckButtonEnable();
         }
 
         # endregion
-
     }
 }
