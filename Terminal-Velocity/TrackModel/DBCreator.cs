@@ -98,11 +98,11 @@ namespace TrackModel
             if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
             string yardRed =
-                "INSERT INTO BLOCKS(blockID, line, infra, dir, state) VALUES(0,'Red','NONE','North','Healthy')";
+                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID) VALUES(0,'Red','none', 0.0, 0.0, -1, -1, 0.0,'North','Healthy',0,9,-1,3)";
             string yardGreen =
-                "INSERT INTO BLOCKS(blockID, line, infra, dir, state) VALUES(0,'Green','NONE','North','Healthy')";
+                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID) VALUES(0,'Green','none',0.0,0.0,-1,-1,0.0,'North','Healthy',0,62,-1,30)";
             var insRedCommand = new SQLiteCommand(yardRed);
-            var insGreenCommand = new SQLiteCommand(yardRed);
+            var insGreenCommand = new SQLiteCommand(yardGreen);
             insRedCommand.Connection = _dbCon;
             insGreenCommand.Connection = _dbCon;
             try
@@ -118,6 +118,7 @@ namespace TrackModel
             }
             catch (Exception crap)
             {
+
                 if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close();
                 return -1;
