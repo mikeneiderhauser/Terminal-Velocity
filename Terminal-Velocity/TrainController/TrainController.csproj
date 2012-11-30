@@ -6,12 +6,14 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C097CCCF-7085-4DED-8269-1B5EA566E73A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TrainController</RootNamespace>
     <AssemblyName>TrainController</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -65,7 +67,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TrainControllerUI.resx">
+      <DependentUpon>TrainControllerUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -77,8 +83,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
+      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
+      <Name>SimulationEnvironment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
-      <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
+      <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">

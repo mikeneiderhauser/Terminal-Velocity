@@ -7,6 +7,6 @@ namespace Interfaces
 {
     public interface ISystemScheduler
     {
-        IRequest GetRoute { get; }
+        //IDispatchDatabase GetRoute { get; }
     }
 }

@@ -7,39 +7,101 @@ using Interfaces;
 
 namespace TrainController
 {
-   public class TrainController : ITrainController
+    public class TrainController : ITrainController
     {
-        public IEnvironment _environment
+        private TrainControllerUI _tcGUI;
+        private ISimulationEnvironment _environment;
+        private ITrainModel _train;
+        private IBlock _currentBlock;
+        private int _authorityLimit;
+        private double _speedLimit = 40;
+        private double _speedInput;
+        private int _announcement;
+        private int _temperature;
+        private string _log;
+        private double integral = 0;
+
+        public TrainController(ISimulationEnvironment env, ITrainModel tm)
+        {
+            _environment = env;
+            _environment.Tick += _environment_Tick;
+            _tcGUI = null;
+            Train = tm;
+        }
+
+        void _environment_Tick(object sender, Utility.TickEventArgs e)
+        {
+            processTick();
+        }
+
+        public TrainControllerUI TrainControllerUserInterface
+        {
+            get { return _tcGUI; }
+            set { _tcGUI = value; }
+        }
+
+        private ITrainModel Train
+        {
+            get { return _train; }
+            set { _train = value; }
+        }
+
+        private const int highestTemperature = 75;
+        private const int lowestTemperature = 65;
+
+        public ISimulationEnvironment Environment
         {
             get { return _environment; }
             set { _environment = value; }
         }
-        public ITrainModel Train
+
+
+        private void processTick()
         {
-            get { return Train; }
+            if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
+            {
+                if (SpeedInput > SpeedLimit)
+                    sendPower(SpeedLimit);
+                if (SpeedInput <= SpeedLimit)
+                    sendPower(SpeedInput);
+            }
+            /*if (!CurrentBlock.Equals(Train.currentBlock))
+            {
+                AuthorityLimit--;
+                CurrentBlock = Train.currentBlock;
+                if(checkStationNearby()) {
+                    start slowing down each tick;
+                    }
+            } */
+
         }
 
-        public List<IBlock> AuthorityBlocks
+
+        //private bool checkStationNearby()
+        //{
+        //    for(int i = 0; i<authoritylimit; i++) {
+        //      figure a way to fetch n blocks
+        //          if(block.hasStation())
+        //              return true
+        //}
+
+        public string getLog(string parameter)
         {
-            get
-            {
-                return AuthorityBlocks;
-            }
-            set
-            {
-                AuthorityBlocks = value;
-            }
+            string local = parameter;
+            return local;
         }
+
 
         public int AuthorityLimit
         {
             get
             {
-                return AuthorityLimit;
+                return _authorityLimit;
             }
             set
             {
-                AuthorityLimit = value;
+                _authorityLimit = value;
+                returnFeedback("Authority limit set to " + value + "\r\n");
             }
         }
 
@@ -47,36 +109,60 @@ namespace TrainController
         {
             get
             {
-                return SpeedLimit;
+                return _speedLimit;
             }
             set
             {
-                SpeedLimit = value;
+                _speedLimit = value;
+                integral = 0;
+                returnFeedback("Speed limit set to " + value + "\r\n");
+
+            }
+        }
+        public double SpeedInput
+        {
+            get { return _speedInput; }
+            set
+            {
+                if (!checkSpeedLimit(value))
+                {
+                    _speedInput = value;
+                    integral = 0;
+                }
+                else
+                    returnFeedback("Speed not implemented because it was over the speed limit\r\n");
             }
         }
 
-        public IBlock CurrentBlock
+
+        private IBlock CurrentBlock
         {
             get
             {
-                return CurrentBlock;
+                return _currentBlock;
             }
             set
             {
-                CurrentBlock = value;
+                _currentBlock = value;
             }
+        }
+
+        public string Log
+        {
+            get { return _log; }
+            set { _log = value; }
         }
 
         public int Announcement
         {
-            set { Announcement = value; }
+            set { _announcement = value; }
         }
 
         public void addPassengers()
         {
-            
+
             Random r = new Random();
-            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity+1);
+            int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity + 1);
             Train.NumPassengers = newPassengers;
             //Send throughput afterwards
         }
@@ -89,47 +175,93 @@ namespace TrainController
 
         }
 
-        public void lightsOn()
+        public void checkLightsOn()
         {
-            Train.LightsOn = true;
+            Train.LightsOn = CurrentBlock.hasTunnel();
         }
 
-        public void lightsOff()
-        {
-            Train.LightsOn = false;
-        }
+
 
         public void returnFeedback(string Feedback)
         {
-            throw new NotImplementedException();
+            _environment.sendLogEntry(Feedback);
+            _log += Feedback;
+            
+
         }
 
         public void doorOpen()
         {
-            //if(Train.CurrentVelocity == 0 && CurrentBlock.)
-            //{
-            //    Train.DoorsOpen = true;
-            //}
+            Train.DoorsOpen = checkDoorOpen();
+            returnFeedback("Door opening command issued. \r\n\n");
+
         }
 
         public void doorClose()
         {
-            throw new NotImplementedException();
+            Train.DoorsOpen = false;
+            returnFeedback("Door closing command issued. \r\n\n");
         }
 
-        public void sendPower(double Power)
+        public int Temperature
         {
-            throw new NotImplementedException();
+            get { return _temperature; }
+            set
+            {
+                if (checkTemperature(value))
+                    _temperature = value;
+            }
         }
 
-        ITrain ITrainController.Train
+        private bool checkTemperature(int temp)
         {
-            get { throw new NotImplementedException(); }
+            bool ret = temp <= highestTemperature && temp >= lowestTemperature;
+            if (!ret)
+                returnFeedback("Temperature invalid. Please inform a value between 65 and 75\r\n");
+            return ret;
         }
 
-        public void commit()
+
+        public void sendPower(double speed)
         {
-            throw new NotImplementedException();
+           double _timeInterval = (double)Environment.getInterval() / 1000;
+            double finalPower = 0;
+            double e = speed - Train.CurrentVelocity;
+            e = e / (3.6*_timeInterval);
+            integral += integral + e * _timeInterval;
+            double kp = 2;
+            double ki = 0.5;
+            finalPower = ki * integral + kp * e;
+            Train.ChangeMovement(finalPower);
+            returnFeedback(finalPower + "kW of power sent to the engine\r\n");
+
         }
+        private bool checkSpeedLimit(double speed)
+        {
+            return speed >= SpeedLimit;
+        }
+        private bool checkDoorOpen()
+        {
+            bool ret = Train.CurrentVelocity == 0;
+            if(!ret)
+            {
+                returnFeedback("Doors can't open because the train is in movement.");
+            }
+            else
+            {
+                returnFeedback("Doors opened.");
+            }
+            return ret; 
+        }
+
+        public void EmergencyBrakes()
+        {
+            Train.EmergencyBrake();
+        }
+
+
+
+
     }
+
 }

@@ -10,7 +10,7 @@ namespace Interfaces
         /// <summary>
         /// Property to operate on _trains
         /// </summary>
-        List<ITrain> Trains { get; set; }
+        List<ITrainModel> Trains { get; set; }
 
         /// <summary>
         /// Property to operate on _blocks

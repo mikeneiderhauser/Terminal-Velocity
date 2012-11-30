@@ -10,15 +10,23 @@ namespace TrackController
 {
     public class TrackCircuit : ITrackCircuit
     {
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
         private ITrackController _trackController;
-        private Dictionary<int, ITrain> _trains;
+
+        private int _id;
+
+        private Dictionary<int, ITrainModel> _trains;
+        private Dictionary<int, IBlock> _blocks;
 
         #region Constructor(s)
 
-        public TrackCircuit(IEnvironment env)
+        public TrackCircuit(ISimulationEnvironment env, List<IBlock> blocks)
         {
-            _trains = new Dictionary<int, ITrain>();
+            _trains = new Dictionary<int, ITrainModel>();
+            _blocks = new Dictionary<int, IBlock>();
+
+            foreach (IBlock b in blocks)
+                _blocks.Add(b.BlockID, b);
 
             _env = env;
             _env.Tick += _env_Tick;
@@ -28,9 +36,20 @@ namespace TrackController
 
         #region Public Properties
 
-        public Dictionary<int, ITrain> Trains
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public Dictionary<int, ITrainModel> Trains
         {
             get { return _trains; }
+        }
+
+        public Dictionary<int, IBlock> Blocks
+        {
+            get { return _blocks; }
         }
 
         public ITrackController TrackController
@@ -43,24 +62,21 @@ namespace TrackController
 
         #region Public Methods
 
-        public void ToTrackController(object data)
+        public void ToTrain(int ID, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
-            _trackController.Recieve(data);
-        }
+            Dictionary<int, ITrainModel> snapshot = Trains;
 
-        public void ToTrain(int ID, int speedLimit = -1, int authority = -1)
-        {
-            ITrain train;
-            if (Trains.TryGetValue(ID, out train))
+            ITrainModel train;
+            if (snapshot.TryGetValue(ID, out train))
             {
-                if (speedLimit >= 0)
+                if (speedLimit != Double.NaN)
                 {
-                    // set speed
+                    train.TrainController.SpeedLimit = speedLimit;
                 }
 
-                if (authority >= 0)
+                if (authority != Int32.MinValue)
                 {
-                    // set authority
+                    train.TrainController.AuthorityLimit = authority;
                 }
             }
         }
@@ -71,13 +87,12 @@ namespace TrackController
 
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            // foreach train in environment,
-            // if train is in area of control, add train
-
-            int trainID = 0;
-            ITrain train = null;
-
-            _trains.Add(trainID, train);
+            _trains.Clear();
+            foreach (ITrainModel t in _env.AllTrains)
+            {
+                if (_blocks.ContainsKey(t.CurrentBlock.BlockID))
+                    _trains.Add(t.TrainID, t);
+            }
         }
 
         #endregion // Events

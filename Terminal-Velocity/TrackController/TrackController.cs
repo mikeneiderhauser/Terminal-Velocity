@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Interfaces;
+using TrainModel;
 using Utility;
 
 namespace TrackController
@@ -11,7 +12,7 @@ namespace TrackController
     public class TrackController : ITrackController
     {
         private PLC _plc;
-        private IEnvironment _env;
+        private ISimulationEnvironment _env;
 
         private ITrackCircuit _circuit;
 
@@ -19,10 +20,12 @@ namespace TrackController
         private ITrackController _next;
 
         private Dictionary<int, IBlock> _blocks;
-        private Dictionary<int, ITrain> _trains;
+        private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, IRoute> _routes;
 
-        private int _ID;
+        private int _id;
+
+        private List<string> _messages;
 
         #region Constructor(s)
 
@@ -33,22 +36,25 @@ namespace TrackController
         /// <param name="circuit">A track circuit for the track controller</param>
         /// <param name="prev">The previous track controller, or null</param>
         /// <param name="next">The next track contrtoller, or null</param>
-        public TrackController(IEnvironment env, ITrackCircuit circuit)
+        public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
-            _trains = new Dictionary<int, ITrain>();
+            _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
             _routes = new Dictionary<int, IRoute>();
 
             _env = env;
             _env.Tick += _env_Tick;
 
-            _circuit = circuit;
-
-            _ID = -1;
+            _id = -1;
             SetID();
 
+            _circuit = circuit;
+            _circuit.ID = this._id;
+
             // PROTOTYPE - static PLC
-            _plc = new PLC();
+            _plc = new PLC(_circuit);
+
+            _messages = new List<string>();
         }
 
         #endregion // Constructor(s)
@@ -62,7 +68,7 @@ namespace TrackController
 
         public int ID
         {
-            get { return _ID; }
+            get { return _id; }
         }
 
         public ITrackController Previous
@@ -81,43 +87,37 @@ namespace TrackController
             set 
             { 
                 _next = value;
-                SetID();
             }
         }
 
-        public Dictionary<int, ITrain> Trains
+        public List<ITrainModel> Trains
         {
-            get { return _trains; }
+            get { return _trains.Values.ToList<ITrainModel>(); }
         }
 
-        public Dictionary<int, IBlock> Blocks
+        public List<IBlock> Blocks
         {
-            get { return _blocks; }
+            get { return _blocks.Values.ToList<IBlock>(); }
         }
 
-        public Dictionary<int, IRoute> Routes
+        public List<IRoute> Routes
         {
-            get { return _routes; }
+            get { return _routes.Values.ToList<IRoute>(); }
+        }
+
+        public List<string> Messages
+        {
+            get { return _messages; }
+            set { _messages = value; }
         }
 
         #endregion // Public Properties
 
         #region Public Methods
 
-        /// <summary>
-        /// Recieve and process data sent from a train
-        /// </summary>
-        /// <param name="data"></param>
-        public void Recieve(object data)
-        {
-            // foreach ITrain in Train
-            // if not found, error
-            // else do work if ID matches
-        }
-
         public void LoadPLCProgram(string filename)
         {
-            _plc = new PLC(filename);
+            _plc = new PLC(_circuit, filename);
         }
 
         #endregion // Public Methods
@@ -128,13 +128,14 @@ namespace TrackController
         {
             if (_prev != null)
             {
-                _ID = _prev.ID + 1;
+                _id = _prev.ID + 1;
             }
             else
-                _ID = 0;
+                _id = 0;
         }
 
         // Private method for handling the request object
+        static int trainCount = 0;
         private void HandleRequest(IRequest request)
         {
             switch (request.RequestType)
@@ -143,22 +144,30 @@ namespace TrackController
                     {
                         if (request.TrackControllerID == this.ID)
                         {
-                            request.Info.Trains = Trains.Values.ToList<ITrain>();
+                            if (request.Info != null)
+                                request.Info.Trains = Trains;
                         }
-                        return;
                     }
+                    break;
+                case RequestTypes.DispatchTrain:
+                    {
+                        IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
+                        _env.addTrain(new TrainModel.Train(trainCount++, start, _env));
+                    }
+                    break;
                 case RequestTypes.TrackMaintenanceClose:
                     break;
                 case RequestTypes.TrackMaintenanceOpen:
                     break;
                 case RequestTypes.SetTrainSpeed:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
-                        // set train speed
+                        // TrainAuthority also contains the speed, if RequestTypes is SetTrainSpeed
+                        _circuit.ToTrain(request.TrainID, request.TrainAuthority, -1);
                     }
                     break;
                 case RequestTypes.SetTrainAuthority:
-                    if (Trains.Keys.Contains(request.TrainID))
+                    if (_trains.Keys.Contains(request.TrainID))
                     {
                         _circuit.ToTrain(request.TrainID, -1, request.TrainAuthority);
                     }
@@ -169,19 +178,20 @@ namespace TrackController
             if (Next != null)
                 Next.Request = request;
             else
-                _env.CTCOffice.passRequest(request);
+                _env.CTCOffice.handleResponse(request);
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
         private void PLC_DoWork()
         {
             // Snapshot values
-            List<IBlock> sb = Blocks.Values.ToList();
-            List<ITrain> st = Trains.Values.ToList();
-            List<IRoute> sr = Routes.Values.ToList();
+            List<IBlock> sb = Blocks;
+            List<ITrainModel> st = Trains;
+            List<IRoute> sr = Routes;
 
-            // _plc.LightsRequired(sb, st, sr);
-            // _plc.IsSafe(sb, st, sr);
+            _plc.ToggleLights(sb, st, sr, _messages);
+            _plc.DoSwitch(sb, st, sr, _messages);
+            _plc.IsSafe(sb, st, sr, _messages);
         }
 
         #endregion // Private Methods
@@ -191,8 +201,32 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
+            //if (_prev == null)
+            //{
+            //    Dictionary<int, ITrainModel> trains = _circuit.Trains;
+
+            //    var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+            //    foreach (KeyValuePair<int, ITrainModel> k in differences)
+            //    {
+            //        _env.AllTrains.Add(k.Value);
+            //    }
+            //}
+            if (_next == null)
+            {
+                Dictionary<int, ITrainModel> trains = _circuit.Trains;
+
+                var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+                foreach (KeyValuePair<int, ITrainModel> k in differences)
+                {
+                    _env.AllTrains.Remove(k.Value);
+                }
+            }
+
             _trains = _circuit.Trains;
+            _blocks = _circuit.Blocks;
+
             PLC_DoWork();
+
         }
 
         #endregion // Events

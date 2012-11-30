@@ -8,7 +8,7 @@ namespace Interfaces
     public interface ITrainModel
     {
         int TrainID { get; }
-        int Length { get; }
+        double Length { get; }
         double TotalMass { get; }
         string InformationLog { get; }
         bool LightsOn { get; set; }
@@ -23,6 +23,8 @@ namespace Interfaces
         bool BrakeFailure { get; }
         bool EngineFailure { get; }
         bool SignalPickupFailure { get; }
+        IBlock CurrentBlock { get; }
+        ITrainController TrainController { get; }
 
         bool ChangeMovement(double power);
         void EmergencyBrake();

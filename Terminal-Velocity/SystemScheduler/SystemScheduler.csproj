@@ -12,7 +12,8 @@
     <RootNamespace>SystemScheduler</RootNamespace>
     <AssemblyName>SystemScheduler</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -50,11 +51,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dispatch.cs" />
     <Compile Include="DispatchDatabase.cs" />
-    <Compile Include="IDispatch.cs" />
-    <Compile Include="IDispatchDatabase.cs" />
     <Compile Include="SystemScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemSchedulerGUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SystemSchedulerGUI.Designer.cs">
+      <DependentUpon>SystemSchedulerGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEditGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddEditGUI.Designer.cs">
+      <DependentUpon>AddEditGUI.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -63,7 +75,14 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SystemSchedulerGUI.resx">
+      <DependentUpon>SystemSchedulerGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEditGUI.resx">
+      <DependentUpon>AddEditGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -73,8 +92,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\KillMe.csv" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CTCOffice\CTCOffice.csproj">
+      <Project>{8B7B6259-91F9-4DB2-AED3-E20FAC7AC986}</Project>
+      <Name>CTCOffice</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
+      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
+      <Name>SimulationEnvironment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
