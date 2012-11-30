@@ -5,24 +5,15 @@ using System.Text;
 
 namespace Interfaces
 {
-   public interface ITrainController
+    public interface ITrainController
     {
-          
-
         int AuthorityLimit { get; set; }
-         double SpeedLimit { get; set; }
+        double SpeedLimit { get; set; }
         int Announcement { set; }
         double SpeedInput { get; set; }
- 
-        
-         void addPassengers();
-         void removePassengers();
-         void checkLightsOn();
 
-
-
-
-
-
+        void addPassengers();
+        void removePassengers();
+        void checkLightsOn();
     }
 }

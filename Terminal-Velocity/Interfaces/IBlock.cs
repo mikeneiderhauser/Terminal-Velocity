@@ -17,15 +17,15 @@ namespace Interfaces
         DirEnum Direction { get; }
         int SwitchDest1 { get; set; }
         int SwitchDest2 { get; set; }
-	int TrackCirID {get; set;}
-	string[] AttrArray {get; }
-	string Line {get; }
+        int TrackCirID { get; set; }
+        string[] AttrArray { get; }
+        string Line { get; }
 
         bool hasSwitch();
         bool hasTunnel();
         bool hasHeater();
         bool hasCrossing();
-	bool hasStation();
+        bool hasStation();
         bool runsNorth();
         bool runsSouth();
         bool runsEast();
@@ -37,27 +37,27 @@ namespace Interfaces
         int nextBlockIndex(int prevBlockIndex);
     }
 
-public enum DirEnum 
-	{
-		North,
-		South,
-		East,
-		West,
-		Northeast,
-		Northwest,
-		Southeast,
-		Southwest,
-		North_AND_South,
-		East_AND_West,
-		Northeast_AND_Southwest,
-		Northwest_AND_Southeast
-	}
+    public enum DirEnum
+    {
+        North,
+        South,
+        East,
+        West,
+        Northeast,
+        Northwest,
+        Southeast,
+        Southwest,
+        North_AND_South,
+        East_AND_West,
+        Northeast_AND_Southwest,
+        Northwest_AND_Southeast
+    }
 
-public enum StateEnum
-	{
-		PowerFailure,
-		BrokenTrackFailure,
-		CircuitFailure,
-		Healthy
-	}
+    public enum StateEnum
+    {
+        PowerFailure,
+        BrokenTrackFailure,
+        CircuitFailure,
+        Healthy
+    }
 }
