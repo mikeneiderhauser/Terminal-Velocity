@@ -16,7 +16,7 @@ namespace TrackController
 
         private List<string> _messages;
         private ITrackController _next;
-        private PLC _plc;
+        private Plc _plc;
         private ITrackController _prev;
         private Dictionary<int, ITrainModel> _trains;
         private static int _trainCount;
@@ -44,7 +44,7 @@ namespace TrackController
             _circuit.ID = ID;
 
             // PROTOTYPE - static PLC
-            _plc = new PLC(_circuit);
+            _plc = new Plc(_circuit);
 
             _messages = new List<string>();
         }
@@ -103,7 +103,7 @@ namespace TrackController
 
         public void LoadPLCProgram(string filename)
         {
-            _plc = new PLC(_circuit, filename);
+            _plc = new Plc(_circuit, filename);
         }
 
         #endregion // Public Methods

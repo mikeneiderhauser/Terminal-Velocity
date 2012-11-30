@@ -4,9 +4,10 @@ using Interfaces;
 
 namespace TrackController
 {
-    public class PLC
+    public class Plc
     {
         private readonly ITrackCircuit _circuit;
+        private readonly string _filename;
         private readonly Dictionary<int, IBlock> _broken;
 
         /// <summary>
@@ -14,10 +15,16 @@ namespace TrackController
         /// </summary>
         /// <param name="circuit">The track circuit for the TrackController</param>
         /// <param name="filename">The file containing the program to load</param>
-        public PLC(ITrackCircuit circuit, string filename = "ladder.xml")
+        public Plc(ITrackCircuit circuit, string filename = "ladder.xml")
         {
             _circuit = circuit;
+            _filename = filename;
             _broken = new Dictionary<int, IBlock>();
+        }
+
+        public string Filename
+        {
+            get { return _filename; }
         }
 
         /// <summary>
@@ -81,24 +88,24 @@ namespace TrackController
         {
         }
 
-#pragma warning disable 0169
         internal class Action
         {
-            private List<Edge> _edges;
-
             public Action(List<Edge> edges)
             {
+                Edges = edges;
             }
+
+            public List<Edge> Edges { get; set; }
         }
 
         internal class Edge
         {
-            private List<Action> _actions;
-
             public Edge(List<Action> actions)
             {
+                Actions = actions;
             }
+
+            public List<Action> Actions { get; set; }
         }
-#pragma warning restore 0169
     }
 }

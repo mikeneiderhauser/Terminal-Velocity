@@ -164,7 +164,7 @@ namespace Testing
         {
             var formTrackController = new Form();
             UserControl controlTrackController;
-            controlTrackController = new TrackControllerUI(_env);
+            controlTrackController = new TrackControllerUi(_env);
 
             formTrackController.Text = "Track Controller";
             formTrackController.Controls.Add(controlTrackController);

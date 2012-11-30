@@ -1,6 +1,6 @@
 ﻿namespace TrackController
 {
-    partial class TrackControllerUI
+    partial class TrackControllerUi
     {
         /// <summary> 
         /// Required designer variable.
@@ -250,7 +250,7 @@
             this.Controls.Add(this.tcComboBox);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.okButton);
-            this.Name = "TrackControllerUI";
+            this.Name = "TrackControllerUi";
             this.Size = new System.Drawing.Size(600, 600);
             this.trainInformation.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).EndInit();

@@ -6,32 +6,31 @@ using Utility;
 
 namespace TrackController
 {
-    public partial class TrackControllerUI : UserControl
+    public partial class TrackControllerUi : UserControl
     {
-        private static int ticks = 0;
         private List<IBlock> _blocks;
         private TrackController _current;
-        private List<IRoute> _routes;
         private List<ITrainModel> _trains;
-        private bool en = false;
 
-        public TrackControllerUI(SimulationEnvironment.SimulationEnvironment e)
+        public TrackControllerUi(ISimulationEnvironment e)
         {
             _current = (TrackController) e.PrimaryTrackControllerGreen;
-            _trains = TC.Trains;
-            _blocks = TC.Blocks;
-            _routes = TC.Routes;
+            _trains = Tc.Trains;
+            _blocks = Tc.Blocks;
+            Routes = Tc.Routes;
 
             InitializeComponent();
 
             e.Tick += e_Tick;
         }
 
-        private TrackController TC
+        private TrackController Tc
         {
             get { return _current; }
             set { _current = value; }
         }
+
+        public List<IRoute> Routes { get; set; }
 
         public override void Refresh()
         {
@@ -46,9 +45,9 @@ namespace TrackController
             _current.Messages = new List<string>();
 
 
-            _trains = TC.Trains;
-            _blocks = TC.Blocks;
-            _routes = TC.Routes;
+            _trains = Tc.Trains;
+            _blocks = Tc.Blocks;
+            Routes = Tc.Routes;
 
             trainGrid.Rows.Clear();
             blockGrid.Rows.Clear();
@@ -90,22 +89,22 @@ namespace TrackController
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            if (TC.Next == null)
+            if (Tc.Next == null)
                 MessageBox.Show("No next Track Controller!");
             else
             {
-                TC = (TrackController) TC.Next;
+                Tc = (TrackController) Tc.Next;
                 Refresh();
             }
         }
 
         private void prevButton_Click(object sender, EventArgs e)
         {
-            if (TC.Previous == null)
+            if (Tc.Previous == null)
                 MessageBox.Show("No prior Track Controller!");
             else
             {
-                TC = (TrackController) TC.Previous;
+                Tc = (TrackController) Tc.Previous;
                 Refresh();
             }
         }
