@@ -14,13 +14,12 @@ namespace TrackController
         private readonly Dictionary<int, IRoute> _routes;
         private Dictionary<int, IBlock> _blocks;
 
-        private int _id;
-
         private List<string> _messages;
         private ITrackController _next;
         private PLC _plc;
         private ITrackController _prev;
         private Dictionary<int, ITrainModel> _trains;
+        private static int _trainCount;
 
         #region Constructor(s)
 
@@ -29,8 +28,6 @@ namespace TrackController
         /// </summary>
         /// <param name="env">A reference to the global environment object</param>
         /// <param name="circuit">A track circuit for the track controller</param>
-        /// <param name="prev">The previous track controller, or null</param>
-        /// <param name="next">The next track contrtoller, or null</param>
         public TrackController(ISimulationEnvironment env, ITrackCircuit circuit)
         {
             _trains = new Dictionary<int, ITrainModel>();
@@ -40,11 +37,11 @@ namespace TrackController
             _env = env;
             _env.Tick += _env_Tick;
 
-            _id = -1;
-            SetID();
+            ID = -1;
+            SetId();
 
             _circuit = circuit;
-            _circuit.ID = _id;
+            _circuit.ID = ID;
 
             // PROTOTYPE - static PLC
             _plc = new PLC(_circuit);
@@ -67,10 +64,7 @@ namespace TrackController
             set { HandleRequest(value); }
         }
 
-        public int ID
-        {
-            get { return _id; }
-        }
+        public int ID { get; private set; }
 
         public ITrackController Previous
         {
@@ -78,7 +72,7 @@ namespace TrackController
             set
             {
                 _prev = value;
-                SetID();
+                SetId();
             }
         }
 
@@ -116,19 +110,15 @@ namespace TrackController
 
         #region Private Methods
 
-        // Private method for handling the request object
-        private static int trainCount;
-
-        private void SetID()
+        private void SetId()
         {
             if (_prev != null)
-            {
-                _id = _prev.ID + 1;
-            }
+                ID = _prev.ID + 1;
             else
-                _id = 0;
+                ID = 0;
         }
 
+        // Private method for handling the request object
         private void HandleRequest(IRequest request)
         {
             switch (request.RequestType)
@@ -145,7 +135,7 @@ namespace TrackController
                 case RequestTypes.DispatchTrain:
                     {
                         IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
-                        _env.addTrain(new Train(trainCount++, start, _env));
+                        _env.addTrain(new Train(_trainCount++, start, _env));
                     }
                     break;
                 case RequestTypes.TrackMaintenanceClose:
@@ -194,23 +184,13 @@ namespace TrackController
         // A tick has elasped so we need to do work
         private void _env_Tick(object sender, TickEventArgs e)
         {
-            //if (_prev == null)
-            //{
-            //    Dictionary<int, ITrainModel> trains = _circuit.Trains;
-
-            //    var differences = trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key)).Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
-            //    foreach (KeyValuePair<int, ITrainModel> k in differences)
-            //    {
-            //        _env.AllTrains.Add(k.Value);
-            //    }
-            //}
             if (_next == null)
             {
                 Dictionary<int, ITrainModel> trains = _circuit.Trains;
 
                 IEnumerable<KeyValuePair<int, ITrainModel>> differences =
-                    trains.Where(x => !_circuit.Trains.Any(x1 => x1.Key == x.Key))
-                          .Union(_circuit.Trains.Where(x => !trains.Any(x1 => x1.Key == x.Key)));
+                    trains.Where(x => _circuit.Trains.All(x1 => x1.Key != x.Key))
+                          .Union(_circuit.Trains.Where(x => trains.All(x1 => x1.Key != x.Key)));
                 foreach (var k in differences)
                 {
                     _env.AllTrains.Remove(k.Value);

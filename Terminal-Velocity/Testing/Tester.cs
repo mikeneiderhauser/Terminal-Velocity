@@ -75,13 +75,13 @@ namespace Testing
             var environment = new SimulationEnvironment.SimulationEnvironment();
 
             IBlock b0 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Red");
             IBlock b1 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Red");
             IBlock b2 = new Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Red");
             IBlock b3 = new Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""},
-                                  0, 0, 0, "Green");
+                                  0, 0, 0, "Red");
 
             var sectionA = new List<IBlock>();
             sectionA.Add(b0);
@@ -103,15 +103,15 @@ namespace Testing
             var next = new TrackController.TrackController(environment, nextCircuit);
 
             //Create TrackModel
-            var TrackMod = new TrackModel.TrackModel(environment);
+            var trackMod = new TrackModel.TrackModel(environment);
             //Let TrackModel read in the lines before you proceed..shouldnt be done this way, but needed to stop CTC Office from faulting 
-            bool res = TrackMod.provideInputFile("red.csv");
+            bool res = trackMod.provideInputFile("red.csv");
             //Console.WriteLine("Res was "+res);
-            res = TrackMod.provideInputFile("green.csv");
+            res = trackMod.provideInputFile("green.csv");
             //Console.WriteLine("Res was " + res);
 
 
-            environment.TrackModel = TrackMod;
+            environment.TrackModel = trackMod;
             prev.Previous = null;
             prev.Next = curr;
 
@@ -189,7 +189,7 @@ namespace Testing
                     //control = new CTCOffice.CTCOfficeGUI(environment, office);
                     break;
                 case 2: // TrackModel
-                    control = new TrackModelGUI(environment, TrackMod);
+                    control = new TrackModelGUI(environment, trackMod);
                     break;
                 case 3: // TrackController
                     ITrainModel t = new Train(0, b0, environment);

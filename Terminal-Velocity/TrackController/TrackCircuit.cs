@@ -47,14 +47,14 @@ namespace TrackController
 
         #region Public Methods
 
-        public void ToTrain(int ID, double speedLimit = Double.NaN, int authority = Int32.MinValue)
+        public void ToTrain(int id, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
             Dictionary<int, ITrainModel> snapshot = Trains;
 
             ITrainModel train;
-            if (snapshot.TryGetValue(ID, out train))
+            if (snapshot.TryGetValue(id, out train))
             {
-                if (speedLimit != Double.NaN)
+                if (!double.IsNaN(speedLimit))
                 {
                     train.TrainController.SpeedLimit = speedLimit;
                 }

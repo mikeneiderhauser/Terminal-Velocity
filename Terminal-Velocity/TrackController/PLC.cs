@@ -12,6 +12,7 @@ namespace TrackController
         /// <summary>
         ///     Construct a new instance of a PLC
         /// </summary>
+        /// <param name="circuit">The track circuit for the TrackController</param>
         /// <param name="filename">The file containing the program to load</param>
         public PLC(ITrackCircuit circuit, string filename = "ladder.xml")
         {
@@ -25,6 +26,7 @@ namespace TrackController
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
+        /// <param name="messages">A list of messages set by the PLC</param>
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
         {
             // Get speed limit from TrackModel
@@ -49,8 +51,8 @@ namespace TrackController
 
             foreach (ITrainModel t in trains)
             {
-                if (t.TrainController.SpeedLimit != speedLimit)
-                    messages.Add(string.Format("Train {0} reduced {1} -> {2}", t.TrainID, t.TrainController.SpeedLimit,
+                if (Math.Abs(t.TrainController.SpeedLimit - speedLimit) > 0)
+                    messages.Add(string.Format("Train {0} speed changed {1} -> {2}", t.TrainID, t.TrainController.SpeedLimit,
                                                speedLimit));
                 _circuit.ToTrain(t.TrainID, speedLimit, authority);
             }
@@ -62,6 +64,7 @@ namespace TrackController
         /// <param name="blocks">The blocks in question</param>
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
+        /// <param name="messages">A list of messages set by the PLC</param>
         public void ToggleLights(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes,
                                  List<string> messages)
         {
@@ -73,7 +76,7 @@ namespace TrackController
         /// <param name="blocks"></param>
         /// <param name="trains"></param>
         /// <param name="routes"></param>
-        /// <returns></returns>
+        /// <param name="messages">A list of messages set by the PLC</param>
         public void DoSwitch(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
         {
         }
