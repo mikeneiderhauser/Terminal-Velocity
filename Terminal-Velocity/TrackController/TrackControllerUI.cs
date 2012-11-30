@@ -20,17 +20,19 @@ namespace TrackController
         private List<ITrainModel> _trains;
         private List<IBlock> _blocks;
         private List<IRoute> _routes;
+        private bool en = false;
 
         public TrackControllerUI(SimulationEnvironment.SimulationEnvironment e)
         {
+            InitializeComponent();
             _current = (TrackController) e.PrimaryTrackControllerGreen;
             _trains = TC.Trains;
             _blocks = TC.Blocks;
             _routes = TC.Routes;
 
             e.Tick += e_Tick;
-
-            InitializeComponent();
+            en = true;
+            
         }
 
         private TrackController TC
@@ -47,50 +49,53 @@ namespace TrackController
                 return;
             }
 
-            if (messageTextBox != null)
+            if (en)
             {
-                foreach (string s in _current.Messages)
-                    messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
-                _current.Messages = new List<string>();
-            }
 
-            _trains = TC.Trains;
-            _blocks = TC.Blocks;
-            _routes = TC.Routes;
-
-            trainGrid.Rows.Clear();
-            blockGrid.Rows.Clear();
-            switchGrid.Rows.Clear();
-
-            tcListBoxInfo.Items.Clear();
-
-            { // Setup the TrainGrid
-                for (int i = 0; i < _trains.Count; i++)
+                if (messageTextBox != null)
                 {
-                    trainGrid.Rows.Add();
-                    trainGrid.Rows[i].SetValues(_trains[i].TrainID,
-                                                "RouteID",
-                                                _trains[i].TrainController.AuthorityLimit,
-                                                _trains[i].CurrentVelocity);
-
+                    foreach (string s in _current.Messages)
+                        messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
+                    _current.Messages = new List<string>();
                 }
-            }
 
-            { // Setup the BlockGrid and SwitchGrid
-                for (int i = 0; i < _blocks.Count; i++)
-                {
-                    blockGrid.Rows.Add();
-                    blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(), 
-                                                Enum.GetName(typeof(StateEnum), _blocks[i].State));
+                _trains = TC.Trains;
+                _blocks = TC.Blocks;
+                _routes = TC.Routes;
+
+                trainGrid.Rows.Clear();
+                blockGrid.Rows.Clear();
+                switchGrid.Rows.Clear();
+
+                tcListBoxInfo.Items.Clear();
+
+                { // Setup the TrainGrid
+                    for (int i = 0; i < _trains.Count; i++)
+                    {
+                        trainGrid.Rows.Add();
+                        trainGrid.Rows[i].SetValues(_trains[i].TrainID,
+                                                    "RouteID",
+                                                    _trains[i].TrainController.AuthorityLimit,
+                                                    _trains[i].CurrentVelocity);
+
+                    }
                 }
-            }
 
-            { // Setup the ListBox with information about the controller
-                tcListBoxInfo.Items.Add(string.Format("Track Controller: {0}", _current.ID));
-                tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
-                tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
-            }
+                { // Setup the BlockGrid and SwitchGrid
+                    for (int i = 0; i < _blocks.Count; i++)
+                    {
+                        blockGrid.Rows.Add();
+                        blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(),
+                                                    Enum.GetName(typeof(StateEnum), _blocks[i].State));
+                    }
+                }
 
+                { // Setup the ListBox with information about the controller
+                    tcListBoxInfo.Items.Add(string.Format("Track Controller: {0}", _current.ID));
+                    tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
+                    tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
+                }
+            }//end en
             base.Refresh();
         }
 
