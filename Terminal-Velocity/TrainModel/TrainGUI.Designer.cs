@@ -31,7 +31,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.trainInfoTextBox = new System.Windows.Forms.TextBox();
             this.allTrainComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -55,10 +54,8 @@
             this.outputVariableTextBox = new System.Windows.Forms.TextBox();
             this.outputValueTextBox = new System.Windows.Forms.TextBox();
             this.positionTextBox = new System.Windows.Forms.TextBox();
-            this.simulationEnvironmentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.trainLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.simulationEnvironmentBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // trainInfoTextBox
@@ -337,10 +334,6 @@
             this.positionTextBox.Text = "Current Position";
             this.positionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // simulationEnvironmentBindingSource
-            // 
-            this.simulationEnvironmentBindingSource.DataSource = typeof(SimulationEnvironment.SimulationEnvironment);
-            // 
             // trainLabel
             // 
             this.trainLabel.AutoSize = true;
@@ -362,7 +355,6 @@
             this.Size = new System.Drawing.Size(701, 484);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.simulationEnvironmentBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -393,7 +385,6 @@
         private System.Windows.Forms.TextBox velocityTextBox;
         private System.Windows.Forms.TextBox positionValueText;
         private System.Windows.Forms.TextBox positionTextBox;
-        private System.Windows.Forms.BindingSource simulationEnvironmentBindingSource;
         private System.Windows.Forms.Label trainLabel;
 
     }

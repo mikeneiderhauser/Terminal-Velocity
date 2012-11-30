@@ -163,8 +163,13 @@ namespace SimulationEnvironment
                 }
             } while (!uniqueID);
 
-            //IBlock start = this.TrackModel.requestBlockInfo(0, "Red");
-            //this.addTrain(new TrainModel.Train(randomNumber, start, this));
+            
+            IBlock start = this.TrackModel.requestBlockInfo(0, request.Block.Line);
+            //detect collision on dispatch
+            if ((PrimaryTrackControllerRed.Trains.Count == 0 && start.Line.CompareTo("Red") == 0) || (PrimaryTrackControllerGreen.Trains.Count == 0 && start.Line.CompareTo("Green") == 0))
+            {
+                this.addTrain(new TrainModel.Train(randomNumber, start, this));
+            }
         }
 
         #endregion

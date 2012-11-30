@@ -9,9 +9,9 @@ namespace CTCOffice
         private readonly List<IBlock> _blocks;
         private readonly IBlock[,] _greenLineLayout;
         private readonly IBlock[,] _redLineLayout;
-        private SimulationEnvironment.SimulationEnvironment _env;
+        private ISimulationEnvironment _env;
 
-        public TestingTrackModel(SimulationEnvironment.SimulationEnvironment env)
+        public TestingTrackModel(ISimulationEnvironment env)
         {
             _env = env;
             _blocks = new List<IBlock>();

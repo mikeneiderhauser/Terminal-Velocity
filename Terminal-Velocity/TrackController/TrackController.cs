@@ -134,8 +134,8 @@ namespace TrackController
                     break;
                 case RequestTypes.DispatchTrain:
                     {
-                        IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
-                        _env.addTrain(new Train(_trainCount++, start, _env));
+                        //IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
+                        //_env.addTrain(new Train(_trainCount++, start, _env));
                     }
                     break;
                 case RequestTypes.TrackMaintenanceClose:

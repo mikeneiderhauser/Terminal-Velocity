@@ -65,6 +65,8 @@ namespace Testing
             t9.Start();
             var t10 = new Thread(createSystemSchedulerForm);
             t10.Start();
+
+            _env.Start();
         }
 
         #region Framework Creation Methods

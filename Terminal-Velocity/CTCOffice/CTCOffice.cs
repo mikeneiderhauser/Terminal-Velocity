@@ -447,7 +447,8 @@ namespace CTCOffice
             IRequest r = new Request(RequestTypes.DispatchTrain, id, 0, 0, 0, route, route.EndBlock);
 
             _requestsOut.Enqueue(r);
-            RequestQueueOut(this, EventArgs.Empty);
+            _env.Dispatch(r);
+            //RequestQueueOut(this, EventArgs.Empty);
         }
 
         public void setTrainOutOfServiceRequest(int trainID, int trackControllerID, IBlock block)
