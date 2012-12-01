@@ -72,6 +72,7 @@ namespace TrackModel
                                   "dest1 int," +
                                   "dest2 int," +
                                   "trackCirID int," + //
+                                  "speedLimit int," + //
                                   "CONSTRAINT pk_Blocks PRIMARY KEY(blockID,line) )";
 
             if (_dbCon.State != ConnectionState.Open)
@@ -101,9 +102,9 @@ namespace TrackModel
             if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
             string yardRed =
-                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID) VALUES(0,'Red','none', 0.0, 0.0, -1, -1, 0.0,'North','Healthy',0,9,-1,3)";
+                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID, speedLimit) VALUES(0,'Red','none', 0.0, 0.0, -1, -1, 0.0,'North','Healthy',0,9,-1,3,500)";
             string yardGreen =
-                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID) VALUES(0,'Green','none',0.0,0.0,-1,-1,0.0,'North','Healthy',0,62,-1,30)";
+                "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID, speedLimit) VALUES(0,'Green','none',0.0,0.0,-1,-1,0.0,'North','Healthy',0,62,-1,30,500)";
             var insRedCommand = new SQLiteCommand(yardRed);
             var insGreenCommand = new SQLiteCommand(yardGreen);
             insRedCommand.Connection = _dbCon;
@@ -182,6 +183,7 @@ namespace TrackModel
                     string[] fields = line.Split(commaArr);
                     string blockID = fields[2];
                     string lineName = fields[0];
+                    string speedLimit = fields[5];
 
                     //Increment our circuit ID when we run into a new circuit
                     if (!fields[1].Equals(section, StringComparison.OrdinalIgnoreCase))
@@ -211,9 +213,9 @@ namespace TrackModel
                     string grade = fields[4];
                     string blockSize = fields[3];
                     string singleInsert =
-                        "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY) VALUES(" +
+                        "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY,speedLimit) VALUES(" +
                         blockID + ", '" + lineName + "', '" + infra + "', " + sElev + ", " + grade + ", " + blockSize +
-                        ",'North', 'Healthy',"+curCirID+",-1,-1)";
+                        ",'North', 'Healthy',"+curCirID+",-1,-1, "+speedLimit+")";
                     //Console.WriteLine(singleInsert);
                     prevID = blockID;
                     if (_dbCon.State != ConnectionState.Open)
