@@ -1,3 +1,4 @@
+using System;
 using System.Data.SQLite;
 using Interfaces;
 using Utility;
@@ -10,6 +11,7 @@ namespace TrackModel
         private readonly DBCreator _dbCreator;
         private readonly DBManager _dbManager;
         private ISimulationEnvironment _env;
+        private TrackChanged _changeState;
         //private DisplayManager _dispManager;
 
 
@@ -18,6 +20,8 @@ namespace TrackModel
             _env = environment;
             _dbCreator = new DBCreator("");
             _dbManager = new DBManager(_dbCreator.DBCon);
+
+            _changeState = TrackChanged.Both;
 
             //_environment.Tick+=
         }
@@ -89,7 +93,13 @@ namespace TrackModel
 
             if (routeID == 0) //means red
             {
-                temp[10, 28] = requestBlockInfo(1, "Red"); //1
+                //Update the "TRACK CHANGED" flag
+                if (_changeState == TrackChanged.Both || _changeState==TrackChanged.Green)
+                    _changeState = TrackChanged.Green;
+                else
+                    _changeState = TrackChanged.None;
+
+                temp[10,28] = requestBlockInfo(1, "Red"); //1
                 temp[9, 29] = requestBlockInfo(2, "Red"); //2
                 temp[8, 29] = requestBlockInfo(3, "Red"); //3
                 temp[7, 30] = requestBlockInfo(4, "Red"); //4
@@ -191,6 +201,11 @@ namespace TrackModel
             }
             else //routeID==1 means green
             {
+                //Update the "TRACK CHANGED" flag
+                if (_changeState == TrackChanged.Both || _changeState==TrackChanged.Red)
+                    _changeState = TrackChanged.Red;
+                else
+                    _changeState = TrackChanged.None;
             }
 
             return temp;
@@ -207,6 +222,25 @@ namespace TrackModel
 
             bool res = _dbManager.runUpdate(updateString);
 
+            //Update our "TRACK CHANGED" flag if necessary
+            if (res)
+            {
+                //IF we're red
+                if (bToUpdate.Line.Equals("Red", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Red)
+                        _changeState = TrackChanged.Red;
+                    else
+                        _changeState = TrackChanged.Both;
+                }
+                else//We're green
+                {
+                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Green)
+                        _changeState = TrackChanged.Green;
+                    else
+                        _changeState = TrackChanged.Both;
+                }
+            }
             return res;
         }
 
@@ -221,6 +255,25 @@ namespace TrackModel
 
             bool res = _dbManager.runUpdate(updateString);
 
+
+            if (res)
+            {
+                //IF we're red
+                if (bToUpdate.Line.Equals("Red", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Red)
+                        _changeState = TrackChanged.Red;
+                    else
+                        _changeState = TrackChanged.Both;
+                }
+                else//We're green
+                {
+                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Green)
+                        _changeState = TrackChanged.Green;
+                    else
+                        _changeState = TrackChanged.Both;
+                }
+            }
             return res;
         }
 
@@ -240,5 +293,12 @@ namespace TrackModel
         {
             //handle tick here
         }
+
+        //Property
+        public TrackChanged ChangeFlag
+        {
+            get { return _changeState; }
+        }
+
     }
 }

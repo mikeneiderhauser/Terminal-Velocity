@@ -92,5 +92,11 @@ namespace CTCOffice
                 return null;
             }
         }
+
+        //Property
+        public TrackChanged ChangeFlag
+        {
+            get { return TrackChanged.Both; }
+        }
     }
 }
