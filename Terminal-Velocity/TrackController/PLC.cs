@@ -10,6 +10,8 @@ namespace TrackController
         private readonly string _filename;
         private readonly Dictionary<int, IBlock> _broken;
 
+        private const double EPSILON = 0.0001;
+
         /// <summary>
         ///     Construct a new instance of a PLC
         /// </summary>
@@ -36,20 +38,13 @@ namespace TrackController
         /// <param name="messages">A list of messages set by the PLC</param>
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
         {
-            // Get speed limit from TrackModel
-            double speedLimit = 10.0;
-            int authority = 10;
-
             foreach (IBlock b in blocks)
-            {
+            {            
                 if (b.State == StateEnum.BrokenTrackFailure)
                 {
-                    // Stop all trains
-                    speedLimit = 0D;
-                    authority = 0;
-
                     if (!_broken.ContainsKey(b.BlockID))
                     {
+                        // Report the broken block
                         messages.Add(string.Format("Block {0} {1}", b.BlockID, Enum.GetName(typeof (StateEnum), b.State)));
                         _broken.Add(b.BlockID, b);
                     }
@@ -58,10 +53,17 @@ namespace TrackController
 
             foreach (ITrainModel t in trains)
             {
-                if (Math.Abs(t.TrainController.SpeedLimit - speedLimit) > 0)
-                    messages.Add(string.Format("Train {0} speed changed {1} -> {2}", t.TrainID, t.TrainController.SpeedLimit,
-                                               speedLimit));
-                _circuit.ToTrain(t.TrainID, speedLimit, authority);
+                double speedLim = t.CurrentBlock.SpeedLimit;
+                int authority = 1;
+
+                if (_broken.Count > 0)
+                    authority = 0;
+
+                if (Math.Abs(t.TrainController.SpeedLimit - speedLim) > EPSILON)
+                    messages.Add(string.Format("Train {0} speed changed {1} -> {2}", t.TrainID,
+                                               t.TrainController.SpeedLimit, authority));
+
+                _circuit.ToTrain(t.TrainID, speedLim, authority);
             }
         }
 
