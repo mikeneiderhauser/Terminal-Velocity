@@ -382,21 +382,17 @@ namespace TrackModel
                 string infra = rr.GetString(rr.GetOrdinal("infra"));
                 string dir = rr.GetString(rr.GetOrdinal("dir"));
                 string state = rr.GetString(rr.GetOrdinal("state"));
-                if (bIDFinal != 0)
-                {
-                    sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
-                    gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
-                    locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
-                    locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
+                sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
+                gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
+                bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
+                trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
+                speedLimitFinal = rr.GetInt32(rr.GetOrdinal("speedLimit"));
+                locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
+                locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
 
-                    bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
-
-                    prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
-                    dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
-                    dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
-                    trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
-                    speedLimitFinal = rr.GetInt32(rr.GetOrdinal("speedLimit"));
-                }
+                prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
+                dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
+                dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
 
                 //////////////////////////////////////////////////////////////////////
                 //Parse fields that must be provided as a different type
