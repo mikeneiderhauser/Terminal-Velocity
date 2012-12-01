@@ -10,9 +10,12 @@ namespace TrackModel
     {
         //Private parameters
         private readonly SQLiteConnection _dbCon;
+        private static int curCirID=0;
 
         public DBCreator(string fPath)
         {
+            
+
             //fPath is the filename of the database to connect to.
             //Check filepath's legit'ness, give it the default otherwise
             if (fPath == null || fPath.Equals(""))
@@ -165,9 +168,11 @@ namespace TrackModel
             ////////////////////////////////////////////////////////
             //Iterate through each one.
 
+            string section = "";
             string prevID = "16"; //
             foreach (string line in fileLines)
             {
+                
                 //Console.WriteLine("Line is: "+line);
                 //IF we're not a blank line (begins with comma) or a header line (begins with Line)
                 //THEN process and insert
@@ -178,7 +183,12 @@ namespace TrackModel
                     string blockID = fields[2];
                     string lineName = fields[0];
 
-
+                    //Increment our circuit ID when we run into a new circuit
+                    if (!fields[1].Equals(section, StringComparison.OrdinalIgnoreCase))
+                    {
+                        section = fields[1];
+                        curCirID++;
+                    }
                     //Once we get our line name, we should check if it's already in the database.
                     //If its already in the database, then we can assume success and just return 0
                     //Maybe this should just be some sort of continue, but I can sort that out later
@@ -203,7 +213,7 @@ namespace TrackModel
                     string singleInsert =
                         "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY) VALUES(" +
                         blockID + ", '" + lineName + "', '" + infra + "', " + sElev + ", " + grade + ", " + blockSize +
-                        ",'North', 'Healthy',-1,-1,-1)";
+                        ",'North', 'Healthy',"+curCirID+",-1,-1)";
                     //Console.WriteLine(singleInsert);
                     prevID = blockID;
                     if (_dbCon.State != ConnectionState.Open)

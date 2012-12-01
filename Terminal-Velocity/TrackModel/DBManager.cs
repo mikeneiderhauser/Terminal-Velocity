@@ -296,8 +296,8 @@ namespace TrackModel
                 while (bR.Read())
                 {
                     //Get all fields for a given block
-                    string line = null, infra = null, grade = null, locX = null, locY = null, bSize = null, dir = null;
-                    string state = null, prev = null, dest1 = null, dest2 = null, trackCirID = null;
+                    string line = null, infra = null, dir = null;
+                    string state = null;
 
                     int bIDFinal = -1, locXFinal = -1, locYFinal = -1;
                     double sEFinal = -1.0, gradeFinal = -1.0, bSizeFinal = -1.0;
