@@ -33,7 +33,7 @@ namespace TrackModel
             if (getFName.ShowDialog() == DialogResult.OK)
             {
                 string fName = getFName.FileName;
-                //bool res=_tm.provideInputFile(fName);
+                bool res=_tm.provideInputFile(fName);
             }
         }
 
@@ -58,6 +58,26 @@ namespace TrackModel
                 {
                     if (temp[i, j] != null)
                         g.FillRectangle(brush, j*squareWidth, i*squareHeight, squareWidth, squareHeight);
+                }
+            }
+
+
+
+            //Repeat drawing process for the Green Line
+            brush = new SolidBrush(Color.Green);
+
+            temp = _tm.requestTrackGrid(1);
+            numRows = temp.GetUpperBound(0);
+            numCols = temp.GetUpperBound(1);
+
+            squareHeight = totalH / numRows;
+            squareWidth = totalW / numCols;
+            for (int i = 0; i < numRows; i++)
+            {
+                for (int j = 0; j < numCols; j++)
+                {
+                    if (temp[i, j] != null)
+                        g.FillRectangle(brush, j * squareWidth, i * squareHeight, squareWidth, squareHeight);
                 }
             }
         }
