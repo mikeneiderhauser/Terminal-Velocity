@@ -27,6 +27,11 @@ namespace CTCOffice
 
         public StateEnum State { get; set; }
 
+        public int SpeedLimit
+        {
+            get { return 50;}
+        }
+
         public int PrevBlockID
         {
             get { return _prevID; }

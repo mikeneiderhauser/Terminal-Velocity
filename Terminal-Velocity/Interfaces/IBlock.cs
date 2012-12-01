@@ -15,6 +15,7 @@
         int TrackCirID { get; set; }
         string[] AttrArray { get; }
         string Line { get; }
+        int SpeedLimit { get; }
 
         bool hasSwitch();
         bool hasTunnel();

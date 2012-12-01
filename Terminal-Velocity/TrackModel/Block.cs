@@ -14,10 +14,11 @@ namespace TrackModel
         private readonly int[] _location;
         private readonly int _prevBlockID;
         private readonly double _startingElev;
+        private readonly int _speedLimit;
         private int _switchDest1;
 
         public Block(int bID, StateEnum state, int pBID, double sElev, double g, int[] loc, double bS, DirEnum dir,
-                     string[] atts, int d1, int d2, int tCID, string l)
+                     string[] atts, int d1, int d2, int tCID, string l, int sL)
         {
             _blockID = bID;
             State = state;
@@ -32,6 +33,7 @@ namespace TrackModel
             SwitchDest2 = d2;
             TrackCirID = tCID;
             _line = l;
+            _speedLimit = sL;
         }
 
         public Block(int bID)
@@ -234,6 +236,10 @@ namespace TrackModel
             get { return _blockID; }
         }
 
+        public int SpeedLimit
+        {
+            get { return _speedLimit; }
+        }
 
         public StateEnum State { get; set; }
 

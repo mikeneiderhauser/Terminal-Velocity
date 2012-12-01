@@ -75,13 +75,13 @@ namespace Testing
             var environment = new SimulationEnvironment.SimulationEnvironment();
 
             IBlock b0 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red");
+                                  "Red",70);
             IBlock b1 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red");
+                                  "Red",70);
             IBlock b2 = new Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red");
+                                  "Red",70);
             IBlock b3 = new Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""},
-                                  0, 0, 0, "Red");
+                                  0, 0, 0, "Red",70);
 
             var sectionA = new List<IBlock>();
             sectionA.Add(b0);
@@ -204,7 +204,7 @@ namespace Testing
                     var loc = new int[2];
                     loc[0] = 10;
                     loc[1] = 10;
-                    var start = new Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red");
+                    var start = new Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red",70);
                     environment.addTrain(new Train(0, start, environment));
                     environment.addTrain(new Train(1, start, environment));
 
@@ -218,7 +218,7 @@ namespace Testing
                     var loc2 = new int[2];
                     loc2[0] = 10;
                     loc2[1] = 10;
-                    var start2 = new Block(0, StateEnum.Healthy, 0, 0, 0, loc2, 100, DirEnum.East, null, 1, 2, 0, "Red");
+                    var start2 = new Block(0, StateEnum.Healthy, 0, 0, 0, loc2, 100, DirEnum.East, null, 1, 2, 0, "Red",70);
                     var tc = new TrainController.TrainController(environment, new Train(0, start2, environment));
                     control = new TrainControllerUI(tc, environment);
                     break;

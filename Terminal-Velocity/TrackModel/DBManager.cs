@@ -303,6 +303,7 @@ namespace TrackModel
                     double sEFinal = -1.0, gradeFinal = -1.0, bSizeFinal = -1.0;
                     int prevFinal = -1, dest1Final = -1, dest2Final = -1;
                     int trackCirIDFinal = -1;
+                    int speedLimitFinal = -1;
                     try
                     {
                         bIDFinal = bR.GetInt32(bR.GetOrdinal("blockID"));
@@ -321,6 +322,7 @@ namespace TrackModel
                             dest1Final = bR.GetInt32(bR.GetOrdinal("dest1"));
                             dest2Final = bR.GetInt32(bR.GetOrdinal("dest2"));
                             trackCirIDFinal = bR.GetInt32(bR.GetOrdinal("trackCirID"));
+                            speedLimitFinal = bR.GetInt32(bR.GetOrdinal("speedLimit"));
                         }
                     }
                     catch (Exception e)
@@ -339,7 +341,7 @@ namespace TrackModel
                     locFinal[1] = locYFinal;
 
                     tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
-                                          dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
+                                          dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line,speedLimitFinal);
                     i++; //Inc counter
                 }
             }
@@ -371,6 +373,7 @@ namespace TrackModel
             double sEFinal = -1.0, gradeFinal = -0.0, bSizeFinal = -1.0;
             int dest1Final = -1, dest2Final = -1, prevFinal = -1;
             int trackCirIDFinal = -1;
+            int speedLimitFinal =-1;
             while (rr.Read())
             {
                 //Get all fields for a given block
@@ -392,6 +395,7 @@ namespace TrackModel
                     dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
                     dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
                     trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
+                    speedLimitFinal = rr.GetInt32(rr.GetOrdinal("speedLimit"));
                 }
 
                 //////////////////////////////////////////////////////////////////////
@@ -405,7 +409,7 @@ namespace TrackModel
                 locFinal[1] = locYFinal;
 
                 blockList.Add(new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
-                                        dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line));
+                                        dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line,speedLimitFinal));
                 nBlocks++;
             }
 

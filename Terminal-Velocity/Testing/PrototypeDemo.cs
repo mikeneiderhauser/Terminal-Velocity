@@ -92,13 +92,13 @@ namespace Testing
         public void createTrackController()
         {
             IBlock b0 = new Block(0, StateEnum.Healthy, -1, 0, 0, new[] {0, 0}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Green",70);
             IBlock b1 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {1, 1}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Green",70);
             IBlock b2 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {2, 2}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
+                                  "Green",70);
             IBlock b3 = new Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new[] {3, 3}, 1000, DirEnum.East, new[] {""},
-                                  0, 0, 0, "Green");
+                                  0, 0, 0, "Green",70);
 
             var sectionA = new List<IBlock>();
             sectionA.Add(b0);
