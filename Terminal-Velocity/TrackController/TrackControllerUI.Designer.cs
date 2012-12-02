@@ -33,7 +33,11 @@
             this.tcComboBox = new System.Windows.Forms.ComboBox();
             this.trainInformation = new System.Windows.Forms.GroupBox();
             this.blockGrid = new System.Windows.Forms.DataGridView();
+            this.BlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.switchGrid = new System.Windows.Forms.DataGridView();
+            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainGrid = new System.Windows.Forms.DataGridView();
             this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RouteID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,10 +49,6 @@
             this.messageTextBox = new System.Windows.Forms.RichTextBox();
             this.tcCountBox = new System.Windows.Forms.TextBox();
             this.selectTCLabel = new System.Windows.Forms.Label();
-            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.switchGrid)).BeginInit();
@@ -66,13 +66,13 @@
             // 
             // loadButton
             // 
-            this.loadButton.Enabled = false;
             this.loadButton.Location = new System.Drawing.Point(525, 95);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 23);
             this.loadButton.TabIndex = 1;
             this.loadButton.Text = "Load PLC";
             this.loadButton.UseVisualStyleBackColor = true;
+            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
             // tcComboBox
             // 
@@ -109,6 +109,18 @@
             this.blockGrid.Size = new System.Drawing.Size(220, 150);
             this.blockGrid.TabIndex = 12;
             // 
+            // BlockID
+            // 
+            this.BlockID.HeaderText = "Block ID";
+            this.BlockID.Name = "BlockID";
+            this.BlockID.ReadOnly = true;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "Status";
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            // 
             // switchGrid
             // 
             this.switchGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -120,6 +132,18 @@
             this.switchGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.switchGrid.Size = new System.Drawing.Size(220, 150);
             this.switchGrid.TabIndex = 11;
+            // 
+            // StateBlockID
+            // 
+            this.StateBlockID.HeaderText = "Block ID";
+            this.StateBlockID.Name = "StateBlockID";
+            this.StateBlockID.ReadOnly = true;
+            // 
+            // State
+            // 
+            this.State.HeaderText = "State";
+            this.State.Name = "State";
+            this.State.ReadOnly = true;
             // 
             // trainGrid
             // 
@@ -215,31 +239,7 @@
             this.selectTCLabel.TabIndex = 6;
             this.selectTCLabel.Text = "Select Track Controller";
             // 
-            // StateBlockID
-            // 
-            this.StateBlockID.HeaderText = "Block ID";
-            this.StateBlockID.Name = "StateBlockID";
-            this.StateBlockID.ReadOnly = true;
-            // 
-            // State
-            // 
-            this.State.HeaderText = "State";
-            this.State.Name = "State";
-            this.State.ReadOnly = true;
-            // 
-            // BlockID
-            // 
-            this.BlockID.HeaderText = "Block ID";
-            this.BlockID.Name = "BlockID";
-            this.BlockID.ReadOnly = true;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            // 
-            // TrackControllerUI
+            // TrackControllerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

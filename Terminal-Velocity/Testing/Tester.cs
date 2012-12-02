@@ -40,13 +40,17 @@ namespace Testing
                 // Run Unit tests and GUI tests (currently only one)
             else if (args.Length == 2)
             {
-                //UnitTestFramework();
+                UnitTestFramework();
 
                 if (args[0].CompareTo("gui") == 0)
                 {
                     int test;
                     if (Int32.TryParse(args[1], out test))
-                        GUITestFramework(test);
+                    {
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
+                        Application.Run(GuiTestFramework(test));
+                    }
                 }
             }
                 // Run only Unit tests
@@ -54,7 +58,7 @@ namespace Testing
             {
                 if (args[0].CompareTo("unit") == 0)
                 {
-                    //UnitTestFramework();
+                    UnitTestFramework();
 
                     Console.WriteLine("\n\nPress enter to continue...");
                     Console.ReadLine();
@@ -64,7 +68,7 @@ namespace Testing
             return 0;
         }
 
-        private static void GUITestFramework(int test)
+        private static Form GuiTestFramework(int test)
         {
             ////////////////////////////////////////////////////////////////////////////////////////
             //                              Initializations                                       //
@@ -74,22 +78,14 @@ namespace Testing
             // Environment object
             var environment = new SimulationEnvironment.SimulationEnvironment();
 
-            IBlock b0 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red",70);
-            IBlock b1 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red",70);
-            IBlock b2 = new Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Red",70);
-            IBlock b3 = new Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""},
-                                  0, 0, 0, "Red",70);
+            IBlock b0 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b1 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b2 = new Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b3 = new Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
 
-            var sectionA = new List<IBlock>();
-            sectionA.Add(b0);
-            var sectionB = new List<IBlock>();
-            sectionB.Add(b1);
-            sectionB.Add(b2);
-            var sectionC = new List<IBlock>();
-            sectionC.Add(b3);
+            var sectionA = new List<IBlock> {b0};
+            var sectionB = new List<IBlock> {b1, b2};
+            var sectionC = new List<IBlock> {b3};
 
             // Previous track controller's circuit
             var prevCircuit = new TrackCircuit(environment, sectionA);
@@ -222,16 +218,15 @@ namespace Testing
                     var tc = new TrainController.TrainController(environment, new Train(0, start2, environment));
                     control = new TrainControllerUI(tc, environment);
                     break;
-                case 10:
-                    new PrototypeDemo();
-                    break;
             }
 
             environment.Start();
 
             form.Controls.Add(control);
             form.AutoSize = true;
-            form.ShowDialog();
+
+
+            return form;
         }
 
         private static void UnitTestFramework()
@@ -275,7 +270,7 @@ namespace Testing
                     else
                     {
                         Console.WriteLine(string.Format("A fatal error has occured"));
-                        totalFail++;
+                        totalFatal++;
                     }
 
                     Console.WriteLine("\n");

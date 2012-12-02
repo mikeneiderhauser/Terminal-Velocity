@@ -1,11 +1,16 @@
-﻿namespace TerminalVelocity
+﻿using System;
+using System.Windows.Forms;
+
+namespace TerminalVelocity
 {
     public class Program
     {
-        private static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
-            var e = new SimulationEnvironment.SimulationEnvironment();
-            //ITrackController first = Setup_Track_Controllers();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
         }
     }
 }
