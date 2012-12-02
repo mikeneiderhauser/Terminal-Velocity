@@ -69,7 +69,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PrototypeDemo.cs" />
     <Compile Include="TrackController.Test.cs" />
     <Compile Include="TrackControllerTester.cs" />
     <Compile Include="TrainModel.Test.cs" />
