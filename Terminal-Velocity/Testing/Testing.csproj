@@ -70,7 +70,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TrackController.Test.cs" />
-    <Compile Include="TrackControllerTester.cs" />
     <Compile Include="TrainModel.Test.cs" />
   </ItemGroup>
   <ItemGroup>

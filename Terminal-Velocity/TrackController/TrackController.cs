@@ -19,7 +19,6 @@ namespace TrackController
         private Plc _plc;
         private ITrackController _prev;
         private Dictionary<int, ITrainModel> _trains;
-        private static int _trainCount;
 
         #region Constructor(s)
 
