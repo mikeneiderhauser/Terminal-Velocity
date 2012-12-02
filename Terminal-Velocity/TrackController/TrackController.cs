@@ -34,7 +34,7 @@ namespace TrackController
             _routes = new Dictionary<int, IRoute>();
 
             _env = env;
-            _env.Tick += _env_Tick;
+            _env.Tick += EnvTick;
 
             ID = -1;
             SetId();
@@ -100,7 +100,7 @@ namespace TrackController
 
         #region Public Methods
 
-        public void LoadPLCProgram(string filename)
+        public void LoadPlcProgram(string filename)
         {
             _plc = new Plc(_circuit, filename);
         }
@@ -132,10 +132,6 @@ namespace TrackController
                     }
                     break;
                 case RequestTypes.DispatchTrain:
-                    {
-                        //IBlock start = _env.TrackModel.requestBlockInfo(0, "Red");
-                        //_env.addTrain(new Train(_trainCount++, start, _env));
-                    }
                     break;
                 case RequestTypes.TrackMaintenanceClose:
                     break;
@@ -164,16 +160,15 @@ namespace TrackController
         }
 
         // Calls into the PLC passing in the current Blocks, Trains, and Routes
-        private void PLC_DoWork()
+        private void PlcDoWork()
         {
             // Snapshot values
-            List<IBlock> sb = Blocks;
-            List<ITrainModel> st = Trains;
-            List<IRoute> sr = Routes;
+            var sb = Blocks;
+            var st = Trains;
+            var sr = Routes;
 
-            _plc.ToggleLights(sb, st, sr, _messages);
-            _plc.DoSwitch(sb, st, sr, _messages);
             _plc.IsSafe(sb, st, sr, _messages);
+            _plc.ToggleLights(sb, st, sr, _messages);
         }
 
         #endregion // Private Methods
@@ -181,13 +176,13 @@ namespace TrackController
         #region Events
 
         // A tick has elasped so we need to do work
-        private void _env_Tick(object sender, TickEventArgs e)
+        private void EnvTick(object sender, TickEventArgs e)
         {
             if (_next == null)
             {
-                Dictionary<int, ITrainModel> trains = _circuit.Trains;
+                var trains = _circuit.Trains;
 
-                IEnumerable<KeyValuePair<int, ITrainModel>> differences =
+                var differences =
                     trains.Where(x => _circuit.Trains.All(x1 => x1.Key != x.Key))
                           .Union(_circuit.Trains.Where(x => trains.All(x1 => x1.Key != x.Key)));
                 foreach (var k in differences)
@@ -199,7 +194,7 @@ namespace TrackController
             _trains = _circuit.Trains;
             _blocks = _circuit.Blocks;
 
-            PLC_DoWork();
+            PlcDoWork();
         }
 
         #endregion // Events

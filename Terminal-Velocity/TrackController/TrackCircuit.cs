@@ -19,11 +19,11 @@ namespace TrackController
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
 
-            foreach (IBlock b in blocks)
+            foreach (var b in blocks)
                 _blocks.Add(b.BlockID, b);
 
             _env = env;
-            _env.Tick += _env_Tick;
+            _env.Tick += EnvTick;
         }
 
         #endregion // Constructor(s)
@@ -49,20 +49,20 @@ namespace TrackController
 
         public void ToTrain(int id, double speedLimit = Double.NaN, int authority = Int32.MinValue)
         {
-            Dictionary<int, ITrainModel> snapshot = Trains;
+            var snapshot = Trains;
 
             ITrainModel train;
-            if (snapshot.TryGetValue(id, out train))
-            {
-                if (!double.IsNaN(speedLimit))
-                {
-                    train.TrainController.SpeedLimit = speedLimit;
-                }
+            if (!snapshot.TryGetValue(id, out train)) 
+                throw new Exception(string.Format("Targeted train ID:{0} was expected in TrackCircuit ID:{1} but was not found.", id, this.ID));
 
-                if (authority != Int32.MinValue)
-                {
-                    train.TrainController.AuthorityLimit = authority;
-                }
+            if (!double.IsNaN(speedLimit))
+            {
+                train.TrainController.SpeedLimit = speedLimit;
+            }
+
+            if (authority != Int32.MinValue)
+            {
+                train.TrainController.AuthorityLimit = authority;
             }
         }
 
@@ -70,10 +70,12 @@ namespace TrackController
 
         #region Events
 
-        private void _env_Tick(object sender, TickEventArgs e)
+        private void EnvTick(object sender, TickEventArgs e)
         {
             _trains.Clear();
-            foreach (ITrainModel t in _env.AllTrains)
+            
+            // Find all the trains within the TrackCircuits area
+            foreach (var t in _env.AllTrains)
             {
                 if (!_trains.ContainsKey(t.TrainID) &&
                     _blocks.ContainsKey(t.CurrentBlock.BlockID))

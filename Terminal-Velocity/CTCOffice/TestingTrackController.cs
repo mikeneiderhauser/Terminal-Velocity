@@ -63,7 +63,7 @@ namespace CTCOffice
             get { return _routes; }
         }
 
-        public void LoadPLCProgram(string filename)
+        public void LoadPlcProgram(string filename)
         {
             //not used for CTC Testing. Required for interface
         }

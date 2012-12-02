@@ -6,6 +6,7 @@ namespace TrackController
 {
     public class Plc
     {
+        private readonly ISimulationEnvironment _env;
         private readonly ITrackCircuit _circuit;
         private readonly string _filename;
         private readonly Dictionary<int, IBlock> _broken;
@@ -15,10 +16,12 @@ namespace TrackController
         /// <summary>
         ///     Construct a new instance of a PLC
         /// </summary>
+        /// <param name="env">The envrionment </param>
         /// <param name="circuit">The track circuit for the TrackController</param>
         /// <param name="filename">The file containing the program to load</param>
-        public Plc(ITrackCircuit circuit, string filename = "ladder.xml")
+        public Plc(ISimulationEnvironment env, ITrackCircuit circuit, string filename = "ladder.xml")
         {
+            _env = env;
             _circuit = circuit;
             _filename = filename;
             _broken = new Dictionary<int, IBlock>();
@@ -77,7 +80,12 @@ namespace TrackController
         public void ToggleLights(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes,
                                  List<string> messages)
         {
-        }
+            foreach (var t in trains)
+            {
+                if (t.CurrentBlock.hasTunnel())
+                    t.LightsOn = true;
+            }
+    }
 
         /// <summary>
         ///     Performs switching operations as needed
