@@ -65,7 +65,7 @@ namespace TrainModel
         {
             _trainID = trainID;
             _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\r\n";
+            _informationLog = "Created on " + DateTime.Now + ".\r\n";
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -119,7 +119,7 @@ namespace TrainModel
         /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + power + " W.\r\n";
+            _informationLog += "Train " + _trainID + " given power of " + Math.Round(power, 3) + " W.\r\n";
 
             double currentForce = 0;
             double newAcceleration = _physicalAccelerationLimit;
@@ -144,7 +144,7 @@ namespace TrainModel
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\r\n";
+            _informationLog += "Train " + _trainID + " acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.\r\n";
             _currentAcceleration = newAcceleration;
             return true;
         }

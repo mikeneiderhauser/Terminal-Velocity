@@ -35,7 +35,7 @@ namespace TrainModel
 
             if (allTrains != null && allTrains.Count > 0)
             {
-                selectedTrain = (Train) allTrains[0];
+                selectedTrain = (Train)allTrains[0];
                 allTrainComboBox.SelectedItem = selectedTrain;
             }
 
@@ -67,7 +67,7 @@ namespace TrainModel
         {
             timer++;
 
-            if (timer%10 == 0)
+            if (timer % 10 == 0)
             {
                 timer = 0;
                 UpdateGUI();
@@ -129,12 +129,12 @@ namespace TrainModel
                 trainLabel.Text = selectedTrain.ToString();
                 trainInfoTextBox.Text = selectedTrain.InformationLog;
 
-                positionValueText.Text = selectedTrain.CurrentPosition.ToString();
-                velocityValueText.Text = selectedTrain.CurrentVelocity.ToString();
-                accelerationValueText.Text = selectedTrain.CurrentAcceleration.ToString();
+                positionValueText.Text = Math.Round(selectedTrain.CurrentPosition, 3).ToString();
+                velocityValueText.Text = Math.Round(selectedTrain.CurrentVelocity, 3).ToString();
+                accelerationValueText.Text = Math.Round(selectedTrain.CurrentAcceleration).ToString();
 
                 gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
-                massValueText.Text = selectedTrain.TotalMass.ToString();
+                massValueText.Text = Math.Round(selectedTrain.TotalMass, 3).ToString();
 
                 numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
                 numCrewValueText.Text = selectedTrain.NumCrew.ToString();
@@ -168,12 +168,8 @@ namespace TrainModel
         /// <param name="e"></param>
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedTrain = (Train) allTrainComboBox.SelectedItem;
+            selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
-        }
-
-        private void trainInfoTextBox_TextChanged(object sender, EventArgs e)
-        {
         }
 
         #endregion
