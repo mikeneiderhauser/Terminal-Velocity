@@ -113,5 +113,11 @@ namespace TrackController
         {
             Refresh();
         }
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.ShowDialog();
+        }
     }
 }

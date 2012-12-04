@@ -7,7 +7,8 @@ namespace Testing
 {
     public class EnvironmentTest : ITesting
     {
-        private const int MAXTIMEOUT = 10000;
+        private const int MAXCOUNT = 3;
+        private const int MAXTIMEOUT = 1000;
         private static int counter;
 
         private readonly SimulationEnvironment.SimulationEnvironment e =
@@ -27,18 +28,18 @@ namespace Testing
                 e.Tick += e_Tick;
                 // While timer < MAXTIMEOUT
                 timeout.Start();
-                while (counter < 10 && timeout.ElapsedMilliseconds < MAXTIMEOUT) ;
+                while (counter < MAXCOUNT && timeout.ElapsedMilliseconds < MAXTIMEOUT) ;
                 // Cleanup
                 timeout.Stop();
                 e.Tick -= e_Tick;
 
-                if (counter >= 10)
+                if (counter >= MAXCOUNT)
                 {
                     pass++;
                     message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter,
                                               timeout.ElapsedMilliseconds, MAXTIMEOUT));
                 }
-                else if (counter < 10)
+                else if (counter < MAXCOUNT)
                 {
                     fail++;
                     message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter,

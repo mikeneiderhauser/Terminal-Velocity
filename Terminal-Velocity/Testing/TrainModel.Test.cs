@@ -14,7 +14,7 @@ namespace Testing
             message = new List<string>();
 
             ISimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            var train = new Train(0, new Block(0), environment);
+            var train = new Train(0, new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70), environment);
 
             // test that the train ID is zero
             if (train.TrainID == 0)

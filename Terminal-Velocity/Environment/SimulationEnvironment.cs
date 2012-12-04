@@ -8,6 +8,9 @@ namespace SimulationEnvironment
 {
     public class SimulationEnvironment : ISimulationEnvironment
     {
+
+        private const long _interval = 250;
+
         #region Private Variables
 
         private readonly List<ITrainModel> _allTrains;
@@ -15,7 +18,6 @@ namespace SimulationEnvironment
 
         private readonly Timer _timer = new Timer();
         private ICTCOffice _CTCOffice;
-        private long _interval = 250;
         private long _total;
 
         #endregion
