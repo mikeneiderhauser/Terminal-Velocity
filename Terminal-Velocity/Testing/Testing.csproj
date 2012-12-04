@@ -144,7 +144,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="green.csv" />
     <None Include="red.csv" />
     <None Include="Resources\green.csv" />
