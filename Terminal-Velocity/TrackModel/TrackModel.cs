@@ -12,11 +12,14 @@ namespace TrackModel
         private readonly DBManager _dbManager;
         private ISimulationEnvironment _env;
         private TrackChanged _changeState;
+        private bool _redLoaded;
+        private bool _greenLoaded;
         //private DisplayManager _dispManager;
-
 
         public TrackModel(ISimulationEnvironment environment)
         {
+            _redLoaded = false;
+            _greenLoaded = false;
             _env = environment;
             _dbCreator = new DBCreator("");
             _dbManager = new DBManager(_dbCreator.DBCon);
@@ -477,7 +480,18 @@ namespace TrackModel
         public bool provideInputFile(string fName)
         {
             int res = _dbCreator.parseInputFile(fName);
-            //Console.WriteLine("Inside TrackModel, res was: " + res);
+
+            if ( res==0 && (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red")))
+            {
+                _redLoaded = true;
+            }
+
+            if (res==0 && (fName.Contains("green") || fName.Contains("GREEN") || fName.Contains("Green")))
+            {
+                _greenLoaded = true;
+            }
+
+
             if (res == 0)
                 return true;
             else
@@ -495,6 +509,16 @@ namespace TrackModel
         public TrackChanged ChangeFlag
         {
             get { return _changeState; }
+        }
+
+        public bool RedLoaded
+        {
+            get { return _redLoaded; }
+        }
+
+        public bool GreenLoaded
+        {
+            get { return _greenLoaded; }
         }
 
     }
