@@ -10,6 +10,7 @@ namespace CTCOffice
             Block = null;
             Tile = null;
             Train = null;
+            BaseTile = null;
         }
 
         public ITrainModel Train { get; set; }
@@ -17,5 +18,7 @@ namespace CTCOffice
         public IBlock Block { get; set; }
 
         public Image Tile { get; set; }
+
+        public Image BaseTile { get; set; }
     }
 }

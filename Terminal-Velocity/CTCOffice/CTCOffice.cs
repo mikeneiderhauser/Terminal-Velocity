@@ -36,6 +36,8 @@ namespace CTCOffice
         private event EventHandler<EventArgs> RequestQueueOut;
         private event EventHandler<EventArgs> RequestQueueIn;
 
+        private List<string> _messages;
+
         #endregion
 
         #region Constructor
@@ -49,6 +51,8 @@ namespace CTCOffice
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
+
+            _messages = new List<string>();
 
             _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
@@ -254,8 +258,33 @@ namespace CTCOffice
         /// <param name="request"></param>
         private void internalRequest(IRequest request)
         {
-            //TODO
+            int index = 0;
+            int[] cord;
             IStatus s = request.Info;
+            if (_env.TrackModel.ChangeFlag != TrackChanged.None)
+            {
+                foreach (IBlock b in s.Blocks)
+                {
+                    _messages.Add("Block " + b.BlockID + ": is now in state " + b.State.ToString());
+                    if (b.Line.CompareTo("Red") != 0)
+                    {
+                        //red line
+                        index = _redLineData.Blocks.IndexOf(b);
+
+                        cord = _redLineData.TriangulateBlock(b);
+                        if (cord != null)
+                        {
+
+                        }
+                        //_redLineData.Blocks[index];
+                    }
+                    else
+                    {
+                        //green line
+                        index = _greenLineData.Blocks.IndexOf(b);
+                    }
+                }
+            }//end process blocks
         }
 
         /// <summary>

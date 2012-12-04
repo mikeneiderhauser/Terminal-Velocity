@@ -80,6 +80,7 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
+            this._popupIndicator = new System.Windows.Forms.PictureBox();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
@@ -100,6 +101,7 @@
             this._tabGreenLine.SuspendLayout();
             this._tabTeamLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -247,6 +249,7 @@
             // 
             // _groupRunningStatus
             // 
+            this._groupRunningStatus.Controls.Add(this._popupIndicator);
             this._groupRunningStatus.Controls.Add(this._imgSysStatusSystemScheduler);
             this._groupRunningStatus.Controls.Add(this._lblSystemSchedulerStatusHead);
             this._groupRunningStatus.Controls.Add(this._imgSysStatusTrackControllerGreen);
@@ -626,6 +629,15 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
+            // _popupIndicator
+            // 
+            this._popupIndicator.InitialImage = null;
+            this._popupIndicator.Location = new System.Drawing.Point(97, 105);
+            this._popupIndicator.Name = "_popupIndicator";
+            this._popupIndicator.Size = new System.Drawing.Size(16, 16);
+            this._popupIndicator.TabIndex = 14;
+            this._popupIndicator.TabStop = false;
+            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -661,6 +673,7 @@
             this._tabGreenLine.ResumeLayout(false);
             this._tabTeamLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -719,6 +732,7 @@
         private System.Windows.Forms.PictureBox _imgSysStatusCTCOffice;
         private System.Windows.Forms.PictureBox _imgSysStatusTrackControllerGreen;
         private System.Windows.Forms.Label _lblPTrackControllerGreenHead;
+        private System.Windows.Forms.PictureBox _popupIndicator;
 
     }
 }

@@ -100,6 +100,11 @@ namespace CTCOffice
             foreach (ITrainModel t in _trains)
             {
                 //check if train ID's match.. need ITrain class to implement
+                if (toRemove.TrainID == t.TrainID)
+                {
+                    toRemove = t;
+                    break;
+                }
             }
 
             return toRemove;
@@ -108,6 +113,47 @@ namespace CTCOffice
         public void AddBlock(IBlock block)
         {
             _blocks.Add(block);
+        }
+
+        public void RemoveBlock(IBlock block)
+        {
+            if (block != null)
+            {
+                if (_blocks.Contains(block))
+                {
+                    _blocks.Remove(block);
+                }
+            }
+        }
+
+        public int[] TriangulateBlock(IBlock block)
+        {
+            int[] index = new int[2]{-1,-1};
+
+            int i = 0;
+            int j = 0;
+            for (i = 0; i <= _layout.GetUpperBound(0); i++)
+            {
+                for (j = 0; j <= _layout.GetUpperBound(1); j++)
+                {
+                    if (_layout[i, j] != null)
+                    {
+                        if (block.BlockID == _layout[i, j].Block.BlockID)
+                        {
+                            index[0] = i;
+                            index[1] = j;
+                            return index;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }//end triangulate block
+
+        public void UpdateBlock(int listIndex, int layoutX, int layoutY, StateEnum state)
+        {
+
         }
     }
 }
