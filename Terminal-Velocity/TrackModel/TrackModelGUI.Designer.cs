@@ -139,6 +139,7 @@
             this.trackDisplayPanel.Size = new System.Drawing.Size(385, 317);
             this.trackDisplayPanel.TabIndex = 9;
             this.trackDisplayPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.trackDisplayPanel_Paint);
+            this.trackDisplayPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trackDisplayPanel_MouseClick);
             // 
             // valBlockID
             // 
