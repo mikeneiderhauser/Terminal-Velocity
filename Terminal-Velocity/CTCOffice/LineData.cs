@@ -31,7 +31,7 @@ namespace CTCOffice
                     if (layout[i, j] == null)
                     {
                         //null container
-                        container.Tile = Resources.Unpopulated;
+                        container.BaseTile = Resources.Unpopulated;
                         container.Block = null;
                         container.Train = null;
                     }
@@ -46,17 +46,19 @@ namespace CTCOffice
                             layout[i, j].Line.CompareTo("R") == 0 || layout[i, j].Line.CompareTo("r") == 0)
                         {
                             //red line
-                            container.Tile = Resources.RedTrack;
+                            //container.BaseTile = Resources.RedTrack;
+                            container.BaseTile = ParseTrackType(layout[i, j]);
                         }
                         else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 ||
                                  layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
                         {
                             //green line
-                            container.Tile = Resources.GreenTrack;
+                            container.BaseTile = Resources.GreenTrack;
+                            container.BaseTile = ParseTrackType(layout[i, j]);
                         }
                         else
                         {
-                            container.Tile = Resources.TrackError;
+                            container.BaseTile = Resources.TrackError;
                             env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
@@ -66,6 +68,34 @@ namespace CTCOffice
                     _layout[i, j] = container;
                 } //end for 2nd dimension
             } //end for 1st dimentsion
+        }
+
+        private System.Drawing.Image ParseTrackType(IBlock block)
+        {
+            if(block.Line.CompareTo("Red")!=0)
+            {
+                //red
+                if (block.hasSwitch()) { return Resources.RedTrack_Switch; }
+                if (block.hasTunnel()) { return Resources.RedTrack_Tunnel; }
+                if (block.hasHeater()) { return Resources.RedTrack_Heater; }
+                if (block.hasCrossing()) { return Resources.RedTrack_Crossing; }
+                if (block.hasStation()) { return Resources.RedTrack_Station; }
+                return Resources.Unpopulated;
+            }
+            else if (block.Line.CompareTo("Green") != 0)
+            {
+                //green
+                if (block.hasSwitch()) { return Resources.GreenTrack_Switch; }
+                if (block.hasTunnel()) { return Resources.GreenTrack_Tunnel; }
+                if (block.hasHeater()) { return Resources.GreenTrack_Heater; }
+                if (block.hasCrossing()) { return Resources.GreenTrack_Crossing; }
+                if (block.hasStation()) { return Resources.GreenTrack_Station; }
+                return Resources.Unpopulated;
+            }
+            else
+            {
+                return Resources.Unpopulated;
+            }
         }
 
 //end constructor

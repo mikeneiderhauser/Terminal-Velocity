@@ -63,18 +63,6 @@ namespace CTCOffice
             //set credentials
             _op.setAuth("root", "admin");
 
-            if (_env.TrackModel != null)
-            {
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
-                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
-            }
-            else
-            {
-                _env.sendLogEntry("CTCOffice: NULL Referenct to TrackModel");
-            }
-
             //create queues
             _requestsOut = new Queue<IRequest>();
             _requestsIn = new Queue<IRequest>();
@@ -88,6 +76,25 @@ namespace CTCOffice
             _processingInRequests = false;
 
             _populationBlock = false;
+
+
+           
+
+        }//Constructor
+
+        private void IsTrackUp()
+        {
+            if (_env.TrackModel != null)
+            {
+                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+            }
+            else
+            {
+                _env.sendLogEntry("CTCOffice: NULL Referenct to TrackModel");
+            }
         }
 
         #endregion

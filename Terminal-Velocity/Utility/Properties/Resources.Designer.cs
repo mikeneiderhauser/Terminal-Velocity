@@ -93,9 +93,59 @@ namespace Utility.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap GreenTrack_Crossing {
+            get {
+                object obj = ResourceManager.GetObject("GreenTrack_Crossing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap GreenTrack_Heater {
+            get {
+                object obj = ResourceManager.GetObject("GreenTrack_Heater", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap GreenTrack_Station {
+            get {
+                object obj = ResourceManager.GetObject("GreenTrack_Station", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap GreenTrack_Switch {
+            get {
+                object obj = ResourceManager.GetObject("GreenTrack_Switch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap GreenTrack_Train {
             get {
                 object obj = ResourceManager.GetObject("GreenTrack_Train", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap GreenTrack_Tunnel {
+            get {
+                object obj = ResourceManager.GetObject("GreenTrack_Tunnel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +183,59 @@ namespace Utility.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap RedTrack_Crossing {
+            get {
+                object obj = ResourceManager.GetObject("RedTrack_Crossing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RedTrack_Heater {
+            get {
+                object obj = ResourceManager.GetObject("RedTrack_Heater", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RedTrack_Station {
+            get {
+                object obj = ResourceManager.GetObject("RedTrack_Station", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RedTrack_Switch {
+            get {
+                object obj = ResourceManager.GetObject("RedTrack_Switch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap RedTrack_Train {
             get {
                 object obj = ResourceManager.GetObject("RedTrack_Train", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RedTrack_Tunnel {
+            get {
+                object obj = ResourceManager.GetObject("RedTrack_Tunnel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
