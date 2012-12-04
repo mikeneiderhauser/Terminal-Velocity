@@ -14,6 +14,10 @@ namespace TerminalVelocity
 {
     public class Program
     {
+        static Form ctcForm;
+        static Form schedulerForm;
+        static Form trackModelForm;
+
         [STAThread]
         static void Main()
         {
@@ -35,11 +39,23 @@ namespace TerminalVelocity
             SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(e, ctcOffice);
             SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
 
-            Form ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
-            Form schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = false, Parent = ctcForm };
-            Form trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = false, Parent = ctcForm };
+            // Setup environment
+            e.SystemScheduler = scheduler;
+            e.TrackModel = trackModel;
+
+            ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
+            schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
+            trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null };
+
+            ctcForm.Shown += new EventHandler(ctcForm_Shown);
 
             Application.Run(ctcForm);
+        }
+
+        static void ctcForm_Shown(object sender, EventArgs e)
+        {
+            //schedulerForm.ShowDialog(ctcForm);
+            trackModelForm.Show();
         }
     }
 }
