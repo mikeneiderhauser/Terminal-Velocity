@@ -208,6 +208,9 @@ namespace Testing
                     train0.DoorsOpen = true;
                     train0.LightsOn = true;
 
+                    var train1 = (Train)environment.AllTrains[1];
+                    train1.ChangeMovement(200);
+
                     control = new TrainGUI(environment);
                     break;
                 case 5: // TrainController

@@ -148,8 +148,8 @@ namespace TrainModel
                 return false;
             }
 
-            appendInformationLog("Acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.");
             _currentAcceleration = newAcceleration;
+            appendInformationLog("Acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.");
             return true;
         }
 
