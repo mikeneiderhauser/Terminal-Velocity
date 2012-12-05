@@ -36,6 +36,9 @@ namespace CTCOffice
         private event EventHandler<EventArgs> RequestQueueOut;
         private event EventHandler<EventArgs> RequestQueueIn;
 
+        private bool _redLoaded;
+        private bool _greenLoaded;
+
         private List<string> _messages;
 
         #endregion
@@ -77,23 +80,49 @@ namespace CTCOffice
 
             _populationBlock = false;
 
+            _redLoaded = false;
+            _greenLoaded = false;
 
-           
+            if (_env.TrackModel == null)
+            {
+                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+            }
 
         }//Constructor
 
         private void IsTrackUp()
         {
+            //Checks the environment to see if a Track Models exists
             if (_env.TrackModel != null)
             {
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
-                _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                //Checks if the red line has been loaded yet
+                if (_env.TrackModel.RedLoaded && !_redLoaded)
+                {
+                    _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                    _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                    _redLoaded = true;
+                }
+                else
+                {
+                    _redLoaded = false;
+                    //_env.sendLogEntry("The Red Line has not been loaded yet.");
+                }
+                //Checks if the green line has been loaded yet
+                if (_env.TrackModel.GreenLoaded && !_greenLoaded)
+                {
+                    _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                    _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                    _greenLoaded = true;
+                }
+                else
+                {
+                    _greenLoaded = false;
+                    //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                }
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: NULL Referenct to TrackModel");
+                //_env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
         }
 
@@ -301,6 +330,12 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _env_Tick(object sender, TickEventArgs e)
         {
+            //check for track if both tracks are not up.. if tracks are up.. dont check
+            if (!(_redLoaded && _greenLoaded))
+            {
+                IsTrackUp();
+            }
+
             _tickCount++;
             if (_tickCount == _rate)
             {
