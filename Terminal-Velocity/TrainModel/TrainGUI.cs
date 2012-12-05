@@ -84,10 +84,7 @@ namespace TrainModel
         /// <param name="allTrains">The list of all trains contained in the environment.</param>
         private void PopulateComboBox(List<ITrainModel> allTrains)
         {
-            foreach (Train train in allTrainComboBox.Items)
-            {
-                allTrainComboBox.Items.Remove(train);
-            }
+            allTrainComboBox.Items.Clear();
 
             foreach (Train train in allTrains)
             {
