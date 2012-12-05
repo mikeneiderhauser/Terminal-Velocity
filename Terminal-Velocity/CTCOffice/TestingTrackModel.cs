@@ -98,5 +98,15 @@ namespace CTCOffice
         {
             get { return TrackChanged.Both; }
         }
+
+        public bool RedLoaded
+        {
+            get { return false; }
+        }
+
+        public bool GreenLoaded
+        {
+            get { return false; }
+        }
     }
 }

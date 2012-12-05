@@ -65,7 +65,7 @@ namespace TrainModel
         {
             _trainID = trainID;
             _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\r\n";
+            _informationLog = "Created on " + DateTime.Now + ".\r\n";
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -96,7 +96,7 @@ namespace TrainModel
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
 
-            _timeInterval = (environment.getInterval()/1000.0);
+            _timeInterval = (environment.getInterval() / 1000.0);
         }
 
         #endregion
@@ -119,15 +119,15 @@ namespace TrainModel
         /// <returns>True if successful, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\r\n";
+            _informationLog += "Train " + _trainID + " given power of " + Math.Round(power, 3) + " W.\r\n";
 
             double currentForce = 0;
             double newAcceleration = _physicalAccelerationLimit;
 
             if (_currentVelocity > 0)
             {
-                currentForce = power/_currentVelocity;
-                newAcceleration = currentForce/_totalMass;
+                currentForce = power / _currentVelocity;
+                newAcceleration = currentForce / _totalMass;
             }
 
             // check that the new acceleration does not exceed the physical limit
@@ -137,14 +137,14 @@ namespace TrainModel
                 return false;
             }
 
-                // check that the new deceleration does not exceed the physical limit
+            // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
                 _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\r\n";
+            _informationLog += "Train " + _trainID + " acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.\r\n";
             _currentAcceleration = newAcceleration;
             return true;
         }
@@ -177,27 +177,27 @@ namespace TrainModel
         /// </summary>
         private void updateMovement()
         {
-            _timeInterval = (_environment.getInterval()/1000.0); // milliseconds to seconds
+            _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
 
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
             if (_currentBlock.Grade > 0) // up hill
             {
-                _currentAcceleration -= _accelerationGravity*Math.Sin(angle);
+                _currentAcceleration -= (_accelerationGravity * Math.Sin(angle));
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                _currentAcceleration += _accelerationGravity*Math.Sin(angle);
+                _currentAcceleration += (_accelerationGravity * Math.Sin(angle));
             }
 
-            _currentVelocity += _currentAcceleration*_timeInterval;
+            _currentVelocity += (_currentAcceleration * _timeInterval);
 
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
             }
 
-            _currentPosition += _currentVelocity*_timeInterval;
+            _currentPosition += (_currentVelocity * _timeInterval);
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
@@ -230,7 +230,7 @@ namespace TrainModel
         /// <returns>The total mass.</returns>
         private double calculateMass()
         {
-            return (_initialMass + _personMass*(_numPassengers + _numCrew));
+            return (_initialMass + _personMass * (_numPassengers + _numCrew));
         }
 
         #endregion

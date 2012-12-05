@@ -68,7 +68,6 @@
             this.trainInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.trainInfoTextBox.Size = new System.Drawing.Size(399, 311);
             this.trainInfoTextBox.TabIndex = 0;
-            this.trainInfoTextBox.TextChanged += new System.EventHandler(this.trainInfoTextBox_TextChanged);
             // 
             // allTrainComboBox
             // 
@@ -223,7 +222,7 @@
             this.massTextBox.ReadOnly = true;
             this.massTextBox.Size = new System.Drawing.Size(103, 31);
             this.massTextBox.TabIndex = 10;
-            this.massTextBox.Text = "Current Mass";
+            this.massTextBox.Text = "Mass (kg)";
             this.massTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // gradeValueText
@@ -244,7 +243,7 @@
             this.gradeTextBox.ReadOnly = true;
             this.gradeTextBox.Size = new System.Drawing.Size(103, 31);
             this.gradeTextBox.TabIndex = 8;
-            this.gradeTextBox.Text = "Current Grade";
+            this.gradeTextBox.Text = "Grade (%)";
             this.gradeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // accelerationValueText
@@ -265,7 +264,7 @@
             this.accelerationTextBox.ReadOnly = true;
             this.accelerationTextBox.Size = new System.Drawing.Size(103, 31);
             this.accelerationTextBox.TabIndex = 6;
-            this.accelerationTextBox.Text = "Current Acceleration";
+            this.accelerationTextBox.Text = "Acceleration(m/s^2)";
             this.accelerationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // velocityValueText
@@ -286,7 +285,7 @@
             this.velocityTextBox.ReadOnly = true;
             this.velocityTextBox.Size = new System.Drawing.Size(103, 31);
             this.velocityTextBox.TabIndex = 4;
-            this.velocityTextBox.Text = "Current Velocity";
+            this.velocityTextBox.Text = "Velocity (m/s)";
             this.velocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // positionValueText
@@ -331,7 +330,7 @@
             this.positionTextBox.ReadOnly = true;
             this.positionTextBox.Size = new System.Drawing.Size(103, 31);
             this.positionTextBox.TabIndex = 2;
-            this.positionTextBox.Text = "Current Position";
+            this.positionTextBox.Text = "Position (m)";
             this.positionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // trainLabel

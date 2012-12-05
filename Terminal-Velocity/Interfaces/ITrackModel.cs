@@ -11,6 +11,9 @@
 
         bool requestUpdateSwitch(IBlock bToUpdate);
         bool requestUpdateBlock(IBlock blockToChange);
+
+        bool RedLoaded { get; }
+        bool GreenLoaded { get; }
     }
 
     public enum TrackChanged
