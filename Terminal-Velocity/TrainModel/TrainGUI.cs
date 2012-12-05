@@ -21,6 +21,10 @@ namespace TrainModel
 
         #region Constructors
 
+        /// <summary>
+        /// Constructor for the Train GUI.
+        /// </summary>
+        /// <param name="environment">The environment being used by the entire simulation.</param>
         public TrainGUI(ISimulationEnvironment environment)
         {
             InitializeComponent();
@@ -52,7 +56,7 @@ namespace TrainModel
         /// <summary>
         ///     Displays error message when a failure occurs.
         /// </summary>
-        /// <param name="error"></param>
+        /// <param name="error">The error message to display.</param>
         private void DisplayError(string error)
         {
             MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -61,8 +65,8 @@ namespace TrainModel
         /// <summary>
         ///     Updates the GUI every 10 ticks. HARDCODED
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Tick event args</param>
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             timer++;
@@ -77,9 +81,14 @@ namespace TrainModel
         /// <summary>
         ///     Populates the combobox using the list of all trains.
         /// </summary>
-        /// <param name="allTrains"></param>
+        /// <param name="allTrains">The list of all trains contained in the environment.</param>
         private void PopulateComboBox(List<ITrainModel> allTrains)
         {
+            foreach (Train train in allTrainComboBox.Items)
+            {
+                allTrainComboBox.Items.Remove(train);
+            }
+
             foreach (Train train in allTrains)
             {
                 allTrainComboBox.Items.Add(train);
@@ -164,8 +173,8 @@ namespace TrainModel
         /// <summary>
         ///     Detects when the selected index of the combo box changes, and updates the GUI.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedTrain = (Train)allTrainComboBox.SelectedItem;
