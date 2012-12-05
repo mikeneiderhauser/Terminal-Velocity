@@ -123,7 +123,7 @@ namespace TrainModel
         /// <returns>True if power level was within bounds, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + Math.Round(power, 3) + " W.\r\n";
+            appendInformationLog("Given power of " + Math.Round(power, 3) + " W.");
 
             double currentForce = 0;
             double newAcceleration = _physicalAccelerationLimit;
@@ -137,18 +137,18 @@ namespace TrainModel
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\r\n";
+                appendInformationLog("Power level caused acceleration to exceed physical limit.");
                 return false;
             }
 
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
+                appendInformationLog("Power level caused deceleration to exceed physical limit.");
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.\r\n";
+            appendInformationLog("Acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.");
             _currentAcceleration = newAcceleration;
             return true;
         }
