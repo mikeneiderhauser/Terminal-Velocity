@@ -30,7 +30,7 @@ namespace SimulationEnvironment
             _timer.Elapsed += _timer_Elapsed;
 
             _allTrains = new List<ITrainModel>();
-            _sysLog = new SystemLog();
+            _sysLog = new SystemLog(this);
         }
 
         #endregion
