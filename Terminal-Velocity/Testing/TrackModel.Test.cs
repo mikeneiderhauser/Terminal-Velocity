@@ -69,82 +69,213 @@ namespace Testing
 
             /////////////////////////////////
             //Test 4
-            //
+            //provideInputFile should return false when given a null argument
+            resBool = tm.provideInputFile(null);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: provideInputFile returns false when given a null argument");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: provideInputFile should return false when given a null argument");
+            }
             //End Test 4
             /////////////////////////////////
 
+
             /////////////////////////////////
             //Test 5
-            //
+            //provideInputFile should return false when given a non-csv file
+            resBool = tm.provideInputFile(@"..\..\red.bad");//An existent but non csv file
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: provideInputFile returns false when given a non-csv file");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: provideInputFile did not return false when given a non-csv file as expected");
+            }
             //End Test 5
             /////////////////////////////////
 
+
             /////////////////////////////////
             //Test 6
-            //
+            //provideInputFile should return true when given a valid file
+            resBool=tm.provideInputFile(@"..\..\red.csv");
+            if (resBool == true)
+            {
+                pass++;
+                message.Add("Pass: provideInputFile returned true when given a valid, existing, and properly formatted file (red.csv)");
+            }
+            else
+            {
+                fail++;
+                message.Add("Pass: provideInputFile returned false when given a valid and proper file, expected val was true (red.csv)");
+            }
             //End Test 6
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 7
-            //
+            //provideInputFile should return true when given a valid file
+            resBool = tm.provideInputFile(@"..\..\green.csv");
+            if (resBool == true)
+            {
+                pass++;
+                message.Add("Pass: provideInputFile returned true when given a valid, existing, and properly formatted file (green.csv)");
+            }
+            else
+            {
+                fail++;
+                message.Add("Pass: provideInputFile returned false when given a valid and proper file, expected val was true (green.csv)");
+            }
             //End Test 7
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 8
-            //
+            //Check that RedLoaded property returns true after loading
+            if (tm.RedLoaded)
+            {
+                pass++;
+                message.Add("Pass: the RedLoaded Property shows that the red line has now been loaded");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: the RedLoaded Property does not show that the red line has been loaded");
+            }
             //End Test 8
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 9
-            //
+            if (tm.GreenLoaded)
+            {
+                pass++;
+                message.Add("Pass: The GreenLoaded Property shows that the green line has now been loaded");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: The GreenLoaded Property does not show that the green line has been loaded");
+            }
             //End Test 9
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 10
-            //
+            //requestBlockInfo should return null when given a negative block number
+            IBlock tempIBlock = tm.requestBlockInfo(-1, "Red");
+            if (tempIBlock == null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo returned null when given a negative blockID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo returned a valid block when given negative blockID, expected val was null");
+            }
             //End Test 10
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 11
-            //
+            //requestBlockInfo should return null when given a blockID=0
+            tempIBlock = tm.requestBlockInfo(0, "Red");
+            if (tempIBlock != null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo was able to retrieve the 0 block of a line");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo returned null when given blockID=0, expected val was valid block");
+            }
             //End Test 11
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 12
-            //
+            //requestBlockInfo should return null when asked to retrieve an out-of-range block id
+            tempIBlock = tm.requestBlockInfo(19191, "Red");
+            if (tempIBlock == null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo returned null as expected when given an out of range block ID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo did not return null when given an out of range blockID, expected val was null");
+            }
             //End Test 12
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 13
-            //
+            //requestBlockInfo should return null when given a bad line string
+            tempIBlock = tm.requestBlockInfo(0, "asdf");
+            if (tempIBlock == null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo returned null when given an invalid line string");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo did not return null when given an invalid line string");
+            }
             //End Test 13
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 14
-            //
+            //requestBlockInfo should return a valid block when asked to retrieve a basic block (without extra infrastructure)
+            tempIBlock = tm.requestBlockInfo(1, "Red");
+            if (tempIBlock != null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo successfully returned a basic block without extra infrastructure");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo returned null when asked to retrieve a basic block without extra infrastructure");
+            }
             //End Test 14
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 15
-            //
+            //requestBlockInfo should return a valid block when asked to retrieve a more complex block (containing infrastructure such as switch, heater, etc).
+            tempIBlock = tm.requestBlockInfo(27, "Red");
+            if (tempIBlock != null)
+            {
+                pass++;
+                message.Add("Pass: requestBlockInfo successfully returned a complex block (with additional infra)");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestBlockInfo returns null when asked for a more complex block (with additional infra)");
+            }
             //End Test 15
             /////////////////////////////////
 
