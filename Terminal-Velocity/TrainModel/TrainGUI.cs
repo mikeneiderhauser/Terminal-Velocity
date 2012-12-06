@@ -11,11 +11,12 @@ namespace TrainModel
         #region Global variables
 
         private readonly ISimulationEnvironment _environment;
-        private readonly List<ITrainModel> allTrains;
-        private int numTrains;
+        private readonly List<ITrainModel> _allTrains;
+        private List<string> _errorMessages;
+        private int _numTrains;
 
-        private Train selectedTrain;
-        private int timer;
+        private Train _selectedTrain;
+        private int _timer;
 
         #endregion
 
@@ -30,17 +31,18 @@ namespace TrainModel
             InitializeComponent();
 
             allTrainComboBox.SelectedIndexChanged += allTrainComboBox_SelectedIndexChanged;
-            allTrains = environment.AllTrains;
-            numTrains = allTrains.Count;
+            _allTrains = environment.AllTrains;
+            _numTrains = _allTrains.Count;
+            _errorMessages = new List<string>();
 
-            timer = 0;
+            _timer = 0;
 
-            PopulateComboBox(allTrains);
+            PopulateComboBox(_allTrains);
 
-            if (allTrains != null && allTrains.Count > 0)
+            if (_allTrains != null && _allTrains.Count > 0)
             {
-                selectedTrain = (Train)allTrains[0];
-                allTrainComboBox.SelectedItem = selectedTrain;
+                _selectedTrain = (Train)_allTrains[0];
+                allTrainComboBox.SelectedItem = _selectedTrain;
             }
 
             UpdateGUI();
@@ -59,7 +61,11 @@ namespace TrainModel
         /// <param name="error">The error message to display.</param>
         private void DisplayError(string error)
         {
-            MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (!_errorMessages.Contains(error))
+            {
+                _errorMessages.Add(error);
+                MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -69,11 +75,11 @@ namespace TrainModel
         /// <param name="e">Tick event args</param>
         private void _environment_Tick(object sender, TickEventArgs e)
         {
-            timer++;
+            _timer++;
 
-            if (timer % 10 == 0)
+            if (_timer % 10 == 0)
             {
-                timer = 0;
+                _timer = 0;
                 UpdateGUI();
             }
         }
@@ -81,12 +87,12 @@ namespace TrainModel
         /// <summary>
         ///     Populates the combobox using the list of all trains.
         /// </summary>
-        /// <param name="allTrains">The list of all trains contained in the environment.</param>
-        private void PopulateComboBox(List<ITrainModel> allTrains)
+        /// <param name="_allTrains">The list of all trains contained in the environment.</param>
+        private void PopulateComboBox(List<ITrainModel> _allTrains)
         {
             allTrainComboBox.Items.Clear();
 
-            foreach (Train train in allTrains)
+            foreach (Train train in _allTrains)
             {
                 allTrainComboBox.Items.Add(train);
             }
@@ -104,14 +110,14 @@ namespace TrainModel
             }
 
             // check if trains have been added or removed from list
-            if (numTrains != allTrains.Count)
+            if (_numTrains != _allTrains.Count)
             {
-                PopulateComboBox(allTrains);
-                numTrains = allTrains.Count;
+                PopulateComboBox(_allTrains);
+                _numTrains = _allTrains.Count;
             }
 
             // check for errors in all trains
-            foreach (Train train in allTrains)
+            foreach (Train train in _allTrains)
             {
                 // checks for any failures
                 if (train.BrakeFailure)
@@ -130,23 +136,23 @@ namespace TrainModel
                 }
             }
 
-            if (selectedTrain != null)
+            if (_selectedTrain != null)
             {
-                trainLabel.Text = selectedTrain.ToString();
-                trainInfoTextBox.Text = selectedTrain.InformationLog;
+                trainLabel.Text = _selectedTrain.ToString();
+                trainInfoTextBox.Text = _selectedTrain.InformationLog;
 
-                positionValueText.Text = Math.Round(selectedTrain.CurrentPosition, 3).ToString();
-                velocityValueText.Text = Math.Round(selectedTrain.CurrentVelocity, 3).ToString();
-                accelerationValueText.Text = Math.Round(selectedTrain.CurrentAcceleration, 3).ToString();
+                positionValueText.Text = Math.Round(_selectedTrain.CurrentPosition, 3).ToString();
+                velocityValueText.Text = Math.Round(_selectedTrain.CurrentVelocity, 3).ToString();
+                accelerationValueText.Text = Math.Round(_selectedTrain.CurrentAcceleration, 3).ToString();
 
-                gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
-                massValueText.Text = Math.Round(selectedTrain.TotalMass, 3).ToString();
+                gradeValueText.Text = _selectedTrain.CurrentBlock.Grade.ToString();
+                massValueText.Text = Math.Round(_selectedTrain.TotalMass, 3).ToString();
 
-                numPassengersValueText.Text = selectedTrain.NumPassengers.ToString();
-                numCrewValueText.Text = selectedTrain.NumCrew.ToString();
+                numPassengersValueText.Text = _selectedTrain.NumPassengers.ToString();
+                numCrewValueText.Text = _selectedTrain.NumCrew.ToString();
 
                 // set values for lights
-                if (selectedTrain.LightsOn)
+                if (_selectedTrain.LightsOn)
                 {
                     lightsValueText.Text = "On";
                 }
@@ -156,7 +162,7 @@ namespace TrainModel
                 }
 
                 // set values for doors
-                if (selectedTrain.DoorsOpen)
+                if (_selectedTrain.DoorsOpen)
                 {
                     doorsValueText.Text = "Open";
                 }
@@ -174,7 +180,7 @@ namespace TrainModel
         /// <param name="e">Event args</param>
         private void allTrainComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedTrain = (Train)allTrainComboBox.SelectedItem;
+            _selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
         }
 
