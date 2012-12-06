@@ -16,6 +16,10 @@ namespace TrackModel
         private bool _greenLoaded;
         //private DisplayManager _dispManager;
 
+        /// <summary>
+        /// A constructor for the TrackModel module
+        /// </summary>
+        /// <param name="environment">Requires a reference to the surrounding environment object</param>
         public TrackModel(ISimulationEnvironment environment)
         {
             _redLoaded = false;
@@ -29,8 +33,14 @@ namespace TrackModel
             //_environment.Tick+=
         }
 
-        //Last minute method to allow TrackModel to directly take input file.
-
+        
+        /// <summary>
+        /// A public method allowing other modules to request information on specific blocks.
+        /// This information is returned in the form of 
+        /// </summary>
+        /// <param name="blockID">The ID of the requested block.  ID's are unique across all blocks in a given line</param>
+        /// <param name="line">The name of the line containing the requested block.  Either "Red" or "Green"</param>
+        /// <returns>An IBlock object holding information pertaining the block requested, or null if an error occurred</returns>
         public IBlock requestBlockInfo(int blockID, string line)
         {
             //Dont request patently invalid blocks
@@ -54,6 +64,11 @@ namespace TrackModel
             return temp;
         }
 
+        /// <summary>
+        /// A public method allowing outside modules to request info pertaining to a track line.
+        /// </summary>
+        /// <param name="routeID">The route ID should be 0 for the Red line, or 1 for the Green line</param>
+        /// <returns>an IRouteInfo object containing information pertaining to the Line/Route requested, or null if an error occurred</returns>
         public IRouteInfo requestRouteInfo(int routeID)
         {
             if (routeID != 0 && routeID != 1)
@@ -75,6 +90,13 @@ namespace TrackModel
             return temp;
         }
 
+
+        /// <summary>
+        /// A public method used to request a 2D array holding the Track Layour for a given line
+        /// </summary>
+        /// <param name="routeID">A routeID, corresponding to which line the user requests.  0 for Red, 1 for Green.</param>
+        /// <returns>The returned IBlock[,] represents the track line.  The grid shows the 2D placement of blocks
+        /// in space.  Where no blocks are found, the value is null.  </returns>
         public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID != 0 && routeID != 1)
@@ -411,6 +433,12 @@ namespace TrackModel
             return temp;
         }
 
+        /// <summary>
+        /// This public method is used to allow other modules to request a change in switch state for
+        /// a block.  
+        /// </summary>
+        /// <param name="bToUpdate"> An IBlock object with the updated switch state.</param>
+        /// <returns>A boolean object representing the success or failure of the database update</returns>
         public bool requestUpdateSwitch(IBlock bToUpdate)
         {
             if (bToUpdate == null)
@@ -444,6 +472,13 @@ namespace TrackModel
             return res;
         }
 
+        /// <summary>
+        /// A public method allowing external modules to update variable attributes of a block.
+        /// The attributes that are changable include the health state (broken, failed, healthy), 
+        /// the Track Circuit ID, and any infrastructure changes.
+        /// </summary>
+        /// <param name="bToUpdate">The IBlock object</param>
+        /// <returns></returns>
         public bool requestUpdateBlock(IBlock bToUpdate)
         {
             if (bToUpdate == null)
@@ -477,6 +512,12 @@ namespace TrackModel
             return res;
         }
 
+        /// <summary>
+        /// A public method allowing modules to give input csv files to the TrackModel.  This method 
+        /// takes the input files and parses them for insertion into the database.
+        /// </summary>
+        /// <param name="fName">The file name of the file to be parsed</param>
+        /// <returns>A boolean corresponding to the success or failure of the file parsing and insertion</returns>
         public bool provideInputFile(string fName)
         {
             int res = _dbCreator.parseInputFile(fName);
@@ -505,17 +546,26 @@ namespace TrackModel
             //handle tick here
         }
 
-        //Property
+        /// <summary>
+        /// A Property returning an enum corresponding to which line's have been changed since
+        /// the last check.  Red, Green, Both, or None
+        /// </summary>
         public TrackChanged ChangeFlag
         {
             get { return _changeState; }
         }
 
+        /// <summary>
+        /// A boolean value corresponding to whether the red line has been loaded yet
+        /// </summary>
         public bool RedLoaded
         {
             get { return _redLoaded; }
         }
 
+        /// <summary>
+        /// A boolean value corresponding to whether the green line has been loaded yet
+        /// </summary>
         public bool GreenLoaded
         {
             get { return _greenLoaded; }

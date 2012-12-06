@@ -110,5 +110,17 @@ namespace CTCOffice
         {
             get { return null; }
         }
+
+        public double SpeedLimit
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public int AuthorityLimit
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 }

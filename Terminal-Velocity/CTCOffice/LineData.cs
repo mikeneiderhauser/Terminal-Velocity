@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using Interfaces;
 using Utility.Properties;
 
@@ -11,8 +12,19 @@ namespace CTCOffice
         private LayoutCellDataContainer[,] _layout;
         private List<ITrainModel> _trains;
 
+        private static Bitmap _redTrack;
+        private static Bitmap _greenTrack;
+        private static Bitmap _unpopulated;
+        private static Bitmap _trackError;
+
         public LineData(IBlock[,] layout, ISimulationEnvironment env)
         {
+            // mds
+            _redTrack = Resources.RedTrack;
+            _greenTrack = Resources.GreenTrack;
+            _unpopulated = Resources.Unpopulated;
+            _trackError = Resources.TrackError;
+
             _env = env;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
@@ -31,7 +43,7 @@ namespace CTCOffice
                     if (layout[i, j] == null)
                     {
                         //null container
-                        container.BaseTile = Resources.Unpopulated;
+                        container.Tile = _unpopulated;
                         container.Block = null;
                         container.Train = null;
                     }
@@ -46,19 +58,17 @@ namespace CTCOffice
                             layout[i, j].Line.CompareTo("R") == 0 || layout[i, j].Line.CompareTo("r") == 0)
                         {
                             //red line
-                            //container.BaseTile = Resources.RedTrack;
-                            container.BaseTile = ParseTrackType(layout[i, j]);
+                            container.Tile = _redTrack;
                         }
                         else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 ||
                                  layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
                         {
                             //green line
-                            container.BaseTile = Resources.GreenTrack;
-                            container.BaseTile = ParseTrackType(layout[i, j]);
+                            container.Tile = _greenTrack;
                         }
                         else
                         {
-                            container.BaseTile = Resources.TrackError;
+                            container.Tile = _trackError;
                             env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
@@ -68,34 +78,6 @@ namespace CTCOffice
                     _layout[i, j] = container;
                 } //end for 2nd dimension
             } //end for 1st dimentsion
-        }
-
-        private System.Drawing.Image ParseTrackType(IBlock block)
-        {
-            if(block.Line.CompareTo("Red")!=0)
-            {
-                //red
-                if (block.hasSwitch()) { return Resources.RedTrack_Switch; }
-                if (block.hasTunnel()) { return Resources.RedTrack_Tunnel; }
-                if (block.hasHeater()) { return Resources.RedTrack_Heater; }
-                if (block.hasCrossing()) { return Resources.RedTrack_Crossing; }
-                if (block.hasStation()) { return Resources.RedTrack_Station; }
-                return Resources.Unpopulated;
-            }
-            else if (block.Line.CompareTo("Green") != 0)
-            {
-                //green
-                if (block.hasSwitch()) { return Resources.GreenTrack_Switch; }
-                if (block.hasTunnel()) { return Resources.GreenTrack_Tunnel; }
-                if (block.hasHeater()) { return Resources.GreenTrack_Heater; }
-                if (block.hasCrossing()) { return Resources.GreenTrack_Crossing; }
-                if (block.hasStation()) { return Resources.GreenTrack_Station; }
-                return Resources.Unpopulated;
-            }
-            else
-            {
-                return Resources.Unpopulated;
-            }
         }
 
 //end constructor
@@ -130,11 +112,6 @@ namespace CTCOffice
             foreach (ITrainModel t in _trains)
             {
                 //check if train ID's match.. need ITrain class to implement
-                if (toRemove.TrainID == t.TrainID)
-                {
-                    toRemove = t;
-                    break;
-                }
             }
 
             return toRemove;
@@ -143,47 +120,6 @@ namespace CTCOffice
         public void AddBlock(IBlock block)
         {
             _blocks.Add(block);
-        }
-
-        public void RemoveBlock(IBlock block)
-        {
-            if (block != null)
-            {
-                if (_blocks.Contains(block))
-                {
-                    _blocks.Remove(block);
-                }
-            }
-        }
-
-        public int[] TriangulateBlock(IBlock block)
-        {
-            int[] index = new int[2]{-1,-1};
-
-            int i = 0;
-            int j = 0;
-            for (i = 0; i <= _layout.GetUpperBound(0); i++)
-            {
-                for (j = 0; j <= _layout.GetUpperBound(1); j++)
-                {
-                    if (_layout[i, j] != null)
-                    {
-                        if (block.BlockID == _layout[i, j].Block.BlockID)
-                        {
-                            index[0] = i;
-                            index[1] = j;
-                            return index;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }//end triangulate block
-
-        public void UpdateBlock(int listIndex, int layoutX, int layoutY, StateEnum state)
-        {
-
         }
     }
 }
