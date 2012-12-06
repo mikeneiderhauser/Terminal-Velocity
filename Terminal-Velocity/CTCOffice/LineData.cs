@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using Interfaces;
 using Utility.Properties;
 
@@ -11,8 +12,19 @@ namespace CTCOffice
         private LayoutCellDataContainer[,] _layout;
         private List<ITrainModel> _trains;
 
+        private static Bitmap _redTrack;
+        private static Bitmap _greenTrack;
+        private static Bitmap _unpopulated;
+        private static Bitmap _trackError;
+
         public LineData(IBlock[,] layout, ISimulationEnvironment env)
         {
+            // mds
+            _redTrack = Resources.RedTrack;
+            _greenTrack = Resources.GreenTrack;
+            _unpopulated = Resources.Unpopulated;
+            _trackError = Resources.TrackError;
+
             _env = env;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
@@ -31,7 +43,7 @@ namespace CTCOffice
                     if (layout[i, j] == null)
                     {
                         //null container
-                        container.Tile = Resources.Unpopulated;
+                        container.Tile = _unpopulated;
                         container.Block = null;
                         container.Train = null;
                     }
@@ -46,17 +58,17 @@ namespace CTCOffice
                             layout[i, j].Line.CompareTo("R") == 0 || layout[i, j].Line.CompareTo("r") == 0)
                         {
                             //red line
-                            container.Tile = Resources.RedTrack;
+                            container.Tile = _redTrack;
                         }
                         else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 ||
                                  layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
                         {
                             //green line
-                            container.Tile = Resources.GreenTrack;
+                            container.Tile = _greenTrack;
                         }
                         else
                         {
-                            container.Tile = Resources.TrackError;
+                            container.Tile = _trackError;
                             env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
