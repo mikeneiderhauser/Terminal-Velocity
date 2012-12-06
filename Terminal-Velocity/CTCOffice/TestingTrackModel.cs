@@ -54,6 +54,12 @@ namespace CTCOffice
             throw new NotImplementedException();
         }
 
+        public IBlock[] requestPath(int startBlock, int endBlock, string line)
+        {
+
+            return null;
+        }
+
         public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID == 0)

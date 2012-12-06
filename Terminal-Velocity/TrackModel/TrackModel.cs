@@ -539,6 +539,11 @@ namespace TrackModel
                 return false;
         }
 
+        public IBlock[] requestPath(int startBlockID, int endBlockID, string line)
+        {
+            return null;
+        }
+
 
         //Handle environment tick
         private void _environment_Tick(object sender, TickEventArgs e)
