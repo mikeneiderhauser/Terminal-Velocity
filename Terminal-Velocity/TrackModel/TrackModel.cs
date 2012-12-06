@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using Interfaces;
 using Utility;
@@ -14,7 +16,6 @@ namespace TrackModel
         private TrackChanged _changeState;
         private bool _redLoaded;
         private bool _greenLoaded;
-        //private DisplayManager _dispManager;
 
         /// <summary>
         /// A constructor for the TrackModel module
@@ -539,10 +540,134 @@ namespace TrackModel
                 return false;
         }
 
+        /// <summary>
+        /// A public method used by the CTC Office and Track Controller to determine the path between two
+        /// points (startBlockID and endBlockID) on a given line.  Uses BFS to find a decent path between
+        /// the two points.
+        /// </summary>
+        /// <param name="startBlockID">The Block ID of the starting block</param>
+        /// <param name="endBlockID">The Block ID of the ending block</param>
+        /// <param name="line">The line containing the path: either "Red" or "Green"</param>
+        /// <returns>An array of IBlock objects on the path</returns>
         public IBlock[] requestPath(int startBlockID, int endBlockID, string line)
         {
-            return null;
-        }
+            bool destFound = false;
+
+            //If start or end block ID was obviously invalid.
+            if (startBlockID < 0 || endBlockID < 0)
+            {
+                return null;
+            }
+
+            //If line was invalid
+            if (!line.Equals("Red", StringComparison.OrdinalIgnoreCase) && !line.Equals("Green", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            //Initialize hash w/ keys="bID+line" and values=Visited(true) or NotVisited(false)
+            Hashtable visited = new Hashtable();
+
+            //Arbitrary initialization
+            for (int i = 0; i < 180; i++)
+            {
+                visited.Add(i, false);
+            }
+
+
+            //Init stack to hold startBlock
+            Stack < IBlock > path= new Stack<IBlock>();
+            IBlock startBlock = requestBlockInfo(startBlockID, line);
+            if (startBlock == null)
+            {
+                return null;
+            }
+            path.Push( startBlock );
+
+            while (path.Count != 0)
+            {
+                IBlock temp = path.Peek();
+
+                //Find neighbors of current node
+                List<IBlock> neighborList = new List<IBlock>();
+                int nextID=temp.SwitchDest1;
+                int altNext=temp.SwitchDest2;
+                int prev=temp.PrevBlockID;
+                if (nextID != -1 && nextID!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(nextID,line) );
+                }
+
+                if(altNext!=-1 && altNext!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(altNext,line) );
+                }
+
+                if(prev!=-1 && prev!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(prev,line) );
+                }
+
+
+                //If one of the neighbors is the destination
+                //Add the dest to the path, and set the destFound flag
+                //so we can break from our loop
+                foreach(IBlock n in neighborList)
+                {
+                    if (n.BlockID == endBlockID)
+                    {
+                        path.Push(n);
+                        destFound = true;
+                    }
+                }
+                if (destFound)
+                    break;
+
+                //If(Block has at least 1 neighbor not visited yet, push neighbor to path-stack
+                bool deadEnd = true;
+                foreach(IBlock n in neighborList)
+                {
+                    if ((bool)visited[n.BlockID] == false)
+                    {
+                        deadEnd = false;
+                        //push ONE AND ONLY ONE unvisited neighber to path-stack
+                        path.Push(n);
+                        //set this neighbor as visited in boolean hash
+                        visited[n.BlockID] = true;
+                        break;
+                    }
+                }
+
+                //If no neighbors found, we reached a dead end, pop top off stack
+                //top should still be 'temp' before pop, as no neighbors were pushed,
+                //and the destination wasnt found.
+                if (deadEnd == true)
+                {
+                    path.Pop();
+                }
+
+            }//End while loop
+
+            //If path contains no elements, then path does not exist
+            if (path.Count == 0)
+            {
+                return null;
+            }
+            else//If path contains elements, we have a valid path stored in our stack.
+            {
+                //Copy stack to array
+                IBlock[] pathArr=path.ToArray();
+                //Change array into list
+                List<IBlock> pathList = new List<IBlock>(pathArr);
+                //Reverse list
+                pathList.Reverse();
+                //Turn list back into array
+                pathArr = pathList.ToArray();
+                //return the array
+                return pathArr;
+            }
+
+        }//End method
 
 
         //Handle environment tick
