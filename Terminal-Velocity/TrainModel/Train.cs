@@ -66,6 +66,9 @@ namespace TrainModel
         /// <param name="environment">The environment being used by the entire simulation.</param>
         public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
+            _environment = environment;
+            _environment.Tick += _environment_Tick;
+
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "";
@@ -90,9 +93,6 @@ namespace TrainModel
             _currentBlockID = _currentBlock.BlockID;
             _blockLength = _currentBlock.BlockSize;
             _trackCircuitID = _currentBlock.TrackCirID;
-
-            _environment = environment;
-            _environment.Tick += _environment_Tick;
 
             _trackModel = environment.TrackModel;
             _trainController = new TrainController.TrainController(_environment, this);
@@ -155,12 +155,22 @@ namespace TrainModel
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
                 _brakeFailure = true;
-                appendInformationLog("Given negative power, but acceleration is still increasing.");
+                appendInformationLog("BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
                 EmergencyBrake();
             }
             else
             {
                 _brakeFailure = false;
+            }
+
+            if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
+            {
+                _engineFailure = true;
+                appendInformationLog("POSITIVE POWER GIVEN BUT TRAIN SLOWING DOWN. ENGINE FAILURE.");
+            }
+            else
+            {
+                _engineFailure = false;
             }
 
             _currentAcceleration = newAcceleration;
@@ -235,6 +245,7 @@ namespace TrainModel
                 else
                 {
                     _signalPickupFailure = true; // throw signal pickup failure
+                    appendInformationLog("EXPERIENCED SIGNAL PICKUP FAILURE.");
                 }
 
                 // update the current position of the train
@@ -267,6 +278,8 @@ namespace TrainModel
         {
             _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
             _informationLog += s + "\r\n";
+
+            _environment.sendLogEntry("For " + this.ToString() + ": " + s);
         }
 
         #endregion
