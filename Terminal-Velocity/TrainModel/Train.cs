@@ -462,6 +462,9 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        /// <summary>
+        ///     Get the Train Controller assigned to the train.
+        /// </summary>
         public ITrainController TrainController
         {
             get { return _trainController; }
