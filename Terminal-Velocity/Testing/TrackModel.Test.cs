@@ -282,7 +282,18 @@ namespace Testing
 
             /////////////////////////////////
             //Test 16
-            //
+            //requestUpdateBlock returns false when provided with a null value
+            resBool=tm.requestUpdateBlock(null);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateBlock returns false when given a null value");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateBlock returns true when given a null value, expected value is false");
+            }
             //End Test 16
             /////////////////////////////////
 
@@ -290,28 +301,91 @@ namespace Testing
 
             /////////////////////////////////
             //Test 17
-            //
+            //requestUpdateBlock returns false when provided with a block w/ ID=0 (no updating the yard)
+            tempIBlock=tm.requestBlockInfo(0, "Red");
+            resBool = tm.requestUpdateBlock(tempIBlock);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateBlock returned false when attempting to update 0 block (yard)");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateBlock returned true when attempting to update 0 block (yard), expected value was false");
+            }
             //End Test 17
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 18
-            //
+            //requestBlockUpdate should allow change of Health State
+            tempIBlock=tm.requestBlockInfo(1,"Red");
+
+            //Store old state, and assign new state in a way that ensures oldState and newState are different
+            var oldState = tempIBlock.State;
+            if(oldState!=StateEnum.CircuitFailure)
+                tempIBlock.State = StateEnum.CircuitFailure;
+            else
+                tempIBlock.State=StateEnum.BrokenTrackFailure;
+
+            //Update the block
+            resBool=tm.requestUpdateBlock(tempIBlock);
+            //Re-request info from database
+            tempIBlock=tm.requestBlockInfo(1,"Red");
+            if (resBool && tempIBlock.State != oldState)
+            {
+                pass++;
+            }
+            else if (!resBool && tempIBlock.State==oldState)
+            {
+                fail++;
+                message.Add("Fail: requestUpdateBlock returnd a false value, when given a changed state, expected val was true");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateBlock returned true, but failed to update the database");
+            }
             //End Test 18
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 19
-            //
+            //requestUpdateBlock should allow updating of heater state
+
+                    //////////////////////////////////
+                            //THIS NEEDS IMPLEMENTED STILL
+                            //No blocks in the init file contain heaters by default
+                            //Should I assume that every block has a heater?
+                            //I prob want to write a method in the BLOCK object that lets you turn the heater on and off
+                            //
+                    //////////////////////////////////
             //End Test 19
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 20
-            //
+            //requestUpdateBlock should return true but fail to update swith when asked to update switch information in db
+            tempIBlock=tm.requestBlockInfo(1, "Red");
+            int oldSD1 = tempIBlock.SwitchDest1;
+            tempIBlock.SwitchDest1 = tempIBlock.SwitchDest2;
+            tempIBlock.SwitchDest2 = oldSD1;
+            resBool=tm.requestUpdateBlock(tempIBlock);
+            tempIBlock=tm.requestBlockInfo(1, "Red");
+            if (resBool == true && tempIBlock.SwitchDest1 == oldSD1)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateBlock did not update Switch state in database");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: either the returned boolean was false, or the data was updated in the db.");
+            }
             //End Test 20
             /////////////////////////////////
 

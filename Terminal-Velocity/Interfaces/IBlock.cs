@@ -68,7 +68,7 @@
         /// <summary>
         /// An integer recording the Track Circuit ID, pointing to the Track Circuit controlling the given block.
         /// </summary>
-        int TrackCirID { get; set; }
+        int TrackCirID { get; /**set;*/ }
 
         /// <summary>
         /// An attribute array storing infrastructure information.  Using this property should never be necessary, with the

@@ -475,14 +475,17 @@ namespace TrackModel
 
         /// <summary>
         /// A public method allowing external modules to update variable attributes of a block.
-        /// The attributes that are changable include the health state (broken, failed, healthy), 
-        /// the Track Circuit ID, and any infrastructure changes.
+        /// The attributes that are changable include the health state (broken, failed, healthy).
+        /// That's it.
         /// </summary>
         /// <param name="bToUpdate">The IBlock object</param>
         /// <returns></returns>
         public bool requestUpdateBlock(IBlock bToUpdate)
         {
             if (bToUpdate == null)
+                return false;
+
+            if (bToUpdate.BlockID == 0)
                 return false;
 
             string updateString = _dbManager.createUpdate("BLOCK", bToUpdate);

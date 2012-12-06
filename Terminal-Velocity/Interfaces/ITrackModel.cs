@@ -52,7 +52,7 @@
 
         /// <summary>
         /// Allows a database update to other variable pieces of a given block.  Updated values include state 
-        /// (healthy, broken, failed), the TrackCircuitID, and any infrastructure changes.
+        /// (healthy, broken, failed).  That's it.
         /// </summary>
         /// <param name="blockToChange">The IBlock object containing any changes the user wishes to make to the database</param>
         /// <returns>A boolean representing the success of the update operation</returns>
