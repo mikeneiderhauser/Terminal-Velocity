@@ -137,7 +137,7 @@ namespace TrainModel
 
                 positionValueText.Text = Math.Round(selectedTrain.CurrentPosition, 3).ToString();
                 velocityValueText.Text = Math.Round(selectedTrain.CurrentVelocity, 3).ToString();
-                accelerationValueText.Text = Math.Round(selectedTrain.CurrentAcceleration).ToString();
+                accelerationValueText.Text = Math.Round(selectedTrain.CurrentAcceleration, 3).ToString();
 
                 gradeValueText.Text = selectedTrain.CurrentBlock.Grade.ToString();
                 massValueText.Text = Math.Round(selectedTrain.TotalMass, 3).ToString();
