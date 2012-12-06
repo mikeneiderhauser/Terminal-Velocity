@@ -152,7 +152,7 @@ namespace TrainModel
                 return false;
             }
 
-            if ((newAcceleration > _currentAcceleration) && (power < 0)) // acceleration increasing despite using brakes
+            if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
                 _brakeFailure = true;
                 appendInformationLog("Given negative power, but acceleration is still increasing.");
