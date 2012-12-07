@@ -186,6 +186,7 @@ namespace CTCOffice
             if (_tickCount >= _rate)
             {
                 updateMetrics();
+                refreshStatus();
                 _tickCount = 0;
             }
         }
@@ -320,6 +321,39 @@ namespace CTCOffice
             _lblCrewMetrics.Text = sumCrew.ToString();
             _lblPassengersMetrics.Text = sumPass.ToString();
             _lblTotalMetrics.Text = (sumPass + sumCrew).ToString() + " / " + max.ToString();
+        }
+
+        private void refreshStatus()
+        {
+            if (_environment != null)
+            {
+                _imgSysStatusEnvironment.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusEnvironment.Image = _res.RedLight;
+            }
+
+            if (_environment.TrackModel != null)
+            {
+                if (_environment.TrackModel.RedLoaded && _environment.TrackModel.GreenLoaded)
+                {
+                    _imgSysStatusTrackModel.Image = _res.GreenLight;
+                }
+                else if (_environment.TrackModel.RedLoaded || _environment.TrackModel.GreenLoaded)
+                {
+                    _imgSysStatusTrackModel.Image = _res.YellowLight;
+                }
+                else
+                {
+                    _imgSysStatusTrackModel.Image = _res.RedLight;
+                }
+            }
+            else
+            {
+                _imgSysStatusTrackModel.Image = _res.RedLight;
+            }
+
         }
 
         /// <summary>
