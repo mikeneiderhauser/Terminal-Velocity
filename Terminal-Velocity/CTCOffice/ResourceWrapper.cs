@@ -9,7 +9,7 @@ using Utility;
 
 namespace CTCOffice
 {
-    class ResourceWrapper
+    public class ResourceWrapper
     {
         #region Private Variables (Resources)
         private Bitmap _redLight;
@@ -19,6 +19,7 @@ namespace CTCOffice
         private Bitmap _train;
 
         private Bitmap _unpopulated;
+        private Bitmap _trackError;
 
         private Bitmap _redTrack;
         private Bitmap _redTrackClosed;
@@ -48,6 +49,7 @@ namespace CTCOffice
             _train = Utility.Properties.Resources.RedTrack_Train;
 
             _unpopulated = Utility.Properties.Resources.Unpopulated;
+            _trackError = Utility.Properties.Resources.TrackError;
 
             _redTrack = Utility.Properties.Resources.RedTrack;
             _redTrackClosed = Utility.Properties.Resources.RedTrack_Closed;
@@ -98,6 +100,12 @@ namespace CTCOffice
         /// </summary>
         public Bitmap Unpopulated
         { get { return _unpopulated; } }
+
+        /// <summary>
+        /// Property for Track Error Bitmap (Resource)
+        /// </summary>
+        public Bitmap TrackError
+        { get { return _trackError; } }
 
         /// <summary>
         /// Property for Red Track Bitmap (Resource)

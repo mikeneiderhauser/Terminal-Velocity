@@ -24,12 +24,10 @@ namespace CTCOffice
         private readonly Queue<IRequest> _requestsOut;
         private bool _automation;
         private LineData _greenLineData;
-        private LineData _greenLineDataBackup;
         private bool _populationBlock;
         private bool _processingInRequests;
         private bool _processingOutRequests;
         private LineData _redLineData;
-        private LineData _redLineDataBackup;
 
         private double _tickCount;
         private List<ITrainModel> _trains;
@@ -102,8 +100,7 @@ namespace CTCOffice
                 //Checks if the red line has been loaded yet
                 if (_env.TrackModel.RedLoaded && !_redLoaded)
                 {
-                    _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                    _redLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
+                    _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
                     _redLoaded = true;
                 }
                 else
@@ -114,8 +111,7 @@ namespace CTCOffice
                 //Checks if the green line has been loaded yet
                 if (_env.TrackModel.GreenLoaded && !_greenLoaded)
                 {
-                    _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
-                    _greenLineDataBackup = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
+                    _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
                     _greenLoaded = true;
                 }
                 else
@@ -298,8 +294,6 @@ namespace CTCOffice
         /// <param name="request"></param>
         private void internalRequest(IRequest request)
         {
-            int index = 0;
-            int[] cord;
             IStatus s = request.Info;
             if (_env.TrackModel.ChangeFlag != TrackChanged.None)
             {
@@ -309,22 +303,19 @@ namespace CTCOffice
                     if (b.Line.CompareTo("Red") != 0)
                     {
                         //red line
-                        index = _redLineData.Blocks.IndexOf(b);
-
-                        cord = _redLineData.TriangulateBlock(b);
-                        if (cord != null)
-                        {
-
-                        }
-                        //_redLineData.Blocks[index];
+                        LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                        c.Tile = _redLineData.GetBlockType(b);
                     }
                     else
                     {
                         //green line
-                        index = _greenLineData.Blocks.IndexOf(b);
+                        LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
+                        c.Tile = _greenLineData.GetBlockType(b);
                     }
                 }
             }//end process blocks
+
+            //TODO Trains Images
         }
 
         /// <summary>
@@ -375,11 +366,6 @@ namespace CTCOffice
             if (!_populationBlock)
             {
                 _populationBlock = true;
-                _redLineDataBackup = _redLineData;
-                _greenLineDataBackup = _greenLineData;
-
-                _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env);
-                _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env);
 
                 AddTrainsToTrack();
 
@@ -474,25 +460,11 @@ namespace CTCOffice
         {
             if (line == 0)
             {
-                if (_populationBlock)
-                {
-                    return _greenLineDataBackup;
-                }
-                else
-                {
-                    return _redLineData;
-                }
+                return _redLineData;
             }
             else if (line == 1)
             {
-                if (_populationBlock)
-                {
-                    return _greenLineDataBackup;
-                }
-                else
-                {
-                    return _greenLineData;
-                }
+                return _greenLineData;
             }
 
             return null;

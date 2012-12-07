@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Interfaces;
-using Utility.Properties;
 
 namespace CTCOffice
 {
@@ -11,25 +10,17 @@ namespace CTCOffice
         private ISimulationEnvironment _env;
         private LayoutCellDataContainer[,] _layout;
         private List<ITrainModel> _trains;
+        private ResourceWrapper _res;
 
-        private static Bitmap _redTrack;
-        private static Bitmap _greenTrack;
-        private static Bitmap _unpopulated;
-        private static Bitmap _trackError;
-
-        public LineData(IBlock[,] layout, ISimulationEnvironment env)
+        public LineData(IBlock[,] layout, ISimulationEnvironment env, ResourceWrapper res)
         {
-            // mds
-            _redTrack = Resources.RedTrack;
-            _greenTrack = Resources.GreenTrack;
-            _unpopulated = Resources.Unpopulated;
-            _trackError = Resources.TrackError;
-
             _env = env;
+            _res = res;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
             _layout = new LayoutCellDataContainer[layout.GetUpperBound(0) + 1,layout.GetUpperBound(1) + 1];
 
+            
             //for each item in the 1st dimension (row)
             for (int i = 0; i <= layout.GetUpperBound(0); i++)
             {
@@ -43,7 +34,8 @@ namespace CTCOffice
                     if (layout[i, j] == null)
                     {
                         //null container
-                        container.Tile = _unpopulated;
+                        container.BaseTile = _res.Unpopulated;
+                        container.Tile = container.BaseTile;
                         container.Block = null;
                         container.Train = null;
                     }
@@ -58,17 +50,20 @@ namespace CTCOffice
                             layout[i, j].Line.CompareTo("R") == 0 || layout[i, j].Line.CompareTo("r") == 0)
                         {
                             //red line
-                            container.Tile = _redTrack;
+                            container.BaseTile = GetBlockType(container.Block);
+                            container.Tile = container.BaseTile;
                         }
                         else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 ||
                                  layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
                         {
                             //green line
-                            container.Tile = _greenTrack;
+                            container.BaseTile = GetBlockType(container.Block);
+                            container.Tile = container.BaseTile;
                         }
                         else
                         {
-                            container.Tile = _trackError;
+                            container.BaseTile = _res.TrackError;
+                            container.Tile = container.BaseTile;
                             env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
@@ -112,6 +107,11 @@ namespace CTCOffice
             foreach (ITrainModel t in _trains)
             {
                 //check if train ID's match.. need ITrain class to implement
+                if (train.TrainID == t.TrainID)
+                {
+                    toRemove = t;
+                    break;
+                }
             }
 
             return toRemove;
@@ -122,7 +122,38 @@ namespace CTCOffice
             _blocks.Add(block);
         }
 
-        public int[] TriangulateBlock(IBlock block)
+        public Bitmap GetBlockType(IBlock block)
+        {
+
+            if (block.Line.CompareTo("Red") != 0)
+            {
+                //red
+                if (block.State != StateEnum.Healthy) { return _res.RedTrackClosed; }
+                if (block.hasSwitch()) { return _res.RedTrackSwitch; }
+                if (block.hasTunnel()) { return _res.RedTrackTunnel; }
+                if (block.hasHeater()) { return _res.RedTrackHeater; }
+                if (block.hasCrossing()) { return _res.RedTrackCrossing; }
+                if (block.hasStation()) { return _res.RedTrackStation; }
+                return _res.RedTrack;
+            }
+            else if (block.Line.CompareTo("Green") != 0)
+            {
+                //green
+                if (block.State != StateEnum.Healthy) { return _res.GreenTrackClosed; }
+                if (block.hasSwitch()) { return _res.GreenTrackSwitch; }
+                if (block.hasTunnel()) { return _res.GreenTrackTunnel; }
+                if (block.hasHeater()) { return _res.GreenTrackHeater; }
+                if (block.hasCrossing()) { return _res.GreenTrackCrossing; }
+                if (block.hasStation()) { return _res.GreenTrackStation; }
+                return _res.GreenTrack;
+            }
+            else
+            {
+                return _res.TrackError;
+            }
+        }
+
+        public LayoutCellDataContainer TriangulateContainer(IBlock block)
         {
             return null;
         }
