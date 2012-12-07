@@ -85,6 +85,7 @@
     <Compile Include="RequestFrame.Designer.cs">
       <DependentUpon>RequestFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResourceWrapper.cs" />
     <Compile Include="RoutingTool.cs">
       <SubType>UserControl</SubType>
     </Compile>
