@@ -121,5 +121,10 @@ namespace CTCOffice
         {
             _blocks.Add(block);
         }
+
+        public int[] TriangulateBlock(IBlock block)
+        {
+            return null;
+        }
     }
 }

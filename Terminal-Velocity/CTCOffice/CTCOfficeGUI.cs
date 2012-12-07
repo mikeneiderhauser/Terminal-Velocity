@@ -22,6 +22,8 @@ namespace CTCOffice
         private bool _authorityToolOpen;
         private LineData _greenLineData;
 
+        private ResourceWrapper _res;
+
         //Global Time Extension
 
         //routing variables
@@ -697,6 +699,8 @@ namespace CTCOffice
             _ctcOffice = ctc;
             _environment = env;
             _speedState = 0;
+
+            _res = _ctcOffice.Resource;
 
             _rate = 100;
             _tickCount = 0;

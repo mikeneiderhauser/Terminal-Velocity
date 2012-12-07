@@ -39,6 +39,7 @@ namespace CTCOffice
         private bool _redLoaded;
         private bool _greenLoaded;
 
+        private ResourceWrapper _res;
         private List<string> _messages;
 
         #endregion
@@ -60,6 +61,9 @@ namespace CTCOffice
             _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
             _env.Tick += _env_Tick;
+
+            //create new resource wrapper
+            _res = new ResourceWrapper();
 
             //create new operator object
             _op = new Operator();
@@ -492,6 +496,11 @@ namespace CTCOffice
             }
 
             return null;
+        }
+
+        public ResourceWrapper Resource
+        {
+            get { return _res; }
         }
 
         #region Request Abstractions
