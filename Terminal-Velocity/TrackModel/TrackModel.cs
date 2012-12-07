@@ -445,6 +445,9 @@ namespace TrackModel
             if (bToUpdate == null)
                 return false;
 
+            if (bToUpdate.hasSwitch() == false)
+                return false;
+                
             string updateString = _dbManager.createUpdate("SWITCH", bToUpdate);
             if (updateString == null)
                 return false;

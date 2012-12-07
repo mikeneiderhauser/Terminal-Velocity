@@ -482,18 +482,70 @@ namespace Testing
 
             /////////////////////////////////
             //Test 26
+            //requestUpdateSwitch should return false when given a null Block value
+            resBool=tm.requestUpdateSwitch(null);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateSwitch returns false when given a null parameter");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returns true when given a null parameter, expected value was false");
+            }
             //End Test 26
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 27
+            //requestUpdateSwitch should return false when given a block that doesnt contain a switch
+            tempIBlock=tm.requestBlockInfo(1, "Red");
+            resBool=tm.requestUpdateSwitch(tempIBlock);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateSwitch returns false when given a block without a switch");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returns true when given a block without a switch");
+            }
             //End Test 27
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 28
+            //requestUpdateSwitch should return true when given a block that contains a switch. Actual DB update checked in next test
+            tempIBlock = tm.requestBlockInfo(15,"Red");
+            int oldDest1 = tempIBlock.SwitchDest1;
+            tempIBlock.SwitchDest1 = tempIBlock.SwitchDest2;
+            tempIBlock.SwitchDest2 = oldDest1;
+            resBool=tm.requestUpdateSwitch(tempIBlock);
+
+            tempIBlock = tm.requestBlockInfo(15, "Red");
+            if (resBool == true)
+            {
+                if (tempIBlock.SwitchDest1 != oldDest1)
+                {
+                    pass++;
+                    message.Add("Pass: requestUpdateSwitch returned true and updated the database when given valid block");
+                }
+                else
+                {
+                    fail++;
+                    message.Add("Fail: requestUpdateSwitch returned true but failed to update database when given valid block");
+                }
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returned false when given valid block");
+            }
+
             //End Test 28
             /////////////////////////////////
 
