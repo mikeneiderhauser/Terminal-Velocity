@@ -12,7 +12,6 @@ namespace TrainModel
 
         private readonly ISimulationEnvironment _environment;
         private readonly List<ITrainModel> _allTrains;
-        private List<string> _errorMessages;
         private int _numTrains;
 
         private Train _selectedTrain;
@@ -33,7 +32,6 @@ namespace TrainModel
             allTrainComboBox.SelectedIndexChanged += allTrainComboBox_SelectedIndexChanged;
             _allTrains = environment.AllTrains;
             _numTrains = _allTrains.Count;
-            _errorMessages = new List<string>();
 
             _timer = 0;
 
@@ -61,11 +59,7 @@ namespace TrainModel
         /// <param name="error">The error message to display.</param>
         private void DisplayError(string error)
         {
-            if (!_errorMessages.Contains(error))
-            {
-                _errorMessages.Add(error);
-                MessageBox.Show(error, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            MessageBox.Show(error, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         /// <summary>
@@ -120,6 +114,9 @@ namespace TrainModel
             {
                 trainLabel.Text = _selectedTrain.ToString();
                 trainInfoTextBox.Text = _selectedTrain.InformationLog;
+                trainInfoTextBox.SelectionStart = trainInfoTextBox.TextLength;
+                trainInfoTextBox.ScrollToCaret();
+                trainInfoTextBox.Focus();
 
                 positionValueText.Text = Math.Round(_selectedTrain.CurrentPosition, 3).ToString();
                 velocityValueText.Text = Math.Round(_selectedTrain.CurrentVelocity, 3).ToString();
@@ -131,9 +128,9 @@ namespace TrainModel
                 numPassengersValueText.Text = _selectedTrain.NumPassengers.ToString();
                 numCrewValueText.Text = _selectedTrain.NumCrew.ToString();
 
-                brakeFailureTextBox.Text = _selectedTrain.BrakeFailure.ToString();
-                engineFailureTextBox.Text = _selectedTrain.EngineFailure.ToString();
-                signalPickupFailureTextBox.Text = _selectedTrain.SignalPickupFailure.ToString();
+                brakeFailureLabel.Text = _selectedTrain.BrakeFailure.ToString();
+                engineFailureLabel.Text = _selectedTrain.EngineFailure.ToString();
+                signalPickupFailureLabel.Text = _selectedTrain.SignalPickupFailure.ToString();
 
                 // set values for lights
                 if (_selectedTrain.LightsOn)
@@ -259,5 +256,6 @@ namespace TrainModel
         }
 
         #endregion
+
     }
 }

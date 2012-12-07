@@ -59,15 +59,16 @@
             this.buttonEngineFailure = new System.Windows.Forms.Button();
             this.buttonSignalPickupFailure = new System.Windows.Forms.Button();
             this.buttonEmergencyBrake = new System.Windows.Forms.Button();
-            this.brakeFailureTextBox = new System.Windows.Forms.TextBox();
-            this.engineFailureTextBox = new System.Windows.Forms.TextBox();
-            this.signalPickupFailureTextBox = new System.Windows.Forms.TextBox();
+            this.signalPickupFailureLabel = new System.Windows.Forms.Label();
+            this.engineFailureLabel = new System.Windows.Forms.Label();
+            this.brakeFailureLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // trainInfoTextBox
             // 
             this.trainInfoTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.trainInfoTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.trainInfoTextBox.Location = new System.Drawing.Point(19, 75);
             this.trainInfoTextBox.Multiline = true;
             this.trainInfoTextBox.Name = "trainInfoTextBox";
@@ -390,43 +391,43 @@
             this.buttonEmergencyBrake.UseVisualStyleBackColor = true;
             this.buttonEmergencyBrake.Click += new System.EventHandler(this.buttonEmergencyBrake_Click);
             // 
-            // brakeFailureTextBox
+            // signalPickupFailureLabel
             // 
-            this.brakeFailureTextBox.Location = new System.Drawing.Point(30, 433);
-            this.brakeFailureTextBox.Multiline = true;
-            this.brakeFailureTextBox.Name = "brakeFailureTextBox";
-            this.brakeFailureTextBox.ReadOnly = true;
-            this.brakeFailureTextBox.Size = new System.Drawing.Size(66, 20);
-            this.brakeFailureTextBox.TabIndex = 11;
-            this.brakeFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.signalPickupFailureLabel.AutoSize = true;
+            this.signalPickupFailureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.signalPickupFailureLabel.Location = new System.Drawing.Point(239, 430);
+            this.signalPickupFailureLabel.Name = "signalPickupFailureLabel";
+            this.signalPickupFailureLabel.Size = new System.Drawing.Size(37, 16);
+            this.signalPickupFailureLabel.TabIndex = 14;
+            this.signalPickupFailureLabel.Text = "false";
             // 
-            // engineFailureTextBox
+            // engineFailureLabel
             // 
-            this.engineFailureTextBox.Location = new System.Drawing.Point(127, 433);
-            this.engineFailureTextBox.Multiline = true;
-            this.engineFailureTextBox.Name = "engineFailureTextBox";
-            this.engineFailureTextBox.ReadOnly = true;
-            this.engineFailureTextBox.Size = new System.Drawing.Size(66, 20);
-            this.engineFailureTextBox.TabIndex = 12;
-            this.engineFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.engineFailureLabel.AutoSize = true;
+            this.engineFailureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.engineFailureLabel.Location = new System.Drawing.Point(142, 430);
+            this.engineFailureLabel.Name = "engineFailureLabel";
+            this.engineFailureLabel.Size = new System.Drawing.Size(37, 16);
+            this.engineFailureLabel.TabIndex = 15;
+            this.engineFailureLabel.Text = "false";
             // 
-            // signalPickupFailureTextBox
+            // brakeFailureLabel
             // 
-            this.signalPickupFailureTextBox.Location = new System.Drawing.Point(225, 433);
-            this.signalPickupFailureTextBox.Multiline = true;
-            this.signalPickupFailureTextBox.Name = "signalPickupFailureTextBox";
-            this.signalPickupFailureTextBox.ReadOnly = true;
-            this.signalPickupFailureTextBox.Size = new System.Drawing.Size(66, 20);
-            this.signalPickupFailureTextBox.TabIndex = 13;
-            this.signalPickupFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.brakeFailureLabel.AutoSize = true;
+            this.brakeFailureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.brakeFailureLabel.Location = new System.Drawing.Point(45, 430);
+            this.brakeFailureLabel.Name = "brakeFailureLabel";
+            this.brakeFailureLabel.Size = new System.Drawing.Size(37, 16);
+            this.brakeFailureLabel.TabIndex = 16;
+            this.brakeFailureLabel.Text = "false";
             // 
             // TrainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.signalPickupFailureTextBox);
-            this.Controls.Add(this.engineFailureTextBox);
-            this.Controls.Add(this.brakeFailureTextBox);
+            this.Controls.Add(this.brakeFailureLabel);
+            this.Controls.Add(this.engineFailureLabel);
+            this.Controls.Add(this.signalPickupFailureLabel);
             this.Controls.Add(this.buttonEmergencyBrake);
             this.Controls.Add(this.buttonSignalPickupFailure);
             this.Controls.Add(this.buttonEngineFailure);
@@ -474,9 +475,9 @@
         private System.Windows.Forms.Button buttonEngineFailure;
         private System.Windows.Forms.Button buttonSignalPickupFailure;
         private System.Windows.Forms.Button buttonEmergencyBrake;
-        private System.Windows.Forms.TextBox brakeFailureTextBox;
-        private System.Windows.Forms.TextBox engineFailureTextBox;
-        private System.Windows.Forms.TextBox signalPickupFailureTextBox;
+        private System.Windows.Forms.Label signalPickupFailureLabel;
+        private System.Windows.Forms.Label engineFailureLabel;
+        private System.Windows.Forms.Label brakeFailureLabel;
 
     }
 }
