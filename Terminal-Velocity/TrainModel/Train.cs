@@ -9,10 +9,6 @@ namespace TrainModel
     {
         #region Global variables
 
-        private const double _length = 32.33; // meters
-
-        private const int _maxCapacity = 222; // 74 seated, 148 standing
-
         private bool _brakeFailure;
         private bool _engineFailure;
         private bool _signalPickupFailure;
@@ -35,6 +31,11 @@ namespace TrainModel
         private int _temperature;
         private bool _emergencyBrakePulled;
 
+        private bool _positionWarningGiven;
+        private bool _velocityWarningGiven;
+        private bool _accelerationWarningGiven;
+        private bool _decelerationWarningGiven;
+
         private double _timeInterval;
         private double _totalMass;
         private int _trackCircuitID;
@@ -50,9 +51,11 @@ namespace TrainModel
         private const double _height = 3.42; // meters
         private const double _physicalAccelerationLimit = 0.5; // meters/second^2
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
-        private const double _physicalVelocityLimit = 70000; // meters/hour
+        private const double _physicalVelocityLimit = 19.444; // meters/second
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
         private const double _accelerationGravity = 9.8; // meters/second^2
+        private const double _length = 32.33; // meters
+        private const int _maxCapacity = 222; // 74 seated, 148 standing
 
         #endregion
 
@@ -73,7 +76,6 @@ namespace TrainModel
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "";
-            appendInformationLog("Created.");
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -91,6 +93,11 @@ namespace TrainModel
 
             _emergencyBrakePulled = false;
 
+            _positionWarningGiven = false;
+            _velocityWarningGiven = false;
+            _accelerationWarningGiven = false;
+            _decelerationWarningGiven = false;
+
             _currentBlock = startingBlock;
             _previousBlockID = 0;
             _currentBlockID = _currentBlock.BlockID;
@@ -104,6 +111,8 @@ namespace TrainModel
             allTrains = environment.AllTrains;
 
             _timeInterval = (environment.getInterval() / 1000.0);
+
+            appendInformationLog("Created on block " + _currentBlockID + ".");
         }
 
         #endregion
@@ -157,25 +166,25 @@ namespace TrainModel
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                appendInformationLog("ERROR: POWER LEVEL CAUSED ACCELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED.");
+                appendInformationLog("ERROR: Power level caused acceleration to exceed physical limit. Power ignored.");
                 return false;
             }
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                appendInformationLog("ERROR: POWER LEVEL CAUSED DECELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED");
+                appendInformationLog("ERROR: Power level caused deceleration to exceed physical limit. Power ignored.");
                 return false;
             }
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
                 _brakeFailure = true;
-                appendInformationLog("WARNING: BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
+                appendInformationLog("WARNING: Brakes applied but train not slowing down.");
             }
 
             if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
             {
-                appendInformationLog("WARNING: POSITIVE POWER GIVEN BUT TRAIN IS SLOWING DOWN.");
+                appendInformationLog("WARNING: Positive power given but train is slowing down.");
             }
 
             _currentAcceleration = newAcceleration;
@@ -243,12 +252,67 @@ namespace TrainModel
                 _currentAcceleration = 0;
             }
 
+            // check if the acceleration is greater than the physical limit
+            if (_currentAcceleration > _physicalAccelerationLimit)
+            {
+                _currentAcceleration = _physicalAccelerationLimit;
+
+                if (!_accelerationWarningGiven)
+                {
+                    appendInformationLog("WARNING: Acceleration exceeded physical limit.");
+                    _accelerationWarningGiven = true;
+                }
+            }
+            else
+            {
+                _accelerationWarningGiven = false;
+            }
+
+            // check if the deceleration is greater than the physical limit
+            if (_currentAcceleration < _physicalDecelerationLimit)
+            {
+                _currentAcceleration = _physicalDecelerationLimit;
+
+                if (!_decelerationWarningGiven)
+                {
+                    appendInformationLog("WARNING: Deceleration exceeded physical limit.");
+                    _decelerationWarningGiven = true;
+                }
+            }
+            else
+            {
+                _decelerationWarningGiven = false;
+            }
+
             _currentVelocity = _currentVelocity + (_currentAcceleration * _timeInterval);
 
+            // check if velocity is less than zero or greater than the limit
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
                 _currentAcceleration = 0;
+
+                if (!_velocityWarningGiven)
+                {
+                    appendInformationLog("WARNING: Velocity less than zero. Train stopped.");
+                    _velocityWarningGiven = true;
+                }
+            }
+            else if (_currentVelocity > _physicalVelocityLimit)
+            {
+                _currentVelocity = _physicalVelocityLimit;
+                _currentAcceleration = 0;
+
+                // check if velocity warning already given
+                if (!_velocityWarningGiven)
+                {
+                    appendInformationLog("WARNING: Velocity exceeded physical limit.");
+                    _velocityWarningGiven = true;
+                }
+            }
+            else
+            {
+                _velocityWarningGiven = false;
             }
 
             _currentPosition = _currentPosition + (_currentVelocity * _timeInterval);
@@ -269,12 +333,26 @@ namespace TrainModel
                     // update the current position of the train
                     _currentPosition = _currentPosition - _blockLength;
                     _blockLength = _currentBlock.BlockSize;
+
+                    appendInformationLog("Moved to block " + _currentBlockID + ".");
                 }
-                else
+                else // cannot find block
                 {
                     _currentPosition = _blockLength;
                     _currentVelocity = 0;
                     _currentAcceleration = 0;
+
+                    // check if already given warning
+                    if (!_positionWarningGiven)
+                    {
+                        appendInformationLog("WARNING: Cannot find the next block.");
+                        _positionWarningGiven = true;
+                    }
+                    else
+                    {
+                        _positionWarningGiven = false;
+                    }
+
                 }
             }
 

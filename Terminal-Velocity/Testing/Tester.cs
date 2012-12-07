@@ -205,9 +205,10 @@ namespace Testing
                     environment.addTrain(new Train(1, start, environment));
 
                     var train0 = (Train)environment.AllTrains[0];
-                    train0.ChangeMovement(2000);
+                    train0.ChangeMovement(200);
 
                     control = new TrainGUI(environment);
+
                     break;
                 case 5: // TrainController
                     var loc2 = new int[2];

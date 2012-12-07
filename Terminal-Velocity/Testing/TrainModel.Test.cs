@@ -14,45 +14,77 @@ namespace Testing
             message = new List<string>();
 
             ISimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            var train = new Train(0, new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70), environment);
-
-            // test that the train ID is zero
-            if (train.TrainID == 0)
-            {
-                pass++;
-                message.Add("Pass: Train ID is 0, as declared.");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: Train ID is not found to be 0 when it is.");
-            }
-
-            // give acceptable power level
-            if (train.ChangeMovement(50))
-            {
-                pass++;
-                message.Add("Pass: ChangeMovement(50) succeeds");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: ChangeMovement(50) fails.");
-            }
-
-            // give unacceptable power
-            if (!train.ChangeMovement(500))
-            {
-                pass++;
-                message.Add("Pass: ChangeMovement(500) failed, as expected.");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: ChangeMovement(500) did not return false");
-            }
+            
+            Block noGrade = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] { 0, 0 }, 10, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 70);
+            Block withPositiveGrade = new Block(1, StateEnum.Healthy, 0, 0, 0.01, new[] { 0, 0 }, 10, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 70);
+            Block withNegativeGrade = new Block(1, StateEnum.Healthy, 0, 0, -0.01, new[] { 0, 0 }, 10, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 70);
+            
+            Train train_noGrade = new Train(0, noGrade, environment);
+            Train train_posGrade = new Train(1, withPositiveGrade, environment);
+            Train train_negGrade = new Train(2, withNegativeGrade, environment);
 
             return true;
         }
+
+        private bool TestMass(Train train, List<string> messages)
+        {
+            double initialTrainMass = 40900; //kilograms
+            double personMass = 90; //kilograms
+
+
+
+            return true;
+        }
+
+        private bool TestAddPassengers(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestRemovePassengers(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestLights(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestDoors(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestTemperature(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestMovement_PositiveGrade(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestMovement_NegativeGrade(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestMovement_Grade(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestBrakeFailureMovement(Train train, List<string> messages)
+        {
+            return true;
+        }
+
+        private bool TestEngineFailureMovement(Train train, List<string> messages)
+        {
+            return true;
+        }
+
     }
 }
