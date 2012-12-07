@@ -15,6 +15,7 @@ namespace TrackModel
         private readonly int _prevBlockID;
         private readonly double _startingElev;
         private readonly int _speedLimit;
+        private readonly int _trackCirID;
         private int _switchDest1;
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace TrackModel
             _attributes = atts;
             _switchDest1 = d1;
             SwitchDest2 = d2;
-            TrackCirID = tCID;
+            _trackCirID = tCID;
             _line = l;
             _speedLimit = sL;
         }
@@ -408,7 +409,10 @@ namespace TrackModel
         /// <summary>
         /// A property for the ID of the Track Circuit that this block is monitored by.
         /// </summary>
-        public int TrackCirID { get; set; }
+        public int TrackCirID
+        {
+            get { return _trackCirID; }
+        }
 
         /// <summary>
         /// A Property to access the raw attribute array that holds this block's infrastructure.
