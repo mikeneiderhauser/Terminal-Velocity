@@ -13,10 +13,10 @@ namespace TrainModel
 
         private const int _maxCapacity = 222; // 74 seated, 148 standing
 
-        private readonly bool _brakeFailure;
-        private readonly bool _engineFailure;
+        private bool _brakeFailure;
+        private bool _engineFailure;
+        private bool _signalPickupFailure;
         private readonly ISimulationEnvironment _environment;
-        private readonly bool _signalPickupFailure;
         private readonly ITrackModel _trackModel;
         private readonly ITrainController _trainController;
         private readonly int _trainID;
@@ -66,6 +66,9 @@ namespace TrainModel
         /// <param name="environment">The environment being used by the entire simulation.</param>
         public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
+            _environment = environment;
+            _environment.Tick += _environment_Tick;
+
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "";
@@ -90,9 +93,6 @@ namespace TrainModel
             _currentBlockID = _currentBlock.BlockID;
             _blockLength = _currentBlock.BlockSize;
             _trackCircuitID = _currentBlock.TrackCirID;
-
-            _environment = environment;
-            _environment.Tick += _environment_Tick;
 
             _trackModel = environment.TrackModel;
             _trainController = new TrainController.TrainController(_environment, this);
@@ -133,6 +133,10 @@ namespace TrainModel
                 currentForce = power / _currentVelocity;
                 newAcceleration = currentForce / _totalMass;
             }
+            else
+            {
+                appendInformationLog("Train stopped. Ignored given power and defaulted to maximum acceleration.");
+            }
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
@@ -146,6 +150,27 @@ namespace TrainModel
             {
                 appendInformationLog("Power level caused deceleration to exceed physical limit.");
                 return false;
+            }
+
+            if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
+            {
+                _brakeFailure = true;
+                appendInformationLog("BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
+                EmergencyBrake();
+            }
+            else
+            {
+                _brakeFailure = false;
+            }
+
+            if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
+            {
+                _engineFailure = true;
+                appendInformationLog("POSITIVE POWER GIVEN BUT TRAIN SLOWING DOWN. ENGINE FAILURE.");
+            }
+            else
+            {
+                _engineFailure = false;
             }
 
             _currentAcceleration = newAcceleration;
@@ -208,12 +233,20 @@ namespace TrainModel
             {
                 // get next block ID based on the previous ID
                 int nextBlockID = _currentBlock.nextBlockIndex(_previousBlockID);
+                IBlock nextBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
 
-                _previousBlockID = _currentBlockID; // previous block is now current block
-
-                // update the current block to be the next block
-                _currentBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
-                _currentBlockID = _currentBlock.BlockID;
+                if (nextBlock != null)
+                {
+                    _previousBlockID = _currentBlockID; // previous block is now current block
+                    _currentBlock = nextBlock;
+                    _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
+                    _signalPickupFailure = false;
+                }
+                else
+                {
+                    _signalPickupFailure = true; // throw signal pickup failure
+                    appendInformationLog("EXPERIENCED SIGNAL PICKUP FAILURE.");
+                }
 
                 // update the current position of the train
                 _currentPosition = _currentPosition - _blockLength;
@@ -245,6 +278,8 @@ namespace TrainModel
         {
             _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
             _informationLog += s + "\r\n";
+
+            _environment.sendLogEntry("For " + this.ToString() + ": " + s);
         }
 
         #endregion
@@ -462,6 +497,9 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        /// <summary>
+        ///     Get the Train Controller assigned to the train.
+        /// </summary>
         public ITrainController TrainController
         {
             get { return _trainController; }
