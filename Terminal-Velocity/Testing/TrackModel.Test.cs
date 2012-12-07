@@ -392,36 +392,193 @@ namespace Testing
 
             /////////////////////////////////
             //Test 21
-            //
+            //requestRouteInfo should return a null value when given a negative route ID
+            IRouteInfo tempIRouteInfo=tm.requestRouteInfo(-1);
+            if (tempIRouteInfo == null)
+            {
+                pass++;
+                message.Add("Pass: requestRouteInfo returns null when given a negative routeID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestRouteInfo returned a Route when given a negative routeID, expected val was null");
+            }
             //End Test 21
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 22
-            //
+            //requestRouteInfo should return a null value when given a line other than 0 or 1
+            tempIRouteInfo = tm.requestRouteInfo(2);
+            if (tempIRouteInfo == null)
+            {
+                pass++;
+                message.Add("Pass: requestRouteInfo returns null when given an out of range routeID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestRouteInfo returned a Route when given an out of range route ID, expected val was null");
+            }
             //End Test 22
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 23
-            //
+            //requestRouteInfo returns a valid IRouteInfo object when given a line ID of 0 or 1
+            tempIRouteInfo = tm.requestRouteInfo(0);
+            if (tempIRouteInfo != null)
+            {
+                pass++;
+                message.Add("Pass: requestRouteInfo returns valid IRouteInfo when given valid lineID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestRouteInfo returns null when given valid lineID, expected val was null");
+            }
             //End Test 23
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 24
-            //
+            //requestTrackGrid should return null when given an invalid line ID
+            IBlock[,] tempIBlockArr = tm.requestTrackGrid(-1);
+            if (tempIBlockArr == null)
+            {
+                pass++;
+                message.Add("Pass: requestTrackGrid returns null when given invalid line ID");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestTrackGrid returns valid IBlock[,] when given invalid line id, expected value was null");
+            }
             //End Test 24
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 25
-            //
+            //requestTrackGrid should return valid IBlock[,] when given valid line ID
+            tempIBlockArr = tm.requestTrackGrid(0);
+            if (tempIBlockArr != null)
+            {
+                pass++;
+                message.Add("Pass: requestTrackGrid returns valid IBlock[,] when given valid line id");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestTrackGrid returns null when given valid line id, expected val was IBlock[,] object");
+            }
             //End Test 25
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 26
+            //End Test 26
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 27
+            //End Test 27
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 28
+            //End Test 28
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 29
+            //End Test 29
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 30
+            //End Test 30
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 31
+            //End Test 31
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 32
+            //End Test 32
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 33
+            //End Test 33
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 34
+            //End Test 34
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 35
+            //End Test 35
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 36
+            //End Test 36
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 37
+            //End Test 37
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 38
+            //End Test 38
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 39
+            //End Test 39
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 40
+            //End Test 40
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 41
+            //End Test 41
+            /////////////////////////////////
+
+
+            /////////////////////////////////
+            //Test 42
+            //End Test 42
             /////////////////////////////////
 
             return true;
