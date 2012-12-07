@@ -33,6 +33,7 @@ namespace TrainModel
         private int _numPassengers;
         private int _previousBlockID;
         private int _temperature;
+        private bool _emergencyBrakePulled;
 
         private double _timeInterval;
         private double _totalMass;
@@ -88,6 +89,8 @@ namespace TrainModel
             _engineFailure = false;
             _signalPickupFailure = false;
 
+            _emergencyBrakePulled = false;
+
             _currentBlock = startingBlock;
             _previousBlockID = 0;
             _currentBlockID = _currentBlock.BlockID;
@@ -108,12 +111,11 @@ namespace TrainModel
         #region Public Methods
 
         /// <summary>
-        ///     Applies the maximum deceleration limit to the train to stop it.
+        ///     Toggles the emergency brake on and off.
         /// </summary>
         public void EmergencyBrake()
         {
-            appendInformationLog("WARNING: EMERGENCY BRAKE PULLED.");
-            _currentAcceleration = _emergencyBrakeDeceleration;
+            this.EmergencyBrakePulled = !this.EmergencyBrakePulled;
         }
 
         /// <summary>
@@ -123,6 +125,20 @@ namespace TrainModel
         /// <returns>True if power level was within bounds, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
+            // can't change movement if engine is failing
+            if (_engineFailure)
+            {
+                appendInformationLog("ERROR: Engine cannot be given power because of engine failure.");
+                return false;
+            }
+
+            // cannot apply brakes if brakes are failing
+            if (_brakeFailure && (power < 0)) 
+            {
+                appendInformationLog("ERROR: Brakes cannot be applied due to brake failure.");
+                return false;
+            }
+
             appendInformationLog("Given power of " + Math.Round(power, 3) + " W.");
 
             double currentForce = 0;
@@ -197,18 +213,37 @@ namespace TrainModel
         {
             _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
 
+            // can't accelerate or decelerate if engine has failed
+            if (_engineFailure)
+            {
+                _currentAcceleration = 0;
+            }
+
+            if (_emergencyBrakePulled)
+            {
+                _currentAcceleration = _emergencyBrakeDeceleration;
+            }
+
             // acceleration changes due to elevation
-            double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
+            double absGrade = Math.Abs(_currentBlock.Grade);
+            double angle = Math.Atan(absGrade);
+
             if (_currentBlock.Grade > 0) // up hill
             {
-                _currentAcceleration -= (_accelerationGravity * Math.Sin(angle));
+                _currentAcceleration = _currentAcceleration - (_accelerationGravity * Math.Sin(angle));
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                _currentAcceleration += (_accelerationGravity * Math.Sin(angle));
+                _currentAcceleration = _currentAcceleration + (_accelerationGravity * Math.Sin(angle));
             }
 
-            _currentVelocity += (_currentAcceleration * _timeInterval);
+            // stops acceleration due to slope when emergency brake is on
+            if ((_currentAcceleration > 0) && (_emergencyBrakePulled))
+            {
+                _currentAcceleration = 0;
+            }
+
+            _currentVelocity = _currentVelocity + (_currentAcceleration * _timeInterval);
 
             if (_currentVelocity < 0)
             {
@@ -216,7 +251,7 @@ namespace TrainModel
                 _currentAcceleration = 0;
             }
 
-            _currentPosition += (_currentVelocity * _timeInterval);
+            _currentPosition = _currentPosition + (_currentVelocity * _timeInterval);
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
@@ -230,15 +265,17 @@ namespace TrainModel
                     _previousBlockID = _currentBlockID; // previous block is now current block
                     _currentBlock = nextBlock;
                     _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
+
+                    // update the current position of the train
+                    _currentPosition = _currentPosition - _blockLength;
+                    _blockLength = _currentBlock.BlockSize;
                 }
                 else
                 {
-                    appendInformationLog("ERROR: COULD NOT FIND NEXT BLOCK.");
+                    _currentPosition = _blockLength;
+                    _currentVelocity = 0;
+                    _currentAcceleration = 0;
                 }
-
-                // update the current position of the train
-                _currentPosition = _currentPosition - _blockLength;
-                _blockLength = _currentBlock.BlockSize;
             }
 
 
@@ -465,7 +502,7 @@ namespace TrainModel
 
                 if (_brakeFailure)
                 {
-                    appendInformationLog("EXPERIENCING BRAKE FAILURE.");
+                    appendInformationLog("WARNING: EXPERIENCING BRAKE FAILURE.");
                 }
             }
         }
@@ -482,7 +519,7 @@ namespace TrainModel
 
                 if (_engineFailure)
                 {
-                    appendInformationLog("EXPERIENCING ENGINE FAILURE.");
+                    appendInformationLog("WARNING: EXPERIENCING ENGINE FAILURE.");
                 }
             }
         }
@@ -499,7 +536,7 @@ namespace TrainModel
 
                 if (_signalPickupFailure)
                 {
-                    appendInformationLog("EXPERIENCING SIGNAL PICKUP FAILURE.");
+                    appendInformationLog("WARNING: EXPERIENCING SIGNAL PICKUP FAILURE.");
                 }
             }
         }
@@ -518,6 +555,24 @@ namespace TrainModel
         public ITrainController TrainController
         {
             get { return _trainController; }
+        }
+
+        public bool EmergencyBrakePulled
+        {
+            get { return _emergencyBrakePulled; }
+            set
+            {
+                _emergencyBrakePulled = value;
+
+                if (_emergencyBrakePulled)
+                {
+                    appendInformationLog("WARNING: Emergency brake pulled.");
+                }
+                else
+                {
+                    appendInformationLog("Emergency brake released.");
+                }
+            }
         }
 
         #region Track Controller communication parameters
@@ -542,8 +597,6 @@ namespace TrainModel
 
         #endregion
 
-        // TODO: double check that it works
-        // for track controller communications
 
         #endregion
     }

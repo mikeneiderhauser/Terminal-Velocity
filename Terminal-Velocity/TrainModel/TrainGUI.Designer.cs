@@ -62,6 +62,7 @@
             this.signalPickupFailureLabel = new System.Windows.Forms.Label();
             this.engineFailureLabel = new System.Windows.Forms.Label();
             this.brakeFailureLabel = new System.Windows.Forms.Label();
+            this.emergencyBrakeLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -383,9 +384,9 @@
             // 
             // buttonEmergencyBrake
             // 
-            this.buttonEmergencyBrake.Location = new System.Drawing.Point(329, 392);
+            this.buttonEmergencyBrake.Location = new System.Drawing.Point(320, 392);
             this.buttonEmergencyBrake.Name = "buttonEmergencyBrake";
-            this.buttonEmergencyBrake.Size = new System.Drawing.Size(98, 52);
+            this.buttonEmergencyBrake.Size = new System.Drawing.Size(116, 35);
             this.buttonEmergencyBrake.TabIndex = 7;
             this.buttonEmergencyBrake.Text = "Apply Emergency Brake";
             this.buttonEmergencyBrake.UseVisualStyleBackColor = true;
@@ -421,10 +422,21 @@
             this.brakeFailureLabel.TabIndex = 16;
             this.brakeFailureLabel.Text = "false";
             // 
+            // emergencyBrakeLabel
+            // 
+            this.emergencyBrakeLabel.AutoSize = true;
+            this.emergencyBrakeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emergencyBrakeLabel.Location = new System.Drawing.Point(339, 430);
+            this.emergencyBrakeLabel.Name = "emergencyBrakeLabel";
+            this.emergencyBrakeLabel.Size = new System.Drawing.Size(71, 16);
+            this.emergencyBrakeLabel.TabIndex = 17;
+            this.emergencyBrakeLabel.Text = "toggled off";
+            // 
             // TrainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.emergencyBrakeLabel);
             this.Controls.Add(this.brakeFailureLabel);
             this.Controls.Add(this.engineFailureLabel);
             this.Controls.Add(this.signalPickupFailureLabel);
@@ -478,6 +490,7 @@
         private System.Windows.Forms.Label signalPickupFailureLabel;
         private System.Windows.Forms.Label engineFailureLabel;
         private System.Windows.Forms.Label brakeFailureLabel;
+        private System.Windows.Forms.Label emergencyBrakeLabel;
 
     }
 }

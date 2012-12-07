@@ -132,6 +132,16 @@ namespace TrainModel
                 engineFailureLabel.Text = _selectedTrain.EngineFailure.ToString();
                 signalPickupFailureLabel.Text = _selectedTrain.SignalPickupFailure.ToString();
 
+                // sets text for emergency brake
+                if (_selectedTrain.EmergencyBrakePulled)
+                {
+                    emergencyBrakeLabel.Text = "Toggled On";
+                }
+                else
+                {
+                    emergencyBrakeLabel.Text = "Toggled Off";
+                }
+
                 // set values for lights
                 if (_selectedTrain.LightsOn)
                 {
@@ -252,6 +262,7 @@ namespace TrainModel
             if (_selectedTrain != null)
             {
                 _selectedTrain.EmergencyBrake();
+                UpdateGUI();
             }
         }
 
