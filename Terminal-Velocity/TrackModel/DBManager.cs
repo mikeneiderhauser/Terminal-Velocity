@@ -164,7 +164,7 @@ namespace TrackModel
             //Get block ID and check that it exists
             int bID = bToUpdate.BlockID;
             string line = bToUpdate.Line;
-            bool exists = blockExists(bID, "Red");
+            bool exists = blockExists(bID,line);
             if (!exists)
                 return null;
 
