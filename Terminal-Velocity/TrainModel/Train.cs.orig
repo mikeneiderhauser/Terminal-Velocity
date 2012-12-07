@@ -115,7 +115,12 @@ namespace TrainModel
         /// </summary>
         public void EmergencyBrake()
         {
+<<<<<<< HEAD
+            appendInformationLog("WARNING: EMERGENCY BRAKE PULLED.");
+            _currentAcceleration = _emergencyBrakeDeceleration;
+=======
             this.EmergencyBrakePulled = !this.EmergencyBrakePulled;
+>>>>>>> TrainModel
         }
 
         /// <summary>
@@ -265,6 +270,12 @@ namespace TrainModel
                     _previousBlockID = _currentBlockID; // previous block is now current block
                     _currentBlock = nextBlock;
                     _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
+<<<<<<< HEAD
+                }
+                else
+                {
+                    appendInformationLog("ERROR: COULD NOT FIND NEXT BLOCK.");
+=======
 
                     // update the current position of the train
                     _currentPosition = _currentPosition - _blockLength;
@@ -275,6 +286,7 @@ namespace TrainModel
                     _currentPosition = _blockLength;
                     _currentVelocity = 0;
                     _currentAcceleration = 0;
+>>>>>>> TrainModel
                 }
             }
 
@@ -502,7 +514,11 @@ namespace TrainModel
 
                 if (_brakeFailure)
                 {
+<<<<<<< HEAD
+                    appendInformationLog("EXPERIENCING BRAKE FAILURE.");
+=======
                     appendInformationLog("WARNING: EXPERIENCING BRAKE FAILURE.");
+>>>>>>> TrainModel
                 }
             }
         }
@@ -519,7 +535,11 @@ namespace TrainModel
 
                 if (_engineFailure)
                 {
+<<<<<<< HEAD
+                    appendInformationLog("EXPERIENCING ENGINE FAILURE.");
+=======
                     appendInformationLog("WARNING: EXPERIENCING ENGINE FAILURE.");
+>>>>>>> TrainModel
                 }
             }
         }
@@ -536,7 +556,11 @@ namespace TrainModel
 
                 if (_signalPickupFailure)
                 {
+<<<<<<< HEAD
+                    appendInformationLog("EXPERIENCING SIGNAL PICKUP FAILURE.");
+=======
                     appendInformationLog("WARNING: EXPERIENCING SIGNAL PICKUP FAILURE.");
+>>>>>>> TrainModel
                 }
             }
         }

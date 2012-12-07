@@ -62,7 +62,10 @@
             this.signalPickupFailureLabel = new System.Windows.Forms.Label();
             this.engineFailureLabel = new System.Windows.Forms.Label();
             this.brakeFailureLabel = new System.Windows.Forms.Label();
+<<<<<<< HEAD
+=======
             this.emergencyBrakeLabel = new System.Windows.Forms.Label();
+>>>>>>> TrainModel
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -384,9 +387,15 @@
             // 
             // buttonEmergencyBrake
             // 
+<<<<<<< HEAD
+            this.buttonEmergencyBrake.Location = new System.Drawing.Point(329, 392);
+            this.buttonEmergencyBrake.Name = "buttonEmergencyBrake";
+            this.buttonEmergencyBrake.Size = new System.Drawing.Size(98, 52);
+=======
             this.buttonEmergencyBrake.Location = new System.Drawing.Point(320, 392);
             this.buttonEmergencyBrake.Name = "buttonEmergencyBrake";
             this.buttonEmergencyBrake.Size = new System.Drawing.Size(116, 35);
+>>>>>>> TrainModel
             this.buttonEmergencyBrake.TabIndex = 7;
             this.buttonEmergencyBrake.Text = "Apply Emergency Brake";
             this.buttonEmergencyBrake.UseVisualStyleBackColor = true;
@@ -422,6 +431,8 @@
             this.brakeFailureLabel.TabIndex = 16;
             this.brakeFailureLabel.Text = "false";
             // 
+<<<<<<< HEAD
+=======
             // emergencyBrakeLabel
             // 
             this.emergencyBrakeLabel.AutoSize = true;
@@ -432,11 +443,15 @@
             this.emergencyBrakeLabel.TabIndex = 17;
             this.emergencyBrakeLabel.Text = "toggled off";
             // 
+>>>>>>> TrainModel
             // TrainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
+=======
             this.Controls.Add(this.emergencyBrakeLabel);
+>>>>>>> TrainModel
             this.Controls.Add(this.brakeFailureLabel);
             this.Controls.Add(this.engineFailureLabel);
             this.Controls.Add(this.signalPickupFailureLabel);
@@ -490,7 +505,10 @@
         private System.Windows.Forms.Label signalPickupFailureLabel;
         private System.Windows.Forms.Label engineFailureLabel;
         private System.Windows.Forms.Label brakeFailureLabel;
+<<<<<<< HEAD
+=======
         private System.Windows.Forms.Label emergencyBrakeLabel;
+>>>>>>> TrainModel
 
     }
 }
