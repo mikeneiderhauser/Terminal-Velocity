@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using Interfaces;
 using Utility;
@@ -12,11 +14,17 @@ namespace TrackModel
         private readonly DBManager _dbManager;
         private ISimulationEnvironment _env;
         private TrackChanged _changeState;
-        //private DisplayManager _dispManager;
+        private bool _redLoaded;
+        private bool _greenLoaded;
 
-
+        /// <summary>
+        /// A constructor for the TrackModel module
+        /// </summary>
+        /// <param name="environment">Requires a reference to the surrounding environment object</param>
         public TrackModel(ISimulationEnvironment environment)
         {
+            _redLoaded = false;
+            _greenLoaded = false;
             _env = environment;
             _dbCreator = new DBCreator("");
             _dbManager = new DBManager(_dbCreator.DBCon);
@@ -26,8 +34,14 @@ namespace TrackModel
             //_environment.Tick+=
         }
 
-        //Last minute method to allow TrackModel to directly take input file.
-
+        
+        /// <summary>
+        /// A public method allowing other modules to request information on specific blocks.
+        /// This information is returned in the form of 
+        /// </summary>
+        /// <param name="blockID">The ID of the requested block.  ID's are unique across all blocks in a given line</param>
+        /// <param name="line">The name of the line containing the requested block.  Either "Red" or "Green"</param>
+        /// <returns>An IBlock object holding information pertaining the block requested, or null if an error occurred</returns>
         public IBlock requestBlockInfo(int blockID, string line)
         {
             //Dont request patently invalid blocks
@@ -51,6 +65,11 @@ namespace TrackModel
             return temp;
         }
 
+        /// <summary>
+        /// A public method allowing outside modules to request info pertaining to a track line.
+        /// </summary>
+        /// <param name="routeID">The route ID should be 0 for the Red line, or 1 for the Green line</param>
+        /// <returns>an IRouteInfo object containing information pertaining to the Line/Route requested, or null if an error occurred</returns>
         public IRouteInfo requestRouteInfo(int routeID)
         {
             if (routeID != 0 && routeID != 1)
@@ -72,6 +91,13 @@ namespace TrackModel
             return temp;
         }
 
+
+        /// <summary>
+        /// A public method used to request a 2D array holding the Track Layour for a given line
+        /// </summary>
+        /// <param name="routeID">A routeID, corresponding to which line the user requests.  0 for Red, 1 for Green.</param>
+        /// <returns>The returned IBlock[,] represents the track line.  The grid shows the 2D placement of blocks
+        /// in space.  Where no blocks are found, the value is null.  </returns>
         public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID != 0 && routeID != 1)
@@ -408,6 +434,12 @@ namespace TrackModel
             return temp;
         }
 
+        /// <summary>
+        /// This public method is used to allow other modules to request a change in switch state for
+        /// a block.  
+        /// </summary>
+        /// <param name="bToUpdate"> An IBlock object with the updated switch state.</param>
+        /// <returns>A boolean object representing the success or failure of the database update</returns>
         public bool requestUpdateSwitch(IBlock bToUpdate)
         {
             if (bToUpdate == null)
@@ -441,9 +473,19 @@ namespace TrackModel
             return res;
         }
 
+        /// <summary>
+        /// A public method allowing external modules to update variable attributes of a block.
+        /// The attributes that are changable include the health state (broken, failed, healthy).
+        /// That's it.
+        /// </summary>
+        /// <param name="bToUpdate">The IBlock object</param>
+        /// <returns></returns>
         public bool requestUpdateBlock(IBlock bToUpdate)
         {
             if (bToUpdate == null)
+                return false;
+
+            if (bToUpdate.BlockID == 0)
                 return false;
 
             string updateString = _dbManager.createUpdate("BLOCK", bToUpdate);
@@ -474,15 +516,161 @@ namespace TrackModel
             return res;
         }
 
+        /// <summary>
+        /// A public method allowing modules to give input csv files to the TrackModel.  This method 
+        /// takes the input files and parses them for insertion into the database.
+        /// </summary>
+        /// <param name="fName">The file name of the file to be parsed</param>
+        /// <returns>A boolean corresponding to the success or failure of the file parsing and insertion</returns>
         public bool provideInputFile(string fName)
         {
             int res = _dbCreator.parseInputFile(fName);
-            //Console.WriteLine("Inside TrackModel, res was: " + res);
+
+            if ( res==0 && (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red")))
+            {
+                _redLoaded = true;
+            }
+
+            if (res==0 && (fName.Contains("green") || fName.Contains("GREEN") || fName.Contains("Green")))
+            {
+                _greenLoaded = true;
+            }
+
+
             if (res == 0)
                 return true;
             else
                 return false;
         }
+
+        /// <summary>
+        /// A public method used by the CTC Office and Track Controller to determine the path between two
+        /// points (startBlockID and endBlockID) on a given line.  Uses BFS to find a decent path between
+        /// the two points.
+        /// </summary>
+        /// <param name="startBlockID">The Block ID of the starting block</param>
+        /// <param name="endBlockID">The Block ID of the ending block</param>
+        /// <param name="line">The line containing the path: either "Red" or "Green"</param>
+        /// <returns>An array of IBlock objects on the path</returns>
+        public IBlock[] requestPath(int startBlockID, int endBlockID, string line)
+        {
+            bool destFound = false;
+
+            //If start or end block ID was obviously invalid.
+            if (startBlockID < 0 || endBlockID < 0)
+            {
+                return null;
+            }
+
+            //If line was invalid
+            if (!line.Equals("Red", StringComparison.OrdinalIgnoreCase) && !line.Equals("Green", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            //Initialize hash w/ keys="bID+line" and values=Visited(true) or NotVisited(false)
+            Hashtable visited = new Hashtable();
+
+            //Arbitrary initialization
+            for (int i = 0; i < 180; i++)
+            {
+                visited.Add(i, false);
+            }
+
+
+            //Init stack to hold startBlock
+            Stack < IBlock > path= new Stack<IBlock>();
+            IBlock startBlock = requestBlockInfo(startBlockID, line);
+            if (startBlock == null)
+            {
+                return null;
+            }
+            path.Push( startBlock );
+
+            while (path.Count != 0)
+            {
+                IBlock temp = path.Peek();
+
+                //Find neighbors of current node
+                List<IBlock> neighborList = new List<IBlock>();
+                int nextID=temp.SwitchDest1;
+                int altNext=temp.SwitchDest2;
+                int prev=temp.PrevBlockID;
+                if (nextID != -1 && nextID!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(nextID,line) );
+                }
+
+                if(altNext!=-1 && altNext!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(altNext,line) );
+                }
+
+                if(prev!=-1 && prev!=temp.BlockID)
+                {
+                    neighborList.Add( requestBlockInfo(prev,line) );
+                }
+
+
+                //If one of the neighbors is the destination
+                //Add the dest to the path, and set the destFound flag
+                //so we can break from our loop
+                foreach(IBlock n in neighborList)
+                {
+                    if (n.BlockID == endBlockID)
+                    {
+                        path.Push(n);
+                        destFound = true;
+                    }
+                }
+                if (destFound)
+                    break;
+
+                //If(Block has at least 1 neighbor not visited yet, push neighbor to path-stack
+                bool deadEnd = true;
+                foreach(IBlock n in neighborList)
+                {
+                    if ((bool)visited[n.BlockID] == false)
+                    {
+                        deadEnd = false;
+                        //push ONE AND ONLY ONE unvisited neighber to path-stack
+                        path.Push(n);
+                        //set this neighbor as visited in boolean hash
+                        visited[n.BlockID] = true;
+                        break;
+                    }
+                }
+
+                //If no neighbors found, we reached a dead end, pop top off stack
+                //top should still be 'temp' before pop, as no neighbors were pushed,
+                //and the destination wasnt found.
+                if (deadEnd == true)
+                {
+                    path.Pop();
+                }
+
+            }//End while loop
+
+            //If path contains no elements, then path does not exist
+            if (path.Count == 0)
+            {
+                return null;
+            }
+            else//If path contains elements, we have a valid path stored in our stack.
+            {
+                //Copy stack to array
+                IBlock[] pathArr=path.ToArray();
+                //Change array into list
+                List<IBlock> pathList = new List<IBlock>(pathArr);
+                //Reverse list
+                pathList.Reverse();
+                //Turn list back into array
+                pathArr = pathList.ToArray();
+                //return the array
+                return pathArr;
+            }
+
+        }//End method
 
 
         //Handle environment tick
@@ -491,10 +679,29 @@ namespace TrackModel
             //handle tick here
         }
 
-        //Property
+        /// <summary>
+        /// A Property returning an enum corresponding to which line's have been changed since
+        /// the last check.  Red, Green, Both, or None
+        /// </summary>
         public TrackChanged ChangeFlag
         {
             get { return _changeState; }
+        }
+
+        /// <summary>
+        /// A boolean value corresponding to whether the red line has been loaded yet
+        /// </summary>
+        public bool RedLoaded
+        {
+            get { return _redLoaded; }
+        }
+
+        /// <summary>
+        /// A boolean value corresponding to whether the green line has been loaded yet
+        /// </summary>
+        public bool GreenLoaded
+        {
+            get { return _greenLoaded; }
         }
 
     }

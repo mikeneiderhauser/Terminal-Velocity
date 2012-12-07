@@ -12,6 +12,10 @@ namespace TrackModel
         private readonly SQLiteConnection _dbCon;
         private static int curCirID=0;
 
+        /// <summary>
+        /// A public constructor allowing external modules or TrackModel to create DBCreator objects
+        /// </summary>
+        /// <param name="fPath">The filepath to the database to connect to</param>
         public DBCreator(string fPath)
         {
             
@@ -49,6 +53,9 @@ namespace TrackModel
             }
         }
 
+        /// <summary>
+        /// An accessor for the DBConnection
+        /// </summary>
         public SQLiteConnection DBCon
         {
             get { return _dbCon; }
@@ -130,6 +137,13 @@ namespace TrackModel
         }
 
 
+        /// <summary>
+        /// A public method, most notably called by the TrackModel, that parses the input file and
+        /// requests inserts into the database.
+        /// </summary>
+        /// <param name="fPath">The path to the file to be parsed</param>
+        /// <returns>An integer flag: 0 for success, -3 for a null database, -1 for an invalid path, 
+        /// -2 for a file format error</returns>
         public int parseInputFile(string fPath)
         {
             //If our constructor failed, return an error code please
@@ -743,6 +757,13 @@ namespace TrackModel
             return 0; //If you get to this point, you've executed successfully.
         }
 
+        /// <summary>
+        /// A deprecated public method used to handle update requests.  Database updates have been moved
+        /// into the DBManager's domain, and as such this method should not be used. 
+        /// </summary>
+        /// <param name="bID">The block ID of the block to be updated</param>
+        /// <param name="newBlockSize">The new block size of the block</param>
+        /// <returns>An integer flag denoting the success or failure of the operation: 0 denotes success, -1 denotes failure</returns>
         public int handleUpdateRequest(int bID, int newBlockSize)
         {
             return -1;

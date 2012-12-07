@@ -81,5 +81,10 @@ namespace TrackModel
                 }
             }
         }
+
+        private void trackDisplayPanel_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

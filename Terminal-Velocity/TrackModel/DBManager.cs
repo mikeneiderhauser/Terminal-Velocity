@@ -11,13 +11,23 @@ namespace TrackModel
         //Private parameters
         private readonly SQLiteConnection _dbCon;
 
+        /// <summary>
+        /// A public constructor allowing the Track Model or outside modules to create a DB Manager
+        /// </summary>
+        /// <param name="con">A connection to an SQLite database</param>
         public DBManager(SQLiteConnection con)
         {
             _dbCon = con;
         }
 
 
-        //Public methods
+        /// <summary>
+        /// A public method which creates a SQL query for use on the database
+        /// </summary>
+        /// <param name="qType">A string representing the query type: either BLOCK or ROUTE</param>
+        /// <param name="ID"> The ID of the object required</param>
+        /// <param name="line">The name of the line required: either "Red" or "Green"</param>
+        /// <returns>The SQL query stored as a string</returns>
         public String createQueryString(string qType, int ID, string line)
         {
             //Check basic ID validity
@@ -138,6 +148,13 @@ namespace TrackModel
         //Allows updates types of "SWITCH" or "BLOCK"
         //	SWITCH updates only affect the switch
         //	BLOCK updates are allowed to update state info, track circuit info, heater info
+
+        /// <summary>
+        /// A public method allowing modules to create an SQL update statement
+        /// </summary>
+        /// <param name="updateType">A string representing the update type: either "SWITCH" or "BLOCK"</param>
+        /// <param name="bToUpdate">An IBlock object holding changed values needed to update the database</param>
+        /// <returns>A SQL update statement in the form of a string</returns>
         public String createUpdate(string updateType, IBlock bToUpdate)
         {
             //Check that block isnt null
@@ -147,7 +164,7 @@ namespace TrackModel
             //Get block ID and check that it exists
             int bID = bToUpdate.BlockID;
             string line = bToUpdate.Line;
-            bool exists = blockExists(bID, "Red");
+            bool exists = blockExists(bID,line);
             if (!exists)
                 return null;
 
@@ -190,6 +207,13 @@ namespace TrackModel
             }
         }
 
+        /// <summary>
+        /// A public method used for creating valid insert statements on the database.  This method was
+        /// deprecated early on, and should not be used.  The DBCreator class should instead by used for
+        /// inserting into the database.
+        /// </summary>
+        /// <param name="b">The block to be inserted into the database</param>
+        /// <returns>A SQL insert statement stored as a string</returns>
         public String createInsert(Block b)
         {
             //Looking back, im not sure why I thought I needed this method.
@@ -200,9 +224,12 @@ namespace TrackModel
         }
 
 
-        //Return type should be changed into some sort of
-        //SQLResults object after I examine the libraries
-        //and classes used for this type of thing in C#
+        /// <summary>
+        /// A public method allowing outside modules to run valid SQL queries.  The only supported queries
+        /// are those created with the create* methods included in this DBManager class
+        /// </summary>
+        /// <param name="sqlQuery">A sqlQuery provided by the createQuery method</param>
+        /// <returns>A SQLiteDataReader object holding the results of the query</returns>
         public SQLiteDataReader runQuery(string sqlQuery)
         {
             if (_dbCon.State != ConnectionState.Open)
@@ -225,6 +252,11 @@ namespace TrackModel
         }
 
 
+        /// <summary>
+        /// A public method allowing outside modules, and the Track Model to run updates to the database
+        /// </summary>
+        /// <param name="sqlUpdate">A SQL Update provided by the createUpdate method in the DBManager</param>
+        /// <returns>A boolean value denoting the success or failure of the update</returns>
         public bool runUpdate(string sqlUpdate)
         {
             if (_dbCon == null)
@@ -254,6 +286,12 @@ namespace TrackModel
             }
         }
 
+        /// <summary>
+        /// A public method allowing outside modules to run insertion statements
+        /// on the database.
+        /// </summary>
+        /// <param name="sqlInsert">This is a valid SQL insert provided by the createInsert method</param>
+        /// <returns>A boolean denoting the success or failure of the insert operation.</returns>
         public bool runInsert(string sqlInsert)
         {
             if (_dbCon == null)
@@ -287,6 +325,13 @@ namespace TrackModel
         //Argument to this function shouldbe changed
         //into the SQLResults object returned from
         //runQuery() above
+
+        /// <summary>
+        /// A public method allowing the track model and other modules to format 
+        /// database query results into coherent Block objects
+        /// </summary>
+        /// <param name="bR">The SQLiteDataReader containing the results of the query</param>
+        /// <returns>A valid Block object, or null in the case of an error</returns>
         public Block formatBlockQueryResults(SQLiteDataReader bR)
         {
             Block tempBlock = null;
@@ -359,6 +404,13 @@ namespace TrackModel
         //Argument to this function should be changed
         //into the SQLResults object returned from
         //runQuery above (and used in fQR above)
+
+        /// <summary>
+        /// A public method allowing the Track Model and external modules to format 
+        /// database queries into coherent RouteInfo objects
+        /// </summary>
+        /// <param name="rr">A SQLiteDataReader object provided by the runQuery method in the DBManager</param>
+        /// <returns>A valid RouteInfo object, or null in the case of a database error.</returns>
         public RouteInfo formatRouteQueryResults(SQLiteDataReader rr)
         {
             if (rr == null)

@@ -54,6 +54,12 @@ namespace CTCOffice
             throw new NotImplementedException();
         }
 
+        public IBlock[] requestPath(int startBlock, int endBlock, string line)
+        {
+
+            return null;
+        }
+
         public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID == 0)
@@ -97,6 +103,16 @@ namespace CTCOffice
         public TrackChanged ChangeFlag
         {
             get { return TrackChanged.Both; }
+        }
+
+        public bool RedLoaded
+        {
+            get { return false; }
+        }
+
+        public bool GreenLoaded
+        {
+            get { return false; }
         }
     }
 }

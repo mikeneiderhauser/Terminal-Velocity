@@ -13,10 +13,10 @@ namespace TrainModel
 
         private const int _maxCapacity = 222; // 74 seated, 148 standing
 
-        private readonly bool _brakeFailure;
-        private readonly bool _engineFailure;
+        private bool _brakeFailure;
+        private bool _engineFailure;
+        private bool _signalPickupFailure;
         private readonly ISimulationEnvironment _environment;
-        private readonly bool _signalPickupFailure;
         private readonly ITrackModel _trackModel;
         private readonly ITrainController _trainController;
         private readonly int _trainID;
@@ -58,14 +58,21 @@ namespace TrainModel
         #region Constructors
 
         /// <summary>
-        ///     This constructor is used when passenger, crew, and temperature information is not given.
-        ///     It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
+        /// This constructor is used when passenger, crew, and temperature information is not given.
+        /// It adds no passengers or crew and sets the temperature equal to 32 degrees Celcius.
         /// </summary>
+        /// <param name="trainID">The ID to give to the train.</param>
+        /// <param name="startingBlock">The starting block of the train.</param>
+        /// <param name="environment">The environment being used by the entire simulation.</param>
         public Train(int trainID, IBlock startingBlock, ISimulationEnvironment environment)
         {
+            _environment = environment;
+            _environment.Tick += _environment_Tick;
+
             _trainID = trainID;
             _totalMass = calculateMass();
-            _informationLog = "Created at " + DateTime.Now + ".\r\n";
+            _informationLog = "";
+            appendInformationLog("Created.");
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -87,16 +94,13 @@ namespace TrainModel
             _blockLength = _currentBlock.BlockSize;
             _trackCircuitID = _currentBlock.TrackCirID;
 
-            _environment = environment;
-            _environment.Tick += _environment_Tick;
-
             _trackModel = environment.TrackModel;
             _trainController = new TrainController.TrainController(_environment, this);
 
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
 
-            _timeInterval = (environment.getInterval()/1000.0);
+            _timeInterval = (environment.getInterval() / 1000.0);
         }
 
         #endregion
@@ -108,7 +112,7 @@ namespace TrainModel
         /// </summary>
         public void EmergencyBrake()
         {
-            _informationLog += "Train " + _trainID + "'s emergency brake pulled!\r\n";
+            appendInformationLog("WARNING: EMERGENCY BRAKE PULLED.");
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
@@ -116,36 +120,50 @@ namespace TrainModel
         ///     Changes the acceleration of the train based on the given power.
         /// </summary>
         /// <param name="power">Power given.</param>
-        /// <returns>True if successful, false otherwise.</returns>
+        /// <returns>True if power level was within bounds, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
-            _informationLog += "Train " + _trainID + " given power of " + power + " kW.\r\n";
+            appendInformationLog("Given power of " + Math.Round(power, 3) + " W.");
 
             double currentForce = 0;
             double newAcceleration = _physicalAccelerationLimit;
 
             if (_currentVelocity > 0)
             {
-                currentForce = power/_currentVelocity;
-                newAcceleration = currentForce/_totalMass;
+                currentForce = power / _currentVelocity;
+                newAcceleration = currentForce / _totalMass;
+            }
+            else
+            {
+                appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
             }
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical acceleration limit.\r\n";
+                appendInformationLog("ERROR: POWER LEVEL CAUSED ACCELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED.");
                 return false;
             }
-
-                // check that the new deceleration does not exceed the physical limit
+            // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                _informationLog += "Train " + _trainID + "'s power level exceeded physical deceleration limit.\r\n";
+                appendInformationLog("ERROR: POWER LEVEL CAUSED DECELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED");
                 return false;
             }
 
-            _informationLog += "Train " + _trainID + " acceleration set to " + newAcceleration + " m/s^2.\r\n";
+            if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
+            {
+                _brakeFailure = true;
+                appendInformationLog("WARNING: BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
+            }
+
+            if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
+            {
+                appendInformationLog("WARNING: POSITIVE POWER GIVEN BUT TRAIN IS SLOWING DOWN.");
+            }
+
             _currentAcceleration = newAcceleration;
+            appendInformationLog("Acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.");
             return true;
         }
 
@@ -165,8 +183,8 @@ namespace TrainModel
         /// <summary>
         ///     Occurs on every tick.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Tick event args</param>
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             updateMovement();
@@ -177,39 +195,46 @@ namespace TrainModel
         /// </summary>
         private void updateMovement()
         {
-            _timeInterval = (_environment.getInterval()/1000.0); // milliseconds to seconds
+            _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
 
             // acceleration changes due to elevation
             double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
             if (_currentBlock.Grade > 0) // up hill
             {
-                _currentAcceleration -= _accelerationGravity*Math.Sin(angle);
+                _currentAcceleration -= (_accelerationGravity * Math.Sin(angle));
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                _currentAcceleration += _accelerationGravity*Math.Sin(angle);
+                _currentAcceleration += (_accelerationGravity * Math.Sin(angle));
             }
 
-            _currentVelocity += _currentAcceleration*_timeInterval;
+            _currentVelocity += (_currentAcceleration * _timeInterval);
 
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
+                _currentAcceleration = 0;
             }
 
-            _currentPosition += _currentVelocity*_timeInterval;
+            _currentPosition += (_currentVelocity * _timeInterval);
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
             {
                 // get next block ID based on the previous ID
                 int nextBlockID = _currentBlock.nextBlockIndex(_previousBlockID);
+                IBlock nextBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
 
-                _previousBlockID = _currentBlockID; // previous block is now current block
-
-                // update the current block to be the next block
-                _currentBlock = _trackModel.requestBlockInfo(nextBlockID, _currentBlock.Line);
-                _currentBlockID = _currentBlock.BlockID;
+                if (nextBlock != null)
+                {
+                    _previousBlockID = _currentBlockID; // previous block is now current block
+                    _currentBlock = nextBlock;
+                    _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
+                }
+                else
+                {
+                    appendInformationLog("ERROR: COULD NOT FIND NEXT BLOCK.");
+                }
 
                 // update the current position of the train
                 _currentPosition = _currentPosition - _blockLength;
@@ -230,7 +255,19 @@ namespace TrainModel
         /// <returns>The total mass.</returns>
         private double calculateMass()
         {
-            return (_initialMass + _personMass*(_numPassengers + _numCrew));
+            return (_initialMass + _personMass * (_numPassengers + _numCrew));
+        }
+
+        /// <summary>
+        ///     Appends the given string to the information log.
+        /// </summary>
+        /// <param name="s">The string to to append.</param>
+        private void appendInformationLog(string s)
+        {
+            _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
+            _informationLog += s + "\r\n";
+
+            _environment.sendLogEntry("For " + this.ToString() + ": " + s);
         }
 
         #endregion
@@ -270,7 +307,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        ///     Get and set the lights.
+        ///     Get and set the lights to on (true) or off (false).
         /// </summary>
         public bool LightsOn
         {
@@ -278,17 +315,16 @@ namespace TrainModel
             set
             {
                 _lightsOn = value;
-                _informationLog += "Train " + _trainID;
 
                 if (_lightsOn)
-                    _informationLog += " lights were turned on.\r\n";
+                    appendInformationLog("Lights turned on.");
                 else
-                    _informationLog += " lights were turned off.\r\n";
+                    appendInformationLog("Lights turned off.");
             }
         }
 
         /// <summary>
-        ///     Get and set the doors.
+        ///     Get and set the doors to open (true) or closed (false).
         /// </summary>
         public bool DoorsOpen
         {
@@ -296,12 +332,11 @@ namespace TrainModel
             set
             {
                 _doorsOpen = value;
-                _informationLog += "Train " + _trainID;
 
                 if (_doorsOpen)
-                    _informationLog += " doors were opened.\r\n";
+                    appendInformationLog("Doors opened.");
                 else
-                    _informationLog += " doors were closed.\r\n";
+                    appendInformationLog("Doors closed.");
             }
         }
 
@@ -314,7 +349,7 @@ namespace TrainModel
             set
             {
                 _temperature = value;
-                _informationLog += "Train " + _trainID + " temperature was set to " + _temperature;
+                appendInformationLog("Temperature set to " + _temperature + " °F.");
             }
         }
 
@@ -362,15 +397,25 @@ namespace TrainModel
                 _numPassengers = value;
                 int difference = _numPassengers - oldNumPassengers;
 
-                if (difference < 0) // people get off train
+                if (_numPassengers >= 0)
                 {
-                    difference *= -1;
-                    _informationLog += difference + " passengers got off of Train " + _trainID + ".\r\n";
-                }
-                else // people get on train
-                    _informationLog += difference + " passengers got on Train " + _trainID + ".\r\n";
+                    if (difference < 0) // people get off train
+                    {
+                        difference *= -1;
+                        appendInformationLog(difference + " passengers got off.");
+                    }
+                    else // people get on train
+                    {
+                        appendInformationLog(difference + " passengers got on.");
+                    }
 
-                _totalMass = calculateMass();
+                    _totalMass = calculateMass();
+                }
+                else
+                {
+                    appendInformationLog("ERROR: Attempted to set number of passengers to negative number.");
+                    _numPassengers = oldNumPassengers;
+                }
             }
         }
 
@@ -386,15 +431,25 @@ namespace TrainModel
                 _numCrew = value;
                 int difference = _numCrew - oldNumCrew;
 
-                if (difference < 0) // people get off train
+                if (_numCrew >= 0)
                 {
-                    difference *= -1;
-                    _informationLog += difference + " crew members got off of Train " + _trainID + ".\r\n";
-                }
-                else // people get on train
-                    _informationLog += difference + " crew members got on Train " + _trainID + ".\r\n";
+                    if (difference < 0) // crew get off train
+                    {
+                        difference *= -1;
+                        appendInformationLog(difference + " crew members got off.");
+                    }
+                    else // crew get on train
+                    {
+                        appendInformationLog(difference + " crew members got on.");
+                    }
 
-                _totalMass = calculateMass();
+                    _totalMass = calculateMass();
+                }
+                else
+                {
+                    appendInformationLog("ERROR: Attempted to set number of crew members to negative number.");
+                    _numCrew = oldNumCrew;
+                }
             }
         }
 
@@ -404,6 +459,15 @@ namespace TrainModel
         public bool BrakeFailure
         {
             get { return _brakeFailure; }
+            set
+            {
+                _brakeFailure = value;
+
+                if (_brakeFailure)
+                {
+                    appendInformationLog("EXPERIENCING BRAKE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -412,6 +476,15 @@ namespace TrainModel
         public bool EngineFailure
         {
             get { return _engineFailure; }
+            set
+            {
+                _engineFailure = value;
+
+                if (_engineFailure)
+                {
+                    appendInformationLog("EXPERIENCING ENGINE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -420,6 +493,15 @@ namespace TrainModel
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
+            set
+            {
+                _signalPickupFailure = value;
+
+                if (_signalPickupFailure)
+                {
+                    appendInformationLog("EXPERIENCING SIGNAL PICKUP FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -430,6 +512,9 @@ namespace TrainModel
             get { return _currentBlock; }
         }
 
+        /// <summary>
+        ///     Get the Train Controller assigned to the train.
+        /// </summary>
         public ITrainController TrainController
         {
             get { return _trainController; }
