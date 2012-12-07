@@ -13,7 +13,5 @@ namespace Interfaces
         List<ITrainModel> Trains { get; }
         List<IBlock> Blocks { get; }
         List<IRoute> Routes { get; }
-
-        void LoadPlcProgram(string filename);
     }
 }

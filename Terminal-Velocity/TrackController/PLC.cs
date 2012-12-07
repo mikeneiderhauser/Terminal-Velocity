@@ -8,7 +8,6 @@ namespace TrackController
     {
         private readonly ISimulationEnvironment _env;
         private readonly ITrackCircuit _circuit;
-        private readonly string _filename;
         private readonly Dictionary<int, IBlock> _broken;
 
         private const double EPSILON = 0.0001;
@@ -18,18 +17,11 @@ namespace TrackController
         /// </summary>
         /// <param name="env">The envrionment </param>
         /// <param name="circuit">The track circuit for the TrackController</param>
-        /// <param name="filename">The file containing the program to load</param>
-        public Plc(ISimulationEnvironment env, ITrackCircuit circuit, string filename = "ladder.xml")
+        public Plc(ISimulationEnvironment env, ITrackCircuit circuit)
         {
             _env = env;
             _circuit = circuit;
-            _filename = filename;
             _broken = new Dictionary<int, IBlock>();
-        }
-
-        public string Filename
-        {
-            get { return _filename; }
         }
 
         /// <summary>
@@ -41,13 +33,16 @@ namespace TrackController
         /// <param name="messages">A list of messages set by the PLC</param>
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
         {
+            // Each track controller shall have one switch at maximum
+            bool noSwitch = blocks.TrueForAll(o => o.hasSwitch() == false);
+
             foreach (IBlock b in blocks)
-            {            
+            {
+                // Check for broken track
                 if (b.State == StateEnum.BrokenTrackFailure)
                 {
                     if (!_broken.ContainsKey(b.BlockID))
                     {
-                        // Report the broken block
                         messages.Add(string.Format("Block {0} {1}", b.BlockID, Enum.GetName(typeof (StateEnum), b.State)));
                         _broken.Add(b.BlockID, b);
                     }
@@ -56,15 +51,32 @@ namespace TrackController
 
             foreach (ITrainModel t in trains)
             {
-                double speedLim = t.CurrentBlock.SpeedLimit;
-                int authority = 1;
+                var speedLim = t.CurrentBlock.SpeedLimit;
+                var authority = t.AuthorityLimit;
 
-                if (_broken.Count > 0)
+                // Stop the train
+                if (_broken.Count > 0 && noSwitch)
                     authority = 0;
+
+                foreach (var n in trains)
+                {
+                    // Number of blocks till the next train
+                    int lengh = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
+                    // Stop the train for now
+                    if (lengh <= 1)
+                        speedLim = 0;
+                        // Slow the train by half
+                    else if (lengh <= 2)
+                        speedLim /= 2;
+                }
 
                 if (Math.Abs(t.TrainController.SpeedLimit - speedLim) > EPSILON)
                     messages.Add(string.Format("Train {0} speed changed {1} -> {2}", t.TrainID,
-                                               t.TrainController.SpeedLimit, authority));
+                                               t.TrainController.SpeedLimit, speedLim));
+
+                if (t.TrainController.AuthorityLimit != authority)
+                    messages.Add(string.Format("Train {0} authority changed {1} -> {2}", t.TrainID,
+                                               t.TrainController.AuthorityLimit, authority));
 
                 _circuit.ToTrain(t.TrainID, speedLim, authority);
             }
@@ -82,40 +94,23 @@ namespace TrackController
         {
             foreach (var t in trains)
             {
-                if (t.CurrentBlock.hasTunnel())
-                    t.LightsOn = true;
+                t.LightsOn = t.CurrentBlock.hasTunnel();
             }
-    }
+        }
 
         /// <summary>
-        ///     Performs switching operations as needed
+        /// Toggles the switch controlled by the TrackController (one per TrackController)
         /// </summary>
-        /// <param name="blocks"></param>
-        /// <param name="trains"></param>
-        /// <param name="routes"></param>
+        /// <param name="blocks">The blocks in question</param>
+        /// <param name="trains">The trains in question</param>
+        /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
-        public void DoSwitch(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
+        public void ToggleSwitches(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes,
+                                   List<string> messages)
         {
-        }
-
-        internal class Action
-        {
-            public Action(List<Edge> edges)
+            foreach (var t in trains)
             {
-                Edges = edges;
             }
-
-            public List<Edge> Edges { get; set; }
-        }
-
-        internal class Edge
-        {
-            public Edge(List<Action> actions)
-            {
-                Actions = actions;
-            }
-
-            public List<Action> Actions { get; set; }
         }
     }
 }
