@@ -268,8 +268,8 @@ namespace TrainModel
                 _accelerationWarningGiven = false;
             }
 
-            // check if the deceleration is greater than the physical limit
-            if (_currentAcceleration < _physicalDecelerationLimit)
+            // check if the deceleration is greater than the physical limit and emergency brake isn't toggled
+            if (_currentAcceleration < _physicalDecelerationLimit && !_emergencyBrakePulled)
             {
                 _currentAcceleration = _physicalDecelerationLimit;
 
