@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Interfaces;
 
@@ -8,7 +9,7 @@ namespace TrackController
     {
         private readonly ISimulationEnvironment _env;
         private readonly ITrackCircuit _circuit;
-        private readonly Dictionary<int, IBlock> _broken;
+        private List<IBlock> _broken;
 
         private const double EPSILON = 0.0001;
 
@@ -21,7 +22,7 @@ namespace TrackController
         {
             _env = env;
             _circuit = circuit;
-            _broken = new Dictionary<int, IBlock>();
+            _broken = new List<IBlock>();
         }
 
         /// <summary>
@@ -31,43 +32,42 @@ namespace TrackController
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
+        // TODO: This method assumes a switch can only be found at the END of a section controlled by a TrackController
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, List<IRoute> routes, List<string> messages)
         {
-            // Each track controller shall have one switch at maximum
-            bool noSwitch = blocks.TrueForAll(o => o.hasSwitch() == false);
+            // Collection of broken blocks
+            _broken = (List<IBlock>) blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure));
 
-            foreach (IBlock b in blocks)
-            {
-                // Check for broken track
-                if (b.State == StateEnum.BrokenTrackFailure)
-                {
-                    if (!_broken.ContainsKey(b.BlockID))
-                    {
-                        messages.Add(string.Format("Block {0} {1}", b.BlockID, Enum.GetName(typeof (StateEnum), b.State)));
-                        _broken.Add(b.BlockID, b);
-                    }
-                }
-            }
-
-            foreach (ITrainModel t in trains)
+            // Set train speeds an authorities
+            foreach (var t in trains)
             {
                 var speedLim = t.CurrentBlock.SpeedLimit;
                 var authority = t.AuthorityLimit;
 
-                // Stop the train
-                if (_broken.Count > 0 && noSwitch)
-                    authority = 0;
-
+                // Adjust train speed to match that of the track speed limit
+                // or if the train is too close to another train
                 foreach (var n in trains)
                 {
-                    // Number of blocks till the next train
+                    // Number of blocks till the next train (assumes the Route accounted for)
                     int lengh = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
                     // Stop the train for now
                     if (lengh <= 1)
                         speedLim = 0;
-                        // Slow the train by half
+                    // Slow the train by half
                     else if (lengh <= 2)
                         speedLim /= 2;
+                }
+
+                // Handle broken blocks
+                if (_broken.Count > 0)
+                {
+                    foreach (var b in _broken)
+                    {
+                        // Stop the train if a broken block is too close
+                        // TODO: The block may be behind the train
+                        if (_env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count() < 3)
+                            authority = 0;
+                    }
                 }
 
                 if (Math.Abs(t.TrainController.SpeedLimit - speedLim) > EPSILON)

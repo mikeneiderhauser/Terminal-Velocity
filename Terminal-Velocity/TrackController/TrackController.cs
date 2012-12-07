@@ -209,6 +209,7 @@ namespace TrackController
             var sr = Routes;
 
             _plc.IsSafe(sb, st, sr, _messages);
+            _plc.ToggleSwitches(sb, st, sr, _messages);
             _plc.ToggleLights(sb, st, sr, _messages);
         }
 
