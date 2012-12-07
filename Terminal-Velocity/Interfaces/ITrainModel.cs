@@ -68,19 +68,19 @@
         int NumCrew { get; set; }
 
         /// <summary>
-        ///     Get if there is a brake failure.
+        ///     Get and set brake failure.
         /// </summary>
-        bool BrakeFailure { get; }
+        bool BrakeFailure { get; set; }
 
         /// <summary>
-        ///     Get if there is an engine failure.
+        ///     Get and set engine failure.
         /// </summary>
-        bool EngineFailure { get; }
+        bool EngineFailure { get; set; }
 
         /// <summary>
-        ///     Get if there is a signal pickup failure.
+        ///     Get and set signal pickup failure.
         /// </summary>
-        bool SignalPickupFailure { get; }
+        bool SignalPickupFailure { get; set; }
 
         /// <summary>
         ///     Get the current block for the train.

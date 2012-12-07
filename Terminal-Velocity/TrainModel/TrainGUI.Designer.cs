@@ -55,6 +55,13 @@
             this.outputValueTextBox = new System.Windows.Forms.TextBox();
             this.positionTextBox = new System.Windows.Forms.TextBox();
             this.trainLabel = new System.Windows.Forms.Label();
+            this.buttonBrakeFailure = new System.Windows.Forms.Button();
+            this.buttonEngineFailure = new System.Windows.Forms.Button();
+            this.buttonSignalPickupFailure = new System.Windows.Forms.Button();
+            this.buttonEmergencyBrake = new System.Windows.Forms.Button();
+            this.brakeFailureTextBox = new System.Windows.Forms.TextBox();
+            this.engineFailureTextBox = new System.Windows.Forms.TextBox();
+            this.signalPickupFailureTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +73,7 @@
             this.trainInfoTextBox.Name = "trainInfoTextBox";
             this.trainInfoTextBox.ReadOnly = true;
             this.trainInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.trainInfoTextBox.Size = new System.Drawing.Size(417, 385);
+            this.trainInfoTextBox.Size = new System.Drawing.Size(417, 301);
             this.trainInfoTextBox.TabIndex = 0;
             // 
             // allTrainComboBox
@@ -117,6 +124,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(222, 385);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
@@ -342,10 +350,87 @@
             this.trainLabel.Size = new System.Drawing.Size(0, 33);
             this.trainLabel.TabIndex = 3;
             // 
+            // buttonBrakeFailure
+            // 
+            this.buttonBrakeFailure.Location = new System.Drawing.Point(19, 392);
+            this.buttonBrakeFailure.Name = "buttonBrakeFailure";
+            this.buttonBrakeFailure.Size = new System.Drawing.Size(91, 35);
+            this.buttonBrakeFailure.TabIndex = 4;
+            this.buttonBrakeFailure.Text = "Toggle Brake Failure";
+            this.buttonBrakeFailure.UseVisualStyleBackColor = true;
+            this.buttonBrakeFailure.Click += new System.EventHandler(this.buttonBrakeFailure_Click);
+            // 
+            // buttonEngineFailure
+            // 
+            this.buttonEngineFailure.Location = new System.Drawing.Point(116, 392);
+            this.buttonEngineFailure.Name = "buttonEngineFailure";
+            this.buttonEngineFailure.Size = new System.Drawing.Size(91, 35);
+            this.buttonEngineFailure.TabIndex = 5;
+            this.buttonEngineFailure.Text = "Toggle Engine Failure";
+            this.buttonEngineFailure.UseVisualStyleBackColor = true;
+            this.buttonEngineFailure.Click += new System.EventHandler(this.buttonEngineFailure_Click);
+            // 
+            // buttonSignalPickupFailure
+            // 
+            this.buttonSignalPickupFailure.Location = new System.Drawing.Point(214, 392);
+            this.buttonSignalPickupFailure.Name = "buttonSignalPickupFailure";
+            this.buttonSignalPickupFailure.Size = new System.Drawing.Size(91, 35);
+            this.buttonSignalPickupFailure.TabIndex = 6;
+            this.buttonSignalPickupFailure.Text = "Toggle Signal Pickup Failure";
+            this.buttonSignalPickupFailure.UseVisualStyleBackColor = true;
+            this.buttonSignalPickupFailure.Click += new System.EventHandler(this.buttonSignalPickupFailure_Click);
+            // 
+            // buttonEmergencyBrake
+            // 
+            this.buttonEmergencyBrake.Location = new System.Drawing.Point(329, 392);
+            this.buttonEmergencyBrake.Name = "buttonEmergencyBrake";
+            this.buttonEmergencyBrake.Size = new System.Drawing.Size(98, 52);
+            this.buttonEmergencyBrake.TabIndex = 7;
+            this.buttonEmergencyBrake.Text = "Apply Emergency Brake";
+            this.buttonEmergencyBrake.UseVisualStyleBackColor = true;
+            this.buttonEmergencyBrake.Click += new System.EventHandler(this.buttonEmergencyBrake_Click);
+            // 
+            // brakeFailureTextBox
+            // 
+            this.brakeFailureTextBox.Location = new System.Drawing.Point(30, 433);
+            this.brakeFailureTextBox.Multiline = true;
+            this.brakeFailureTextBox.Name = "brakeFailureTextBox";
+            this.brakeFailureTextBox.ReadOnly = true;
+            this.brakeFailureTextBox.Size = new System.Drawing.Size(66, 20);
+            this.brakeFailureTextBox.TabIndex = 11;
+            this.brakeFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // engineFailureTextBox
+            // 
+            this.engineFailureTextBox.Location = new System.Drawing.Point(127, 433);
+            this.engineFailureTextBox.Multiline = true;
+            this.engineFailureTextBox.Name = "engineFailureTextBox";
+            this.engineFailureTextBox.ReadOnly = true;
+            this.engineFailureTextBox.Size = new System.Drawing.Size(66, 20);
+            this.engineFailureTextBox.TabIndex = 12;
+            this.engineFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // signalPickupFailureTextBox
+            // 
+            this.signalPickupFailureTextBox.Location = new System.Drawing.Point(225, 433);
+            this.signalPickupFailureTextBox.Multiline = true;
+            this.signalPickupFailureTextBox.Name = "signalPickupFailureTextBox";
+            this.signalPickupFailureTextBox.ReadOnly = true;
+            this.signalPickupFailureTextBox.Size = new System.Drawing.Size(66, 20);
+            this.signalPickupFailureTextBox.TabIndex = 13;
+            this.signalPickupFailureTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // TrainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.signalPickupFailureTextBox);
+            this.Controls.Add(this.engineFailureTextBox);
+            this.Controls.Add(this.brakeFailureTextBox);
+            this.Controls.Add(this.buttonEmergencyBrake);
+            this.Controls.Add(this.buttonSignalPickupFailure);
+            this.Controls.Add(this.buttonEngineFailure);
+            this.Controls.Add(this.buttonBrakeFailure);
             this.Controls.Add(this.trainLabel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.allTrainComboBox);
@@ -385,6 +470,13 @@
         private System.Windows.Forms.TextBox positionValueText;
         private System.Windows.Forms.TextBox positionTextBox;
         private System.Windows.Forms.Label trainLabel;
+        private System.Windows.Forms.Button buttonBrakeFailure;
+        private System.Windows.Forms.Button buttonEngineFailure;
+        private System.Windows.Forms.Button buttonSignalPickupFailure;
+        private System.Windows.Forms.Button buttonEmergencyBrake;
+        private System.Windows.Forms.TextBox brakeFailureTextBox;
+        private System.Windows.Forms.TextBox engineFailureTextBox;
+        private System.Windows.Forms.TextBox signalPickupFailureTextBox;
 
     }
 }

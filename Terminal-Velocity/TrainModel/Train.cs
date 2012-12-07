@@ -112,7 +112,7 @@ namespace TrainModel
         /// </summary>
         public void EmergencyBrake()
         {
-            appendInformationLog("EMERGENCY BRAKE PULLED.");
+            appendInformationLog("WARNING: EMERGENCY BRAKE PULLED.");
             _currentAcceleration = _emergencyBrakeDeceleration;
         }
 
@@ -135,42 +135,31 @@ namespace TrainModel
             }
             else
             {
-                appendInformationLog("Train stopped. Ignored given power and defaulted to maximum acceleration.");
+                appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
             }
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                appendInformationLog("Power level caused acceleration to exceed physical limit.");
+                appendInformationLog("ERROR: POWER LEVEL CAUSED ACCELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED.");
                 return false;
             }
-
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                appendInformationLog("Power level caused deceleration to exceed physical limit.");
+                appendInformationLog("ERROR: POWER LEVEL CAUSED DECELERATION TO EXCEED PHYSICAL LIMIT. POWER IGNORED");
                 return false;
             }
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
                 _brakeFailure = true;
-                appendInformationLog("BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
-                EmergencyBrake();
-            }
-            else
-            {
-                _brakeFailure = false;
+                appendInformationLog("WARNING: BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
             }
 
             if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
             {
-                _engineFailure = true;
-                appendInformationLog("POSITIVE POWER GIVEN BUT TRAIN SLOWING DOWN. ENGINE FAILURE.");
-            }
-            else
-            {
-                _engineFailure = false;
+                appendInformationLog("WARNING: POSITIVE POWER GIVEN BUT TRAIN IS SLOWING DOWN.");
             }
 
             _currentAcceleration = newAcceleration;
@@ -224,6 +213,7 @@ namespace TrainModel
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
+                _currentAcceleration = 0;
             }
 
             _currentPosition += (_currentVelocity * _timeInterval);
@@ -240,12 +230,10 @@ namespace TrainModel
                     _previousBlockID = _currentBlockID; // previous block is now current block
                     _currentBlock = nextBlock;
                     _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
-                    _signalPickupFailure = false;
                 }
                 else
                 {
-                    _signalPickupFailure = true; // throw signal pickup failure
-                    appendInformationLog("EXPERIENCED SIGNAL PICKUP FAILURE.");
+                    appendInformationLog("ERROR: COULD NOT FIND NEXT BLOCK.");
                 }
 
                 // update the current position of the train
@@ -425,7 +413,7 @@ namespace TrainModel
                 }
                 else
                 {
-                    appendInformationLog("Attempted to set number of passengers to negative number.");
+                    appendInformationLog("ERROR: Attempted to set number of passengers to negative number.");
                     _numPassengers = oldNumPassengers;
                 }
             }
@@ -459,7 +447,7 @@ namespace TrainModel
                 }
                 else
                 {
-                    appendInformationLog("Attempted to set number of crew members to negative number.");
+                    appendInformationLog("ERROR: Attempted to set number of crew members to negative number.");
                     _numCrew = oldNumCrew;
                 }
             }
@@ -471,6 +459,15 @@ namespace TrainModel
         public bool BrakeFailure
         {
             get { return _brakeFailure; }
+            set
+            {
+                _brakeFailure = value;
+
+                if (_brakeFailure)
+                {
+                    appendInformationLog("EXPERIENCING BRAKE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -479,6 +476,15 @@ namespace TrainModel
         public bool EngineFailure
         {
             get { return _engineFailure; }
+            set
+            {
+                _engineFailure = value;
+
+                if (_engineFailure)
+                {
+                    appendInformationLog("EXPERIENCING ENGINE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -487,6 +493,15 @@ namespace TrainModel
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
+            set
+            {
+                _signalPickupFailure = value;
+
+                if (_signalPickupFailure)
+                {
+                    appendInformationLog("EXPERIENCING SIGNAL PICKUP FAILURE.");
+                }
+            }
         }
 
         /// <summary>
