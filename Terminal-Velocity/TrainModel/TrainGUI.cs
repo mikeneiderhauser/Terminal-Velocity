@@ -64,7 +64,7 @@ namespace TrainModel
             if (!_errorMessages.Contains(error))
             {
                 _errorMessages.Add(error);
-                MessageBox.Show(error, "Critical Error with Train", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(error, "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -116,26 +116,6 @@ namespace TrainModel
                 _numTrains = _allTrains.Count;
             }
 
-            // check for errors in all trains
-            foreach (Train train in _allTrains)
-            {
-                // checks for any failures
-                if (train.BrakeFailure)
-                {
-                    DisplayError("CRITICAL ERROR: Brake failure for " + train);
-                }
-
-                if (train.EngineFailure)
-                {
-                    DisplayError("CRITICAL ERROR: Engine failure for " + train);
-                }
-
-                if (train.SignalPickupFailure)
-                {
-                    DisplayError("CRITICAL ERROR: Signal pickup failure for " + train);
-                }
-            }
-
             if (_selectedTrain != null)
             {
                 trainLabel.Text = _selectedTrain.ToString();
@@ -150,6 +130,10 @@ namespace TrainModel
 
                 numPassengersValueText.Text = _selectedTrain.NumPassengers.ToString();
                 numCrewValueText.Text = _selectedTrain.NumCrew.ToString();
+
+                brakeFailureTextBox.Text = _selectedTrain.BrakeFailure.ToString();
+                engineFailureTextBox.Text = _selectedTrain.EngineFailure.ToString();
+                signalPickupFailureTextBox.Text = _selectedTrain.SignalPickupFailure.ToString();
 
                 // set values for lights
                 if (_selectedTrain.LightsOn)
@@ -182,6 +166,96 @@ namespace TrainModel
         {
             _selectedTrain = (Train)allTrainComboBox.SelectedItem;
             UpdateGUI();
+        }
+
+        /// <summary>
+        ///     Toggles brake failure.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void buttonBrakeFailure_Click(object sender, EventArgs e)
+        {
+            _selectedTrain = (Train)allTrainComboBox.SelectedItem;
+
+            if (_selectedTrain != null)
+            {
+                if (_selectedTrain.BrakeFailure)
+                {
+                    _selectedTrain.BrakeFailure = false;
+                    UpdateGUI();
+                }
+                else
+                {
+                    _selectedTrain.BrakeFailure = true;
+                    UpdateGUI();
+                    DisplayError("CRITICAL ERROR: Brake failure for " + _selectedTrain.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Toggles engine failure.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void buttonEngineFailure_Click(object sender, EventArgs e)
+        {
+            _selectedTrain = (Train)allTrainComboBox.SelectedItem;
+
+            if (_selectedTrain != null)
+            {
+                if (_selectedTrain.EngineFailure)
+                {
+                    _selectedTrain.EngineFailure = false;
+                    UpdateGUI();
+                }
+                else
+                {
+                    _selectedTrain.EngineFailure = true;
+                    UpdateGUI();
+                    DisplayError("CRITICAL ERROR: Engine failure for " + _selectedTrain.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Toggles signal pickup failure.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void buttonSignalPickupFailure_Click(object sender, EventArgs e)
+        {
+            _selectedTrain = (Train)allTrainComboBox.SelectedItem;
+
+            if (_selectedTrain != null)
+            {
+                if (_selectedTrain.SignalPickupFailure)
+                {
+                    _selectedTrain.SignalPickupFailure = false;
+                    UpdateGUI();
+                }
+                else
+                {
+                    _selectedTrain.SignalPickupFailure = true;
+                    UpdateGUI();
+                    DisplayError("CRITICAL ERROR: Signal pickup failure for " + _selectedTrain.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Applies emergency brake.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void buttonEmergencyBrake_Click(object sender, EventArgs e)
+        {
+            _selectedTrain = (Train)allTrainComboBox.SelectedItem;
+
+            if (_selectedTrain != null)
+            {
+                _selectedTrain.EmergencyBrake();
+            }
         }
 
         #endregion

@@ -78,16 +78,19 @@ namespace CTCOffice
         public bool BrakeFailure
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public bool EngineFailure
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public bool SignalPickupFailure
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public bool ChangeMovement(double power)
