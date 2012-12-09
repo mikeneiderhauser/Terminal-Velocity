@@ -46,7 +46,7 @@ namespace CTCOffice
             _yellowLight = Utility.Properties.Resources.yellow;
             _greenLight = Utility.Properties.Resources.green;
 
-            _train = Utility.Properties.Resources.RedTrack_Train;
+            _train = Utility.Properties.Resources.Train;
 
             _unpopulated = Utility.Properties.Resources.Unpopulated;
             _trackError = Utility.Properties.Resources.TrackError;
