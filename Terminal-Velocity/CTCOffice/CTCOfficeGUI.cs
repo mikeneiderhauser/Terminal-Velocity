@@ -49,6 +49,9 @@ namespace CTCOffice
         private double _tickCount;
         public event EventHandler<EventArgs> RoutingToolResponse;
 
+        private bool _keyOpen;
+        private Form _keyForm;
+
         //authoritytool vars
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
@@ -77,6 +80,9 @@ namespace CTCOffice
             _routeToolMode = RoutingMode.Dispatch;
 
             _lastRightClickContainer = null;
+
+            _keyForm = null;
+            _keyOpen = false;
 
             //subscribe to Environment Tick
             _environment.Tick += _environment_Tick;
@@ -851,6 +857,32 @@ namespace CTCOffice
         }
 
         #endregion
+
+        private void _btnShowKey_Click(object sender, EventArgs e)
+        {
+            if (!_keyOpen)
+            {
+                _keyForm = new Form();
+                UserControl keyInfo = new KeyInfo(_res);
+                _keyForm.Controls.Add(keyInfo);
+                _keyForm.AutoSize = true;
+                _keyForm.Text = "CTC Office Legend Key";
+                _keyForm.FormClosed += new FormClosedEventHandler(_keyForm_FormClosed);
+                _keyOpen = true;
+                _keyForm.Show();
+            }
+            else
+            {
+                _keyForm.TopMost = true;
+                _keyForm.TopMost = false;
+            }
+        }
+
+        void _keyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _keyOpen = false;
+            _keyForm = null;
+        }
     }
 
 //end ctc gui

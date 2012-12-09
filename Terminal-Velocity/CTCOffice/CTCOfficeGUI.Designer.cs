@@ -43,6 +43,7 @@
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
             this._groupRunningStatus = new System.Windows.Forms.GroupBox();
+            this._popupIndicator = new System.Windows.Forms.PictureBox();
             this._imgSysStatusSystemScheduler = new System.Windows.Forms.PictureBox();
             this._lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
             this._imgSysStatusTrackControllerGreen = new System.Windows.Forms.PictureBox();
@@ -80,13 +81,14 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
-            this._popupIndicator = new System.Windows.Forms.PictureBox();
+            this._btnShowKey = new System.Windows.Forms.Button();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
             this.groupSystemNotifications.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).BeginInit();
@@ -101,7 +103,6 @@
             this._tabGreenLine.SuspendLayout();
             this._tabTeamLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -175,6 +176,7 @@
             // 
             // _groupOperatorControls
             // 
+            this._groupOperatorControls.Controls.Add(this._btnShowKey);
             this._groupOperatorControls.Controls.Add(this._btnRefreshView);
             this._groupOperatorControls.Controls.Add(this._btnDispatchTrain);
             this._groupOperatorControls.Controls.Add(this._btnSchedule_1);
@@ -268,6 +270,15 @@
             this._groupRunningStatus.TabIndex = 5;
             this._groupRunningStatus.TabStop = false;
             this._groupRunningStatus.Text = "System Module Status";
+            // 
+            // _popupIndicator
+            // 
+            this._popupIndicator.InitialImage = null;
+            this._popupIndicator.Location = new System.Drawing.Point(97, 105);
+            this._popupIndicator.Name = "_popupIndicator";
+            this._popupIndicator.Size = new System.Drawing.Size(16, 16);
+            this._popupIndicator.TabIndex = 14;
+            this._popupIndicator.TabStop = false;
             // 
             // _imgSysStatusSystemScheduler
             // 
@@ -629,14 +640,15 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
-            // _popupIndicator
+            // _btnShowKey
             // 
-            this._popupIndicator.InitialImage = null;
-            this._popupIndicator.Location = new System.Drawing.Point(97, 105);
-            this._popupIndicator.Name = "_popupIndicator";
-            this._popupIndicator.Size = new System.Drawing.Size(16, 16);
-            this._popupIndicator.TabIndex = 14;
-            this._popupIndicator.TabStop = false;
+            this._btnShowKey.Location = new System.Drawing.Point(112, 29);
+            this._btnShowKey.Name = "_btnShowKey";
+            this._btnShowKey.Size = new System.Drawing.Size(100, 23);
+            this._btnShowKey.TabIndex = 3;
+            this._btnShowKey.Text = "Show Key";
+            this._btnShowKey.UseVisualStyleBackColor = true;
+            this._btnShowKey.Click += new System.EventHandler(this._btnShowKey_Click);
             // 
             // CTCOfficeGUI
             // 
@@ -656,6 +668,7 @@
             this.groupSystemNotifications.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
             this._groupRunningStatus.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusEnvironment)).EndInit();
@@ -673,7 +686,6 @@
             this._tabGreenLine.ResumeLayout(false);
             this._tabTeamLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._popupIndicator)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -733,6 +745,7 @@
         private System.Windows.Forms.PictureBox _imgSysStatusTrackControllerGreen;
         private System.Windows.Forms.Label _lblPTrackControllerGreenHead;
         private System.Windows.Forms.PictureBox _popupIndicator;
+        private System.Windows.Forms.Button _btnShowKey;
 
     }
 }
