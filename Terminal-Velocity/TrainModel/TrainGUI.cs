@@ -10,6 +10,7 @@ namespace TrainModel
     {
         #region Global variables
 
+        private const int _GUIUpdate = 5;
         private readonly ISimulationEnvironment _environment;
         private readonly List<ITrainModel> _allTrains;
         private int _numTrains;
@@ -71,7 +72,7 @@ namespace TrainModel
         {
             _timer++;
 
-            if (_timer % 10 == 0)
+            if (_timer % _GUIUpdate == 0)
             {
                 _timer = 0;
                 UpdateGUI();
@@ -131,6 +132,16 @@ namespace TrainModel
                 brakeFailureLabel.Text = _selectedTrain.BrakeFailure.ToString();
                 engineFailureLabel.Text = _selectedTrain.EngineFailure.ToString();
                 signalPickupFailureLabel.Text = _selectedTrain.SignalPickupFailure.ToString();
+
+                // sets text for emergency brake
+                if (_selectedTrain.EmergencyBrakePulled)
+                {
+                    emergencyBrakeLabel.Text = "Toggled On";
+                }
+                else
+                {
+                    emergencyBrakeLabel.Text = "Toggled Off";
+                }
 
                 // set values for lights
                 if (_selectedTrain.LightsOn)
@@ -252,6 +263,7 @@ namespace TrainModel
             if (_selectedTrain != null)
             {
                 _selectedTrain.EmergencyBrake();
+                UpdateGUI();
             }
         }
 
