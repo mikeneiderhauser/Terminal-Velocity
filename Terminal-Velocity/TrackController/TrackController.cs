@@ -11,14 +11,15 @@ namespace TrackController
         private readonly ITrackCircuit _circuit;
         private readonly ISimulationEnvironment _env;
 
-        private readonly Dictionary<int, IRoute> _routes;
+        private Dictionary<int, ITrainModel> _trains;
+        private Dictionary<int, List<IBlock>> _routes;
         private Dictionary<int, IBlock> _blocks;
 
         private List<string> _messages;
         private ITrackController _next;
         private Plc _plc;
         private ITrackController _prev;
-        private Dictionary<int, ITrainModel> _trains;
+
 
         #region Constructor(s)
 
@@ -31,7 +32,7 @@ namespace TrackController
         {
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
-            _routes = new Dictionary<int, IRoute>();
+            _routes = new Dictionary<int, List<IBlock>>();
 
             _env = env;
             _env.Tick += EnvTick;
@@ -112,9 +113,9 @@ namespace TrackController
         /// <summary>
         /// Returnes a list of Routes this TrackController interacts with
         /// </summary>
-        public List<IRoute> Routes
+        public Dictionary<int, List<IBlock>> Routes
         {
-            get { return _routes.Values.ToList(); }
+            get { return _routes; }
         }
 
         #endregion // Public Properties
@@ -139,6 +140,11 @@ namespace TrackController
         {
             switch (request.RequestType)
             {
+                case RequestTypes.AssignTrainRoute:
+                    {
+                        _routes.Add(request.TrainID, request.Info.Blocks);
+                    }
+                    break;
                 case RequestTypes.TrackControllerData:
                     {
                         if (request.TrackControllerID == ID)
