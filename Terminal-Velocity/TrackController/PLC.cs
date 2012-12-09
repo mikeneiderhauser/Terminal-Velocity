@@ -35,10 +35,9 @@ namespace TrackController
         // TODO: This method assumes a switch can only be found at the END of a section controlled by a TrackController
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
         {
-            // TODO update broken blocks
             // Update the trackModel
-            //foreach (var b in blocks)            
-            //    _env.TrackModel.requestUpdateBlock(b);
+            foreach (var b in blocks)
+                _env.TrackModel.requestUpdateBlock(b);
 
             // Collection of broken blocks
             _broken = blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure)).ToList();
@@ -54,15 +53,15 @@ namespace TrackController
                 foreach (var n in trains)
                 {
                     // Number of blocks till the next train (assumes the Route accounted for)
-                    int lenght = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
+                    var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
                     // Stop the train for now
-                    if (lenght <= 1)
+                    if (length <= 1)
                     {
                         speedLim = 0;
                         messages.Add(string.Format("Train {0} is near train {1} (stopping)", t.TrainID, n.TrainID));
                     }
                     // Slow the train by half
-                    else if (lenght <= 2)
+                    else if (length <= 2)
                     {
                         speedLim /= 2;
                         messages.Add(string.Format("Train {0} is near train {1} (slowing)", t.TrainID, n.TrainID));
@@ -75,7 +74,7 @@ namespace TrackController
                     foreach (var b in _broken)
                     {
                         // Length of the path to the next broken block
-                        int length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count();
+                        var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count();
 
                         // Stop the train if a broken block is too close
                         // TODO: The block may be behind the train
@@ -115,12 +114,9 @@ namespace TrackController
 
             if (trains.Count > 0)
             {
-                foreach (var b in blocks)
+                foreach (var b in blocks.Where(b => b.hasCrossing()))
                 {
-                    if (b.hasCrossing())
-                    {
-                        // TODO lower crossing bars
-                    }
+                    // TODO lower crossing bars
                 }
             }
         }
@@ -139,12 +135,20 @@ namespace TrackController
                 List<IBlock> trainRoute;
                 if (routes.TryGetValue(t.TrainID, out trainRoute))
                 {
-                    IBlock switchBlock = trainRoute.First(b => b.hasSwitch());
-                    IBlock nextBlock = trainRoute.First(b => b.PrevBlockID == switchBlock.BlockID);
+                    var switchBlock = trainRoute.First(b => b.hasSwitch());
+                    var nextBlock = trainRoute.First(b => b.PrevBlockID == switchBlock.BlockID);
 
+                    // Switch the block destinations and update the trackModel
                     if (switchBlock.SwitchDest1 != nextBlock.BlockID)
                     {
-                        // TODO switch the block
+                        var dest1 = switchBlock.SwitchDest1;
+
+                        switchBlock.SwitchDest1 = nextBlock.BlockID;
+                        switchBlock.SwitchDest2 = dest1;
+
+                        _env.TrackModel.requestUpdateSwitch(switchBlock);
+
+                        messages.Add(string.Format("Block {0} switched: dest {1}, dest {2}", switchBlock.BlockID, switchBlock.SwitchDest1, switchBlock.SwitchDest2));
                     }
                 }
             }
