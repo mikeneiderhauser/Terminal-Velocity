@@ -40,6 +40,8 @@ namespace CTCOffice
         private ResourceWrapper _res;
         private List<string> _messages;
 
+        private List<IBlock> _containedBlocks;
+
         #endregion
 
         #region Constructor
@@ -84,6 +86,8 @@ namespace CTCOffice
 
             _redLoaded = false;
             _greenLoaded = false;
+
+            _containedBlocks = new List<IBlock>();
 
             if (_env.TrackModel == null)
             {

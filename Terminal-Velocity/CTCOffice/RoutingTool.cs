@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using Interfaces;
 using SimulationEnvironment;
 
@@ -10,8 +11,9 @@ namespace CTCOffice
     {
         private readonly CTCOfficeGUI _ctcGui;
         private readonly ISimulationEnvironment _env;
-        private IBlock _block;
+        private IBlock _endBlock;
         private CTCOffice _ctc;
+        private IBlock _startBlock;
 
         public RoutingTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env, IBlock sBlock)
         {
@@ -19,17 +21,17 @@ namespace CTCOffice
             _ctc = ctc;
             _ctcGui = ctcgui;
             _env = env;
-            Start = sBlock;
+            _startBlock = sBlock;
 
             _ctcGui.RoutingToolResponse += _ctcGui_RoutingToolResponse;
 
-            _block = null;
+            _endBlock = null;
         }
 
         public IBlock EndBlock
         {
-            get { return _block; }
-            set { _block = value; }
+            get { return _endBlock; }
+            set { _endBlock = value; }
         }
 
         public IBlock Start { get; set; }
@@ -46,7 +48,19 @@ namespace CTCOffice
             if (SubmitRoute != null)
             {
                 //TODO - populate list of block inbetween current and dest
-                IRoute r = new Route(RouteTypes.PointRoute, _block, -1, null);
+                string line;
+                if (_startBlock.Line.CompareTo("Red") != 0)
+                {
+                    line = "Red";
+                }
+                else
+                {
+                    line = "Green";
+                }
+
+                IBlock[] b = _env.TrackModel.requestPath(_startBlock.BlockID, _endBlock.BlockID, line);
+                List<IBlock> routeBlocks = b.ToList<IBlock>();
+                IRoute r = new Route(RouteTypes.PointRoute, _endBlock, -1, routeBlocks);
                 SubmitRoute(this, new RoutingToolEventArgs(r));
             }
         }
