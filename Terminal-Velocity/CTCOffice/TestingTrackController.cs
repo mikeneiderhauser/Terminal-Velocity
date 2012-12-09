@@ -9,7 +9,7 @@ namespace CTCOffice
         private readonly List<IBlock> _blocks;
 
         private readonly int _id;
-        private readonly List<IRoute> _routes;
+        private readonly Dictionary<int, List<IBlock>> _routes;
         private readonly List<ITrainModel> _trains;
 
         public TestingTrackController(int id)
@@ -17,7 +17,7 @@ namespace CTCOffice
             _id = id;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
-            _routes = new List<IRoute>();
+            _routes = new Dictionary<int, List<IBlock>>();
         }
 
         public IRequest Request
@@ -58,7 +58,7 @@ namespace CTCOffice
             get { return _blocks; }
         }
 
-        public List<IRoute> Routes
+        public Dictionary<int, List<IBlock>> Routes
         {
             get { return _routes; }
         }

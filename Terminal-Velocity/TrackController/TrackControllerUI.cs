@@ -9,15 +9,16 @@ namespace TrackController
     public partial class TrackControllerUi : UserControl
     {
         private List<IBlock> _blocks;
-        private TrackController _current;
+        private Dictionary<int, List<IBlock>> _routes; 
         private List<ITrainModel> _trains;
+        private TrackController _current;
 
         public TrackControllerUi(ISimulationEnvironment e)
         {
             _current = (TrackController) e.PrimaryTrackControllerGreen;
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
-            Routes = Tc.Routes;
+            _routes = Tc.Routes;
 
             InitializeComponent();
 
@@ -29,8 +30,6 @@ namespace TrackController
             get { return _current; }
             set { _current = value; }
         }
-
-        public List<IRoute> Routes { get; set; }
 
         public override void Refresh()
         {
@@ -47,7 +46,7 @@ namespace TrackController
 
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
-            Routes = Tc.Routes;
+            _routes = Tc.Routes;
 
             trainGrid.Rows.Clear();
             blockGrid.Rows.Clear();
