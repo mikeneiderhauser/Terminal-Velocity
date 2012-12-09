@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal-Velocity", "Terminal-Velocity\Terminal-Velocity.csproj", "{920C2FCE-2B74-4F45-92BD-D3CAE2AD4391}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0302A665-C11C-483F-94E0-202843124BA5} = {0302A665-C11C-483F-94E0-202843124BA5}
