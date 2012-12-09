@@ -43,10 +43,10 @@ namespace CTCOffice
 
         private void _ptco_RequestRec(object sender, RequestEventArgs e)
         {
-            newRequest(e.Request);
+            NewRequest(e.Request);
         }
 
-        private void clearRequest()
+        private void ClearRequest()
         {
             _txtBlockID.Text = "";
             _txtDateTime.Text = "";
@@ -59,7 +59,7 @@ namespace CTCOffice
             _txtTrainSpeed.Text = "";
         }
 
-        public void newRequest(IRequest request)
+        public void NewRequest(IRequest request)
         {
             //add new request to list
             requests.Add(request);
@@ -74,11 +74,11 @@ namespace CTCOffice
             //set label
             _lblCount.Text = current.ToString();
             //populate table
-            clearRequest();
-            setRequest(requests[current]);
+            ClearRequest();
+            SetRequest(requests[current]);
         }
 
-        private void setRequest(IRequest request)
+        private void SetRequest(IRequest request)
         {
             if (request.Block != null)
             {
@@ -132,7 +132,7 @@ namespace CTCOffice
 
             if (requests.Count != 0)
             {
-                setRequest(requests[current]);
+                SetRequest(requests[current]);
             }
         }
 
@@ -149,7 +149,7 @@ namespace CTCOffice
 
             if (requests.Count != 0)
             {
-                setRequest(requests[current]);
+                SetRequest(requests[current]);
             }
         }
     }

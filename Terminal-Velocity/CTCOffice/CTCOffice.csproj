@@ -65,6 +65,12 @@
     <Compile Include="CTCOfficeGUI.Designer.cs">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyInfo.Designer.cs">
+      <DependentUpon>KeyInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="OfficeGUITest.cs">
@@ -112,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyInfo.resx">
+      <DependentUpon>KeyInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OfficeGUITest.resx">
       <DependentUpon>OfficeGUITest.cs</DependentUpon>

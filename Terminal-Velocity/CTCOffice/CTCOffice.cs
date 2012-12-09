@@ -68,7 +68,7 @@ namespace CTCOffice
             //create new operator object
             _op = new Operator();
             //set credentials
-            _op.setAuth("root", "admin");
+            _op.SetAuth("root", "admin");
 
             //create queues
             _requestsOut = new Queue<IRequest>();
@@ -149,7 +149,7 @@ namespace CTCOffice
                 while (_requestsOut.Count > 0)
                 {
                     IRequest temp = _requestsOut.Dequeue();
-                    sendRequest(temp);
+                    SendRequest(temp);
                 }
                 _processingOutRequests = false;
 
@@ -186,7 +186,7 @@ namespace CTCOffice
                             //send request back to system scheduler
                         }
                          */
-                        internalRequest(r);
+                        InternalRequest(r);
                     }
                     else
                     {
@@ -213,8 +213,8 @@ namespace CTCOffice
         public bool Login(string username, string password)
         {
             bool status = false;
-            _op.login(username, password);
-            status = _op.isAuth();
+            _op.Login(username, password);
+            status = _op.IsAuth();
             if (status)
             {
                 _env.sendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
@@ -232,9 +232,9 @@ namespace CTCOffice
         /// <returns>Always True</returns>
         public bool Logout()
         {
-            if (_op.isAuth())
+            if (_op.IsAuth())
             {
-                _op.logout();
+                _op.Logout();
             }
             return true;
         }
@@ -243,9 +243,9 @@ namespace CTCOffice
         ///     Function to determine if Operator is authorized to use CTC
         /// </summary>
         /// <returns></returns>
-        public bool isAuth()
+        public bool IsAuth()
         {
-            return _op.isAuth();
+            return _op.IsAuth();
         }
 
         /// <summary>
@@ -276,9 +276,9 @@ namespace CTCOffice
         ///     Sends a request to the primary track controller. Has logic to determine with primary track controller
         /// </summary>
         /// <param name="request">Request to send to track controller</param>
-        public void sendRequest(IRequest request)
+        public void SendRequest(IRequest request)
         {
-            int line = determineLine(request.Block);
+            int line = DetermineLine(request.Block);
 
             if (line == 0)
             {
@@ -296,7 +296,7 @@ namespace CTCOffice
         ///     Function to handle return request
         /// </summary>
         /// <param name="request"></param>
-        private void internalRequest(IRequest request)
+        private void InternalRequest(IRequest request)
         {
             IStatus s = request.Info;
             if (_env.TrackModel.ChangeFlag != TrackChanged.None)
@@ -318,8 +318,6 @@ namespace CTCOffice
                     }
                 }
             }//end process blocks
-
-            //TODO Trains Images
         }
 
         /// <summary>
@@ -338,15 +336,16 @@ namespace CTCOffice
             _tickCount++;
             if (_tickCount == _rate)
             {
-                //TODO
-                //addAutomaticUpdate();
+                
+                AddAutomaticUpdate();
+                PopulateTrack();
             }
         }
 
         /// <summary>
         ///     Calculates if the CTC should ask the track controllers for data.
         /// </summary>
-        private void addAutomaticUpdate()
+        private void AddAutomaticUpdate()
         {
             ITrackModel tm = _env.TrackModel;
             if (tm != null)
@@ -365,70 +364,67 @@ namespace CTCOffice
             }
         }
 
+        /// <summary>
+        /// Manages Trains on Track
+        /// </summary>
         public void PopulateTrack()
         {
-            if (!_populationBlock)
+            //clear current trains
+            foreach(IBlock b in _containedBlocks)
             {
-                _populationBlock = true;
-
-                AddTrainsToTrack();
-
-                _populationBlock = false;
-            }
-        }
-
-        public void AddTrainsToTrack()
-        {
-            var trains = new List<ITrainModel>(_env.AllTrains);
-
-            foreach (LayoutCellDataContainer c in _redLineData.Layout)
-            {
-                if (c.Block != null)
+                if (b.Line.CompareTo("Red") != 0)
                 {
-                    foreach (ITrainModel t in trains)
-                    {
-                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
-                        {
-                            c.Tile = Resources.RedTrack_Train;
-                            c.Train = t;
-                        }
-                    }
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _redLineData.GetBlockType(b);
+                }
+                else
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _greenLineData.GetBlockType(b);
                 }
             }
 
-            foreach (LayoutCellDataContainer c in _greenLineData.Layout)
+            //make list of new trains
+            _containedBlocks.Clear();
+            foreach (ITrainModel t in _env.AllTrains)
             {
-                if (c.Block != null)
+                _containedBlocks.Add(t.CurrentBlock);
+            }
+
+            //update graphics
+            foreach (IBlock b in _containedBlocks)
+            {
+                if (b.Line.CompareTo("Red") != 0)
                 {
-                    foreach (ITrainModel t in trains)
-                    {
-                        if (t.CurrentBlock.BlockID == c.Block.BlockID)
-                        {
-                            c.Tile = Resources.GreenTrack_Train;
-                            c.Train = t;
-                        }
-                    }
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _res.Train;
+                }
+                else
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _res.Train;
                 }
             }
         }
+
 
         /// <summary>
         ///     logic to determine which track line
         /// </summary>
         /// <param name="request">Request to process</param>
         /// <returns></returns>
-        private int determineLine(IRequest request)
+        private int DetermineLine(IRequest request)
         {
             //red=0....green=1
             if (request.Block != null)
             {
-                return determineLine(request.Block);
+                return DetermineLine(request.Block);
             }
 
-            return determineLine(request.TrainRoute);
+            return DetermineLine(request.TrainRoute);
         }
 
-        private int determineLine(IRoute route)
+        private int DetermineLine(IRoute route)
         {
             if (route == null)
             {
@@ -437,7 +433,7 @@ namespace CTCOffice
             return route.RouteID;
         }
 
-        private int determineLine(IBlock block)
+        private int DetermineLine(IBlock block)
         {
             if (block != null)
             {
@@ -460,7 +456,7 @@ namespace CTCOffice
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public LineData getLine(int line)
+        public LineData GetLine(int line)
         {
             if (line == 0)
             {
@@ -484,7 +480,7 @@ namespace CTCOffice
         //TODO verify BLOCKs
         public void dispatchTrainRequest(IRoute route)
         {
-            int line = determineLine(route);
+            int line = DetermineLine(route);
             int id = -1;
             if (line == 0)
             {

@@ -50,7 +50,7 @@ namespace CTCOffice
         /// </summary>
         /// <param name="username">user entered username</param>
         /// <param name="password">user entered password</param>
-        public void login(string username, string password)
+        public void Login(string username, string password)
         {
             _username = new string(username.ToCharArray());
             _password = new string(password.ToCharArray());
@@ -59,7 +59,7 @@ namespace CTCOffice
         /// <summary>
         ///     clears the user entered credentials
         /// </summary>
-        public void logout()
+        public void Logout()
         {
             _username = null;
             _password = null;
@@ -69,7 +69,7 @@ namespace CTCOffice
         ///     Checks to see if the user is logged in
         /// </summary>
         /// <returns></returns>
-        public Boolean isAuth()
+        public Boolean IsAuth()
         {
             Boolean status = false;
 
@@ -96,7 +96,7 @@ namespace CTCOffice
         /// </summary>
         /// <param name="username">correct username</param>
         /// <param name="password">correct password</param>
-        public void setAuth(string username, string password)
+        public void SetAuth(string username, string password)
         {
             _authUsername = new string(username.ToCharArray());
             _authPassword = new string(password.ToCharArray());

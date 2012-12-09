@@ -117,8 +117,8 @@ namespace CTCOffice
             int y = 0;
 
 
-            LineData red = _ctcOffice.getLine(0);
-            LineData green = _ctcOffice.getLine(1);
+            LineData red = _ctcOffice.GetLine(0);
+            LineData green = _ctcOffice.GetLine(1);
 
             if (_redLineData != red)
             {
@@ -198,7 +198,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnLoginLogout_Click(object sender, EventArgs e)
         {
-            if (_ctcOffice.isAuth())
+            if (_ctcOffice.IsAuth())
             {
                 //if logged in.. log out
                 _ctcOffice.Logout();
