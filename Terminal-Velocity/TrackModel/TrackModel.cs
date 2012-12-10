@@ -29,7 +29,29 @@ namespace TrackModel
             _dbCreator = new DBCreator("");
             _dbManager = new DBManager(_dbCreator.DBCon);
 
-            _changeState = TrackChanged.Both;
+            _changeState = TrackChanged.None;
+
+            IBlock redTemp = requestBlockInfo(1, "Red");
+            IBlock greenTemp = requestBlockInfo(1, "Green");
+            if (redTemp != null)
+            {
+                _changeState = TrackChanged.Red;
+                _redLoaded = true;
+            }
+
+            if (greenTemp != null)
+            {
+                if (_changeState == TrackChanged.Red)
+                    _changeState = TrackChanged.Both;
+                else
+                    _changeState = TrackChanged.Green;
+                _greenLoaded = true;
+            }
+
+            if (_changeState != TrackChanged.None)
+            {
+                alertTrackChanged();
+            }
 
             //_environment.Tick+=
         }
@@ -508,6 +530,27 @@ namespace TrackModel
         /// <returns>A boolean corresponding to the success or failure of the file parsing and insertion</returns>
         public bool provideInputFile(string fName)
         {
+            if (fName == null)
+                return false;
+
+            //Check if file is already in db, if so return true
+            if (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red"))
+            {
+                if (_redLoaded == true)
+                {
+                    return true;
+                }
+            }
+
+            //Check if file is already in db, if so return true;
+            if (fName.Contains("green") || fName.Contains("GREEN") || fName.Contains("Green"))
+            {
+                if (_greenLoaded == true)
+                {
+                    return true;
+                }
+            }
+
             int res = _dbCreator.parseInputFile(fName);
 
             if ( res==0 && (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red")))

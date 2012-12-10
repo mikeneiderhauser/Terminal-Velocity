@@ -97,85 +97,98 @@ namespace TrackModel
             if(_tm.GreenLoaded)
                 tempGreen = _tm.requestTrackGrid(1);
 
-            //Translate screen coordinates back in to blockID and line
-            int totalHeight = trackDisplayPanel.Height;
-            int totalWidth = trackDisplayPanel.Width;
-            int numRows = tempRed.GetUpperBound(0);
-            int numCols = tempRed.GetUpperBound(1);
-
-            int coordsPerRow = totalHeight / numRows;
-            int rowClicked = yCoord/coordsPerRow;
-
-            int coordsPerCol = totalWidth / numCols;
-            int colClicked = xCoord / coordsPerCol;
-
-            IBlock potentialRedBlock = null;
-            IBlock potentialGreenBlock = null;
-            if (tempRed != null)
-                potentialRedBlock = tempRed[rowClicked, colClicked];
-            if (tempGreen != null)
-                potentialGreenBlock = tempGreen[rowClicked, colClicked];
-
-            //This if/else chain gives priority to red line.  If red and green line cross,
-            //a click on that point will always display the information for the red line
-            if (potentialRedBlock != null)//If we found a valid red block
+            if (_tm.RedLoaded == true || _tm.GreenLoaded == true)
             {
-                valBlockID.Text = potentialRedBlock.BlockID.ToString(); ;
-                valState.Text = potentialRedBlock.State.ToString();
-                valHeater.Text = potentialRedBlock.hasHeater().ToString();
-                valCircuit.Text = potentialRedBlock.BlockID.ToString();
-
-                string switchString;
-                if (potentialRedBlock.hasSwitch())
+                //Translate screen coordinates back in to blockID and line
+                int totalHeight = trackDisplayPanel.Height;
+                int totalWidth = trackDisplayPanel.Width;
+                int numRows;
+                int numCols;
+                if (_tm.RedLoaded)
                 {
-                    if (potentialRedBlock.SwitchDest1 == 0)//Points to yard
-                        switchString = "Points to Yard";
-                    else
-                        switchString = "Points to Block " + potentialRedBlock.SwitchDest1;
+                    numRows = tempRed.GetUpperBound(0);
+                    numCols = tempRed.GetUpperBound(1);
                 }
                 else
                 {
-                    switchString = "No Switch";
+                    numRows = tempGreen.GetUpperBound(0);
+                    numCols = tempGreen.GetUpperBound(1);
                 }
 
-                valSwitch.Text = switchString;
-                valTunnel.Text = potentialRedBlock.hasTunnel().ToString();
-                valLine.Text = "Red Line";
-            }
-            else if (potentialGreenBlock != null)//if there was no red block, but we found a green block
-            {
-                valBlockID.Text = potentialGreenBlock.BlockID.ToString(); ;
-                valState.Text = potentialGreenBlock.State.ToString();
-                valHeater.Text = potentialGreenBlock.hasHeater().ToString();
-                valCircuit.Text = potentialGreenBlock.BlockID.ToString();
+                int coordsPerRow = totalHeight / numRows;
+                int rowClicked = yCoord / coordsPerRow;
 
-                string switchString;
-                if (potentialGreenBlock.hasSwitch())
+                int coordsPerCol = totalWidth / numCols;
+                int colClicked = xCoord / coordsPerCol;
+
+                IBlock potentialRedBlock = null;
+                IBlock potentialGreenBlock = null;
+                if (tempRed != null)
+                    potentialRedBlock = tempRed[rowClicked, colClicked];
+                if (tempGreen != null)
+                    potentialGreenBlock = tempGreen[rowClicked, colClicked];
+
+                //This if/else chain gives priority to red line.  If red and green line cross,
+                //a click on that point will always display the information for the red line
+                if (potentialRedBlock != null)//If we found a valid red block
                 {
-                    if (potentialGreenBlock.SwitchDest1 == 0)//Points to yard
-                        switchString = "Points to Yard";
+                    valBlockID.Text = potentialRedBlock.BlockID.ToString(); ;
+                    valState.Text = potentialRedBlock.State.ToString();
+                    valHeater.Text = potentialRedBlock.hasHeater().ToString();
+                    valCircuit.Text = potentialRedBlock.BlockID.ToString();
+
+                    string switchString;
+                    if (potentialRedBlock.hasSwitch())
+                    {
+                        if (potentialRedBlock.SwitchDest1 == 0)//Points to yard
+                            switchString = "Points to Yard";
+                        else
+                            switchString = "Points to Block " + potentialRedBlock.SwitchDest1;
+                    }
                     else
-                        switchString = "Points to Block " + potentialGreenBlock.SwitchDest1;
+                    {
+                        switchString = "No Switch";
+                    }
+
+                    valSwitch.Text = switchString;
+                    valTunnel.Text = potentialRedBlock.hasTunnel().ToString();
+                    valLine.Text = "Red Line";
+                }
+                else if (potentialGreenBlock != null)//if there was no red block, but we found a green block
+                {
+                    valBlockID.Text = potentialGreenBlock.BlockID.ToString(); ;
+                    valState.Text = potentialGreenBlock.State.ToString();
+                    valHeater.Text = potentialGreenBlock.hasHeater().ToString();
+                    valCircuit.Text = potentialGreenBlock.BlockID.ToString();
+
+                    string switchString;
+                    if (potentialGreenBlock.hasSwitch())
+                    {
+                        if (potentialGreenBlock.SwitchDest1 == 0)//Points to yard
+                            switchString = "Points to Yard";
+                        else
+                            switchString = "Points to Block " + potentialGreenBlock.SwitchDest1;
+                    }
+                    else
+                    {
+                        switchString = "No Switch";
+                    }
+
+                    valSwitch.Text = switchString;
+                    valTunnel.Text = potentialGreenBlock.hasTunnel().ToString();
+                    valLine.Text = "Green Line";
                 }
                 else
                 {
-                    switchString = "No Switch";
+                    valBlockID.Text = "NoBlockSelected";
+                    valState.Text = "NoBlockSelected";
+                    valHeater.Text = "NoBlockSelected";
+                    valCircuit.Text = "NoBlockSelected";
+                    valSwitch.Text = "NoBlockSelected";
+                    valTunnel.Text = "NoBlockSelected";
+                    valLine.Text = "NoBlockSelected";
                 }
-
-                valSwitch.Text = switchString;
-                valTunnel.Text = potentialGreenBlock.hasTunnel().ToString();
-                valLine.Text = "Green Line";
-            }
-            else
-            {
-                valBlockID.Text = "NoBlockSelected";
-                valState.Text = "NoBlockSelected";
-                valHeater.Text = "NoBlockSelected";
-                valCircuit.Text = "NoBlockSelected";
-                valSwitch.Text = "NoBlockSelected";
-                valTunnel.Text = "NoBlockSelected";
-                valLine.Text = "NoBlockSelected";
-            }
+            }//End if at least one line was loaded
         }
     }
 }
