@@ -482,103 +482,132 @@ namespace Testing
 
             /////////////////////////////////
             //Test 26
+            //requestUpdateSwitch should return false when given a null Block value
+            resBool=tm.requestUpdateSwitch(null);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateSwitch returns false when given a null parameter");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returns true when given a null parameter, expected value was false");
+            }
             //End Test 26
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 27
+            //requestUpdateSwitch should return false when given a block that doesnt contain a switch
+            tempIBlock=tm.requestBlockInfo(1, "Red");
+            resBool=tm.requestUpdateSwitch(tempIBlock);
+            if (resBool == false)
+            {
+                pass++;
+                message.Add("Pass: requestUpdateSwitch returns false when given a block without a switch");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returns true when given a block without a switch");
+            }
             //End Test 27
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 28
+            //requestUpdateSwitch should return true when given a block that contains a switch. Actual DB update checked in next test
+            tempIBlock = tm.requestBlockInfo(15,"Red");
+            int oldDest1 = tempIBlock.SwitchDest1;
+            tempIBlock.SwitchDest1 = tempIBlock.SwitchDest2;
+            tempIBlock.SwitchDest2 = oldDest1;
+            resBool=tm.requestUpdateSwitch(tempIBlock);
+
+            tempIBlock = tm.requestBlockInfo(15, "Red");
+            if (resBool == true)
+            {
+                if (tempIBlock.SwitchDest1 != oldDest1)
+                {
+                    pass++;
+                    message.Add("Pass: requestUpdateSwitch returned true and updated the database when given valid block");
+                }
+                else
+                {
+                    fail++;
+                    message.Add("Fail: requestUpdateSwitch returned true but failed to update database when given valid block");
+                }
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: requestUpdateSwitch returned false when given valid block");
+            }
+
             //End Test 28
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 29
+            //ChangeFlag is reset after requesting TrackGrids
+            tm.requestTrackGrid(0);
+            tm.requestTrackGrid(1);
+            if (tm.ChangeFlag == TrackChanged.None)
+            {
+                pass++;
+                message.Add("Pass: ChangeFlag Property was updated to 'None' after requesting both TrackGrids");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: ChangeFlag Property was not updated to 'None' after requesting both TrackGrids");
+            }
             //End Test 29
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 30
+            //ChangeFlag reflects changes in a single line after a single update
+            tempIBlock=tm.requestBlockInfo(1, "Red");
+            tempIBlock.State = StateEnum.PowerFailure;
+            tm.requestUpdateBlock(tempIBlock);
+
+            if (tm.ChangeFlag == TrackChanged.Red)
+            {
+                pass++;
+                message.Add("Pass: updating red line changes ChangeFlag to red");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: updating red line does not update ChangeFlag to red");
+            }
             //End Test 30
             /////////////////////////////////
 
 
             /////////////////////////////////
             //Test 31
+            //ChangeFlag reflects changes in both lines after updating green (red updated previously)
+            tempIBlock = tm.requestBlockInfo(1, "Green");
+            tempIBlock.State = StateEnum.PowerFailure;
+            tm.requestUpdateBlock(tempIBlock);
+
+            if (tm.ChangeFlag == TrackChanged.Both)
+            {
+                pass++;
+                message.Add("Pass: Updating both lines causes ChangeFlag to change to 'Both'");
+            }
+            else
+            {
+                fail++;
+                message.Add("Fail: Updating both lines does not cause ChangeFlag to update to 'Both'");
+            }
             //End Test 31
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 32
-            //End Test 32
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 33
-            //End Test 33
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 34
-            //End Test 34
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 35
-            //End Test 35
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 36
-            //End Test 36
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 37
-            //End Test 37
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 38
-            //End Test 38
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 39
-            //End Test 39
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 40
-            //End Test 40
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 41
-            //End Test 41
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 42
-            //End Test 42
             /////////////////////////////////
 
             return true;

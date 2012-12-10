@@ -119,12 +119,7 @@ namespace TrackModel
 
             if (routeID == 0) //means red
             {
-                //Update the "TRACK CHANGED" flag
-                if (_changeState == TrackChanged.Both || _changeState==TrackChanged.Green)
-                    _changeState = TrackChanged.Green;
-                else
-                    _changeState = TrackChanged.None;
-
+                
                 temp[10,28] = requestBlockInfo(1, "Red"); //1
                 temp[9, 29] = requestBlockInfo(2, "Red"); //2
                 temp[8, 29] = requestBlockInfo(3, "Red"); //3
@@ -227,12 +222,6 @@ namespace TrackModel
             }
             else //routeID==1 means green
             {
-                //Update the "TRACK CHANGED" flag
-                if (_changeState == TrackChanged.Both || _changeState==TrackChanged.Red)
-                    _changeState = TrackChanged.Red;
-                else
-                    _changeState = TrackChanged.None;
-
                 temp[2, 20] = requestBlockInfo(1, "Green"); //1
                 temp[3, 21] = requestBlockInfo(2, "Green"); //2
                 temp[4, 21] = requestBlockInfo(3, "Green"); //3
@@ -445,6 +434,9 @@ namespace TrackModel
             if (bToUpdate == null)
                 return false;
 
+            if (bToUpdate.hasSwitch() == false)
+                return false;
+                
             string updateString = _dbManager.createUpdate("SWITCH", bToUpdate);
             if (updateString == null)
                 return false;
@@ -457,17 +449,13 @@ namespace TrackModel
                 //IF we're red
                 if (bToUpdate.Line.Equals("Red", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Red)
-                        _changeState = TrackChanged.Red;
-                    else
-                        _changeState = TrackChanged.Both;
+                    _changeState = TrackChanged.Red;
+                    alertTrackChanged();
                 }
                 else//We're green
                 {
-                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Green)
-                        _changeState = TrackChanged.Green;
-                    else
-                        _changeState = TrackChanged.Both;
+                    _changeState = TrackChanged.Green;
+                    alertTrackChanged();
                 }
             }
             return res;
@@ -500,17 +488,13 @@ namespace TrackModel
                 //IF we're red
                 if (bToUpdate.Line.Equals("Red", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Red)
-                        _changeState = TrackChanged.Red;
-                    else
-                        _changeState = TrackChanged.Both;
+                    _changeState = TrackChanged.Red;
+                    alertTrackChanged();
                 }
                 else//We're green
                 {
-                    if (_changeState == TrackChanged.None || _changeState == TrackChanged.Green)
-                        _changeState = TrackChanged.Green;
-                    else
-                        _changeState = TrackChanged.Both;
+                    _changeState = TrackChanged.Green;
+                    alertTrackChanged();
                 }
             }
             return res;
@@ -529,11 +513,15 @@ namespace TrackModel
             if ( res==0 && (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red")))
             {
                 _redLoaded = true;
+                _changeState = TrackChanged.Red;
+                alertTrackChanged();
             }
 
             if (res==0 && (fName.Contains("green") || fName.Contains("GREEN") || fName.Contains("Green")))
             {
                 _greenLoaded = true;
+                _changeState = TrackChanged.Green;
+                alertTrackChanged();
             }
 
 
@@ -702,6 +690,23 @@ namespace TrackModel
         public bool GreenLoaded
         {
             get { return _greenLoaded; }
+        }
+
+
+        /// <summary>
+        /// A public event allowing other modules to see when track state changes
+        /// </summary>
+        public event EventHandler<EventArgs> TrackChangedEvent;
+
+        /// <summary>
+        /// A public method encapsulating the throwing of TrackChangedEvent events
+        /// </summary>
+        public void alertTrackChanged()
+        {
+            if (TrackChangedEvent != null)
+            {
+                TrackChangedEvent(this, EventArgs.Empty);
+            }
         }
 
     }

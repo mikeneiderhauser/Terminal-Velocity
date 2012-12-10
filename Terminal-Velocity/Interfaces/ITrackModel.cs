@@ -1,4 +1,6 @@
-﻿namespace Interfaces
+﻿using System;
+
+namespace Interfaces
 {
     public interface ITrackModel
     {
@@ -24,6 +26,8 @@
         /// Red Line, and 1 represents the Green Line.</param>
         /// <returns>An IRouteInfo block.  Contains list of blocks, along with start and stop information</returns>
         IRouteInfo requestRouteInfo(int routeID);
+
+        event EventHandler<EventArgs> TrackChangedEvent;
 
         /// <summary>
         /// A method used to get an array of blocks from 1 point to another specified point
