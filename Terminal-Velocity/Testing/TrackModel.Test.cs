@@ -548,68 +548,6 @@ namespace Testing
 
             //End Test 28
             /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 29
-            //ChangeFlag is reset after requesting TrackGrids
-            tm.requestTrackGrid(0);
-            tm.requestTrackGrid(1);
-            if (tm.ChangeFlag == TrackChanged.None)
-            {
-                pass++;
-                message.Add("Pass: ChangeFlag Property was updated to 'None' after requesting both TrackGrids");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: ChangeFlag Property was not updated to 'None' after requesting both TrackGrids");
-            }
-            //End Test 29
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 30
-            //ChangeFlag reflects changes in a single line after a single update
-            tempIBlock=tm.requestBlockInfo(1, "Red");
-            tempIBlock.State = StateEnum.PowerFailure;
-            tm.requestUpdateBlock(tempIBlock);
-
-            if (tm.ChangeFlag == TrackChanged.Red)
-            {
-                pass++;
-                message.Add("Pass: updating red line changes ChangeFlag to red");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: updating red line does not update ChangeFlag to red");
-            }
-            //End Test 30
-            /////////////////////////////////
-
-
-            /////////////////////////////////
-            //Test 31
-            //ChangeFlag reflects changes in both lines after updating green (red updated previously)
-            tempIBlock = tm.requestBlockInfo(1, "Green");
-            tempIBlock.State = StateEnum.PowerFailure;
-            tm.requestUpdateBlock(tempIBlock);
-
-            if (tm.ChangeFlag == TrackChanged.Both)
-            {
-                pass++;
-                message.Add("Pass: Updating both lines causes ChangeFlag to change to 'Both'");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: Updating both lines does not cause ChangeFlag to update to 'Both'");
-            }
-            //End Test 31
-            /////////////////////////////////
-
             return true;
         }
     }
