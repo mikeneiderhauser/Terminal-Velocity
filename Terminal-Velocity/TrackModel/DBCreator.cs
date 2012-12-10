@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Windows.Forms;
 
 namespace TrackModel
 {
@@ -36,7 +37,8 @@ namespace TrackModel
             }
 
             //Create a db connection (creating the db file if it doesnt already exist)
-            string connectionString = "Data Source=" + fPath;
+            //string connectionString = "Data Source=" + fPath;
+            string connectionString="Data Source=" + Path.GetDirectoryName(Application.ExecutablePath)+fPath;
             _dbCon = new SQLiteConnection(connectionString);
 
             //If you needed to create the db tables,do so now
@@ -208,7 +210,7 @@ namespace TrackModel
                     //Once we get our line name, we should check if it's already in the database.
                     //If its already in the database, then we can assume success and just return 0
                     //Maybe this should just be some sort of continue, but I can sort that out later
-                    if (blockExists(int.Parse(blockID), line))
+                    if (blockExists(int.Parse(blockID), lineName))
                     {
                         return 0;
                     }
@@ -227,9 +229,7 @@ namespace TrackModel
                     string grade = fields[4];
                     string blockSize = fields[3];
                     string singleInsert =
-                        "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY,speedLimit) VALUES(" +
-                        blockID + ", '" + lineName + "', '" + infra + "', " + sElev + ", " + grade + ", " + blockSize +
-                        ",'North', 'Healthy',"+curCirID+",-1,-1, "+speedLimit+")";
+                        "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, bSize,dir,state,trackCirID,locX,locY,speedLimit) VALUES(" +blockID + ", '" + lineName + "', '" + infra + "', " + sElev + ", " + grade + ", " + blockSize +",'North', 'Healthy',"+curCirID+",-1,-1, "+speedLimit+")";
                     //Console.WriteLine(singleInsert);
                     prevID = blockID;
                     if (_dbCon.State != ConnectionState.Open)
@@ -773,8 +773,8 @@ namespace TrackModel
         private bool blockExists(int id, string line)
         {
             string selectString = "SELECT *" +
-                                  "FROM BLOCKS" +
-                                  "WHERE blockID=" + id + " AND line='" + line + "'";
+                                  " FROM BLOCKS" +
+                                  " WHERE blockID=" + id + " AND line='" + line + "'";
 
             if (_dbCon.State != ConnectionState.Open)
                 _dbCon.Open();
