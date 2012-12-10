@@ -38,7 +38,7 @@ namespace TrackModel
 
             //Create a db connection (creating the db file if it doesnt already exist)
             //string connectionString = "Data Source=" + fPath;
-            string connectionString="Data Source=" + Path.GetDirectoryName(Application.ExecutablePath)+fPath;
+            string connectionString="Data Source=" + Path.GetDirectoryName(Application.ExecutablePath)+@"\"+fPath;
             _dbCon = new SQLiteConnection(connectionString);
 
             //If you needed to create the db tables,do so now
