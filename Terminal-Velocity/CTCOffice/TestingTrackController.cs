@@ -9,20 +9,21 @@ namespace CTCOffice
         private readonly List<IBlock> _blocks;
 
         private readonly int _id;
-        private readonly List<IRoute> _routes;
-        private readonly List<ITrainModel> _trains;
 
         public TestingTrackController(int id)
         {
             _id = id;
-            _trains = new List<ITrainModel>();
-            _blocks = new List<IBlock>();
-            _routes = new List<IRoute>();
         }
 
         public IRequest Request
         {
-            set { handleRequest(value); }
+            set 
+            {
+                if (TransferRequest != null)
+                {
+                    TransferRequest(this, new RequestEventArgs(value));
+                }
+            }
         }
 
         public int ID
@@ -32,55 +33,48 @@ namespace CTCOffice
 
         public ITrackController Previous
         {
-            get { return this; }
+            get
+            {
+                return null;
+            }
             set
             {
-                //do nothing
+                //do nothing for ctc simulation
             }
         }
 
         public ITrackController Next
         {
-            get { return this; }
+            get
+            {
+                return null;
+            }
             set
             {
-                //do nothing
+                //do nothing for ctc simulation
             }
         }
 
         public List<ITrainModel> Trains
         {
-            get { return _trains; }
+            get { return null; }
         }
 
         public List<IBlock> Blocks
         {
-            get { return _blocks; }
+            get { return null; }
         }
 
         public List<IRoute> Routes
         {
-            get { return _routes; }
+            get { return null; }
         }
 
         public void LoadPLCProgram(string filename)
         {
-            //not used for CTC Testing. Required for interface
+            //
         }
 
-        public event EventHandler<RequestEventArgs> RequestRec;
-
-        private void handleRequest(IRequest value)
-        {
-            if (RequestRec != null)
-            {
-                RequestRec(this, new RequestEventArgs(value));
-            }
-        }
-
-        public void Recieve(object data)
-        {
-            //not used for CTC Testing. Required for interface
-        }
+        public event EventHandler<EventArgs> TransferRequest;
     }
 }

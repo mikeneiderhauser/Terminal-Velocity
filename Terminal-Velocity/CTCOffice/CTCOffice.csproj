@@ -108,11 +108,8 @@
     </Compile>
     <Compile Include="SpeedToolEventArgs.cs" />
     <Compile Include="TestingBlock.cs" />
-    <Compile Include="TestingSystemScheduler.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />
-    <Compile Include="TestingTrainController.cs" />
-    <Compile Include="TestingTrainModel.cs" />
     <EmbeddedResource Include="AuthorityTool.resx">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
     </EmbeddedResource>

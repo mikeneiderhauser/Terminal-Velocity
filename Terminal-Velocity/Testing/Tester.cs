@@ -152,21 +152,15 @@ namespace Testing
                     var primaryRed = new TestingTrackController(0);
                     var primaryGreen = new TestingTrackController(1);
 
-
+                    //hook to environment
                     env.PrimaryTrackControllerRed = primaryRed;
                     env.PrimaryTrackControllerGreen = primaryGreen;
                     env.TrackModel = tm;
 
-
                     //creating office instance
                     var ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
 
-                    //creating testing system scheduler
-                    var ss = new TestingSystemScheduler();
-
-                    env.SystemScheduler = ss;
                     env.CTCOffice = ctc;
-
 
                     //making Request Panel Objects (For red and green)
                     var RequestRed = new RequestFrame("Red", primaryRed);
@@ -175,11 +169,13 @@ namespace Testing
                     //creating office gui
                     var CTCOfficeGUI = new CTCOfficeGUI(env, ctc);
 
+                    var MyTestingControls = new TestingControls(tm);
                     //creating testing gui
                     control = new OfficeGUITest(
                         CTCOfficeGUI,
                         RequestRed,
-                        RequestGreen
+                        RequestGreen,
+                        MyTestingControls
                         );
 
                     //control = new CTCOffice.CTCOfficeGUI(environment, office);

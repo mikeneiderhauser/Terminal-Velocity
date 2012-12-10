@@ -10,7 +10,15 @@ namespace CTCOffice
         private readonly int[] _location;
         private readonly int _prevID;
 
-        public TestingBlock(string line, int id, int prevID, double size, int[] loc)
+        private readonly bool _track;
+        private readonly bool _sw;
+        private readonly bool _tunnel;
+        private readonly bool _heater;
+        private readonly bool _crossing;
+        private readonly bool _station;
+        private StateEnum _state;
+
+        public TestingBlock(string line, int id, int prevID, double size, int[] loc, bool track, bool sw, bool tunnel, bool heater, bool crossing, bool station, StateEnum state)
         {
             _line = line;
             _id = id;
@@ -18,6 +26,13 @@ namespace CTCOffice
             State = StateEnum.Healthy;
             BlockSize = size;
             _location = loc;
+            _track = track;
+            _sw = sw;
+            _tunnel = tunnel;
+            _heater = heater;
+            _crossing = crossing;
+            _station = station;
+            _state = state;
         }
 
         public int BlockID
@@ -25,7 +40,7 @@ namespace CTCOffice
             get { return _id; }
         }
 
-        public StateEnum State { get; set; }
+        public StateEnum State { get { return _state; } set { _state = value; } }
 
         public int SpeedLimit
         {
@@ -109,27 +124,27 @@ namespace CTCOffice
 
         public bool hasSwitch()
         {
-            return false;
+            return _sw;
         }
 
         public bool hasTunnel()
         {
-            return false;
+            return _tunnel;
         }
 
         public bool hasHeater()
         {
-            return false;
+            return _heater;
         }
 
         public bool hasCrossing()
         {
-            return false;
+            return _crossing;
         }
 
         public bool hasStation()
         {
-            return false;
+            return _station;
         }
 
         public bool runsNorth()
