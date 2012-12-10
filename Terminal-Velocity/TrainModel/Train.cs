@@ -9,10 +9,6 @@ namespace TrainModel
     {
         #region Global variables
 
-        private const double _length = 32.33; // meters
-
-        private const int _maxCapacity = 222; // 74 seated, 148 standing
-
         private bool _brakeFailure;
         private bool _engineFailure;
         private bool _signalPickupFailure;
@@ -33,6 +29,12 @@ namespace TrainModel
         private int _numPassengers;
         private int _previousBlockID;
         private int _temperature;
+        private bool _emergencyBrakePulled;
+
+        private bool _positionWarningGiven;
+        private bool _velocityWarningGiven;
+        private bool _accelerationWarningGiven;
+        private bool _decelerationWarningGiven;
 
         private double _timeInterval;
         private double _totalMass;
@@ -49,9 +51,11 @@ namespace TrainModel
         private const double _height = 3.42; // meters
         private const double _physicalAccelerationLimit = 0.5; // meters/second^2
         private const double _physicalDecelerationLimit = -1.2; // meters/second^2
-        private const double _physicalVelocityLimit = 70000; // meters/hour
+        private const double _physicalVelocityLimit = 19.444; // meters/second
         private const double _emergencyBrakeDeceleration = -2.73; // meters/second^2
         private const double _accelerationGravity = 9.8; // meters/second^2
+        private const double _length = 32.33; // meters
+        private const int _maxCapacity = 222; // 74 seated, 148 standing
 
         #endregion
 
@@ -72,7 +76,6 @@ namespace TrainModel
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "";
-            appendInformationLog("Created.");
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -88,6 +91,13 @@ namespace TrainModel
             _engineFailure = false;
             _signalPickupFailure = false;
 
+            _emergencyBrakePulled = false;
+
+            _positionWarningGiven = false;
+            _velocityWarningGiven = false;
+            _accelerationWarningGiven = false;
+            _decelerationWarningGiven = false;
+
             _currentBlock = startingBlock;
             _previousBlockID = 0;
             _currentBlockID = _currentBlock.BlockID;
@@ -101,6 +111,8 @@ namespace TrainModel
             allTrains = environment.AllTrains;
 
             _timeInterval = (environment.getInterval() / 1000.0);
+
+            appendInformationLog("Created on block " + _currentBlockID + ".");
         }
 
         #endregion
@@ -108,12 +120,11 @@ namespace TrainModel
         #region Public Methods
 
         /// <summary>
-        ///     Applies the maximum deceleration limit to the train to stop it.
+        ///     Toggles the emergency brake on and off.
         /// </summary>
         public void EmergencyBrake()
         {
-            appendInformationLog("EMERGENCY BRAKE PULLED.");
-            _currentAcceleration = _emergencyBrakeDeceleration;
+            this.EmergencyBrakePulled = !this.EmergencyBrakePulled;
         }
 
         /// <summary>
@@ -123,6 +134,20 @@ namespace TrainModel
         /// <returns>True if power level was within bounds, false otherwise.</returns>
         public bool ChangeMovement(double power)
         {
+            // can't change movement if engine is failing
+            if (_engineFailure)
+            {
+                appendInformationLog("ERROR: Engine cannot be given power because of engine failure.");
+                return false;
+            }
+
+            // cannot apply brakes if brakes are failing
+            if (_brakeFailure && (power < 0)) 
+            {
+                appendInformationLog("ERROR: Brakes cannot be applied due to brake failure.");
+                return false;
+            }
+
             appendInformationLog("Given power of " + Math.Round(power, 3) + " W.");
 
             double currentForce = 0;
@@ -135,42 +160,31 @@ namespace TrainModel
             }
             else
             {
-                appendInformationLog("Train stopped. Ignored given power and defaulted to maximum acceleration.");
+                appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
             }
 
             // check that the new acceleration does not exceed the physical limit
             if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
             {
-                appendInformationLog("Power level caused acceleration to exceed physical limit.");
+                appendInformationLog("ERROR: Power level caused acceleration to exceed physical limit. Power ignored.");
                 return false;
             }
-
             // check that the new deceleration does not exceed the physical limit
             else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
             {
-                appendInformationLog("Power level caused deceleration to exceed physical limit.");
+                appendInformationLog("ERROR: Power level caused deceleration to exceed physical limit. Power ignored.");
                 return false;
             }
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
                 _brakeFailure = true;
-                appendInformationLog("BRAKES APPLIED BUT TRAIN NOT SLOWING DOWN.");
-                EmergencyBrake();
-            }
-            else
-            {
-                _brakeFailure = false;
+                appendInformationLog("WARNING: Brakes applied but train not slowing down.");
             }
 
             if ((newAcceleration < 0) && (power > 0)) // acceleration negative despite giving positive power
             {
-                _engineFailure = true;
-                appendInformationLog("POSITIVE POWER GIVEN BUT TRAIN SLOWING DOWN. ENGINE FAILURE.");
-            }
-            else
-            {
-                _engineFailure = false;
+                appendInformationLog("WARNING: Positive power given but train is slowing down.");
             }
 
             _currentAcceleration = newAcceleration;
@@ -208,25 +222,100 @@ namespace TrainModel
         {
             _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
 
+            // can't accelerate or decelerate if engine has failed
+            if (_engineFailure)
+            {
+                _currentAcceleration = 0;
+            }
+
+            if (_emergencyBrakePulled)
+            {
+                _currentAcceleration = _emergencyBrakeDeceleration;
+            }
+
             // acceleration changes due to elevation
-            double angle = Math.Acos(Math.Abs(_currentBlock.Grade));
+            double absGrade = Math.Abs(_currentBlock.Grade);
+            double angle = Math.Atan(absGrade);
+
             if (_currentBlock.Grade > 0) // up hill
             {
-                _currentAcceleration -= (_accelerationGravity * Math.Sin(angle));
+                _currentAcceleration = _currentAcceleration - (_accelerationGravity * Math.Sin(angle));
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                _currentAcceleration += (_accelerationGravity * Math.Sin(angle));
+                _currentAcceleration = _currentAcceleration + (_accelerationGravity * Math.Sin(angle));
             }
 
-            _currentVelocity += (_currentAcceleration * _timeInterval);
+            // stops acceleration due to slope when emergency brake is on
+            if ((_currentAcceleration > 0) && (_emergencyBrakePulled))
+            {
+                _currentAcceleration = 0;
+            }
 
+            // check if the acceleration is greater than the physical limit
+            if (_currentAcceleration > _physicalAccelerationLimit)
+            {
+                _currentAcceleration = _physicalAccelerationLimit;
+
+                if (!_accelerationWarningGiven)
+                {
+                    appendInformationLog("WARNING: Acceleration exceeded physical limit.");
+                    _accelerationWarningGiven = true;
+                }
+            }
+            else
+            {
+                _accelerationWarningGiven = false;
+            }
+
+            // check if the deceleration is greater than the physical limit and emergency brake isn't toggled
+            if (_currentAcceleration < _physicalDecelerationLimit && !_emergencyBrakePulled)
+            {
+                _currentAcceleration = _physicalDecelerationLimit;
+
+                if (!_decelerationWarningGiven)
+                {
+                    appendInformationLog("WARNING: Deceleration exceeded physical limit.");
+                    _decelerationWarningGiven = true;
+                }
+            }
+            else
+            {
+                _decelerationWarningGiven = false;
+            }
+
+            _currentVelocity = _currentVelocity + (_currentAcceleration * _timeInterval);
+
+            // check if velocity is less than zero or greater than the limit
             if (_currentVelocity < 0)
             {
                 _currentVelocity = 0;
+                _currentAcceleration = 0;
+
+                if (!_velocityWarningGiven)
+                {
+                    appendInformationLog("WARNING: Velocity less than zero. Train stopped.");
+                    _velocityWarningGiven = true;
+                }
+            }
+            else if (_currentVelocity > _physicalVelocityLimit)
+            {
+                _currentVelocity = _physicalVelocityLimit;
+                _currentAcceleration = 0;
+
+                // check if velocity warning already given
+                if (!_velocityWarningGiven)
+                {
+                    appendInformationLog("WARNING: Velocity exceeded physical limit.");
+                    _velocityWarningGiven = true;
+                }
+            }
+            else
+            {
+                _velocityWarningGiven = false;
             }
 
-            _currentPosition += (_currentVelocity * _timeInterval);
+            _currentPosition = _currentPosition + (_currentVelocity * _timeInterval);
 
             // Handles edge of block, only going forward
             if (_currentPosition >= _blockLength)
@@ -240,17 +329,31 @@ namespace TrainModel
                     _previousBlockID = _currentBlockID; // previous block is now current block
                     _currentBlock = nextBlock;
                     _currentBlockID = _currentBlock.BlockID; // update the current block to be the next block
-                    _signalPickupFailure = false;
-                }
-                else
-                {
-                    _signalPickupFailure = true; // throw signal pickup failure
-                    appendInformationLog("EXPERIENCED SIGNAL PICKUP FAILURE.");
-                }
 
-                // update the current position of the train
-                _currentPosition = _currentPosition - _blockLength;
-                _blockLength = _currentBlock.BlockSize;
+                    // update the current position of the train
+                    _currentPosition = _currentPosition - _blockLength;
+                    _blockLength = _currentBlock.BlockSize;
+
+                    appendInformationLog("Moved to block " + _currentBlockID + ".");
+                }
+                else // cannot find block
+                {
+                    _currentPosition = _blockLength;
+                    _currentVelocity = 0;
+                    _currentAcceleration = 0;
+
+                    // check if already given warning
+                    if (!_positionWarningGiven)
+                    {
+                        appendInformationLog("WARNING: Cannot find the next block.");
+                        _positionWarningGiven = true;
+                    }
+                    else
+                    {
+                        _positionWarningGiven = false;
+                    }
+
+                }
             }
 
 
@@ -425,7 +528,7 @@ namespace TrainModel
                 }
                 else
                 {
-                    appendInformationLog("Attempted to set number of passengers to negative number.");
+                    appendInformationLog("ERROR: Attempted to set number of passengers to negative number.");
                     _numPassengers = oldNumPassengers;
                 }
             }
@@ -459,7 +562,7 @@ namespace TrainModel
                 }
                 else
                 {
-                    appendInformationLog("Attempted to set number of crew members to negative number.");
+                    appendInformationLog("ERROR: Attempted to set number of crew members to negative number.");
                     _numCrew = oldNumCrew;
                 }
             }
@@ -471,6 +574,15 @@ namespace TrainModel
         public bool BrakeFailure
         {
             get { return _brakeFailure; }
+            set
+            {
+                _brakeFailure = value;
+
+                if (_brakeFailure)
+                {
+                    appendInformationLog("WARNING: EXPERIENCING BRAKE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -479,6 +591,15 @@ namespace TrainModel
         public bool EngineFailure
         {
             get { return _engineFailure; }
+            set
+            {
+                _engineFailure = value;
+
+                if (_engineFailure)
+                {
+                    appendInformationLog("WARNING: EXPERIENCING ENGINE FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -487,6 +608,15 @@ namespace TrainModel
         public bool SignalPickupFailure
         {
             get { return _signalPickupFailure; }
+            set
+            {
+                _signalPickupFailure = value;
+
+                if (_signalPickupFailure)
+                {
+                    appendInformationLog("WARNING: EXPERIENCING SIGNAL PICKUP FAILURE.");
+                }
+            }
         }
 
         /// <summary>
@@ -503,6 +633,24 @@ namespace TrainModel
         public ITrainController TrainController
         {
             get { return _trainController; }
+        }
+
+        public bool EmergencyBrakePulled
+        {
+            get { return _emergencyBrakePulled; }
+            set
+            {
+                _emergencyBrakePulled = value;
+
+                if (_emergencyBrakePulled)
+                {
+                    appendInformationLog("WARNING: Emergency brake pulled.");
+                }
+                else
+                {
+                    appendInformationLog("Emergency brake released.");
+                }
+            }
         }
 
         #region Track Controller communication parameters
@@ -527,8 +675,6 @@ namespace TrainModel
 
         #endregion
 
-        // TODO: double check that it works
-        // for track controller communications
 
         #endregion
     }

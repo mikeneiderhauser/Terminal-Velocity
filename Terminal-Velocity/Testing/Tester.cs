@@ -200,18 +200,15 @@ namespace Testing
                     var loc = new int[2];
                     loc[0] = 10;
                     loc[1] = 10;
-                    var start = new Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red",70);
+                    var start = new Block(0, StateEnum.Healthy, 0, 0, -0.02, loc, 100, DirEnum.East, null, 1, 2, 0, "Red",70);
                     environment.addTrain(new Train(0, start, environment));
                     environment.addTrain(new Train(1, start, environment));
 
-                    var train0 = (Train) environment.AllTrains[0];
-                    train0.DoorsOpen = true;
-                    train0.LightsOn = true;
-
-                    var train1 = (Train)environment.AllTrains[1];
-                    train1.ChangeMovement(200);
+                    var train0 = (Train)environment.AllTrains[0];
+                    train0.ChangeMovement(200);
 
                     control = new TrainGUI(environment);
+
                     break;
                 case 5: // TrainController
                     var loc2 = new int[2];
