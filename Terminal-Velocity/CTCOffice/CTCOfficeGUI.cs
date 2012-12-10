@@ -21,6 +21,8 @@ namespace CTCOffice
         private bool _authorityToolOpen;
         private LineData _greenLineData;
 
+        private bool _myRefresh;
+
         private ResourceWrapper _res;
 
         /// <summary>
@@ -96,9 +98,10 @@ namespace CTCOffice
             //show team logo (block out user)
             mainDisplayLogo();
             disableUserControls();
-            _loginStatusImage.Image = Resources.red;
+            _loginStatusImage.Image = _res.RedLight;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
+            _myRefresh = false;
             //populate red line and green line panel
             parseLineData();
 
@@ -189,11 +192,13 @@ namespace CTCOffice
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             _tickCount++;
-            if (_tickCount >= _rate)
+            if ((_tickCount >= _rate)&&!_myRefresh)
             {
+                _myRefresh = true;
                 updateMetrics();
                 refreshStatus();
                 _tickCount = 0;
+                _myRefresh = false;
             }
         }
 
@@ -312,6 +317,12 @@ namespace CTCOffice
         /// </summary>
         private void updateMetrics()
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(updateMetrics));
+                return;
+            }
+
             int max = 0;
             int sumPass = 0;
             int sumCrew = 0;

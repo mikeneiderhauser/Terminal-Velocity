@@ -118,16 +118,28 @@ namespace SimulationEnvironment
 
         public void stopTick()
         {
+            try
+            {
+                _timer.Stop();
+                sendLogEntry("Environment: Envoked Timer Stop");
+            }
+            catch (Exception ex)
+            {
 
-            _timer.Stop();
-            sendLogEntry("Environment: Envoked Timer Stop");
+            }
         }
 
         public void startTick()
         {
+            try
+            {
+                _timer.Start();
+                sendLogEntry("Environment: Envoked Timer Start");
+            }
+            catch (Exception ex)
+            {
 
-            _timer.Start();
-            sendLogEntry("Environment: Envoked Timer Start");
+            }
 
         }
 
