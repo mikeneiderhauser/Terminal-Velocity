@@ -17,6 +17,7 @@ namespace TerminalVelocity
         static Form ctcForm;
         static Form schedulerForm;
         static Form trackModelForm;
+        static SimulationEnvironment.SimulationEnvironment e;
 
         [STAThread]
         static void Main()
@@ -25,7 +26,7 @@ namespace TerminalVelocity
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Environment
-            SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
+            e = new SimulationEnvironment.SimulationEnvironment();
             
             // TrackModel
             TrackModel.TrackModel trackModel = new TrackModel.TrackModel(e);
@@ -52,8 +53,11 @@ namespace TerminalVelocity
             Application.Run(ctcForm);
         }
 
-        static void ctcForm_Shown(object sender, EventArgs e)
+        static void ctcForm_Shown(object sender, EventArgs ea)
         {
+            //start global timer
+            e.startTick();
+
             //schedulerForm.ShowDialog(ctcForm);
             trackModelForm.Show();
         }

@@ -223,7 +223,7 @@ namespace Testing
                     break;
             }
 
-            environment.Start();
+            environment.startTick();
 
             form.Controls.Add(control);
             form.AutoSize = true;

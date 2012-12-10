@@ -35,11 +35,6 @@ namespace SimulationEnvironment
 
         #endregion
 
-        public void Start()
-        {
-            _timer.Start();
-        }
-
         #region Public Property
 
         public ICTCOffice CTCOffice
@@ -121,30 +116,19 @@ namespace SimulationEnvironment
             return (long) _timer.Interval;
         }
 
-        public void stopTick(object sender)
+        public void stopTick()
         {
-            if (sender == _CTCOffice)
-            {
-                _timer.Stop();
-                sendLogEntry("Environment: Envoked Timer Stop");
-            }
-            else
-            {
-                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
-            }
+
+            _timer.Stop();
+            sendLogEntry("Environment: Envoked Timer Stop");
         }
 
-        public void startTick(object sender)
+        public void startTick()
         {
-            if (sender == CTCOffice)
-            {
-                _timer.Start();
-                sendLogEntry("Environment: Envoked Timer Start");
-            }
-            else
-            {
-                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
-            }
+
+            _timer.Start();
+            sendLogEntry("Environment: Envoked Timer Start");
+
         }
 
         public void Dispatch(IRequest request)
