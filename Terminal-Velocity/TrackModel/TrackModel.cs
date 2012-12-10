@@ -707,5 +707,22 @@ namespace TrackModel
             get { return _greenLoaded; }
         }
 
+
+        /// <summary>
+        /// A public event allowing other modules to see when track state changes
+        /// </summary>
+        public event EventHandler<EventArgs> TrackChangedEvent;
+
+        /// <summary>
+        /// A public method encapsulating the throwing of TrackChangedEvent events
+        /// </summary>
+        public void alertTrackChanged()
+        {
+            if (TrackChangedEvent != null)
+            {
+                TrackChangedEvent(this, EventArgs.Empty);
+            }
+        }
+
     }
 }
