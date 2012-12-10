@@ -52,6 +52,8 @@ namespace CTCOffice
         private bool _keyOpen;
         private Form _keyForm;
 
+        private bool _loginState;
+
         //authoritytool vars
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
@@ -69,6 +71,14 @@ namespace CTCOffice
             _speedState = 0;
 
             _res = _ctcOffice.Resource;
+
+            _ctcOffice.LoadData += new EventHandler<EventArgs>(_ctcOffice_LoadData);
+            _ctcOffice.UnlockLogin += new EventHandler<EventArgs>(_ctcOffice_UnlockLogin);
+            _loginState = false;
+
+            _btnLoginLogout.Enabled = _loginState;
+            _txtPassword.Enabled = _loginState;
+            _txtUsername.Enabled = _loginState;
 
             _rate = 100;
             _tickCount = 0;
@@ -103,10 +113,28 @@ namespace CTCOffice
             refreshStatus();
 
             //populate red line and green line panel
-            parseLineData();
+            //parseLineData();
 
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
+        }
+
+        void _ctcOffice_UnlockLogin(object sender, EventArgs e)
+        {
+            if (!_loginState)
+            {
+                _loginState = true;
+                _btnLoginLogout.Enabled = _loginState;
+                _txtPassword.Enabled = _loginState;
+                _txtUsername.Enabled = _loginState;
+                //unsubscribe from unlock event
+                _ctcOffice.UnlockLogin -= _ctcOffice_UnlockLogin;
+            }
+        }
+
+        void _ctcOffice_LoadData(object sender, EventArgs e)
+        {
+            parseLineData();
         }
 
         #endregion
@@ -526,9 +554,14 @@ namespace CTCOffice
             _systemViewTabs.Enabled = state;
             _btnGlobalTime10WallSpeed.Enabled = state;
             _btnGlobalTimeWallSpeed.Enabled = state;
+            _btnShowKey.Enabled = state;
 
+            //handle simulation time event handlers
             if (state)
             {
+                _btnGlobalTimeWallSpeed.Click += new EventHandler(_btnGlobalTimeWallSpeed_Click);
+                _btnGlobalTime10WallSpeed.Click += new EventHandler(_btnGlobalTime10WallSpeed_Click);
+
                 if (_speedState == 0)
                 {
                     //at wall speed, show 10x
@@ -539,6 +572,11 @@ namespace CTCOffice
                     //at 10x, show wall
                     _btnGlobalTimeWallSpeed.Enabled = true;
                 }
+            }
+            else
+            {
+                _btnGlobalTimeWallSpeed.Click -= new EventHandler(_btnGlobalTimeWallSpeed_Click);
+                _btnGlobalTime10WallSpeed.Click -= new EventHandler(_btnGlobalTime10WallSpeed_Click);
             }
         }
 

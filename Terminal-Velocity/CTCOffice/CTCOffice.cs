@@ -101,27 +101,39 @@ namespace CTCOffice
             //Checks the environment to see if a Track Models exists
             if (_env.TrackModel != null)
             {
-                //Checks if the red line has been loaded yet
-                if (_env.TrackModel.RedLoaded && !_redLoaded)
+                //if both are not loaded
+                if (!(_redLoaded && _greenLoaded))
                 {
-                    _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
-                    _redLoaded = true;
-                }
-                else
-                {
-                    _redLoaded = false;
-                    //_env.sendLogEntry("The Red Line has not been loaded yet.");
-                }
-                //Checks if the green line has been loaded yet
-                if (_env.TrackModel.GreenLoaded && !_greenLoaded)
-                {
-                    _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
-                    _greenLoaded = true;
-                }
-                else
-                {
-                    _greenLoaded = false;
-                    //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                    //Checks if the red line has been loaded yet
+                    if (_env.TrackModel.RedLoaded && !_redLoaded)
+                    {
+                        _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
+                        _redLoaded = true;
+                        if (UnlockLogin != null)
+                        {
+                            UnlockLogin(this, EventArgs.Empty);
+                        }
+                    }
+                    else
+                    {
+                        _redLoaded = false;
+                        //_env.sendLogEntry("The Red Line has not been loaded yet.");
+                    }
+                    //Checks if the green line has been loaded yet
+                    if (_env.TrackModel.GreenLoaded && !_greenLoaded)
+                    {
+                        _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
+                        _greenLoaded = true;
+                        if (LoadData != null)
+                        {
+                            UnlockLogin(this, EventArgs.Empty);
+                        }
+                    }
+                    else
+                    {
+                        _greenLoaded = false;
+                        //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                    }
                 }
             }
             else
@@ -218,6 +230,10 @@ namespace CTCOffice
             if (status)
             {
                 _env.sendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
+                if (LoadData != null)
+                {
+                    LoadData(this, EventArgs.Empty);
+                }
             }
             else
             {
@@ -550,6 +566,8 @@ namespace CTCOffice
 
         #endregion
 
+        public event EventHandler<EventArgs> LoadData;
+        public event EventHandler<EventArgs> UnlockLogin;
         #endregion
 
         #region Public Interface
