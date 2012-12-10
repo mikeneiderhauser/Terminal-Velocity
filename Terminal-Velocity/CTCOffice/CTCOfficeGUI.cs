@@ -21,8 +21,6 @@ namespace CTCOffice
         private bool _authorityToolOpen;
         private LineData _greenLineData;
 
-        private bool _myRefresh;
-
         private ResourceWrapper _res;
 
         /// <summary>
@@ -101,7 +99,9 @@ namespace CTCOffice
             _loginStatusImage.Image = _res.RedLight;
             _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
 
-            _myRefresh = false;
+            updateMetrics();
+            refreshStatus();
+
             //populate red line and green line panel
             parseLineData();
 
@@ -192,13 +192,12 @@ namespace CTCOffice
         private void _environment_Tick(object sender, TickEventArgs e)
         {
             _tickCount++;
-            if ((_tickCount >= _rate)&&!_myRefresh)
+            refreshStatus();
+            if ((_tickCount >= _rate))
             {
-                _myRefresh = true;
                 updateMetrics();
-                refreshStatus();
+                
                 _tickCount = 0;
-                _myRefresh = false;
             }
         }
 
@@ -342,6 +341,13 @@ namespace CTCOffice
 
         private void refreshStatus()
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(refreshStatus));
+                return;
+            }
+
+            #region Environment Status
             if (_environment != null)
             {
                 _imgSysStatusEnvironment.Image = _res.GreenLight;
@@ -350,7 +356,9 @@ namespace CTCOffice
             {
                 _imgSysStatusEnvironment.Image = _res.RedLight;
             }
+            #endregion
 
+            #region Track Model Status
             if (_environment.TrackModel != null)
             {
                 if (_environment.TrackModel.RedLoaded && _environment.TrackModel.GreenLoaded)
@@ -370,7 +378,51 @@ namespace CTCOffice
             {
                 _imgSysStatusTrackModel.Image = _res.RedLight;
             }
+            #endregion
 
+            #region Primary Track Controller (Red) Status
+            if (_environment.PrimaryTrackControllerRed != null)
+            {
+                _imgSysStatusTrackControllerRed.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusTrackControllerRed.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region Primary Track Controller (Green) Status
+            if (_environment.PrimaryTrackControllerGreen != null)
+            {
+                _imgSysStatusTrackControllerGreen.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusTrackControllerGreen.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region CTC Office Status
+            if (_environment.CTCOffice != null)
+            {
+                _imgSysStatusCTCOffice.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusCTCOffice.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region System Scheduler Status
+            if (_environment.SystemScheduler != null)
+            {
+                _imgSysStatusSystemScheduler.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusSystemScheduler.Image = _res.RedLight;
+            }
+            #endregion
         }
 
         /// <summary>

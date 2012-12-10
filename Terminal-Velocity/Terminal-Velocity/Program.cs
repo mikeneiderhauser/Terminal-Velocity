@@ -30,19 +30,18 @@ namespace TerminalVelocity
             
             // TrackModel
             TrackModel.TrackModel trackModel = new TrackModel.TrackModel(e);
+            e.TrackModel = trackModel;
             TrackModel.TrackModelGUI trackModelGui = new TrackModelGUI(e, trackModel);
 
             // CTCOffice
             CTCOffice.CTCOffice ctcOffice = new CTCOffice.CTCOffice(e, e.PrimaryTrackControllerRed, e.PrimaryTrackControllerGreen);
+            e.CTCOffice = ctcOffice;
             CTCOffice.CTCOfficeGUI ctcOfficeGui = new CTCOfficeGUI(e, ctcOffice);
 
             // Scheduler
             SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(e, ctcOffice);
-            SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
-
-            // Setup environment
             e.SystemScheduler = scheduler;
-            e.TrackModel = trackModel;
+            SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
 
             ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
             schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
