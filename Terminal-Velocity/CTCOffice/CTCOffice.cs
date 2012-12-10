@@ -56,6 +56,8 @@ namespace CTCOffice
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
 
+            _env.TrackModel.TrackChangedEvent += new EventHandler<EventArgs>(TrackModel_TrackChangedEvent);
+
             _messages = new List<string>();
 
             _trains = new List<ITrainModel>();
@@ -95,6 +97,11 @@ namespace CTCOffice
             }
 
         }//Constructor
+
+        void TrackModel_TrackChangedEvent(object sender, EventArgs e)
+        {
+            //parse track here
+        }
 
         private void IsTrackUp()
         {
