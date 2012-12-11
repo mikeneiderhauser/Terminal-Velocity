@@ -100,20 +100,21 @@ namespace TrackModel
                 //Console.WriteLine(res);
                 if (_dbCon.State != ConnectionState.Closed)
                     _dbCon.Close(); //CLOSE DB
+                _dbCon.Open();
                 if (res != 0)
                     return -1;
             }
             catch (Exception crap)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                    //_dbCon.Close();
                 return -1;
             }
 
 
             //After creating the database, first insert the YARD block
-            if (_dbCon.State != ConnectionState.Open)
-                _dbCon.Open();
+            //if (_dbCon.State != ConnectionState.Open)
+                //_dbCon.Open();
             string yardRed =
                 "INSERT INTO BLOCKS(blockID, line, infra, starting_elev, grade, locX, locY, bSize, dir, state, prev, dest1, dest2, trackCirID, speedLimit) VALUES(0,'Red','none', 0.0, 0.0, -1, -1, 0.0,'North','Healthy',0,9,-1,3,500)";
             string yardGreen =
@@ -126,8 +127,8 @@ namespace TrackModel
             {
                 int res1 = insRedCommand.ExecuteNonQuery(); //Exec insert yard statement
                 int res2 = insGreenCommand.ExecuteNonQuery();
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                    //_dbCon.Close();
                 if (res1 != 1 || res2 != 1)
                     return -1;
                 else
@@ -136,8 +137,8 @@ namespace TrackModel
             catch (Exception crap)
             {
 
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                    //_dbCon.Close();
                 return -1;
             }
         }
@@ -252,8 +253,8 @@ namespace TrackModel
                     {
                         int res = insertCommand.ExecuteNonQuery(); //Exec CREATE
                         //Console.WriteLine(res);
-                        if (_dbCon.State != ConnectionState.Closed)
-                            _dbCon.Close(); //CLOSE DB
+                        //if (_dbCon.State != ConnectionState.Closed)
+                            //_dbCon.Close(); //CLOSE DB
 
 
                         //Prepare values to create block
@@ -275,8 +276,8 @@ namespace TrackModel
                     }
                     catch (Exception crap)
                     {
-                        if (_dbCon.State != ConnectionState.Closed)
-                            _dbCon.Close();
+                        //if (_dbCon.State != ConnectionState.Closed)
+                          //  _dbCon.Close();
                         //Console.WriteLine(crap.Message.ToString());
                         return -1;
                     }
@@ -399,15 +400,15 @@ namespace TrackModel
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close(); //Close reader
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //tempReader.Close(); //Close reader
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception crap)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return false;
             }
         }

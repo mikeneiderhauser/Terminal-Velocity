@@ -105,15 +105,15 @@ namespace TrackModel
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close(); //Close reader
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //tempReader.Close(); //Close reader
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return false;
             }
         }
@@ -132,15 +132,15 @@ namespace TrackModel
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close(); //Close reader
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //tempReader.Close(); //Close reader
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return false;
             }
         }
@@ -245,8 +245,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return null;
             }
         }
@@ -270,8 +270,8 @@ namespace TrackModel
             {
                 int res = updateCom.ExecuteNonQuery(); //Exec CREATE
                 //Console.WriteLine(res);
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -279,8 +279,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
@@ -305,8 +305,8 @@ namespace TrackModel
             {
                 int res = insertCom.ExecuteNonQuery(); //Exec insert
                 //Console.WriteLine(res);
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -314,8 +314,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
@@ -464,8 +464,8 @@ namespace TrackModel
             //If we didnt find any blocks, give up.
             if (nBlocks == 0)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return null;
             }
 
@@ -484,8 +484,8 @@ namespace TrackModel
             int eID = 0;
 
             var tempRoute = new RouteInfo(rID, rName, nBlocks, blocks, sID, eID);
-            if (_dbCon.State != ConnectionState.Closed)
-                _dbCon.Close();
+            //if (_dbCon.State != ConnectionState.Closed)
+              //  _dbCon.Close();
             return tempRoute;
         }
 
