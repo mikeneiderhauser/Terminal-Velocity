@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Data;
 using Interfaces;
 using Utility;
 
@@ -58,6 +59,17 @@ namespace TrackModel
             }
 
             //_environment.Tick+=
+        }
+
+        /// <summary>
+        /// Public destructor for Track Model...mainly just closes connection if it isnt closed
+        /// </summary>
+        ~TrackModel()
+        {
+            if (_dbCreator.DBCon.State != ConnectionState.Closed)
+            {
+                _dbCreator.DBCon.Close();
+            }
         }
 
 
