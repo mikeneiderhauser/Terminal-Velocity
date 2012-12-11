@@ -5,7 +5,6 @@ using System.Timers;
 using Interfaces;
 using TrackModel;
 using TrainModel;
-using SimulationEnvironment = SimulationEnvironment.SimulationEnvironment;
 
 namespace Testing
 {
@@ -62,10 +61,6 @@ namespace Testing
             next.Previous = curr;
             next.Next = null;
 
-            // The CTC Office
-            ICTCOffice office = new CTCOffice.CTCOffice(environment, prev, prev);
-
-            environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
             environment.TrackModel = new DummyTrackModel(blocks);
