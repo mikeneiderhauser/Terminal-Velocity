@@ -174,7 +174,7 @@ namespace CTCOffice
                     {
                         string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                         _messages.Add(msg);
-                        _env.sendLogEntry(msg);
+                        _env.sendLogEntry("CTC Office: " + msg);
                         c.Panel.ReDrawMe();
                     }
                 }
@@ -198,7 +198,7 @@ namespace CTCOffice
                 {
                     string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                     _messages.Add(msg);
-                    _env.sendLogEntry(msg);
+                    _env.sendLogEntry("CTC Office: " + msg);
                     c.Panel.ReDrawMe();
                 }
             }
@@ -391,7 +391,7 @@ namespace CTCOffice
                     {
                         string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                         _messages.Add(msg);
-                        _env.sendLogEntry(msg);
+                        _env.sendLogEntry("CTC Office: " + msg);
                         c.Panel.ReDrawMe();
                     }
 
@@ -405,7 +405,7 @@ namespace CTCOffice
                     {
                         string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                         _messages.Add(msg);
-                        _env.sendLogEntry(msg);
+                        _env.sendLogEntry("CTC Office: " + msg);
                         c.Panel.ReDrawMe();
                     }
                 }//end if
@@ -508,7 +508,7 @@ namespace CTCOffice
             }
             else
             {
-                //_env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
         }
 
@@ -646,7 +646,9 @@ namespace CTCOffice
 
             if (line == 0 || line == 1)
             {
-                _messages.Add("Request Sent: " + request.RequestType.ToString());
+                string msg = "Request Sent: " + request.RequestType.ToString();
+                _messages.Add(msg);
+                _env.sendLogEntry("CTC Office: " + msg);
             }
         }
 

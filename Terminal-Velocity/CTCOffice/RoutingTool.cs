@@ -49,7 +49,7 @@ namespace CTCOffice
             {
                 //TODO - populate list of block inbetween current and dest
                 string line;
-                if (_startBlock.Line.CompareTo("Red") != 0)
+                if (_startBlock.Line.CompareTo("Red") == 0)
                 {
                     line = "Red";
                 }
