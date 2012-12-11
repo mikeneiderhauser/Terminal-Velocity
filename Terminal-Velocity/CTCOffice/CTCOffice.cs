@@ -166,7 +166,7 @@ namespace CTCOffice
                 c.Tile = _redLineData.GetBlockType(b);
                 if (c.Panel != null)
                 {
-                    c.Panel.Refresh();
+                    c.Panel.ReDrawMe();
                 }
             }
             rtnfo = null;
@@ -186,7 +186,7 @@ namespace CTCOffice
                 c.Tile = _redLineData.GetBlockType(b);
                 if (c.Panel != null)
                 {
-                    c.Panel.Refresh();
+                    c.Panel.ReDrawMe();
                 }
             }
             rtnfo = null;
@@ -336,7 +336,7 @@ namespace CTCOffice
                     c.Train = null;
                     if (c.Panel != null)
                     {
-                        c.Panel.Refresh();
+                        c.Panel.ReDrawMe();
                     }
                 }//end if
                 else
@@ -346,7 +346,7 @@ namespace CTCOffice
                     c.Train = null;
                     if (c.Panel != null)
                     {
-                        c.Panel.Refresh();
+                        c.Panel.ReDrawMe();
                     }
                 }//end if
             }//end foreach
@@ -373,9 +373,10 @@ namespace CTCOffice
                     LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
                     c.Tile = _res.Train;
                     c.Train = tb.Train;
+                    
                     if (c.Panel != null)
                     {
-                        c.Panel.Refresh();
+                        c.Panel.ReDrawMe();
                     }
 
                 }//end if
@@ -386,7 +387,7 @@ namespace CTCOffice
                     c.Train = tb.Train;
                     if (c.Panel != null)
                     {
-                        c.Panel.Refresh();
+                        c.Panel.ReDrawMe();
                     }
                 }//end if
             }//end for each

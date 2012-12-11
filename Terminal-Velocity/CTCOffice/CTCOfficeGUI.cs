@@ -120,6 +120,9 @@ namespace CTCOffice
             //populate red line and green line panel
             //parseLineData();
 
+            //enables double buffering for control drawings
+            //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
+
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
         }
@@ -213,7 +216,6 @@ namespace CTCOffice
                         pane.Location = new Point(x, y);
                         pane.Image = _greenLineData.Layout[i, j].Tile;
                         pane.Tag = _greenLineData.Layout[i, j];
-                        
                         _greenLineData.Layout[i, j].Panel = pane;
                         pane.MouseClick += _layoutPiece_MouseClick;
                         //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
