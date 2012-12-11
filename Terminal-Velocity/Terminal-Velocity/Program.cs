@@ -33,6 +33,8 @@ namespace TerminalVelocity
             TrackModel.TrackModel trackModel = new TrackModel.TrackModel(e);
             TrackModel.TrackModelGUI trackModelGui = new TrackModelGUI(e, trackModel);
 
+            e.TrackModel = trackModel;
+
             // CTCOffice
             CTCOffice.CTCOffice ctcOffice = new CTCOffice.CTCOffice(e, e.PrimaryTrackControllerRed, e.PrimaryTrackControllerGreen);
             CTCOffice.CTCOfficeGUI ctcOfficeGui = new CTCOfficeGUI(e, ctcOffice);
@@ -40,6 +42,9 @@ namespace TerminalVelocity
             // Scheduler
             SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(e, ctcOffice);
             SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
+
+            // Setup environment
+            e.SystemScheduler = scheduler;
 
             // TrackControllerUI
             if (e.PrimaryTrackControllerRed != null)
@@ -52,10 +57,6 @@ namespace TerminalVelocity
                 TrackControllerUi greenTrackControllerGui = new TrackControllerUi(e, e.PrimaryTrackControllerGreen);
                 _greenTrackControllerForm = new Form() { Controls = { greenTrackControllerGui }, TopLevel = true, AutoSize = true, Parent = null };
             }
-
-            // Setup environment
-            e.SystemScheduler = scheduler;
-            e.TrackModel = trackModel;
 
             _ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
             _schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
