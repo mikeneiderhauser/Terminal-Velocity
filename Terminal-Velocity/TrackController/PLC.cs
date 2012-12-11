@@ -46,24 +46,25 @@ namespace TrackController
             foreach (var t in trains)
             {
                 var speedLim = t.CurrentBlock.SpeedLimit;
-                var authority = t.AuthorityLimit;
+                var authority = 1;
 
                 // Adjust train speed to match that of the track speed limit
                 // or if the train is too close to another train
-                foreach (var n in trains)
+                foreach (var n in trains.Where(x => x.TrainID != t.TrainID))
                 {
                     // Number of blocks till the next train (assumes the Route accounted for)
                     var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
                     // Stop the train for now
-                    if (length <= 1)
+                    if (length < 3)
                     {
-                        speedLim = 0;
+                        authority = 0;
                         messages.Add(string.Format("Train {0} is near train {1} (stopping)", t.TrainID, n.TrainID));
                     }
+
                     // Slow the train by half
-                    else if (length <= 2)
+                    if (length < 5)
                     {
-                        speedLim /= 2;
+                        speedLim = t.CurrentBlock.SpeedLimit / 2;
                         messages.Add(string.Format("Train {0} is near train {1} (slowing)", t.TrainID, n.TrainID));
                     }
                 }

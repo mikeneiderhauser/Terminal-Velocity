@@ -12,10 +12,12 @@ namespace Testing
     public class TrackControllerTest : ITesting
     {
         static readonly Random R = new Random((int)DateTime.Now.ToBinary());
-        static ISimulationEnvironment _env;
+        static global::SimulationEnvironment.SimulationEnvironment _env;
         static IBlock _startBlock;
 
-        const int Min = 500;
+        const int MaxTrainCount = 1;
+
+        const int Min = 300;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
         static int _elapsed = 0;
@@ -68,7 +70,7 @@ namespace Testing
             environment.PrimaryTrackControllerRed = prev;
             environment.TrackModel = new DummyTrackModel(blocks);
 
-            _env = environment;
+            _env = (global::SimulationEnvironment.SimulationEnvironment) environment;
             _startBlock = blocks[0];
               
             return DoTestInternal(out pass, out fail, out messages);
@@ -87,7 +89,7 @@ namespace Testing
                 timer.Elapsed += TimerElapsed;
                 timer.Start();
 
-                while (_env.AllTrains.Count < 3 && _elapsed < Timeout)
+                while (_env.AllTrains.Count < MaxTrainCount && _elapsed < Timeout)
                     System.Threading.Thread.Sleep(500);
 
                 if (_elapsed >= Timeout) return false;
@@ -96,43 +98,104 @@ namespace Testing
                 timer.Elapsed -= TimerElapsed;
             }
 
+            // Give the train(s) time to move
+            {
+                System.Threading.Thread.Sleep(120000);
+            }
+
             // Ensure that the trains have the correct authority and speeds
             {
                 foreach (var t in _env.AllTrains)
                 {
-                    if (t.AuthorityLimit != 1)
+                    // Why was the authority this low?
+                    if (t.AuthorityLimit < 1)
                     {
-                        fail++;
-                        messages.Add(string.Format("[Error] Train {0}: authority was {1}, expected {2}", t.TrainID, t.AuthorityLimit, 1));
+                        // Check if the train is close to a broken block
+                        foreach (var n in _env.AllTrains.Where(x => x.TrainID != t.TrainID).ToList())
+                        {
+                            var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, "Red").Count();
+
+                            // The train, being too close to another, correctly stopped
+                            if (length < 3)
+                            {
+                                pass++;
+                            }
+                            // The train, being too close to another, did not correctly stop
+                            else
+                            {
+                                fail++;
+                                messages.Add(string.Format("[Error] Train {0}: authority was {1}, expected {2}",
+                                                           t.TrainID, t.AuthorityLimit, 1));
+                            }
+                        }
+
+                        int current = t.CurrentBlock.BlockID;
+                        while (_env.TrackModel.requestBlockInfo(current, "").State != StateEnum.BrokenTrackFailure && current <= 3)
+                            current++;
+
+                        // The train stopped due to a broken block
+                        if (current <= 3)
+                        {
+                            fail++;
+                            messages.Add(string.Format(
+                                "[Error] Train {0} did not stop for the broken block (no switches)", t.TrainID));
+                        }
+                        // The train did not stop for a broken block with no switches
+                        else
+                            pass++;
+
                     }
-                    else
-                        pass++;
 
                     if (Math.Abs(t.SpeedLimit - 100F) > 0.00001)
                     {
-                        fail++;
-                        messages.Add(string.Format("[Error] Train {0}: speed limit was {1}, expected {2}", t.TrainID, t.SpeedLimit, 100));
+                        if (Math.Abs(t.SpeedLimit - 50F) > 0.00001)
+                        {
+                            // Check if the train is close to another train
+                            foreach (var n in _env.AllTrains.Where(x => x.TrainID != t.TrainID).ToList())
+                            {
+                                var length =
+                                    _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, "Red").
+                                        Count();
+
+                                if (length < 5)
+                                {
+                                    pass++;
+                                }
+                                else if (length > 5)
+                                {
+                                    fail++;
+                                    messages.Add(string.Format("[Error] Train {0}: speed limit was {1}, expected {2}",
+                                                               t.TrainID, t.SpeedLimit, 100));
+                                }
+                                else
+                                {
+                                    fail++;
+                                    messages.Add(
+                                        string.Format(
+                                            "[Error] Train {0}: speed limit was {1}, expected {2} (too close to another train)",
+                                            t.TrainID, t.SpeedLimit, 50));
+                                }
+                            }
+                        }
                     }
-                    else
-                        pass++;
                 }
             }
 
-            // Ensure multiple trains do not occupy the same block
+            // Print the status of all trains
             {
-                var trains = _env.AllTrains.Where((t, n) => t.TrainID == _env.AllTrains[n].TrainID).ToList();
-
-                foreach (var t in trains)
+                foreach (var t in _env.AllTrains)
                 {
-                    fail++;
-                    messages.Add(string.Format("[Error] Train {0} occupies block {1}", t.TrainID, t.CurrentBlock.BlockID));
+                    messages.Add(string.Format("[Info] Train {0} occupies block {1}", t.TrainID, t.CurrentBlock.BlockID));
                 }
-
             }
 
-            // Print the train velocities to console. If they are not moving, the previous tests are invalid
+            // Print the train velocities and speed limites to console. If they are not moving, the previous tests are invalid
             {
-                messages.AddRange(_env.AllTrains.Select(t => string.Format("[Info] Train {0} traveling at velocity {1}", t.TrainID, t.CurrentVelocity)));
+                messages.AddRange(
+                    _env.AllTrains.Select(
+                        t =>
+                        string.Format("[Info] Train {0} traveling at velocity {1}, speedLimit {2}, authorityLimit {3}",
+                                      t.TrainID, t.CurrentVelocity, t.SpeedLimit, t.AuthorityLimit)));
             }
 
             return true;
@@ -140,11 +203,17 @@ namespace Testing
 
         static void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            var n =  R.Next(Min, Max);
+            var n = R.Next(Min, Max);
             _elapsed += n;
-            ((Timer) sender).Interval = n;
+            ((Timer)sender).Interval = n;
 
-            _env.AllTrains.Add(new Train(_trainCount++, _startBlock, _env));
+            _env.Stop();
+            ((Timer)sender).Enabled = false;
+            {
+                _env.AllTrains.Add(new Train(_trainCount++, _startBlock, _env));
+            }
+            _env.Start();
+            ((Timer)sender).Enabled = true;
         }
 
         internal class DummyTrackModel : ITrackModel

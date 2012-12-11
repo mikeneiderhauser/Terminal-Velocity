@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Interfaces;
 using Utility;
 
@@ -72,24 +73,32 @@ namespace TrackController
 
         private static readonly Random Random = new Random((int) DateTime.Now.ToBinary());
         private const int Max = 1000;
+        private Mutex _mutex = new Mutex(false);
         private void EnvTick(object sender, TickEventArgs e)
         {
             _trains.Clear();
-            
-            // Find all the trains within the TrackCircuits area
-            foreach (var t in _env.AllTrains)
+
+
+            _mutex.WaitOne();
             {
-                if (!_trains.ContainsKey(t.TrainID) &&
-                    _blocks.ContainsKey(t.CurrentBlock.BlockID))
-                    _trains.Add(t.TrainID, t);
+                // Find all the trains within the TrackCircuits area
+                foreach (var t in _env.AllTrains)
+                {
+                    if (!_trains.ContainsKey(t.TrainID) &&
+                        _blocks.ContainsKey(t.CurrentBlock.BlockID))
+                        _trains.Add(t.TrainID, t);
+                }
             }
+            _mutex.ReleaseMutex();
 
             // Randomly create broken blocks
             if (Random.Next(Max) > Max * 0.95)
             {
                 IBlock broken;
                 if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
+                {
                     broken.State = StateEnum.BrokenTrackFailure;
+                }
             }
         }
 
