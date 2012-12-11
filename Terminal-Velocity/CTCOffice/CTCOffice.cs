@@ -121,6 +121,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void TrackModel_TrackChangedEvent(object sender, EventArgs e)
         {
+            IsTrackUp();
             bool messageFlag = false;
             //parse track here
             if (_env.TrackModel.ChangeFlag == TrackChanged.Both)
@@ -447,35 +448,45 @@ namespace CTCOffice
                 //if both are not loaded
                 if (!(_redLoaded && _greenLoaded))
                 {
-                    //Checks if the red line has been loaded yet
-                    if (_env.TrackModel.RedLoaded && !_redLoaded)
+                    if (!_redLoaded)
                     {
-                        _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
                         _redLoaded = true;
-                        if (UnlockLogin != null)
+                        //Checks if the red line has been loaded yet
+                        if (_env.TrackModel.RedLoaded)
                         {
-                            UnlockLogin(this, EventArgs.Empty);
+                            _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
+                            _redLoaded = true;
+                            if (UnlockLogin != null)
+                            {
+                                UnlockLogin(this, EventArgs.Empty);
+                            }
+                        }
+                        else
+                        {
+                            _redLoaded = false;
+                            //_env.sendLogEntry("The Red Line has not been loaded yet.");
                         }
                     }
-                    else
+
+
+                    if (!_greenLoaded)
                     {
-                        _redLoaded = false;
-                        //_env.sendLogEntry("The Red Line has not been loaded yet.");
-                    }
-                    //Checks if the green line has been loaded yet
-                    if (_env.TrackModel.GreenLoaded && !_greenLoaded)
-                    {
-                        _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
                         _greenLoaded = true;
-                        if (UnlockLogin != null)
+                        //Checks if the green line has been loaded yet
+                        if (_env.TrackModel.GreenLoaded)
                         {
-                            UnlockLogin(this, EventArgs.Empty);
+                            _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
+                            _greenLoaded = true;
+                            if (UnlockLogin != null)
+                            {
+                                UnlockLogin(this, EventArgs.Empty);
+                            }
                         }
-                    }
-                    else
-                    {
-                        _greenLoaded = false;
-                        //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                        else
+                        {
+                            _greenLoaded = false;
+                            //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                        }
                     }
                 }
             }
