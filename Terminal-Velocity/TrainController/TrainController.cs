@@ -77,7 +77,7 @@ namespace TrainController
                 if (SpeedInput <= SpeedLimit)
                     sendPower(SpeedInput);
             }
-            if (!CurrentBlock.Equals(Train.CurrentBlock))
+            if (CurrentBlock != null && !CurrentBlock.Equals(Train.CurrentBlock))
             {
                 AuthorityLimit--;
                 CurrentBlock = Train.CurrentBlock;
