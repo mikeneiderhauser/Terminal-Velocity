@@ -165,14 +165,18 @@ namespace CTCOffice
             foreach (IBlock b in rtnfo.BlockList)
             {
                 //find block in layout and change image
-                LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                c.Tile = _redLineData.GetBlockType(b);
-                if (c.Panel != null)
+                //speed limit of 500 is unique to block id 0 (yard) on both red and green line
+                if (b.SpeedLimit != 500)
                 {
-                    string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
-                    _messages.Add(msg);
-                    _env.sendLogEntry(msg);
-                    c.Panel.ReDrawMe();
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _redLineData.GetBlockType(b);
+                    if (c.Panel != null)
+                    {
+                        string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                        _messages.Add(msg);
+                        _env.sendLogEntry(msg);
+                        c.Panel.ReDrawMe();
+                    }
                 }
             }
             rtnfo = null;
