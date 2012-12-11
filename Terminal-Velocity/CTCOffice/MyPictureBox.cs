@@ -9,45 +9,38 @@ namespace CTCOffice
 {
     public class MyPictureBox : PictureBox
     {
-        //[DllImport("user32.dll")]
-        //public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
-
-        private const int WM_SETREDRAW = 11; 
-
         private Panel _master;
         private UserControl _container;
+        private TileContainerStats _attribs;
+
+        public event EventHandler<MyPictureBoxEventArgs> ForceRedraw;
+
         public MyPictureBox(Panel linePanel, UserControl ctcOfficeGuiControl)
         {
             _master = linePanel;
             _container = ctcOfficeGuiControl;
+            _attribs = null;
         }
-
 
         public void ReDrawMe()
         {
             if (InvokeRequired)
             {
                 this.Invoke(new Action(this.ReDrawMe));
-            }
-
-            this.CreateGraphics();
-
-            //SendMessage(Parent.Handle, WM_SETREDRAW, true, 0);
-           //Parent.Refresh();
-        }
-
-        /*
-        public override void Refresh()
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new Action(this.Refresh));
                 return;
             }
 
+            if (ForceRedraw != null && _attribs != null)
+            {
+                ForceRedraw(this,new MyPictureBoxEventArgs(_attribs));
+            }
+        }
 
-            
-            
-        }*/
+        public TileContainerStats Attributes
+        {
+            get { return _attribs; }
+            set { _attribs = value; }
+        }
+
     }
 }

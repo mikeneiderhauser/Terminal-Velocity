@@ -179,6 +179,10 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
                     {
+                        LayoutCellDataContainer container = _redLineData.Layout[i, j];
+                        MakePane(i, j, x, y, container, _panelRedLine);
+
+                        /*
                         MyPictureBox pane = new MyPictureBox(_panelRedLine,this);
                         _panelRedLine.Controls.Add(pane);
                         pane.Name = "_imgGridRed_" + i + "_" + j;
@@ -190,6 +194,7 @@ namespace CTCOffice
                         _redLineData.Layout[i, j].Panel = pane;
                         pane.MouseClick += _layoutPiece_MouseClick;
                         //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                         */
                         x += 20;
                     }
                     y += 20;
@@ -208,17 +213,25 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
                     {
+                        LayoutCellDataContainer container = _greenLineData.Layout[i, j];
+                        MakePane(i, j, x, y, container, _panelGreenLine);
+                        /*
                         MyPictureBox pane = new MyPictureBox(_panelGreenLine,this);
                         _panelGreenLine.Controls.Add(pane);
                         pane.Name = "_imgGridGreen_" + i + "_" + j;
                         pane.SizeMode = PictureBoxSizeMode.CenterImage;
                         pane.Size = new Size(20, 20);
                         pane.Location = new Point(x, y);
+
                         pane.Image = _greenLineData.Layout[i, j].Tile;
                         pane.Tag = _greenLineData.Layout[i, j];
+
+
                         _greenLineData.Layout[i, j].Panel = pane;
+
                         pane.MouseClick += _layoutPiece_MouseClick;
                         //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                         */
                         x += 20;
                     }
                     y += 20;
@@ -226,6 +239,44 @@ namespace CTCOffice
                 }
             } //end process green
         }//end ParseLineData
+
+        public MyPictureBox MakePane(int i, int j, int x, int y, LayoutCellDataContainer c, Panel drawingPanel)
+        {
+            if (this.InvokeRequired)
+            {
+                //this.Invoke(new Action(this.MakePane(i,j,x,y,c,drawingPanel)));
+                //return;
+            }
+
+            MyPictureBox pane = new MyPictureBox(drawingPanel, this);
+            pane.Name = "_imgGridGreen_" + i + "_" + j;
+            pane.SizeMode = PictureBoxSizeMode.CenterImage;
+            pane.Size = new Size(20, 20);
+            pane.Location = new Point(x, y);
+            pane.Tag = c;
+            pane.Image = c.Tile;
+            c.Panel = pane;
+            TileContainerStats attribs = new TileContainerStats(i, j, x, y, c, drawingPanel);
+            pane.Attributes = attribs;
+            pane.MouseClick += _layoutPiece_MouseClick;
+            pane.ForceRedraw += _layoutPiece_ForceRedraw;
+            drawingPanel.Controls.Add(pane);
+            return pane;
+        }
+
+        private void _layoutPiece_ForceRedraw(object sender, MyPictureBoxEventArgs e)
+        {
+            //get layout stats
+            TileContainerStats attribs = e.Attributes;
+            //remove current control from layout panel
+            attribs.LayoutPanel.Controls.Remove((Control)sender);
+            //make a new panel (automatically adds to appropriate panel)
+            MakePane(attribs.I,attribs.J,attribs.X,attribs.Y,attribs.Container,attribs.LayoutPanel);
+            //cast sender as a control
+            Control s = (Control)sender;
+            //dispose of sender
+            s.Dispose();
+        }
 
         #endregion
 

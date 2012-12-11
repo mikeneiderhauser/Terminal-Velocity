@@ -140,6 +140,8 @@ namespace CTCOffice
                 messageFlag = !messageFlag;
             }
 
+            PopulateTrack();
+
             if (messageFlag)
             {
                 if (_messages.Count > 0)

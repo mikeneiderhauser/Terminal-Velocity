@@ -134,12 +134,12 @@ namespace CTCOffice
 
         public IBlock requestBlockInfo(int blockID, string line)
         {
-            if (line.CompareTo("Red") != 0)
+            if (line.CompareTo("Red") == 0)
             {
                 return _redPath[blockID];
             }
 
-            if (line.CompareTo("Green") != 0)
+            if (line.CompareTo("Green") == 0)
             {
                 return _greenPath[blockID];
             }
@@ -173,14 +173,27 @@ namespace CTCOffice
 
         public void CloseBlock(int id, string line)
         {
-            if (line.CompareTo("Red") != 0)
+            if (line.CompareTo("Red") == 0)
             {
                 _redPath[id].State = StateEnum.BrokenTrackFailure;
             }
 
-            if (line.CompareTo("Green") != 0)
+            if (line.CompareTo("Green") == 0)
             {
                 _greenPath[id].State = StateEnum.BrokenTrackFailure;
+            }
+        }
+
+        public void OpenBlock(int id, string line)
+        {
+            if (line.CompareTo("Red") == 0)
+            {
+                _redPath[id].State = StateEnum.Healthy;
+            }
+
+            if (line.CompareTo("Green") == 0)
+            {
+                _greenPath[id].State = StateEnum.Healthy;
             }
         }
     }

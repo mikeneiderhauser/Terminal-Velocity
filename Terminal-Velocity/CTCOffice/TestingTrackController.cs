@@ -9,12 +9,14 @@ namespace CTCOffice
         private int _id;
         private List<IBlock> _blocks;
         private List<ITrainModel> _trains;
+        private TestingTrackModel _tm;
 
-        public TestingTrackController(int id)
+        public TestingTrackController(int id, TestingTrackModel tm)
         {
             _id = id;
             _blocks = new List<IBlock>();
             _trains = new List<ITrainModel>();
+            _tm = tm;
         }
 
         public IRequest Request
@@ -23,6 +25,17 @@ namespace CTCOffice
             {
                 if (TransferRequest != null)
                 {
+                    Request r = (Request)value;
+                    if (r.RequestType == RequestTypes.TrackMaintenanceOpen)
+                    {
+                        IBlock b = r.Block;
+                        r.Block.State = StateEnum.Healthy;
+                    }
+                    else if (r.RequestType == RequestTypes.TrackMaintenanceOpen)
+                    {
+                        IBlock b = r.Block;
+                        r.Block.State = StateEnum.PowerFailure;
+                    }
                     TransferRequest(this, new RequestEventArgs(value));
                 }
             }

@@ -128,7 +128,10 @@ namespace CTCOffice
             if (block.Line.CompareTo("Red") == 0)
             {
                 //red
-                if (block.State != StateEnum.Healthy) { return _res.RedTrackClosed; }
+                if (block.State != StateEnum.Healthy) 
+                { 
+                    return _res.RedTrackClosed; 
+                }
                 if (block.hasSwitch()) { return _res.RedTrackSwitch; }
                 if (block.hasTunnel()) { return _res.RedTrackTunnel; }
                 if (block.hasHeater()) { return _res.RedTrackHeater; }

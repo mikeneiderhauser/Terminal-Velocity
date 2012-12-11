@@ -76,6 +76,7 @@
     <Compile Include="MyPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MyPictureBoxEventArgs.cs" />
     <Compile Include="OfficeGUITest.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,6 +121,7 @@
     <Compile Include="TestingRouteInfo.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />
+    <Compile Include="TileContainerStats.cs" />
     <Compile Include="TrainAndBlock.cs" />
     <EmbeddedResource Include="AuthorityTool.resx">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
