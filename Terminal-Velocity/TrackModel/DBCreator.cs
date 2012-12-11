@@ -12,13 +12,17 @@ namespace TrackModel
     {
         //Private parameters
         private readonly SQLiteConnection _dbCon;
+        private readonly ISimulationEnvironment _env;
+        private List<ITrackCircuit> circuits;
 
         /// <summary>
         /// A public constructor allowing external modules or TrackModel to create DBCreator objects
         /// </summary>
         /// <param name="fPath">The filepath to the database to connect to</param>
-        public DBCreator(string fPath)
+        public DBCreator(string fPath, ISimulationEnvironment environment)
         {
+            circuits = new List<ITrackCircuit>();
+            _env = environment;
             
 
             //fPath is the filename of the database to connect to.
@@ -190,7 +194,7 @@ namespace TrackModel
             {
                 trackConBlockLists[i] = new List<IBlock>();
             }
-
+            bool redLine = false;
             foreach (string line in fileLines)
             {
                 
@@ -203,6 +207,11 @@ namespace TrackModel
                     string[] fields = line.Split(commaArr);
                     string blockID = fields[2];
                     string lineName = fields[0];
+
+                    //Set flag for which line you're on
+                    if(redLine==false && lineName.Equals("Red",StringComparison.OrdinalIgnoreCase))
+                        redLine=true;
+
                     string speedLimit = fields[5];
                     int trackConID=int.Parse(fields[10]);
                     int prev = int.Parse(fields[11]);
@@ -276,9 +285,90 @@ namespace TrackModel
             //End for loop iterating through all strings
             ///////////////////////////////////////////////////
 
+            
+
+            //Now that all blocks in our line are inserted, and the block lists for each TrackController have been assembled...
+            //We can create the Track Circuits and Track Controllers.
+            bool tempRes=populateTCs(trackConBlockLists,redLine);
+
 
 
             return 0; //If you get to this point, you've executed successfully.
+        }
+
+        /// <summary>
+        /// Creates Track Circuits and Track Controllers.  Track Circuits are packaged into Track Controllers, 
+        /// and Track Controllers are chained off of the 2 'Primaries' (1 for each line) in the environment
+        /// </summary>
+        /// <param name="trackConBlockLists">Array of lists- 1 list is associated with each Track Circuit</param>
+        /// <param name="redLine">A boolean value; true if we're on the red line</param>
+        /// <returns>A true or false value, denoting the success of the operation</returns>
+        public bool populateTCs(List<IBlock>[] trackConBlockLists, bool redLine)
+        {
+            if (trackConBlockLists == null)
+                return false;
+            for (int i = 0; i < trackConBlockLists.Length; i++)
+            {
+                if (trackConBlockLists[i].Count != 0)//i is a TrackConID that is loaded 
+                {
+                    TrackController.TrackCircuit tc = new TrackController.TrackCircuit(_env,trackConBlockLists[i]);
+                    tc.ID = i;
+                    circuits.Add(tc);
+                    TrackController.TrackController TC = new TrackController.TrackController(_env,tc);
+
+                    if (redLine)//We're red line, man
+                    {
+                        //If were the first track controller on this line
+                        if (_env.PrimaryTrackControllerRed == null)
+                        {
+                            _env.PrimaryTrackControllerRed = TC;
+                            TC.Previous = null;
+                            TC.Next = null;
+                        }
+                        else//Add track controller at end of linked list
+                        {
+                            ITrackController cur = _env.PrimaryTrackControllerRed;
+                            while (cur.Next != null)
+                                cur = cur.Next;
+                            cur.Next = TC;
+                            TC.Previous = cur;
+                        }
+                    }
+                    else//We're green line, man.
+                    {
+                        //If were the first track controller on this line
+                        if (_env.PrimaryTrackControllerGreen == null)
+                        {
+                            _env.PrimaryTrackControllerGreen = TC;
+                            TC.Previous = null;
+                            TC.Next = null;
+                        }
+                        else//Add track controller at end of linked list
+                        {
+                            ITrackController cur = _env.PrimaryTrackControllerGreen;
+                            while (cur.Next != null)
+                                cur = cur.Next;
+                            cur.Next = TC;
+                            TC.Previous = cur;
+                        }
+                    }
+
+                }
+            }
+
+            return true;
+        }
+
+
+        public ITrackCircuit getITrackCircuitByID(int id)
+        {
+            foreach(ITrackCircuit tc in circuits)
+            {
+                if (tc.ID == id)
+                    return tc;
+            }
+
+            return null;
         }
 
         /// <summary>

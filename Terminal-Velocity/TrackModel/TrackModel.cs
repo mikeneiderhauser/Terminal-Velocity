@@ -26,7 +26,7 @@ namespace TrackModel
             _redLoaded = false;
             _greenLoaded = false;
             _env = environment;
-            _dbCreator = new DBCreator("");
+            _dbCreator = new DBCreator("",environment);
             _dbManager = new DBManager(_dbCreator.DBCon);
 
             _changeState = TrackChanged.None;
@@ -35,12 +35,16 @@ namespace TrackModel
             IBlock greenTemp = requestBlockInfo(1, "Green");
             if (redTemp != null)
             {
+                List<IBlock>[] tempBlockList=createBlockListArray(0);
+                _dbCreator.populateTCs(tempBlockList, true);
                 _changeState = TrackChanged.Red;
                 _redLoaded = true;
             }
 
             if (greenTemp != null)
             {
+                List<IBlock>[] tempBlockList = createBlockListArray(1);
+                _dbCreator.populateTCs(tempBlockList, false);
                 if (_changeState == TrackChanged.Red)
                     _changeState = TrackChanged.Both;
                 else
@@ -56,6 +60,24 @@ namespace TrackModel
             //_environment.Tick+=
         }
 
+
+        private List<IBlock>[] createBlockListArray(int lineID)
+        {
+            List<IBlock>[] blockList=new List<IBlock>[16];
+            for(int i=0;i<blockList.Length;i++)
+                blockList[i]=new List<IBlock>();
+
+                IRouteInfo temp=this.requestRouteInfo(lineID);
+                IBlock[] blockArr=temp.BlockList;
+                for (int i = 0; i < blockArr.Length; i++)
+                {
+                    if (blockArr[i].BlockID != 0)//Dont add 0 block to Track Controllers responsibility
+                    {
+                        blockList[blockArr[i].TrackCirID].Add(blockArr[i]);
+                    }
+                }
+                return blockList;
+        }
         
         /// <summary>
         /// A public method allowing other modules to request information on specific blocks.
@@ -85,6 +107,11 @@ namespace TrackModel
 
             IBlock temp = _dbManager.formatBlockQueryResults(queryReader);
             return temp;
+        }
+
+        public ITrackCircuit getCircuitByID(int id)
+        {
+            return _dbCreator.getITrackCircuitByID(id);
         }
 
         /// <summary>
