@@ -138,7 +138,7 @@ namespace Testing
                         {
                             fail++;
                             messages.Add(string.Format(
-                                "[Error] Train {0} did not stop for the broken block (no switches)", t.TrainID));
+                                "[Error] Train {0} did not stop for a broken block: Block {1} (no switches)", t.TrainID, current));
                         }
                         // The train did not stop for a broken block with no switches
                         else
