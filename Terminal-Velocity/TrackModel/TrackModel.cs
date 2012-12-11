@@ -626,85 +626,69 @@ namespace TrackModel
                 return null;
             }
 
-            //Initialize hash w/ keys="bID+line" and values=Visited(true) or NotVisited(false)
-            Hashtable visited = new Hashtable();
-
-            //Arbitrary initialization
-            for (int i = 0; i < 180; i++)
-            {
-                visited.Add(i, false);
-            }
-
-
-            //Init stack to hold startBlock
-            Stack < IBlock > path= new Stack<IBlock>();
+            //Init list to hold startBlock
+            List<IBlock> path = new List<IBlock>();
             IBlock startBlock = requestBlockInfo(startBlockID, line);
             if (startBlock == null)
             {
                 return null;
             }
-            path.Push( startBlock );
+            path.Add(startBlock);
+            Queue<List<IBlock>> pathQueue = new Queue<List<IBlock>>();
+            pathQueue.Enqueue(path);
 
-            while (path.Count != 0)
+            while (pathQueue.Count != 0)
             {
-                IBlock temp = path.Peek();
+                List<IBlock> temp= pathQueue.Dequeue();
 
                 //Find neighbors of current node
                 List<IBlock> neighborList = new List<IBlock>();
-                int nextID=temp.SwitchDest1;
-                int altNext=temp.SwitchDest2;
-                int prev=temp.PrevBlockID;
-                if (nextID != -1 && nextID!=temp.BlockID)
+                int nextID = temp[temp.Count-1].SwitchDest1;
+                int altNext = temp[temp.Count-1].SwitchDest2;
+                int prev = temp[temp.Count-1].PrevBlockID;
+                if (nextID != -1 && nextID != temp[temp.Count-1].BlockID && !temp.Contains(requestBlockInfo(nextID,line)))
                 {
-                    neighborList.Add( requestBlockInfo(nextID,line) );
+                    neighborList.Add(requestBlockInfo(nextID, line));
                 }
 
-                if(altNext!=-1 && altNext!=temp.BlockID)
+                if (altNext != -1 && altNext != temp[temp.Count-1].BlockID && !temp.Contains(requestBlockInfo(altNext,line)))
                 {
-                    neighborList.Add( requestBlockInfo(altNext,line) );
+                    neighborList.Add(requestBlockInfo(altNext, line));
                 }
 
-                if(prev!=-1 && prev!=temp.BlockID)
+                if (prev != -1 && prev != temp[temp.Count-1].BlockID && !temp.Contains(requestBlockInfo(prev,line)))
                 {
-                    neighborList.Add( requestBlockInfo(prev,line) );
+                    neighborList.Add(requestBlockInfo(prev, line));
                 }
 
 
                 //If one of the neighbors is the destination
                 //Add the dest to the path, and set the destFound flag
                 //so we can break from our loop
-                foreach(IBlock n in neighborList)
+                foreach (IBlock n in neighborList)
                 {
                     if (n.BlockID == endBlockID)
                     {
-                        path.Push(n);
+                        temp.Add(n);
+                        path = temp;
                         destFound = true;
+                        break;
                     }
                 }
                 if (destFound)
                     break;
 
                 //If(Block has at least 1 neighbor not visited yet, push neighbor to path-stack
-                bool deadEnd = true;
-                foreach(IBlock n in neighborList)
+                foreach (IBlock n in neighborList)
                 {
-                    if ((bool)visited[n.BlockID] == false)
+                    if (!temp.Contains(n))
                     {
-                        deadEnd = false;
-                        //push ONE AND ONLY ONE unvisited neighber to path-stack
-                        path.Push(n);
-                        //set this neighbor as visited in boolean hash
-                        visited[n.BlockID] = true;
-                        break;
+                        IBlock[] arrCopy=temp.ToArray();
+                        List<IBlock> copyList=new List<IBlock>(arrCopy);
+                        copyList.Add(n);
+                        pathQueue.Enqueue(copyList);
+                        
                     }
-                }
-
-                //If no neighbors found, we reached a dead end, pop top off stack
-                //top should still be 'temp' before pop, as no neighbors were pushed,
-                //and the destination wasnt found.
-                if (deadEnd == true)
-                {
-                    path.Pop();
                 }
 
             }//End while loop
@@ -717,14 +701,7 @@ namespace TrackModel
             else//If path contains elements, we have a valid path stored in our stack.
             {
                 //Copy stack to array
-                IBlock[] pathArr=path.ToArray();
-                //Change array into list
-                List<IBlock> pathList = new List<IBlock>(pathArr);
-                //Reverse list
-                pathList.Reverse();
-                //Turn list back into array
-                pathArr = pathList.ToArray();
-                //return the array
+                IBlock[] pathArr = path.ToArray();
                 return pathArr;
             }
 
