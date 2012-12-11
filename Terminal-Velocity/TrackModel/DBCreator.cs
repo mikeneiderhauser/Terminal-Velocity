@@ -245,7 +245,18 @@ namespace TrackModel
                         //Console.WriteLine(res);
                         if (_dbCon.State != ConnectionState.Closed)
                             _dbCon.Close(); //CLOSE DB
-                        //IBlock temp = new Block(bID, StateEnum, prevID, sElev, grade, locArray, blockSize, dir, atts, d1, d2, trackConIDInt, lineName, speedLimit);
+
+
+                        //Prepare values to create block
+                        char[] splitArr = new char[1];
+                        splitArr[0] = ';';
+                        string[] tempAtts = infra.Split(splitArr);
+                        int[] locArray = new int[2];
+                        locArray[0] = -1; locArray[1] = -1;
+
+                        //Create block and add to the list of blocks for temp
+                        IBlock temp = new Block(int.Parse(blockID), StateEnum.Healthy, prev, double.Parse(sElev), double.Parse(grade),locArray, double.Parse(blockSize), (DirEnum)Enum.Parse(typeof(DirEnum),dirString), tempAtts, d1, d2, trackConID, lineName, int.Parse(speedLimit));
+                        trackConBlockLists[trackConID].Add(temp);
 
                         if (res != 1)
                         {
