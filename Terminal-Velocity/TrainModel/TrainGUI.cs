@@ -18,6 +18,8 @@ namespace TrainModel
         private Train _selectedTrain;
         private int _timer;
 
+        private bool _dropDownOpen;
+
         #endregion
 
         #region Constructors
@@ -29,6 +31,8 @@ namespace TrainModel
         public TrainGUI(ISimulationEnvironment environment)
         {
             InitializeComponent();
+
+            _dropDownOpen = false;
 
             allTrainComboBox.SelectedIndexChanged += allTrainComboBox_SelectedIndexChanged;
             _allTrains = environment.AllTrains;
@@ -75,7 +79,11 @@ namespace TrainModel
             if (_timer % _GUIUpdate == 0)
             {
                 _timer = 0;
-                UpdateGUI();
+
+                if (!_dropDownOpen)
+                {
+                    UpdateGUI();
+                }
             }
         }
 
@@ -265,6 +273,26 @@ namespace TrainModel
                 _selectedTrain.EmergencyBrake();
                 UpdateGUI();
             }
+        }
+
+        /// <summary>
+        ///     Sets the drop down flag to true to prevent GUI updating.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void allTrainComboBox_DropDown(object sender, EventArgs e)
+        {
+            _dropDownOpen = true;
+        }
+
+        /// <summary>
+        ///     Sets the drop down flag to false to allow GUI updating.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        private void allTrainComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            _dropDownOpen = false;
         }
 
         #endregion
