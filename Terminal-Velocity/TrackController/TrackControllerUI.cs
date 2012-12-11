@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 using Interfaces;
 using Utility;
 
@@ -9,7 +10,6 @@ namespace TrackController
     public partial class TrackControllerUi : UserControl
     {
         private List<IBlock> _blocks;
-        private Dictionary<int, List<IBlock>> _routes; 
         private List<ITrainModel> _trains;
         private TrackController _current;
 
@@ -18,11 +18,10 @@ namespace TrackController
             _current = (TrackController) primary;
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
-            _routes = Tc.Routes;
 
             InitializeComponent();
 
-            e.Tick += e_Tick;
+            e.Tick += ETick;
         }
 
         private TrackController Tc
@@ -31,26 +30,20 @@ namespace TrackController
             set { _current = value; }
         }
 
-        public override void Refresh()
+        public void Draw()
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(Refresh));
+                BeginInvoke(new Action(Draw));
                 return;
             }
 
-            foreach (string s in _current.Messages)
+            foreach (var s in _current.Messages)
                 messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
             _current.Messages = new List<string>();
 
-
-            _trains = Tc.Trains;
-            _blocks = Tc.Blocks;
-            _routes = Tc.Routes;
-
             trainGrid.Rows.Clear();
             blockGrid.Rows.Clear();
-            switchGrid.Rows.Clear();
 
             tcListBoxInfo.Items.Clear();
 
@@ -67,12 +60,12 @@ namespace TrackController
             }
 
             {
-                // Setup the BlockGrid and SwitchGrid
+                // Setup the BlockGrid
                 for (int i = 0; i < _blocks.Count; i++)
                 {
                     blockGrid.Rows.Add();
                     blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(),
-                                                Enum.GetName(typeof (StateEnum), _blocks[i].State));
+                                                Enum.GetName(typeof (StateEnum), _blocks[i].hasSwitch()));
                 }
             }
 
@@ -82,41 +75,47 @@ namespace TrackController
                 tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
                 tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
             }
-
-            base.Refresh();
         }
 
-        private void nextButton_Click(object sender, EventArgs e)
+        private void NextButtonClick(object sender, EventArgs e)
         {
             if (Tc.Next == null)
                 MessageBox.Show("No next Track Controller!");
             else
             {
                 Tc = (TrackController) Tc.Next;
-                Refresh();
+                Draw();
             }
         }
 
-        private void prevButton_Click(object sender, EventArgs e)
+        private void PrevButtonClick(object sender, EventArgs e)
         {
             if (Tc.Previous == null)
                 MessageBox.Show("No prior Track Controller!");
             else
             {
                 Tc = (TrackController) Tc.Previous;
-                Refresh();
+                Draw();
             }
         }
 
-        private void e_Tick(object sender, TickEventArgs e)
+        private void ETick(object sender, TickEventArgs e)
         {
-            Refresh();
-        }
+            var newTrains = Tc.Trains;
+            var newBlocks = Tc.Blocks;
 
-        private void loadButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.ShowDialog();
+            var differentTrains =
+                newTrains.Where(x => _trains.All(x1 => x1.TrainID != x.TrainID)).Union(
+                    _trains.Where(x => newTrains.All(x1 => x1.TrainID != x.TrainID)));
+
+            var differentBlocks = newBlocks.Where(x => _blocks.All(x1 => x1.State != x.State))
+                .Union(_blocks.Where(x => newBlocks.All(x1 => x1.State != x.State)));
+
+            _trains = Tc.Trains;
+            _blocks = Tc.Blocks;
+
+            if (differentTrains.Any() || differentBlocks.Any())
+                Draw();
         }
     }
 }
