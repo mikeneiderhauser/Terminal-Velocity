@@ -164,9 +164,12 @@ namespace CTCOffice
                 //for each item in the 2nd dimension (col)
                 for (int j = 0; j <= _layout.GetUpperBound(1); j++)
                 {
-                    if (block.BlockID == _layout[i, j].Block.BlockID)
+                    if (_layout[i, j].Block != null)
                     {
-                        return _layout[i, j];
+                        if (block.BlockID == _layout[i, j].Block.BlockID)
+                        {
+                            return _layout[i, j];
+                        }
                     }
                 }
             }

@@ -530,7 +530,7 @@
             this._groupGlobalTimeControls.Size = new System.Drawing.Size(260, 77);
             this._groupGlobalTimeControls.TabIndex = 2;
             this._groupGlobalTimeControls.TabStop = false;
-            this._groupGlobalTimeControls.Text = "Track Model";
+            this._groupGlobalTimeControls.Text = "Environment";
             // 
             // _btnGlobalTime10WallSpeed
             // 

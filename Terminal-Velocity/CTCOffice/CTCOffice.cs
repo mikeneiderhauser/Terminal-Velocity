@@ -169,6 +169,9 @@ namespace CTCOffice
                 c.Tile = _redLineData.GetBlockType(b);
                 if (c.Panel != null)
                 {
+                    string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                    _messages.Add(msg);
+                    _env.sendLogEntry(msg);
                     c.Panel.ReDrawMe();
                 }
             }
@@ -189,6 +192,9 @@ namespace CTCOffice
                 c.Tile = _redLineData.GetBlockType(b);
                 if (c.Panel != null)
                 {
+                    string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                    _messages.Add(msg);
+                    _env.sendLogEntry(msg);
                     c.Panel.ReDrawMe();
                 }
             }
@@ -379,6 +385,9 @@ namespace CTCOffice
                     
                     if (c.Panel != null)
                     {
+                        string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
+                        _messages.Add(msg);
+                        _env.sendLogEntry(msg);
                         c.Panel.ReDrawMe();
                     }
 
@@ -390,6 +399,9 @@ namespace CTCOffice
                     c.Train = tb.Train;
                     if (c.Panel != null)
                     {
+                        string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
+                        _messages.Add(msg);
+                        _env.sendLogEntry(msg);
                         c.Panel.ReDrawMe();
                     }
                 }//end if
