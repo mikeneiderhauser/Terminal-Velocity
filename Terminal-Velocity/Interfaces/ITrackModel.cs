@@ -40,16 +40,6 @@ namespace Interfaces
 
 
         /// <summary>
-        /// A method used to get an array of blocks from 1 point to another specified point
-        /// </summary>
-        /// <param name="startBlockID">The block ID of the starting point</param>
-        /// <param name="endBlockID">The block ID of the ending point</param>
-        /// <param name="line">The line the blocks reside on: either "Red" or "Green"</param>
-        /// <returns></returns>
-        IBlock[] requestPath(int startBlockID, int endBlockID, string line);
-
-
-        /// <summary>
         /// Generally useful for displaying the track visually.
         /// </summary>
         /// <param name="routeID">Route ID refers to the unique identifier for the track line.  0 corresponds to Red, 
