@@ -30,10 +30,34 @@ namespace SimulationEnvironment
             _timer.Elapsed += _timer_Elapsed;
 
             _allTrains = new List<ITrainModel>();
-            _sysLog = new SystemLog(this);
+            _sysLog = new SystemLog();
         }
 
         #endregion
+
+        /// <summary>
+        /// Allows explicitly starting the Tick event
+        /// Thhis is only available in debug builds and is suitable for testing
+        /// </summary>
+        public void Start()
+        {
+            #if (DEBUG)
+            if (!_timer.Enabled)
+                _timer.Start();
+            #endif
+        }
+
+        /// <summary>
+        /// Allows explicitly stopping the Tick event
+        /// This is only available in debug builds and is suitable for testing
+        /// </summary>
+        public void Stop()
+        {
+            #if (DEBUG)
+            if (_timer.Enabled)
+                _timer.Stop();
+            #endif
+        }
 
         #region Public Property
 
@@ -116,31 +140,30 @@ namespace SimulationEnvironment
             return (long) _timer.Interval;
         }
 
-        public void stopTick()
+        public void stopTick(object sender)
         {
-            try
+            if (sender == _CTCOffice)
             {
                 _timer.Stop();
                 sendLogEntry("Environment: Envoked Timer Stop");
             }
-            catch (Exception ex)
+            else
             {
-
+                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
             }
         }
 
-        public void startTick()
+        public void startTick(object sender)
         {
-            try
+            if (sender == CTCOffice)
             {
                 _timer.Start();
                 sendLogEntry("Environment: Envoked Timer Start");
             }
-            catch (Exception ex)
+            else
             {
-
+                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
             }
-
         }
 
         public void Dispatch(IRequest request)

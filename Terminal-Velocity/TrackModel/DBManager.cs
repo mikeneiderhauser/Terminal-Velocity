@@ -178,7 +178,7 @@ namespace TrackModel
             {
                 //Create switch update string
                 string updateString = "UPDATE BLOCKS " +
-                                      "SET dest1=" + bToUpdate.SwitchDest2 + ", dest2=" + bToUpdate.SwitchDest1 +
+                                      "SET dest1=" + bToUpdate.SwitchDest1 + ", dest2=" + bToUpdate.SwitchDest2 +
                                       " WHERE blockID=" + bID + " AND line='" + line + "'";
                 return updateString;
             }
