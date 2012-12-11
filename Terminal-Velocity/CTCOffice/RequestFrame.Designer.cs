@@ -47,10 +47,6 @@
             this._groupBoxRequest = new System.Windows.Forms.GroupBox();
             this._txtPrimaryTrackController = new System.Windows.Forms.TextBox();
             this._lblPTC = new System.Windows.Forms.Label();
-            this._lblCount = new System.Windows.Forms.Label();
-            this._btnPrev = new System.Windows.Forms.Button();
-            this._btnNext = new System.Windows.Forms.Button();
-            this._btnToFile = new System.Windows.Forms.Button();
             this._groupBoxRequest.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -184,10 +180,6 @@
             // 
             // _groupBoxRequest
             // 
-            this._groupBoxRequest.Controls.Add(this._btnToFile);
-            this._groupBoxRequest.Controls.Add(this._btnNext);
-            this._groupBoxRequest.Controls.Add(this._btnPrev);
-            this._groupBoxRequest.Controls.Add(this._lblCount);
             this._groupBoxRequest.Controls.Add(this._txtPrimaryTrackController);
             this._groupBoxRequest.Controls.Add(this._lblPTC);
             this._groupBoxRequest.Controls.Add(this._lblRequestType);
@@ -229,44 +221,6 @@
             this._lblPTC.TabIndex = 16;
             this._lblPTC.Text = "Primary Track Controller:";
             // 
-            // _lblCount
-            // 
-            this._lblCount.AutoSize = true;
-            this._lblCount.Location = new System.Drawing.Point(55, 250);
-            this._lblCount.Name = "_lblCount";
-            this._lblCount.Size = new System.Drawing.Size(13, 13);
-            this._lblCount.TabIndex = 18;
-            this._lblCount.Text = "0";
-            // 
-            // _btnPrev
-            // 
-            this._btnPrev.Location = new System.Drawing.Point(10, 245);
-            this._btnPrev.Name = "_btnPrev";
-            this._btnPrev.Size = new System.Drawing.Size(43, 23);
-            this._btnPrev.TabIndex = 19;
-            this._btnPrev.Text = "<--";
-            this._btnPrev.UseVisualStyleBackColor = true;
-            this._btnPrev.Click += new System.EventHandler(this._btnPrev_Click);
-            // 
-            // _btnNext
-            // 
-            this._btnNext.Location = new System.Drawing.Point(86, 245);
-            this._btnNext.Name = "_btnNext";
-            this._btnNext.Size = new System.Drawing.Size(43, 23);
-            this._btnNext.TabIndex = 20;
-            this._btnNext.Text = "-->";
-            this._btnNext.UseVisualStyleBackColor = true;
-            this._btnNext.Click += new System.EventHandler(this._btnNext_Click);
-            // 
-            // _btnToFile
-            // 
-            this._btnToFile.Location = new System.Drawing.Point(137, 245);
-            this._btnToFile.Name = "_btnToFile";
-            this._btnToFile.Size = new System.Drawing.Size(75, 23);
-            this._btnToFile.TabIndex = 21;
-            this._btnToFile.Text = "To File";
-            this._btnToFile.UseVisualStyleBackColor = true;
-            // 
             // RequestFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,9 +255,5 @@
         private System.Windows.Forms.GroupBox _groupBoxRequest;
         private System.Windows.Forms.TextBox _txtPrimaryTrackController;
         private System.Windows.Forms.Label _lblPTC;
-        private System.Windows.Forms.Button _btnNext;
-        private System.Windows.Forms.Button _btnPrev;
-        private System.Windows.Forms.Label _lblCount;
-        private System.Windows.Forms.Button _btnToFile;
     }
 }

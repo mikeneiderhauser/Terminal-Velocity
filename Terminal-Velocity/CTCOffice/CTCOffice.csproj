@@ -65,8 +65,18 @@
     <Compile Include="CTCOfficeGUI.Designer.cs">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyInfo.Designer.cs">
+      <DependentUpon>KeyInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
+    <Compile Include="MyPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyPictureBoxEventArgs.cs" />
     <Compile Include="OfficeGUITest.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +95,7 @@
     <Compile Include="RequestFrame.Designer.cs">
       <DependentUpon>RequestFrame.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResourceWrapper.cs" />
     <Compile Include="RoutingTool.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -101,16 +112,25 @@
     </Compile>
     <Compile Include="SpeedToolEventArgs.cs" />
     <Compile Include="TestingBlock.cs" />
-    <Compile Include="TestingSystemScheduler.cs" />
+    <Compile Include="TestingControls.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestingControls.Designer.cs">
+      <DependentUpon>TestingControls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestingRouteInfo.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />
-    <Compile Include="TestingTrainController.cs" />
-    <Compile Include="TestingTrainModel.cs" />
+    <Compile Include="TileContainerStats.cs" />
+    <Compile Include="TrainAndBlock.cs" />
     <EmbeddedResource Include="AuthorityTool.resx">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CTCOfficeGUI.resx">
       <DependentUpon>CTCOfficeGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyInfo.resx">
+      <DependentUpon>KeyInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OfficeGUITest.resx">
       <DependentUpon>OfficeGUITest.cs</DependentUpon>
@@ -133,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SpeedTool.resx">
       <DependentUpon>SpeedTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestingControls.resx">
+      <DependentUpon>TestingControls.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

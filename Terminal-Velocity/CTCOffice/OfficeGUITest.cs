@@ -4,7 +4,7 @@ namespace CTCOffice
 {
     public partial class OfficeGUITest : UserControl
     {
-        public OfficeGUITest(CTCOfficeGUI ctc, RequestFrame red, RequestFrame green)
+        public OfficeGUITest(CTCOfficeGUI ctc, RequestFrame red, RequestFrame green, TestingControls tc)
         {
             InitializeComponent();
             _panelCTC.Controls.Clear();
@@ -15,6 +15,9 @@ namespace CTCOffice
 
             _panelRequestGreen.Controls.Clear();
             _panelRequestGreen.Controls.Add(green);
+
+            _panelTestingControls.Controls.Clear();
+            _panelTestingControls.Controls.Add(tc);
         }
     }
 }

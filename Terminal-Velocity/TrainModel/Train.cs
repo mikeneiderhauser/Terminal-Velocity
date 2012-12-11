@@ -201,24 +201,10 @@ namespace TrainModel
             return "Train " + _trainID;
         }
 
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        ///     Occurs on every tick.
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Tick event args</param>
-        private void _environment_Tick(object sender, TickEventArgs e)
-        {
-            updateMovement();
-        }
-
         /// <summary>
         ///     Updates the movement of the train. Accounts for slope and changes the block if necessary.
         /// </summary>
-        private void updateMovement()
+        public void updateMovement()
         {
             _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
 
@@ -362,6 +348,20 @@ namespace TrainModel
             {
                 _trackCircuitID = _currentBlock.TrackCirID;
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        ///     Occurs on every tick.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Tick event args</param>
+        private void _environment_Tick(object sender, TickEventArgs e)
+        {
+            updateMovement();
         }
 
         /// <summary>
@@ -511,8 +511,14 @@ namespace TrainModel
                 int oldNumPassengers = _numPassengers;
                 _numPassengers = value;
                 int difference = _numPassengers - oldNumPassengers;
+                int totalPassengers = _numPassengers + _numCrew;
 
-                if (_numPassengers >= 0)
+                if (totalPassengers > _maxCapacity) // too many people
+                {
+                    _numPassengers = oldNumPassengers;
+                    appendInformationLog("ERROR: Tried to add " + (totalPassengers - _maxCapacity) + " more people than allowed.");
+                }
+                else if (_numPassengers >= 0) // positive number
                 {
                     if (difference < 0) // people get off train
                     {
@@ -545,8 +551,14 @@ namespace TrainModel
                 int oldNumCrew = _numCrew;
                 _numCrew = value;
                 int difference = _numCrew - oldNumCrew;
+                int totalPassengers = _numPassengers + _numCrew;
 
-                if (_numCrew >= 0)
+                if (totalPassengers > _maxCapacity) // too many people
+                {
+                    _numCrew = oldNumCrew;
+                    appendInformationLog("ERROR: Tried to add " + (totalPassengers - _maxCapacity) + " more people than allowed.");
+                }
+                else if (_numCrew >= 0) // positive number
                 {
                     if (difference < 0) // crew get off train
                     {
@@ -580,7 +592,7 @@ namespace TrainModel
 
                 if (_brakeFailure)
                 {
-                    appendInformationLog("WARNING: EXPERIENCING BRAKE FAILURE.");
+                    appendInformationLog("CRITICAL: EXPERIENCING BRAKE FAILURE.");
                 }
             }
         }
@@ -597,7 +609,7 @@ namespace TrainModel
 
                 if (_engineFailure)
                 {
-                    appendInformationLog("WARNING: EXPERIENCING ENGINE FAILURE.");
+                    appendInformationLog("CRITICAL: EXPERIENCING ENGINE FAILURE.");
                 }
             }
         }
@@ -614,7 +626,7 @@ namespace TrainModel
 
                 if (_signalPickupFailure)
                 {
-                    appendInformationLog("WARNING: EXPERIENCING SIGNAL PICKUP FAILURE.");
+                    appendInformationLog("CRITICAL: EXPERIENCING SIGNAL PICKUP FAILURE.");
                 }
             }
         }
@@ -644,7 +656,7 @@ namespace TrainModel
 
                 if (_emergencyBrakePulled)
                 {
-                    appendInformationLog("WARNING: Emergency brake pulled.");
+                    appendInformationLog("Emergency brake pulled.");
                 }
                 else
                 {

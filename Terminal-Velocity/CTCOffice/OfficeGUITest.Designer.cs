@@ -31,6 +31,7 @@
             this._panelCTC = new System.Windows.Forms.Panel();
             this._panelRequestGreen = new System.Windows.Forms.Panel();
             this._panelRequestRed = new System.Windows.Forms.Panel();
+            this._panelTestingControls = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // _panelCTC
@@ -54,15 +55,23 @@
             this._panelRequestRed.Size = new System.Drawing.Size(223, 281);
             this._panelRequestRed.TabIndex = 2;
             // 
+            // _panelTestingControls
+            // 
+            this._panelTestingControls.Location = new System.Drawing.Point(1281, 577);
+            this._panelTestingControls.Name = "_panelTestingControls";
+            this._panelTestingControls.Size = new System.Drawing.Size(200, 200);
+            this._panelTestingControls.TabIndex = 3;
+            // 
             // OfficeGUITest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._panelTestingControls);
             this.Controls.Add(this._panelRequestRed);
             this.Controls.Add(this._panelRequestGreen);
             this.Controls.Add(this._panelCTC);
             this.Name = "OfficeGUITest";
-            this.Size = new System.Drawing.Size(1525, 780);
+            this.Size = new System.Drawing.Size(1525, 813);
             this.ResumeLayout(false);
 
         }
@@ -72,5 +81,6 @@
         private System.Windows.Forms.Panel _panelCTC;
         private System.Windows.Forms.Panel _panelRequestGreen;
         private System.Windows.Forms.Panel _panelRequestRed;
+        private System.Windows.Forms.Panel _panelTestingControls;
     }
 }

@@ -85,7 +85,9 @@
             this.allTrainComboBox.Name = "allTrainComboBox";
             this.allTrainComboBox.Size = new System.Drawing.Size(121, 21);
             this.allTrainComboBox.TabIndex = 1;
+            this.allTrainComboBox.DropDown += new System.EventHandler(this.allTrainComboBox_DropDown);
             this.allTrainComboBox.SelectedIndexChanged += new System.EventHandler(this.allTrainComboBox_SelectedIndexChanged);
+            this.allTrainComboBox.DropDownClosed += new System.EventHandler(this.allTrainComboBox_DropDownClosed);
             // 
             // tableLayoutPanel1
             // 

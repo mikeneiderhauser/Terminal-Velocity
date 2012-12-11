@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
+
+using Interfaces;
 
 namespace SimulationEnvironment
 {
@@ -17,6 +20,10 @@ namespace SimulationEnvironment
         /// </summary>
         private StreamWriter log;
 
+        private Queue _messages;
+
+        private ISimulationEnvironment _env;
+
         #endregion
 
         #region Constructor
@@ -24,9 +31,23 @@ namespace SimulationEnvironment
         /// <summary>
         ///     Default Constructor
         /// </summary>
-        public SystemLog()
+        public SystemLog(ISimulationEnvironment e)
         {
             _currentLogFile = "Terminal_Velocity.log";
+            _env = e;
+            _env.Tick += new EventHandler<Utility.TickEventArgs>(_env_Tick);
+            _messages = new Queue();
+        }
+
+        void _env_Tick(object sender, Utility.TickEventArgs e)
+        {
+            if (_messages.Count > 0)
+            {
+                if (_messages.Peek() != null)
+                {
+                    appendSystemLog(_messages.Dequeue().ToString());
+                }
+            }
         }
 
         #endregion
@@ -39,16 +60,17 @@ namespace SimulationEnvironment
         /// <param name="msg">original message to be written</param>
         public void writeLog(string msg)
         {
-            appendSystemLog(DateTime.Now + " --> " + msg);
+            _messages.Enqueue(DateTime.Now + " --> " + msg);
+            //appendSystemLog(DateTime.Now + " --> " + msg);
         }
 
         /// <summary>
         ///     Writes to log file
         /// </summary>
         /// <param name="msg">exact message to write to the log file</param>
-        public void appendSystemLog(string msg)
+        private void appendSystemLog(string msg)
         {
-            return;
+            //return;
             if (!File.Exists(_currentLogFile))
             {
                 log = new StreamWriter(_currentLogFile);
