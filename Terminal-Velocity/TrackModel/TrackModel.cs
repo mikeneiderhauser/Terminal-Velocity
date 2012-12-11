@@ -651,12 +651,12 @@ namespace TrackModel
                     neighborList.Add(requestBlockInfo(nextID, line));
                 }
 
-                if (altNext != -1 && altNext != temp[temp.Count-1].BlockID && !temp.Contains(requestBlockInfo(altNext,line)))
+                if (altNext != -1 && altNext != temp[temp.Count - 1].BlockID && !temp.Contains(requestBlockInfo(altNext, line)))
                 {
                     neighborList.Add(requestBlockInfo(altNext, line));
                 }
 
-                if (prev != -1 && prev != temp[temp.Count-1].BlockID && !temp.Contains(requestBlockInfo(prev,line)))
+                if (prev != -1 && prev != temp[temp.Count - 1].BlockID && !temp.Contains(requestBlockInfo(prev, line)))
                 {
                     neighborList.Add(requestBlockInfo(prev, line));
                 }
