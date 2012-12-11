@@ -106,12 +106,6 @@ namespace CTCOffice
             return null;
         }
 
-        public IBlock[] requestPath(int startBlock, int endBlock, string line)
-        {
-
-            return null;
-        }
-
         public IBlock[,] requestTrackGrid(int routeID)
         {
             if (routeID == 0)
