@@ -36,8 +36,8 @@ namespace TrackController
         public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
         {
             // Update the trackModel
-            foreach (var b in blocks)
-                _env.TrackModel.requestUpdateBlock(b);
+            //foreach (var b in blocks)
+            //    _env.TrackModel.requestUpdateBlock(b);
 
             // Collection of broken blocks
             _broken = blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure)).ToList();

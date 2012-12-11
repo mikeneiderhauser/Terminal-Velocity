@@ -11,17 +11,24 @@ namespace TrackController
     {
         private List<IBlock> _blocks;
         private List<ITrainModel> _trains;
+        private Dictionary<int, List<IBlock>> _routes; 
         private TrackController _current;
+
+        private long _tickCount;
 
         public TrackControllerUi(ISimulationEnvironment e, ITrackController primary)
         {
             _current = (TrackController) primary;
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
+            _routes = Tc.Routes;
 
             InitializeComponent();
 
+            _tickCount = 0;
             e.Tick += ETick;
+
+            Draw();
         }
 
         private TrackController Tc
@@ -51,9 +58,14 @@ namespace TrackController
                 // Setup the TrainGrid
                 for (int i = 0; i < _trains.Count; i++)
                 {
+                    var r = string.Empty;
+                    List<IBlock> route;
+                    if (_routes.TryGetValue(i, out route))
+                        r = string.Join(", ", from item in route select item.BlockID);
+
                     trainGrid.Rows.Add();
                     trainGrid.Rows[i].SetValues(_trains[i].TrainID,
-                                                "RouteID",
+                                                r,
                                                 _trains[i].TrainController.AuthorityLimit,
                                                 _trains[i].CurrentVelocity);
                 }
@@ -65,7 +77,7 @@ namespace TrackController
                 {
                     blockGrid.Rows.Add();
                     blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(),
-                                                Enum.GetName(typeof (StateEnum), _blocks[i].hasSwitch()));
+                                                Enum.GetName(typeof (StateEnum), _blocks[i].SwitchDest1));
                 }
             }
 
@@ -75,6 +87,10 @@ namespace TrackController
                 tcListBoxInfo.Items.Add(string.Format("Blocks: {0}", _blocks.Count));
                 tcListBoxInfo.Items.Add(string.Format("Trains: {0}", _trains.Count));
             }
+
+            trainGrid.ClearSelection();
+            blockGrid.ClearSelection();
+            tcListBoxInfo.ClearSelected();
         }
 
         private void NextButtonClick(object sender, EventArgs e)
@@ -101,21 +117,40 @@ namespace TrackController
 
         private void ETick(object sender, TickEventArgs e)
         {
+            _routes = Tc.Routes;
+
             var newTrains = Tc.Trains;
             var newBlocks = Tc.Blocks;
 
-            var differentTrains =
-                newTrains.Where(x => _trains.All(x1 => x1.TrainID != x.TrainID)).Union(
-                    _trains.Where(x => newTrains.All(x1 => x1.TrainID != x.TrainID)));
-
-            var differentBlocks = newBlocks.Where(x => _blocks.All(x1 => x1.State != x.State))
-                .Union(_blocks.Where(x => newBlocks.All(x1 => x1.State != x.State)));
-
-            _trains = Tc.Trains;
-            _blocks = Tc.Blocks;
-
-            if (differentTrains.Any() || differentBlocks.Any())
+            if (newTrains.Count != _trains.Count)
+            {
+                _trains = Tc.Trains;
+                _blocks = Tc.Blocks;
                 Draw();
+            }
+
+            for (var i = 0; i < _trains.Count; i++)
+            {
+                if (_trains[i].TrainID != newTrains[i].TrainID)
+                {
+                    _trains = Tc.Trains;
+                    _blocks = Tc.Blocks;
+                    Draw();
+                }
+            }
+
+            for (var i = 0; i < _blocks.Count; i++)
+            {
+                if (_blocks[i].State != newBlocks[i].State)
+                {
+                    _trains = Tc.Trains;
+                    _blocks = Tc.Blocks;
+                    Draw();
+                }
+            }
+
+            if (_tickCount % 4 == 0) Draw();
+            _tickCount++;
         }
     }
 }
