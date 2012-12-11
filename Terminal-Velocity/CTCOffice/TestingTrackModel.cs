@@ -93,12 +93,12 @@ namespace CTCOffice
 
         public IBlock[] requestPath(int startBlock, int endBlock, string line)
         {
-            if (line.CompareTo("Red") != 0)
+            if (line.CompareTo("Red") == 0)
             {
                 return _redPath;
             }
 
-            if (line.CompareTo("Green") != 0)
+            if (line.CompareTo("Green") == 0)
             {
                 return _greenPath;
             }

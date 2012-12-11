@@ -44,6 +44,7 @@
             this.groupSystemNotifications = new System.Windows.Forms.GroupBox();
             this.listSystemNotifications = new System.Windows.Forms.ListBox();
             this._groupRunningStatus = new System.Windows.Forms.GroupBox();
+            this._systemSchedulerIndicator = new System.Windows.Forms.PictureBox();
             this._popupIndicatorCTC = new System.Windows.Forms.PictureBox();
             this._imgSysStatusSystemScheduler = new System.Windows.Forms.PictureBox();
             this._lblSystemSchedulerStatusHead = new System.Windows.Forms.Label();
@@ -82,13 +83,13 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
-            this._systemSchedulerIndicator = new System.Windows.Forms.PictureBox();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
             this._groupSystemStatus.SuspendLayout();
             this.groupSystemNotifications.SuspendLayout();
             this._groupRunningStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._systemSchedulerIndicator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._popupIndicatorCTC)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).BeginInit();
@@ -104,7 +105,6 @@
             this._tabGreenLine.SuspendLayout();
             this._tabTeamLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._systemSchedulerIndicator)).BeginInit();
             this.SuspendLayout();
             // 
             // _groupLoginLogout
@@ -283,6 +283,15 @@
             this._groupRunningStatus.TabIndex = 5;
             this._groupRunningStatus.TabStop = false;
             this._groupRunningStatus.Text = "System Module Status";
+            // 
+            // _systemSchedulerIndicator
+            // 
+            this._systemSchedulerIndicator.InitialImage = null;
+            this._systemSchedulerIndicator.Location = new System.Drawing.Point(129, 127);
+            this._systemSchedulerIndicator.Name = "_systemSchedulerIndicator";
+            this._systemSchedulerIndicator.Size = new System.Drawing.Size(16, 16);
+            this._systemSchedulerIndicator.TabIndex = 15;
+            this._systemSchedulerIndicator.TabStop = false;
             // 
             // _popupIndicatorCTC
             // 
@@ -609,6 +618,7 @@
             // 
             // _panelRedLine
             // 
+            this._panelRedLine.AutoScroll = true;
             this._panelRedLine.Location = new System.Drawing.Point(0, 0);
             this._panelRedLine.Name = "_panelRedLine";
             this._panelRedLine.Size = new System.Drawing.Size(979, 760);
@@ -627,6 +637,7 @@
             // 
             // _panelGreenLine
             // 
+            this._panelGreenLine.AutoScroll = true;
             this._panelGreenLine.Location = new System.Drawing.Point(0, 0);
             this._panelGreenLine.Name = "_panelGreenLine";
             this._panelGreenLine.Size = new System.Drawing.Size(979, 760);
@@ -653,15 +664,6 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
-            // _systemSchedulerIndicator
-            // 
-            this._systemSchedulerIndicator.InitialImage = null;
-            this._systemSchedulerIndicator.Location = new System.Drawing.Point(129, 127);
-            this._systemSchedulerIndicator.Name = "_systemSchedulerIndicator";
-            this._systemSchedulerIndicator.Size = new System.Drawing.Size(16, 16);
-            this._systemSchedulerIndicator.TabIndex = 15;
-            this._systemSchedulerIndicator.TabStop = false;
-            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -680,6 +682,7 @@
             this.groupSystemNotifications.ResumeLayout(false);
             this._groupRunningStatus.ResumeLayout(false);
             this._groupRunningStatus.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._systemSchedulerIndicator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._popupIndicatorCTC)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusSystemScheduler)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._imgSysStatusTrackControllerGreen)).EndInit();
@@ -698,7 +701,6 @@
             this._tabGreenLine.ResumeLayout(false);
             this._tabTeamLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._imageTeamLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._systemSchedulerIndicator)).EndInit();
             this.ResumeLayout(false);
 
         }

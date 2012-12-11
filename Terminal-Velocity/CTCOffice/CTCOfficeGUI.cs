@@ -1092,7 +1092,7 @@ namespace CTCOffice
 
             if (_authorityTool != null)
             {
-                _speedTool.ParentForm.Close();
+                _authorityTool.ParentForm.Close();
             }
         }
 
