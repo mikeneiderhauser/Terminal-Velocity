@@ -49,6 +49,8 @@ namespace CTCOffice
             _greenLineLayout[0, 3] = g3;
         }
 
+        public event EventHandler<EventArgs> TrackChangedEvent;
+
         public IRouteInfo requestRouteInfo(int routeID)
         {
             throw new NotImplementedException();
