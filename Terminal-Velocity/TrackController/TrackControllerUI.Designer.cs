@@ -32,20 +32,20 @@
             this.tcComboBox = new System.Windows.Forms.ComboBox();
             this.trainInformation = new System.Windows.Forms.GroupBox();
             this.blockGrid = new System.Windows.Forms.DataGridView();
+            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SwitchDest = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainGrid = new System.Windows.Forms.DataGridView();
-            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RouteID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcListBoxInfo = new System.Windows.Forms.ListBox();
             this.nextButton = new System.Windows.Forms.Button();
             this.prevButton = new System.Windows.Forms.Button();
             this.messageTextBox = new System.Windows.Forms.RichTextBox();
             this.tcCountBox = new System.Windows.Forms.TextBox();
             this.selectTCLabel = new System.Windows.Forms.Label();
-            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SwitchDest = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RouteBlocks = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trainGrid)).BeginInit();
@@ -96,13 +96,31 @@
             this.blockGrid.Size = new System.Drawing.Size(453, 150);
             this.blockGrid.TabIndex = 11;
             // 
+            // StateBlockID
+            // 
+            this.StateBlockID.HeaderText = "Block ID";
+            this.StateBlockID.Name = "StateBlockID";
+            this.StateBlockID.ReadOnly = true;
+            // 
+            // State
+            // 
+            this.State.HeaderText = "State";
+            this.State.Name = "State";
+            this.State.ReadOnly = true;
+            // 
+            // SwitchDest
+            // 
+            this.SwitchDest.HeaderText = "Switch Destination";
+            this.SwitchDest.Name = "SwitchDest";
+            this.SwitchDest.ReadOnly = true;
+            // 
             // trainGrid
             // 
             this.trainGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.trainGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.trainGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TrainID,
-            this.RouteID,
+            this.RouteBlocks,
             this.Authority,
             this.Speed});
             this.trainGrid.Location = new System.Drawing.Point(6, 292);
@@ -111,30 +129,6 @@
             this.trainGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.trainGrid.Size = new System.Drawing.Size(453, 139);
             this.trainGrid.TabIndex = 10;
-            // 
-            // TrainID
-            // 
-            this.TrainID.HeaderText = "Train ID";
-            this.TrainID.Name = "TrainID";
-            this.TrainID.ReadOnly = true;
-            // 
-            // RouteID
-            // 
-            this.RouteID.HeaderText = "Route ID";
-            this.RouteID.Name = "RouteID";
-            this.RouteID.ReadOnly = true;
-            // 
-            // Authority
-            // 
-            this.Authority.HeaderText = "Authority";
-            this.Authority.Name = "Authority";
-            this.Authority.ReadOnly = true;
-            // 
-            // Speed
-            // 
-            this.Speed.HeaderText = "Speed";
-            this.Speed.Name = "Speed";
-            this.Speed.ReadOnly = true;
             // 
             // tcListBoxInfo
             // 
@@ -190,23 +184,29 @@
             this.selectTCLabel.TabIndex = 6;
             this.selectTCLabel.Text = "Select Track Controller";
             // 
-            // StateBlockID
+            // TrainID
             // 
-            this.StateBlockID.HeaderText = "Block ID";
-            this.StateBlockID.Name = "StateBlockID";
-            this.StateBlockID.ReadOnly = true;
+            this.TrainID.HeaderText = "Train ID";
+            this.TrainID.Name = "TrainID";
+            this.TrainID.ReadOnly = true;
             // 
-            // State
+            // RouteBlocks
             // 
-            this.State.HeaderText = "State";
-            this.State.Name = "State";
-            this.State.ReadOnly = true;
+            this.RouteBlocks.HeaderText = "Route Blocks";
+            this.RouteBlocks.Name = "RouteBlocks";
+            this.RouteBlocks.ReadOnly = true;
             // 
-            // SwitchDest
+            // Authority
             // 
-            this.SwitchDest.HeaderText = "Switch Destination";
-            this.SwitchDest.Name = "SwitchDest";
-            this.SwitchDest.ReadOnly = true;
+            this.Authority.HeaderText = "Authority";
+            this.Authority.Name = "Authority";
+            this.Authority.ReadOnly = true;
+            // 
+            // Speed
+            // 
+            this.Speed.HeaderText = "Speed";
+            this.Speed.Name = "Speed";
+            this.Speed.ReadOnly = true;
             // 
             // TrackControllerUi
             // 
@@ -241,12 +241,12 @@
         private System.Windows.Forms.RichTextBox messageTextBox;
         private System.Windows.Forms.TextBox tcCountBox;
         private System.Windows.Forms.Label selectTCLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TrainID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RouteID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Authority;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Speed;
         private System.Windows.Forms.DataGridViewTextBoxColumn StateBlockID;
         private System.Windows.Forms.DataGridViewTextBoxColumn State;
         private System.Windows.Forms.DataGridViewTextBoxColumn SwitchDest;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrainID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RouteBlocks;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Authority;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Speed;
     }
 }
