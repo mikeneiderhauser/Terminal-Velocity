@@ -164,6 +164,10 @@ namespace CTCOffice
                 //find block in layout and change image
                 LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
                 c.Tile = _redLineData.GetBlockType(b);
+                if (c.Panel != null)
+                {
+                    c.Panel.Refresh();
+                }
             }
             rtnfo = null;
         }
@@ -180,6 +184,10 @@ namespace CTCOffice
                 //find block in layout and change image
                 LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
                 c.Tile = _redLineData.GetBlockType(b);
+                if (c.Panel != null)
+                {
+                    c.Panel.Refresh();
+                }
             }
             rtnfo = null;
         }
@@ -311,6 +319,78 @@ namespace CTCOffice
         #endregion
 
         #region Public Functions
+        /// <summary>
+        /// Manages Trains on Track
+        /// </summary>
+        public void PopulateTrack()
+        {
+            //clear current trains
+            //foreach(IBlock b in _containedBlocks)
+            for (int i = 0; i < _containedTrainAndBlock.Count; i++)
+            {
+                IBlock b = _containedTrainAndBlock[i].Block;
+                if (b.Line.CompareTo("Red") == 0)
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _redLineData.GetBlockType(b);
+                    c.Train = null;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+                else
+                {
+                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
+                    c.Tile = _greenLineData.GetBlockType(b);
+                    c.Train = null;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+            }//end foreach
+
+            //make list of new trains
+            _containedTrainAndBlock.Clear();
+            //foreach (ITrainModel t in _env.AllTrains)
+            for (int i = 0; i < _env.AllTrains.Count; i++)
+            {
+                ITrainModel t = _env.AllTrains[i];
+                TrainAndBlock tb = new TrainAndBlock();
+                tb.Train = t;
+                tb.Block = t.CurrentBlock;
+                _containedTrainAndBlock.Add(tb);
+            }//end foreach
+
+            //update graphics
+            //foreach (IBlock b in _containedBlocks)
+            for (int i = 0; i < _containedTrainAndBlock.Count; i++)
+            {
+                TrainAndBlock tb = _containedTrainAndBlock[i];
+                if (tb.Block.Line.CompareTo("Red") == 0)
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
+                    c.Tile = _res.Train;
+                    c.Train = tb.Train;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+
+                }//end if
+                else
+                {
+                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(tb.Block);
+                    c.Tile = _res.Train;
+                    c.Train = tb.Train;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+            }//end for each
+        }//End Populate Track
 
         /// <summary>
         ///     Function to throw the event to the System Scheduler to start automated scheduling
@@ -455,79 +535,6 @@ namespace CTCOffice
             }
         }//End AddAutomaticUpdate
 
-        /// <summary>
-        /// Manages Trains on Track
-        /// </summary>
-        private void PopulateTrack()
-        {
-            //clear current trains
-            //foreach(IBlock b in _containedBlocks)
-            for(int i = 0; i<_containedTrainAndBlock.Count; i ++)
-            {
-                IBlock b = _containedTrainAndBlock[i].Block;
-                if (b.Line.CompareTo("Red") != 0)
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _redLineData.GetBlockType(b);
-                    c.Train = null;
-                    if (c.Panel != null)
-                    {
-                        c.Panel.Refresh();
-                    }
-                }//end if
-                else
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _greenLineData.GetBlockType(b);
-                    c.Train = null;
-                    if (c.Panel != null)
-                    {
-                        c.Panel.Refresh();
-                    }
-                }//end if
-            }//end foreach
-
-            //make list of new trains
-            _containedTrainAndBlock.Clear();
-            //foreach (ITrainModel t in _env.AllTrains)
-            for (int i = 0; i < _env.AllTrains.Count;i++ )
-            {
-                ITrainModel t = _env.AllTrains[i];
-                TrainAndBlock tb = new TrainAndBlock();
-                tb.Train = t;
-                tb.Block = t.CurrentBlock;
-                _containedTrainAndBlock.Add(tb);
-            }//end foreach
-
-            //update graphics
-            //foreach (IBlock b in _containedBlocks)
-            for(int i = 0; i<_containedTrainAndBlock.Count; i ++)
-            {
-                TrainAndBlock tb = _containedTrainAndBlock[i];
-                if (tb.Block.Line.CompareTo("Red") != 0)
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
-                    c.Tile = _res.Train;
-                    c.Train = tb.Train;
-                    if (c.Panel != null)
-                    {
-                        c.Panel.Refresh();
-                    }
-                    
-                }//end if
-                else
-                {
-                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(tb.Block);
-                    c.Tile = _res.Train;
-                    c.Train = tb.Train;
-                    if (c.Panel != null)
-                    {
-                        c.Panel.Refresh();
-                    }
-                }//end if
-            }//end for each
-        }//End Populate Track
-
         #endregion
 
         #region Line ID Functions
@@ -606,6 +613,11 @@ namespace CTCOffice
                 //greenline
                 _primaryTrackControllerGreen.Request = request;
             }
+
+            if (line == 0 || line == 1)
+            {
+                _messages.Add("Request Sent: " + request.RequestType.ToString());
+            }
         }
 
         //TODO verify BLOCKs
@@ -635,6 +647,12 @@ namespace CTCOffice
 
             _requestsOut.Enqueue(r);
             _env.Dispatch(r);
+
+            if (UpdatedData != null)
+            {
+                UpdatedData(this, EventArgs.Empty);
+            }
+
             //RequestQueueOut(this, EventArgs.Empty);
         }
 
@@ -788,6 +806,7 @@ namespace CTCOffice
         public event EventHandler<EventArgs> LoadData;
         public event EventHandler<EventArgs> UnlockLogin;
         public event EventHandler<EventArgs> MessagesReady;
+        public event EventHandler<EventArgs> UpdatedData;
         #endregion
     }
 }

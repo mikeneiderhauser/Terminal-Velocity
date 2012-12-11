@@ -77,6 +77,8 @@ namespace CTCOffice
 
             _ctcOffice.LoadData += new EventHandler<EventArgs>(_ctcOffice_LoadData);
             _ctcOffice.UnlockLogin += new EventHandler<EventArgs>(_ctcOffice_UnlockLogin);
+            _ctcOffice.MessagesReady += new EventHandler<EventArgs>(_ctcOffice_MessagesReady);
+            _ctcOffice.UpdatedData += new EventHandler<EventArgs>(_ctcOffice_UpdatedData);
             _loginState = false;
 
             _btnLoginLogout.Enabled = _loginState;
@@ -174,7 +176,7 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
                     {
-                        var pane = new PictureBox();
+                        MyPictureBox pane = new MyPictureBox(_panelRedLine,this);
                         _panelRedLine.Controls.Add(pane);
                         pane.Name = "_imgGridRed_" + i + "_" + j;
                         pane.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -203,7 +205,7 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
                     {
-                        PictureBox pane = new PictureBox();
+                        MyPictureBox pane = new MyPictureBox(_panelGreenLine,this);
                         _panelGreenLine.Controls.Add(pane);
                         pane.Name = "_imgGridGreen_" + i + "_" + j;
                         pane.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -226,6 +228,22 @@ namespace CTCOffice
         #endregion
 
         #region Refresh Controls and Functions
+
+        private void _ctcOffice_MessagesReady(object sender, EventArgs e)
+        {
+            if (listSystemNotifications.Items.Count > 100)
+            {
+                listSystemNotifications.Items.Clear();
+            }
+            listSystemNotifications.Items.AddRange(_ctcOffice.SystemMessages.ToArray());
+            _ctcOffice.SystemMessages.Clear();
+        }
+
+        private void _ctcOffice_UpdatedData(object sender, EventArgs e)
+        {
+            _ctcOffice.PopulateTrack();
+        }
+
         /// <summary>
         /// Button To force Refresh GUI (may not be needed)
         /// </summary>
@@ -647,8 +665,16 @@ namespace CTCOffice
                         var trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
                         trackItem.Tag = c;
 
-                        trackMenuTitles.Add("Open Track");
-                        trackMenuTitles.Add("Close Track");
+                        if (c.Block.State == StateEnum.Healthy)
+                        {
+                            trackMenuTitles.Add("Close Track");
+                        }
+                        else
+                        {
+                            trackMenuTitles.Add("Open Track");
+                        }
+                        
+                        
                         //trackMenuTitles.Add("Display Track Info");
 
                         foreach (string t in trackMenuTitles)
@@ -922,6 +948,8 @@ namespace CTCOffice
         {
             _routeTool = null;
             _routingToolOpen = false;
+            _popupIndicatorCTC.Image = null;
+            
         }
 
         #endregion
@@ -946,6 +974,7 @@ namespace CTCOffice
             st.SubmitSpeed += St_SubmitSpeed;
 
             popup.Controls.Add(st);
+            _popupIndicatorCTC.Image = _res.GreenLight;
             popup.Show();
         }
 
@@ -969,6 +998,7 @@ namespace CTCOffice
         {
             _speedTool = null;
             _speedToolOpen = false;
+            _popupIndicatorCTC.Image = null;
         }
 
         #endregion
@@ -994,6 +1024,7 @@ namespace CTCOffice
             at.SubmitAuthority += At_SubmitAuthority;
 
             popup.Controls.Add(at);
+            _popupIndicatorCTC.Image = _res.GreenLight;
             popup.Show();
         }
 
@@ -1016,6 +1047,7 @@ namespace CTCOffice
         {
             _authorityTool = null;
             _authorityToolOpen = false;
+            _popupIndicatorCTC.Image = null;
         }
 
         #endregion
@@ -1032,6 +1064,7 @@ namespace CTCOffice
                 _keyForm.FormClosed += new FormClosedEventHandler(_keyForm_FormClosed);
                 _keyForm.Controls.Add(keyInfo);
                 _keyOpen = true;
+                _popupIndicatorCTC.Image = _res.GreenLight;
                 _keyForm.Show();
             }
             else
@@ -1046,6 +1079,7 @@ namespace CTCOffice
         {
             _keyOpen = false;
             _keyForm = null;
+            _popupIndicatorCTC.Image = null;
         }
         #endregion
     }

@@ -125,7 +125,7 @@ namespace CTCOffice
         public Bitmap GetBlockType(IBlock block)
         {
 
-            if (block.Line.CompareTo("Red") != 0)
+            if (block.Line.CompareTo("Red") == 0)
             {
                 //red
                 if (block.State != StateEnum.Healthy) { return _res.RedTrackClosed; }
@@ -136,7 +136,7 @@ namespace CTCOffice
                 if (block.hasStation()) { return _res.RedTrackStation; }
                 return _res.RedTrack;
             }
-            else if (block.Line.CompareTo("Green") != 0)
+            else if (block.Line.CompareTo("Green") == 0)
             {
                 //green
                 if (block.State != StateEnum.Healthy) { return _res.GreenTrackClosed; }

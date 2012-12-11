@@ -73,6 +73,9 @@
     </Compile>
     <Compile Include="LayoutCellDataContainer.cs" />
     <Compile Include="LineData.cs" />
+    <Compile Include="MyPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OfficeGUITest.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -12,6 +12,7 @@ namespace CTCOffice
             Tile = null;
             Train = null;
             BaseTile = null;
+            Panel = null;
         }
 
         public ITrainModel Train { get; set; }
@@ -22,6 +23,6 @@ namespace CTCOffice
 
         public Image BaseTile { get; set; }
 
-        public PictureBox Panel { get; set; }
+        public MyPictureBox Panel { get; set; }
     }
 }
