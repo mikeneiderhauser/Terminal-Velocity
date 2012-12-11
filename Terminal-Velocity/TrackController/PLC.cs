@@ -46,7 +46,7 @@ namespace TrackController
             foreach (var t in trains)
             {
                 var speedLim = t.CurrentBlock.SpeedLimit;
-                var authority = 1;
+                var authority = 3;
 
                 // Adjust train speed to match that of the track speed limit
                 // or if the train is too close to another train
