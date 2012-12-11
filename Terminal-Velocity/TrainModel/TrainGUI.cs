@@ -294,8 +294,13 @@ namespace TrainModel
         {
             _dropDownOpen = false;
         }
+        
+        private void userManualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Please see TrainModelUserManual.docx located in the install directory", 
+                "User Manual", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
 
         #endregion
-
     }
 }
