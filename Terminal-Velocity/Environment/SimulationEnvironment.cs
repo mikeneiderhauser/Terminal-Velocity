@@ -34,9 +34,28 @@ namespace SimulationEnvironment
 
         #endregion
 
+        /// <summary>
+        /// Allows explicitly starting the Tick event
+        /// Thhis is only available in debug builds and is suitable for testing
+        /// </summary>
         public void Start()
         {
-            _timer.Start();
+            #if (DEBUG)
+            if (!_timer.Enabled)
+                _timer.Start();
+            #endif
+        }
+
+        /// <summary>
+        /// Allows explicitly stopping the Tick event
+        /// This is only available in debug builds and is suitable for testing
+        /// </summary>
+        public void Stop()
+        {
+            #if (DEBUG)
+            if (_timer.Enabled)
+                _timer.Stop();
+            #endif
         }
 
         #region Public Property
