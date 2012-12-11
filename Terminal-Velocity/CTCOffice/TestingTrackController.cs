@@ -6,13 +6,15 @@ namespace CTCOffice
 {
     public class TestingTrackController : ITrackController
     {
-        private readonly List<IBlock> _blocks;
-
-        private readonly int _id;
+        private int _id;
+        private List<IBlock> _blocks;
+        private List<ITrainModel> _trains;
 
         public TestingTrackController(int id)
         {
             _id = id;
+            _blocks = new List<IBlock>();
+            _trains = new List<ITrainModel>();
         }
 
         public IRequest Request
@@ -57,12 +59,12 @@ namespace CTCOffice
 
         public List<ITrainModel> Trains
         {
-            get { return null; }
+            get { return _trains; }
         }
 
         public List<IBlock> Blocks
         {
-            get { return null; }
+            get { return _blocks; }
         }
 
         public List<IRoute> Routes

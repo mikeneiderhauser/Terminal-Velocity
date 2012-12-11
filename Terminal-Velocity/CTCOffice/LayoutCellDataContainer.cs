@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Interfaces;
+using System.Windows.Forms;
 
 namespace CTCOffice
 {
@@ -20,5 +21,7 @@ namespace CTCOffice
         public Image Tile { get; set; }
 
         public Image BaseTile { get; set; }
+
+        public PictureBox Panel { get; set; }
     }
 }

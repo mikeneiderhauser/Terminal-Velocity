@@ -80,8 +80,15 @@ namespace CTCOffice
 
         public IRouteInfo requestRouteInfo(int routeID)
         {
+            if (routeID == 0)
+            {
+                return new TestingRouteInfo(routeID, "Red", _redBlocks.Count, _redPath, 1, 6);
+            }
+            else if (routeID == 1)
+            {
+                return new TestingRouteInfo(routeID, "Green", _greenBlocks.Count, _greenPath, 1, 6);
+            }
             return null;
-            //cannot implement due to protection
         }
 
         public IBlock[] requestPath(int startBlock, int endBlock, string line)

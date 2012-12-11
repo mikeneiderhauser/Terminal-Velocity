@@ -155,6 +155,19 @@ namespace CTCOffice
 
         public LayoutCellDataContainer TriangulateContainer(IBlock block)
         {
+            //for each item in the 1st dimension (row)
+            for (int i = 0; i <= _layout.GetUpperBound(0); i++)
+            {
+                //for each item in the 2nd dimension (col)
+                for (int j = 0; j <= _layout.GetUpperBound(1); j++)
+                {
+                    if (block.BlockID == _layout[i, j].Block.BlockID)
+                    {
+                        return _layout[i, j];
+                    }
+                }
+            }
+
             return null;
         }
     }

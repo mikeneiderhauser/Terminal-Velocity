@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTCGUITest.cs" />
     <Compile Include="CTCOffice.Test.cs" />
     <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

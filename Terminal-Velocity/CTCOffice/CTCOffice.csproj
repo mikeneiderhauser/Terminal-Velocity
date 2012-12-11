@@ -108,8 +108,16 @@
     </Compile>
     <Compile Include="SpeedToolEventArgs.cs" />
     <Compile Include="TestingBlock.cs" />
+    <Compile Include="TestingControls.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestingControls.Designer.cs">
+      <DependentUpon>TestingControls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestingRouteInfo.cs" />
     <Compile Include="TestingTrackController.cs" />
     <Compile Include="TestingTrackModel.cs" />
+    <Compile Include="TrainAndBlock.cs" />
     <EmbeddedResource Include="AuthorityTool.resx">
       <DependentUpon>AuthorityTool.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SpeedTool.resx">
       <DependentUpon>SpeedTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestingControls.resx">
+      <DependentUpon>TestingControls.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -140,45 +140,29 @@ namespace Testing
 
                     break;
                 case 1: // CTCOffice
-                    //using all testing classes the ctc office (created a new instance of ctc)
+                    environment = null;
 
-                    //create environment instance
-                    var env = new SimulationEnvironment.SimulationEnvironment();
+                    b0 = null;
+                    b1 = null;
+                    b2 = null;
+                    b3 = null;
 
-                    //create testing track model
-                    var tm = new TestingTrackModel(env);
+                    sectionA = null;
+                    sectionB = null;
+                    sectionC = null;
 
-                    //creating testing track controllers
-                    var primaryRed = new TestingTrackController(0);
-                    var primaryGreen = new TestingTrackController(1);
+                    prevCircuit = null;
+                    currCircuit = null;
+                    nextCircuit = null;
 
-                    //hook to environment
-                    env.PrimaryTrackControllerRed = primaryRed;
-                    env.PrimaryTrackControllerGreen = primaryGreen;
-                    env.TrackModel = tm;
+                    prev = null;
+                    curr = null;
+                    next = null;
 
-                    //creating office instance
-                    var ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
+                    trackMod = null;
+                    office = null;
 
-                    env.CTCOffice = ctc;
-
-                    //making Request Panel Objects (For red and green)
-                    var RequestRed = new RequestFrame("Red", primaryRed);
-                    var RequestGreen = new RequestFrame("Green", primaryGreen);
-
-                    //creating office gui
-                    var CTCOfficeGUI = new CTCOfficeGUI(env, ctc);
-
-                    var MyTestingControls = new TestingControls(tm);
-                    //creating testing gui
-                    control = new OfficeGUITest(
-                        CTCOfficeGUI,
-                        RequestRed,
-                        RequestGreen,
-                        MyTestingControls
-                        );
-
-                    //control = new CTCOffice.CTCOfficeGUI(environment, office);
+                    new CTCGUITest();
                     break;
                 case 2: // TrackModel
                     control = new TrackModelGUI(environment, trackMod);
@@ -216,10 +200,20 @@ namespace Testing
                     break;
             }
 
-            environment.startTick();
+            if (environment != null)
+            {
+                environment.startTick();
+            }
 
-            form.Controls.Add(control);
-            form.AutoSize = true;
+            if (form != null)
+            {
+                form.Controls.Add(control);
+                form.AutoSize = true;
+            }
+            else
+            {
+                return null;
+            }
 
 
             return form;

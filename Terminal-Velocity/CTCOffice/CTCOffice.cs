@@ -9,46 +9,39 @@ namespace CTCOffice
     public class CTCOffice : ICTCOffice
     {
         #region Private Variables
+        //System Hooks
+        private ISimulationEnvironment _env;
+        private Operator _op;
+        private ITrackController _primaryTrackControllerGreen;
+        private ITrackController _primaryTrackControllerRed;
+        private ResourceWrapper _res;
 
-        private readonly ISimulationEnvironment _env;
-        private readonly Operator _op;
-        private readonly ITrackController _primaryTrackControllerGreen;
-        private readonly ITrackController _primaryTrackControllerRed;
+        //env timer variables
+        private double _tickCount;
+        private double _rate;
 
-        /// <summary>
-        ///     Number of Ticks Elapsed to update
-        /// </summary>
-        private readonly double _rate;
-
-        private readonly Queue<IRequest> _requestsIn;
-        private readonly Queue<IRequest> _requestsOut;
-        private bool _automation;
-        private LineData _greenLineData;
-        private bool _populationBlock;
+        //Request Queues
+        private Queue<IRequest> _requestsIn;
+        private Queue<IRequest> _requestsOut;
         private bool _processingInRequests;
         private bool _processingOutRequests;
-        private LineData _redLineData;
-
-        private double _tickCount;
-        private List<ITrainModel> _trains;
         private event EventHandler<EventArgs> RequestQueueOut;
         private event EventHandler<EventArgs> RequestQueueIn;
 
+        //Track Items
+        private LineData _redLineData;
+        private LineData _greenLineData;
         private bool _redLoaded;
         private bool _greenLoaded;
+        private List<TrainAndBlock> _containedTrainAndBlock;
 
-        private ResourceWrapper _res;
+        //messages for gui
         private List<string> _messages;
-
-        private List<IBlock> _containedBlocks;
-
         #endregion
 
-        #region Constructor
-
+        #region Constructor and Environment Tick Handler
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
-            _automation = false;
             _rate = 100; //num of ticks
             _tickCount = 0;
             _rate = env.getInterval();
@@ -60,7 +53,6 @@ namespace CTCOffice
 
             _messages = new List<string>();
 
-            _trains = new List<ITrainModel>();
             //subscribe to Environment Tick
             _env.Tick += _env_Tick;
 
@@ -84,12 +76,10 @@ namespace CTCOffice
             _processingOutRequests = false;
             _processingInRequests = false;
 
-            _populationBlock = false;
-
             _redLoaded = false;
             _greenLoaded = false;
 
-            _containedBlocks = new List<IBlock>();
+            _containedTrainAndBlock = new List<TrainAndBlock>();
 
             if (_env.TrackModel == null)
             {
@@ -98,61 +88,105 @@ namespace CTCOffice
 
         }//Constructor
 
-        void TrackModel_TrackChangedEvent(object sender, EventArgs e)
+        /// <summary>
+        ///     Do Processing on Tick
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _env_Tick(object sender, TickEventArgs e)
         {
-            //parse track here
-        }
-
-        private void IsTrackUp()
-        {
-            //Checks the environment to see if a Track Models exists
-            if (_env.TrackModel != null)
+            //check for track if both tracks are not up.. if tracks are up.. dont check
+            if (!(_redLoaded && _greenLoaded))
             {
-                //if both are not loaded
-                if (!(_redLoaded && _greenLoaded))
-                {
-                    //Checks if the red line has been loaded yet
-                    if (_env.TrackModel.RedLoaded && !_redLoaded)
-                    {
-                        _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
-                        _redLoaded = true;
-                        if (UnlockLogin != null)
-                        {
-                            UnlockLogin(this, EventArgs.Empty);
-                        }
-                    }
-                    else
-                    {
-                        _redLoaded = false;
-                        //_env.sendLogEntry("The Red Line has not been loaded yet.");
-                    }
-                    //Checks if the green line has been loaded yet
-                    if (_env.TrackModel.GreenLoaded && !_greenLoaded)
-                    {
-                        _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
-                        _greenLoaded = true;
-                        if (LoadData != null)
-                        {
-                            UnlockLogin(this, EventArgs.Empty);
-                        }
-                    }
-                    else
-                    {
-                        _greenLoaded = false;
-                        //_env.sendLogEntry("The Green Line has not be loaded yet.");
-                    }
-                }
+                IsTrackUp();
             }
-            else
+
+            _tickCount++;
+            if (_tickCount >= _rate)
             {
-                //_env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                //AddAutomaticUpdate();//no longer need this information as of Track Model Update
+                _tickCount = 0;
+                PopulateTrack();//add trains to track
+                
             }
         }
 
         #endregion
 
-        #region Functions
+        #region Automated Track Update
+        /// <summary>
+        /// Handles changed event by track model
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrackModel_TrackChangedEvent(object sender, EventArgs e)
+        {
+            bool messageFlag = false;
+            //parse track here
+            if (_env.TrackModel.ChangeFlag == TrackChanged.Both)
+            {
+                UpdateRed();
+                UpdateGreen();
+                messageFlag = !messageFlag;
+            }
+            else if (_env.TrackModel.ChangeFlag == TrackChanged.Red)
+            {
+                UpdateRed();
+                messageFlag = !messageFlag;
+            }
+            else if (_env.TrackModel.ChangeFlag == TrackChanged.Green)
+            {
+                UpdateGreen();
+                messageFlag = !messageFlag;
+            }
 
+            if (messageFlag)
+            {
+                if (_messages.Count > 0)
+                {
+                    if (MessagesReady != null)
+                    {
+                        MessagesReady(this, EventArgs.Empty);
+                    }
+                }
+            }//end if message flag
+        }//end track changed
+
+        /// <summary>
+        /// Updates Red Line
+        /// </summary>
+        private void UpdateRed()
+        {
+            //request blocks in red line
+            IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(0);
+            foreach (IBlock b in rtnfo.BlockList)
+            {
+                //find block in layout and change image
+                LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                c.Tile = _redLineData.GetBlockType(b);
+            }
+            rtnfo = null;
+        }
+
+        /// <summary>
+        /// Updates Green Line
+        /// </summary>
+        private void UpdateGreen()
+        {
+            //request blocks in green line
+            IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(1);
+            foreach (IBlock b in rtnfo.BlockList)
+            {
+                //find block in layout and change image
+                LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
+                c.Tile = _redLineData.GetBlockType(b);
+            }
+            rtnfo = null;
+        }
+
+        #endregion
+
+        #region Request Queues
         /// <summary>
         ///     Function to handle queue out
         /// </summary>
@@ -223,6 +257,9 @@ namespace CTCOffice
             }
         }
 
+        #endregion
+
+        #region Operator Login / Logut Functions
         /// <summary>
         ///     Function to login the operator
         /// </summary>
@@ -271,6 +308,10 @@ namespace CTCOffice
             return _op.IsAuth();
         }
 
+        #endregion
+
+        #region Public Functions
+
         /// <summary>
         ///     Function to throw the event to the System Scheduler to start automated scheduling
         /// </summary>
@@ -280,7 +321,6 @@ namespace CTCOffice
             {
                 StartAutomation(this, EventArgs.Empty);
             }
-            _automation = true;
         }
 
         /// <summary>
@@ -292,8 +332,261 @@ namespace CTCOffice
             {
                 StopAutomation(this, EventArgs.Empty);
             }
-            _automation = false;
         }
+
+        /// <summary>
+        ///     Function to return line data to gui
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public LineData GetLine(int line)
+        {
+            if (line == 0)
+            {
+                return _redLineData;
+            }
+            else if (line == 1)
+            {
+                return _greenLineData;
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region Private Functions
+
+        private void IsTrackUp()
+        {
+            //Checks the environment to see if a Track Models exists
+            if (_env.TrackModel != null)
+            {
+                //if both are not loaded
+                if (!(_redLoaded && _greenLoaded))
+                {
+                    //Checks if the red line has been loaded yet
+                    if (_env.TrackModel.RedLoaded && !_redLoaded)
+                    {
+                        _redLineData = new LineData(_env.TrackModel.requestTrackGrid(0), _env, _res);
+                        _redLoaded = true;
+                        if (UnlockLogin != null)
+                        {
+                            UnlockLogin(this, EventArgs.Empty);
+                        }
+                    }
+                    else
+                    {
+                        _redLoaded = false;
+                        //_env.sendLogEntry("The Red Line has not been loaded yet.");
+                    }
+                    //Checks if the green line has been loaded yet
+                    if (_env.TrackModel.GreenLoaded && !_greenLoaded)
+                    {
+                        _greenLineData = new LineData(_env.TrackModel.requestTrackGrid(1), _env, _res);
+                        _greenLoaded = true;
+                        if (UnlockLogin != null)
+                        {
+                            UnlockLogin(this, EventArgs.Empty);
+                        }
+                    }
+                    else
+                    {
+                        _greenLoaded = false;
+                        //_env.sendLogEntry("The Green Line has not be loaded yet.");
+                    }
+                }
+            }
+            else
+            {
+                //_env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+            }
+        }
+
+        /// <summary>
+        ///     Function to handle return request
+        /// </summary>
+        /// <param name="request"></param>
+        private void InternalRequest(IRequest request)
+        {
+            /* Implemented Else Where
+            IStatus s = request.Info;
+            if (_env.TrackModel.ChangeFlag != TrackChanged.None)
+            {
+                foreach (IBlock b in s.Blocks)
+                {
+                    _messages.Add("Block " + b.BlockID + ": is now in state " + b.State.ToString());
+                    if (b.Line.CompareTo("Red") != 0)
+                    {
+                        //red line
+                        LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                        c.Tile = _redLineData.GetBlockType(b);
+                    }
+                    else
+                    {
+                        //green line
+                        LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
+                        c.Tile = _greenLineData.GetBlockType(b);
+                    }
+                }
+            }//end process blocks
+            */
+        }
+
+
+        /// <summary>
+        ///  Requests Data from each Track Controller
+        /// </summary>
+        private void AddAutomaticUpdate()
+        {
+            ITrackModel tm = _env.TrackModel;
+            if (tm != null)
+            {
+                IRouteInfo redInfo = tm.requestRouteInfo(0);
+                foreach (IBlock b in redInfo.BlockList)
+                {
+                    trackControllerDataRequest(b.TrackCirID);
+                }
+
+                IRouteInfo greenInfo = tm.requestRouteInfo(1);
+                foreach (IBlock b in greenInfo.BlockList)
+                {
+                    trackControllerDataRequest(b.TrackCirID);
+                }
+            }
+        }//End AddAutomaticUpdate
+
+        /// <summary>
+        /// Manages Trains on Track
+        /// </summary>
+        private void PopulateTrack()
+        {
+            //clear current trains
+            //foreach(IBlock b in _containedBlocks)
+            for(int i = 0; i<_containedTrainAndBlock.Count; i ++)
+            {
+                IBlock b = _containedTrainAndBlock[i].Block;
+                if (b.Line.CompareTo("Red") != 0)
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _redLineData.GetBlockType(b);
+                    c.Train = null;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+                else
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                    c.Tile = _greenLineData.GetBlockType(b);
+                    c.Train = null;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+            }//end foreach
+
+            //make list of new trains
+            _containedTrainAndBlock.Clear();
+            //foreach (ITrainModel t in _env.AllTrains)
+            for (int i = 0; i < _env.AllTrains.Count;i++ )
+            {
+                ITrainModel t = _env.AllTrains[i];
+                TrainAndBlock tb = new TrainAndBlock();
+                tb.Train = t;
+                tb.Block = t.CurrentBlock;
+                _containedTrainAndBlock.Add(tb);
+            }//end foreach
+
+            //update graphics
+            //foreach (IBlock b in _containedBlocks)
+            for(int i = 0; i<_containedTrainAndBlock.Count; i ++)
+            {
+                TrainAndBlock tb = _containedTrainAndBlock[i];
+                if (tb.Block.Line.CompareTo("Red") != 0)
+                {
+                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
+                    c.Tile = _res.Train;
+                    c.Train = tb.Train;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                    
+                }//end if
+                else
+                {
+                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(tb.Block);
+                    c.Tile = _res.Train;
+                    c.Train = tb.Train;
+                    if (c.Panel != null)
+                    {
+                        c.Panel.Refresh();
+                    }
+                }//end if
+            }//end for each
+        }//End Populate Track
+
+        #endregion
+
+        #region Line ID Functions
+        /// <summary>
+        ///     logic to determine which track line
+        /// </summary>
+        /// <param name="request">Request to process</param>
+        /// <returns>Integer based Line ID</returns>
+        private int DetermineLine(IRequest request)
+        {
+            //red=0....green=1
+            if (request.Block != null)
+            {
+                return DetermineLine(request.Block);
+            }
+
+            return DetermineLine(request.TrainRoute);
+        }
+
+        /// <summary>
+        /// Determins Line ID via route object
+        /// </summary>
+        /// <param name="route">Route in question</param>
+        /// <returns>Integer based Line ID</returns>
+        private int DetermineLine(IRoute route)
+        {
+            if (route == null)
+            {
+                return -1;
+            }
+            return route.RouteID;
+        }
+
+        /// <summary>
+        /// Determins Line ID via block object
+        /// </summary>
+        /// <param name="block">Block In Question</param>
+        /// <returns>Integer based Line ID</returns>
+        private int DetermineLine(IBlock block)
+        {
+            if (block != null)
+            {
+                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 ||
+                    block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
+                {
+                    return 0;
+                }
+                else if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 ||
+                         block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
+                {
+                    return 1;
+                }
+            }
+            return -1;
+        }
+
+        #endregion
+
+        #region Request Abstraction
 
         /// <summary>
         ///     Sends a request to the primary track controller. Has logic to determine with primary track controller
@@ -315,192 +608,11 @@ namespace CTCOffice
             }
         }
 
-        /// <summary>
-        ///     Function to handle return request
-        /// </summary>
-        /// <param name="request"></param>
-        private void InternalRequest(IRequest request)
-        {
-            IStatus s = request.Info;
-            if (_env.TrackModel.ChangeFlag != TrackChanged.None)
-            {
-                foreach (IBlock b in s.Blocks)
-                {
-                    _messages.Add("Block " + b.BlockID + ": is now in state " + b.State.ToString());
-                    if (b.Line.CompareTo("Red") != 0)
-                    {
-                        //red line
-                        LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                        c.Tile = _redLineData.GetBlockType(b);
-                    }
-                    else
-                    {
-                        //green line
-                        LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
-                        c.Tile = _greenLineData.GetBlockType(b);
-                    }
-                }
-            }//end process blocks
-        }
-
-        /// <summary>
-        ///     Do Processing on Tick
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _env_Tick(object sender, TickEventArgs e)
-        {
-            //check for track if both tracks are not up.. if tracks are up.. dont check
-            if (!(_redLoaded && _greenLoaded))
-            {
-                IsTrackUp();
-            }
-
-            _tickCount++;
-            if (_tickCount == _rate)
-            {
-                
-                AddAutomaticUpdate();
-                PopulateTrack();
-            }
-        }
-
-        /// <summary>
-        ///     Calculates if the CTC should ask the track controllers for data.
-        /// </summary>
-        private void AddAutomaticUpdate()
-        {
-            ITrackModel tm = _env.TrackModel;
-            if (tm != null)
-            {
-                IRouteInfo redInfo = tm.requestRouteInfo(0);
-                foreach (IBlock b in redInfo.BlockList)
-                {
-                    trackControllerDataRequest(b.TrackCirID);
-                }
-
-                IRouteInfo greenInfo = tm.requestRouteInfo(1);
-                foreach (IBlock b in greenInfo.BlockList)
-                {
-                    trackControllerDataRequest(b.TrackCirID);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Manages Trains on Track
-        /// </summary>
-        public void PopulateTrack()
-        {
-            //clear current trains
-            foreach(IBlock b in _containedBlocks)
-            {
-                if (b.Line.CompareTo("Red") != 0)
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _redLineData.GetBlockType(b);
-                }
-                else
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _greenLineData.GetBlockType(b);
-                }
-            }
-
-            //make list of new trains
-            _containedBlocks.Clear();
-            foreach (ITrainModel t in _env.AllTrains)
-            {
-                _containedBlocks.Add(t.CurrentBlock);
-            }
-
-            //update graphics
-            foreach (IBlock b in _containedBlocks)
-            {
-                if (b.Line.CompareTo("Red") != 0)
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _res.Train;
-                }
-                else
-                {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _res.Train;
-                }
-            }
-        }
-
-
-        /// <summary>
-        ///     logic to determine which track line
-        /// </summary>
-        /// <param name="request">Request to process</param>
-        /// <returns></returns>
-        private int DetermineLine(IRequest request)
-        {
-            //red=0....green=1
-            if (request.Block != null)
-            {
-                return DetermineLine(request.Block);
-            }
-
-            return DetermineLine(request.TrainRoute);
-        }
-
-        private int DetermineLine(IRoute route)
-        {
-            if (route == null)
-            {
-                return -1;
-            }
-            return route.RouteID;
-        }
-
-        private int DetermineLine(IBlock block)
-        {
-            if (block != null)
-            {
-                if (block.Line.CompareTo("Red") == 0 || block.Line.CompareTo("red") == 0 ||
-                    block.Line.CompareTo("R") == 0 || block.Line.CompareTo("r") == 0)
-                {
-                    return 0;
-                }
-                else if (block.Line.CompareTo("Green") == 0 || block.Line.CompareTo("green") == 0 ||
-                         block.Line.CompareTo("G") == 0 || block.Line.CompareTo("g") == 0)
-                {
-                    return 1;
-                }
-            }
-            return -1;
-        }
-
-        /// <summary>
-        ///     Function to return line data to gui
-        /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
-        public LineData GetLine(int line)
-        {
-            if (line == 0)
-            {
-                return _redLineData;
-            }
-            else if (line == 1)
-            {
-                return _greenLineData;
-            }
-
-            return null;
-        }
-
-        public ResourceWrapper Resource
-        {
-            get { return _res; }
-        }
-
-        #region Request Abstractions
-
         //TODO verify BLOCKs
+        /// <summary>
+        /// Request abstraction for dispatching a train
+        /// </summary>
+        /// <param name="route">Determins which Line to dispatch train</param>
         public void dispatchTrainRequest(IRoute route)
         {
             int line = DetermineLine(route);
@@ -526,12 +638,25 @@ namespace CTCOffice
             //RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction To send train back to yard
+        /// </summary>
+        /// <param name="trainID">Selected Train ID</param>
+        /// <param name="trackControllerID">Current Track Controller ID</param>
+        /// <param name="block">Current Block</param>
         public void setTrainOutOfServiceRequest(int trainID, int trackControllerID, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.SetTrainOOS, trackControllerID, trainID, 0, 0, null, block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to Route a train
+        /// </summary>
+        /// <param name="trainID">Selected Train ID</param>
+        /// <param name="trackControllerID">Current Track Contrller ID</param>
+        /// <param name="route">New Routing Class</param>
+        /// <param name="block">Current Block</param>
         public void assignTrainRouteRequest(int trainID, int trackControllerID, IRoute route, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.AssignTrainRoute, trackControllerID, trainID, 0, 0, route,
@@ -539,6 +664,13 @@ namespace CTCOffice
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to Set Train Authority
+        /// </summary>
+        /// <param name="trainID">Selected Train Id</param>
+        /// <param name="trackControllerID">Current Track Controller ID</param>
+        /// <param name="authority">New Authority Limit</param>
+        /// <param name="block">Current Block</param>
         public void setTrainAuthorityRequest(int trainID, int trackControllerID, int authority, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.SetTrainAuthority, trackControllerID, trainID, authority, 0,
@@ -546,18 +678,35 @@ namespace CTCOffice
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to close block
+        /// </summary>
+        /// <param name="trackControllerID">Track Controller that contains block</param>
+        /// <param name="block">Block To Close</param>
         public void closeTrackBlockRequest(int trackControllerID, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceClose, trackControllerID, 0, 0, 0, null, block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to open Block
+        /// </summary>
+        /// <param name="trackControllerID">Track Controller ID that contains the block</param>
+        /// <param name="block">Block to open</param>
         public void openTrackBlockRequest(int trackControllerID, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.TrackMaintenanceOpen, trackControllerID, 0, 0, 0, null, block));
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to Set new train speed
+        /// </summary>
+        /// <param name="trainID">selected trian id</param>
+        /// <param name="trackControllerID">Current Track Controller</param>
+        /// <param name="speed">New Speed</param>
+        /// <param name="block">Current Block</param>
         public void setTrainSpeedRequest(int trainID, int trackControllerID, double speed, IBlock block)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.SetTrainSpeed, trackControllerID, trainID, 0, speed, null,
@@ -565,6 +714,10 @@ namespace CTCOffice
             RequestQueueOut(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Request Abstraction to get data from track contrller
+        /// </summary>
+        /// <param name="trackControllerID">track controller to get data from</param>
         public void trackControllerDataRequest(int trackControllerID)
         {
             _requestsOut.Enqueue(new Request(RequestTypes.TrackControllerData, trackControllerID, 0, 0, 0, null, null));
@@ -573,11 +726,7 @@ namespace CTCOffice
 
         #endregion
 
-        public event EventHandler<EventArgs> LoadData;
-        public event EventHandler<EventArgs> UnlockLogin;
-        #endregion
-
-        #region Public Interface
+        #region Public Properties (Interface)
 
         public event EventHandler<EventArgs> StartAutomation;
 
@@ -615,6 +764,30 @@ namespace CTCOffice
 
         #endregion
 
-        //confirm merge
+        #region Public Properties (Non-Interface)
+        /// <summary>
+        /// Hook to resource wrapper - Made to save memory
+        /// </summary>
+        public ResourceWrapper Resource
+        {
+            get { return _res; }
+        }
+
+        /// <summary>
+        /// Property to access System Messages
+        /// </summary>
+        public List<string> SystemMessages
+        {
+            get { return _messages; }
+            set { _messages = value; }
+        }
+
+        #endregion
+
+        #region Public Events (Non-Interface)
+        public event EventHandler<EventArgs> LoadData;
+        public event EventHandler<EventArgs> UnlockLogin;
+        public event EventHandler<EventArgs> MessagesReady;
+        #endregion
     }
 }
