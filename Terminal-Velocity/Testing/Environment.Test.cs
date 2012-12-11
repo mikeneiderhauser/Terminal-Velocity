@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Interfaces;
 using Utility;
 
@@ -7,23 +10,19 @@ namespace Testing
 {
     public class EnvironmentTest : ITesting
     {
-        private const int MAXTIMEOUT = 10000;
-        private static int counter;
+        const int MAXTIMEOUT = 10000;
+        static int counter;
 
-        private readonly SimulationEnvironment.SimulationEnvironment e =
-            new SimulationEnvironment.SimulationEnvironment();
-
-        private readonly Stopwatch timeout = new Stopwatch();
+        SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
+        System.Diagnostics.Stopwatch timeout = new System.Diagnostics.Stopwatch();
 
         public bool DoTest(out int pass, out int fail, out List<string> message)
         {
-            pass = 0;
-            fail = 0;
-            message = new List<string>();
+            pass = 0; fail = 0; message = new List<string>();
 
             // Tick Test
             {
-                // Test for tick event
+            // Test for tick event
                 e.Tick += e_Tick;
                 // While timer < MAXTIMEOUT
                 timeout.Start();
@@ -35,23 +34,22 @@ namespace Testing
                 if (counter >= 10)
                 {
                     pass++;
-                    message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter,
-                                              timeout.ElapsedMilliseconds, MAXTIMEOUT));
+                    message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter, timeout.ElapsedMilliseconds, MAXTIMEOUT));
                 }
                 else if (counter < 10)
                 {
                     fail++;
-                    message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter,
-                                              timeout.ElapsedMilliseconds, MAXTIMEOUT));
+                    message.Add(string.Format("{0} tick events in {1} ms (timeout: {2})", counter, timeout.ElapsedMilliseconds, MAXTIMEOUT));
                 }
                 else
                     return false;
             }
-
+             
             return true;
+
         }
 
-        private static void e_Tick(object sender, TickEventArgs e)
+        static void e_Tick(object sender, TickEventArgs e)
         {
             counter++;
         }

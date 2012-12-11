@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Interfaces;
-using TrackModel;
-using TrainModel;
 
 namespace Testing
 {
@@ -9,15 +10,15 @@ namespace Testing
     {
         public bool DoTest(out int pass, out int fail, out List<string> message)
         {
-            pass = 0;
-            fail = 0;
+            pass = 0; 
+            fail = 0; 
             message = new List<string>();
 
             ISimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            var train = new Train(0, new Block(0), environment);
+            TrainModel.Train train = new TrainModel.Train(0, new TrackModel.Block(0), environment);
 
             // test that the train ID is zero
-            if (train.TrainID == 0)
+            if(train.TrainID == 0)
             {
                 pass++;
                 message.Add("Pass: Train ID is 0, as declared.");
@@ -29,7 +30,7 @@ namespace Testing
             }
 
             // give acceptable power level
-            if (train.ChangeMovement(50))
+            if(train.ChangeMovement(50))
             {
                 pass++;
                 message.Add("Pass: ChangeMovement(50) succeeds");
@@ -41,7 +42,7 @@ namespace Testing
             }
 
             // give unacceptable power
-            if (!train.ChangeMovement(500))
+            if(!train.ChangeMovement(500))
             {
                 pass++;
                 message.Add("Pass: ChangeMovement(500) failed, as expected.");

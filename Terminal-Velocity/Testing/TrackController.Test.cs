@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Interfaces;
 
 namespace Testing
@@ -7,9 +11,7 @@ namespace Testing
     {
         public bool DoTest(out int pass, out int fail, out List<string> message)
         {
-            pass = 0;
-            fail = 0;
-            message = new List<string>();
+            pass = 0; fail = 0; message = new List<string>();
 
             /*
             // Environment object

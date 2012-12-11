@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq;
+using System.Text;
+using System.Reflection;
 using System.Windows.Forms;
-using SystemScheduler;
-using CTCOffice;
+
+using System.Threading;
 using Interfaces;
-using TrackController;
-using TrackModel;
-using TrainController;
-using TrainModel;
+using Utility;
 
 namespace Testing
 {
     public class PrototypeDemo
     {
-        private TrackController.TrackController _curr;
-        private TrackCircuit _currCircuit;
-        private SimulationEnvironment.SimulationEnvironment _env;
-        private TrackController.TrackController _next;
-        private TrackCircuit _nextCircuit;
-        private CTCOffice.CTCOffice _office;
-        private TrackController.TrackController _prev;
-        private TrackCircuit _prevCircuit;
-
-        private Form _scheduleHook;
-        private SystemScheduler.SystemScheduler _scheduler;
-        private SystemSchedulerGUI _ssGUI;
-        private TrackModel.TrackModel _trackMod;
+        SimulationEnvironment.SimulationEnvironment _env;
+        TrackModel.TrackModel _trackMod;
+        TrackController.TrackCircuit _currCircuit;
+        TrackController.TrackCircuit _nextCircuit;
+        TrackController.TrackCircuit _prevCircuit;
+        TrackController.TrackController _prev;
+        TrackController.TrackController _curr;
+        TrackController.TrackController _next;
+        CTCOffice.CTCOffice _office;
+        SystemScheduler.SystemScheduler _scheduler;
 
 
         public PrototypeDemo()
@@ -52,23 +48,24 @@ namespace Testing
             createCTCOffice();
             createSystemScheduler();
 
-            //TrainModel.Train t = new TrainModel.Train(999,_env.TrackModel.requestBlockInfo(0,"Red"), _env);
-//_env.addTrain(t);
+            TrainModel.Train t = new TrainModel.Train(999,_env.TrackModel.requestBlockInfo(0,"Red"), _env);
+            _env.addTrain(t);
 
-            var t6 = new Thread(createTrackForm);
+            Thread t6 = new Thread(new ThreadStart(this.createTrackForm));
             t6.Start();
-            var t7 = new Thread(createTrackControllerForm);
+            Thread t7 = new Thread(new ThreadStart(this.createTrackControllerForm));
             t7.Start();
-            var t8 = new Thread(createCTCOfficeForm);
+            Thread t8 = new Thread(new ThreadStart(this.createCTCOfficeForm));
             t8.Start();
-            var t9 = new Thread(createTrainModelForm);
+            Thread t9 = new Thread(new ThreadStart(this.createTrainModelForm));
             t9.Start();
-            var t10 = new Thread(createSystemSchedulerForm);
+            Thread t10 = new Thread(new ThreadStart(this.createSystemSchedulerForm));
             t10.Start();
+
         }
 
-        #region Framework Creation Methods
 
+        #region Framework Creation Methods
         public void createEnvironment()
         {
             // Environment object
@@ -89,29 +86,25 @@ namespace Testing
 
         public void createTrackController()
         {
-            IBlock b0 = new Block(0, StateEnum.Healthy, -1, 0, 0, new[] {0, 0}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
-            IBlock b1 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {1, 1}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
-            IBlock b2 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {2, 2}, 1000, DirEnum.East, new[] {""}, 0, 0, 0,
-                                  "Green");
-            IBlock b3 = new Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new[] {3, 3}, 1000, DirEnum.East, new[] {""},
-                                  0, 0, 0, "Green");
+            IBlock b0 = new TrackModel.Block(0, StateEnum.Healthy, -1, 0, 0, new int[] { 0, 0 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b1 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 1, 1 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b2 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 2, 2 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
+            IBlock b3 = new TrackModel.Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new int[] { 3, 3 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
 
-            var sectionA = new List<IBlock>();
+            List<IBlock> sectionA = new List<IBlock>();
             sectionA.Add(b0);
-            var sectionB = new List<IBlock>();
+            List<IBlock> sectionB = new List<IBlock>();
             sectionB.Add(b1);
             sectionB.Add(b2);
-            var sectionC = new List<IBlock>();
+            List<IBlock> sectionC = new List<IBlock>();
             sectionC.Add(b3);
 
             // Track Controller
-            _currCircuit = new TrackCircuit(_env, sectionA);
+            _currCircuit = new TrackController.TrackCircuit(_env, sectionA);
             // Next track controller's circuit
-            _nextCircuit = new TrackCircuit(_env, sectionB);
+            _nextCircuit = new TrackController.TrackCircuit(_env, sectionB);
             // Previous track controller's circuit
-            _prevCircuit = new TrackCircuit(_env, sectionC);
+            _prevCircuit = new TrackController.TrackCircuit(_env, sectionC);
 
             _prev = new TrackController.TrackController(_env, _prevCircuit);
             _curr = new TrackController.TrackController(_env, _currCircuit);
@@ -143,16 +136,14 @@ namespace Testing
         {
             _scheduler = new SystemScheduler.SystemScheduler(_env, _office);
         }
-
-        #endregion
+#endregion
 
         #region Gui Creation Methods
-
         public void createTrackForm()
         {
-            var formTrack = new Form();
+            Form formTrack = new Form();
             UserControl controlTrack;
-            controlTrack = new TrackModelGUI(_env, _trackMod);
+            controlTrack = new TrackModel.TrackModelGUI(_env, _trackMod);
 
             formTrack.Controls.Add(controlTrack);
             formTrack.AutoSize = true;
@@ -162,9 +153,9 @@ namespace Testing
 
         public void createTrackControllerForm()
         {
-            var formTrackController = new Form();
+            Form formTrackController = new Form();
             UserControl controlTrackController;
-            controlTrackController = new TrackControllerUi(_env);
+            controlTrackController = new TrackController.TrackControllerUI(_env);
 
             formTrackController.Text = "Track Controller";
             formTrackController.Controls.Add(controlTrackController);
@@ -174,12 +165,11 @@ namespace Testing
 
         public void createCTCOfficeForm()
         {
-            var formCTC = new Form();
-            CTCOfficeGUI controlCTC;
-            controlCTC = new CTCOfficeGUI(_env, _office);
+            Form formCTC = new Form();
+            CTCOffice.CTCOfficeGUI controlCTC;
+            controlCTC = new CTCOffice.CTCOfficeGUI(_env, _office);
 
-            controlCTC.ShowTrain += controlCTC_ShowTrain;
-            controlCTC.ShowSchedule += controlCTC_ShowSchedule;
+            controlCTC.ShowTrain += new EventHandler<CTCOffice.ShowTrainEventArgs>(controlCTC_ShowTrain);
 
             formCTC.Text = "CTC Office";
             formCTC.Controls.Add(controlCTC);
@@ -187,33 +177,12 @@ namespace Testing
             formCTC.ShowDialog();
         }
 
-        private void controlCTC_ShowSchedule(object sender, EventArgs e)
+        void controlCTC_ShowTrain(object sender, CTCOffice.ShowTrainEventArgs e)
         {
-            showSchedule();
-        }
-
-        private void showSchedule()
-        {
-            if (_scheduleHook.InvokeRequired)
-            {
-                _scheduleHook.BeginInvoke(new Action(showSchedule));
-                return;
-            }
-
-            if (_scheduleHook != null)
-            {
-                _scheduleHook.TopMost = true;
-                _scheduleHook.Show();
-                _scheduleHook.TopMost = false;
-            }
-        }
-
-        private void controlCTC_ShowTrain(object sender, ShowTrainEventArgs e)
-        {
-            var formTrainController = new Form();
+            Form formTrainController = new Form();
             UserControl controlTrainController = null;
-            var tc = (TrainController.TrainController) e.TrainModel.TrainController;
-            controlTrainController = new TrainControllerUI(tc, _env);
+            TrainController.TrainController tc = (TrainController.TrainController)e.TrainModel.TrainController;
+            controlTrainController = new TrainController.TrainControllerUI(tc, _env);
             formTrainController.Text = "Train Controller";
             formTrainController.Controls.Add(controlTrainController);
             formTrainController.AutoSize = true;
@@ -222,9 +191,9 @@ namespace Testing
 
         public void createTrainModelForm()
         {
-            var formTrain = new Form();
+            Form formTrain = new Form();
             UserControl controlTrain;
-            controlTrain = new TrainGUI(_env);
+            controlTrain = new TrainModel.TrainGUI(_env);
 
             formTrain.Text = "Train Model";
             formTrain.Controls.Add(controlTrain);
@@ -234,18 +203,14 @@ namespace Testing
 
         public void createSystemSchedulerForm()
         {
-            var formScheduler = new Form();
+            Form formScheduler = new Form();
             UserControl controlScheduler;
-            controlScheduler = new SystemSchedulerGUI(_env, _scheduler, _office);
+            controlScheduler = new SystemScheduler.SystemSchedulerGUI(_env, _scheduler, _office);
             formScheduler.Text = "System Scheduler";
             formScheduler.Controls.Add(controlScheduler);
             formScheduler.AutoSize = true;
-            _scheduleHook = formScheduler;
             formScheduler.ShowDialog();
         }
-
         #endregion
-    }
-
-//end protodemo class
+    }//end protodemo class
 }

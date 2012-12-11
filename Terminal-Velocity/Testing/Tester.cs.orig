@@ -28,7 +28,6 @@ namespace Testing
                 Console.WriteLine(" ->  3      TrackController");
                 Console.WriteLine(" ->  4      TrainModel");
                 Console.WriteLine(" ->  5      TrainController");
-                Console.WriteLine(" -> 10      PROTOTYPEDEMO");
 
                 Console.WriteLine("\n\nPress enter to continue...");
                 Console.ReadLine();
@@ -50,7 +49,7 @@ namespace Testing
             {
                 if (args[0].CompareTo("unit") == 0)
                 {
-                    //UnitTestFramework();
+                    UnitTestFramework();
 
                     Console.WriteLine("\n\nPress enter to continue...");
                     Console.ReadLine();
@@ -69,26 +68,19 @@ namespace Testing
 
             // Environment object
             SimulationEnvironment.SimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
+<<<<<<< HEAD
+           
+            
+=======
 
-            IBlock b0 = new TrackModel.Block(0, StateEnum.Healthy, -1, 0, 0, new int[] { 0, 0 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b1 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new int[] { 1, 1 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b2 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new int[] { 2, 2 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
-            IBlock b3 = new TrackModel.Block(3, StateEnum.BrokenTrackFailure, 2, 0, 0, new int[] { 3, 3 }, 1000, DirEnum.East, new string[] { "" }, 0, 0, 0, "Green");
 
-            List<IBlock> sectionA = new List<IBlock>();
-            sectionA.Add(b0);
-            List<IBlock> sectionB = new List<IBlock>();
-            sectionB.Add(b1);
-            sectionB.Add(b2);
-            List<IBlock> sectionC = new List<IBlock>();
-            sectionC.Add(b3);
-
-            // Previous track controller's circuit
-            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment, sectionA);
+>>>>>>> prototype
             // Our track circuit
-            TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment, sectionB);
+            TrackController.TrackCircuit currCircuit = new TrackController.TrackCircuit(environment);
             // Next track controller's circuit
-            TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment, sectionC);
+            TrackController.TrackCircuit nextCircuit = new TrackController.TrackCircuit(environment);
+            // Previous track controller's circuit
+            TrackController.TrackCircuit prevCircuit = new TrackController.TrackCircuit(environment);
 
             TrackController.TrackController prev = new TrackController.TrackController(environment, prevCircuit);
             TrackController.TrackController curr = new TrackController.TrackController(environment, currCircuit);
@@ -119,8 +111,11 @@ namespace Testing
             environment.CTCOffice = office;
             environment.PrimaryTrackControllerGreen = prev;
             environment.PrimaryTrackControllerRed = prev;
+<<<<<<< HEAD
+            
+=======
 
-
+>>>>>>> prototype
             ////////////////////////////////////////////////////////////////////////////////////////
             //                            End Initializations                                     //
             ////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +137,7 @@ namespace Testing
                     SimulationEnvironment.SimulationEnvironment env = new SimulationEnvironment.SimulationEnvironment();
 
                     //create testing track model
-                    CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
+                    //CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(env);
 
                     //creating testing track controllers
                     CTCOffice.TestingTrackController primaryRed = new CTCOffice.TestingTrackController(0);
@@ -151,8 +146,13 @@ namespace Testing
 
                     env.PrimaryTrackControllerRed = primaryRed;
                     env.PrimaryTrackControllerGreen = primaryGreen;
+<<<<<<< HEAD
+                    env.TrackModel = TrackMod;
+                    
+=======
                     env.TrackModel = tm;
 
+>>>>>>> prototype
 
                     //creating office instance
                     CTCOffice.CTCOffice ctc = new CTCOffice.CTCOffice(env, primaryRed, primaryGreen);
@@ -184,26 +184,11 @@ namespace Testing
                     control = new TrackModel.TrackModelGUI(environment, TrackMod);
                     break;
                 case 3: // TrackController
-                    ITrainModel t = new TrainModel.Train(0, b0, environment);
-
-                    environment.AllTrains.Add(t);
-
-                    prevCircuit.Trains.Add(0, t);
-
                     control = new TrackController.TrackControllerUI(environment);
                     break;
                 case 4: // TrainModel
-                    int[] loc = new int[2];
-                    loc[0] = 10;
-                    loc[1] = 10;
-                    TrackModel.Block start = new TrackModel.Block(0, StateEnum.Healthy, 0, 0, 0, loc, 100, DirEnum.East, null, 1, 2, 0, "Red");
-                    environment.addTrain(new TrainModel.Train(0, start, environment));
-                    environment.addTrain(new TrainModel.Train(1, start, environment));
-
-                    TrainModel.Train train0 = (TrainModel.Train)environment.AllTrains[0];
-                    train0.DoorsOpen = true;
-                    train0.LightsOn = true;
-
+                    environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+                    environment.addTrain(new TrainModel.Train(1, new TrackModel.Block(20), environment));
                     control = new TrainModel.TrainGUI(environment);
                     break;
                 case 5: // TrainController
@@ -214,14 +199,76 @@ namespace Testing
                     TrainController.TrainController tc = new TrainController.TrainController(environment, new TrainModel.Train(0, start2, environment));
                     control = new TrainController.TrainControllerUI(tc, environment);
                     break;
-                case 10:
-                    new PrototypeDemo();
+
+                case 10: // PROTOTYPE
+
+                    // UNFINISHED
+                    #region CTC Form
+
+                    Form formCTC = new Form();
+                    UserControl controlCTC = new UserControl();
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Track form
+
+                    Form formTrack = new Form();
+                    UserControl controlTrack = new UserControl();
+                    controlTrack = new TrackModel.TrackModelGUI(environment, TrackMod);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Track Controller form
+
+                    Form formTrackController = new Form();
+                    UserControl controlTrackController = new UserControl();
+                    controlTrackController = new TrackController.TrackControllerUI(environment);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Train Model form
+
+                    Form formTrain = new Form();
+                    UserControl controlTrain = new UserControl();
+                    controlTrain = new TrainModel.TrainGUI(environment);
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Train Controller form
+
+                    Form formTrainController = new Form();
+                    UserControl controlTrainController = new UserControl();
+                    
+
+                    #endregion
+
+
+                    // UNFINISHED
+                    #region Scheduler form
+
+                    Form formScheduler = new Form();
+                    UserControl controlScheduler = new UserControl();
+
+                    #endregion
+
+
                     break;
             }
 
-            form.Controls.Add(control);
-            form.AutoSize = true;
-            form.ShowDialog();
+            if (test != 10)
+            {
+                form.Controls.Add(control);
+                form.AutoSize = true;
+                form.ShowDialog();
+            }
         }
 
         static void UnitTestFramework()
