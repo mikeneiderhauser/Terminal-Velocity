@@ -41,8 +41,6 @@ namespace Interfaces
         /// </summary>
         event EventHandler<TickEventArgs> Tick;
 
-        void Start();
-
         /// <summary>
         ///     Function to add train to AllTrains
         /// </summary>
@@ -74,16 +72,16 @@ namespace Interfaces
         long getInterval();
 
         /// <summary>
-        ///     Function to stop the environment timer -> CTC Access Only
+        ///     Function to stop the environment timer
         /// </summary>
         /// <param name="sender">ref to caller</param>
-        void stopTick(object sender);
+        void stopTick();
 
         /// <summary>
-        ///     Function to start environment timer -> CTC Access Only
+        ///     Function to start environment timer
         /// </summary>
         /// <param name="sender">ref to caller</param>
-        void startTick(object sender);
+        void startTick();
 
         /// <summary>
         ///     Function to dispatch train (sim yard)

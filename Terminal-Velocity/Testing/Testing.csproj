@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTCGUITest.cs" />
     <Compile Include="CTCOffice.Test.cs" />
     <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,9 +70,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PrototypeDemo.cs" />
     <Compile Include="TrackController.Test.cs" />
-    <Compile Include="TrackControllerTester.cs" />
+    <Compile Include="TrackModel.Test.cs" />
     <Compile Include="TrainModel.Test.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +146,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="green.csv" />
     <None Include="red.csv" />
     <None Include="Resources\green.csv" />
@@ -160,8 +159,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)"
+"$(TargetDir)\Testing.exe" unit</PostBuildEvent>
+    <PostBuildEvent>copy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)" 
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

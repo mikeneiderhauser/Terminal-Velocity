@@ -8,6 +8,8 @@ namespace SimulationEnvironment
 {
     public class SimulationEnvironment : ISimulationEnvironment
     {
+        private const long Interval = 100;
+
         #region Private Variables
 
         private readonly List<ITrainModel> _allTrains;
@@ -15,7 +17,6 @@ namespace SimulationEnvironment
 
         private readonly Timer _timer = new Timer();
         private ICTCOffice _CTCOffice;
-        private long _interval = 250;
         private long _total;
 
         #endregion
@@ -24,18 +25,37 @@ namespace SimulationEnvironment
 
         public SimulationEnvironment()
         {
-            _timer.Interval = _interval;
+            _timer.Interval = Interval;
             _timer.Elapsed += _timer_Elapsed;
 
             _allTrains = new List<ITrainModel>();
-            _sysLog = new SystemLog();
+            _sysLog = new SystemLog(this);
         }
 
         #endregion
 
+        /// <summary>
+        /// Allows explicitly starting the Tick event
+        /// Thhis is only available in debug builds and is suitable for testing
+        /// </summary>
         public void Start()
         {
-            _timer.Start();
+            #if (DEBUG)
+            if (!_timer.Enabled)
+                _timer.Start();
+            #endif
+        }
+
+        /// <summary>
+        /// Allows explicitly stopping the Tick event
+        /// This is only available in debug builds and is suitable for testing
+        /// </summary>
+        public void Stop()
+        {
+            #if (DEBUG)
+            if (_timer.Enabled)
+                _timer.Stop();
+            #endif
         }
 
         #region Public Property
@@ -83,7 +103,7 @@ namespace SimulationEnvironment
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _total += _interval;
+            _total += Interval;
             OnTick(new TickEventArgs(_total));
         }
 
@@ -119,30 +139,16 @@ namespace SimulationEnvironment
             return (long) _timer.Interval;
         }
 
-        public void stopTick(object sender)
+        public void stopTick()
         {
-            if (sender == _CTCOffice)
-            {
-                _timer.Stop();
-                sendLogEntry("Environment: Envoked Timer Stop");
-            }
-            else
-            {
-                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
-            }
+            _timer.Stop();
+            sendLogEntry("Environment: Envoked Timer Stop");
         }
 
-        public void startTick(object sender)
+        public void startTick()
         {
-            if (sender == CTCOffice)
-            {
-                _timer.Start();
-                sendLogEntry("Environment: Envoked Timer Start");
-            }
-            else
-            {
-                sendLogEntry("Environment: Attempted Envoke of stopTimer -> Caller not CTC Office: DENIED");
-            }
+            _timer.Start();
+            sendLogEntry("Environment: Envoked Timer Start");
         }
 
         public void Dispatch(IRequest request)
@@ -163,8 +169,13 @@ namespace SimulationEnvironment
                 }
             } while (!uniqueID);
 
-            //IBlock start = this.TrackModel.requestBlockInfo(0, "Red");
-            //this.addTrain(new TrainModel.Train(randomNumber, start, this));
+            
+            IBlock start = this.TrackModel.requestBlockInfo(0, request.Block.Line);
+            //detect collision on dispatch
+            if ((PrimaryTrackControllerRed.Trains.Count == 0 && start.Line.CompareTo("Red") == 0) || (PrimaryTrackControllerGreen.Trains.Count == 0 && start.Line.CompareTo("Green") == 0))
+            {
+                this.addTrain(new TrainModel.Train(randomNumber, start, this));
+            }
         }
 
         #endregion

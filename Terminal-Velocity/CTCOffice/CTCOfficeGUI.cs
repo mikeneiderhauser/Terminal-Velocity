@@ -11,57 +11,164 @@ namespace CTCOffice
 {
     public partial class CTCOfficeGUI : UserControl
     {
-        //TODO Create Speed Tool and Authority Tool
+        #region Private Variables (Some Public Events)
+        //System Hooks
+        private CTCOffice _ctcOffice;
+        private ISimulationEnvironment _environment;
+        private ResourceWrapper _res;
 
-        private readonly CTCOffice _ctcOffice;
-        private readonly ISimulationEnvironment _environment;
-        private readonly double _rate;
-        private readonly int _speedState;
-        private readonly Stopwatch watch = new Stopwatch();
+        //CTCOffice Data Containers
+        private LineData _greenLineData;
+        private LineData _redLineData;
+
+        //Timer Data
+        private double _rate;
+        private double _tickCount;
+        private int _speedState;
+
+        //Authority Tool
         private AuthorityTool _authorityTool;
         private bool _authorityToolOpen;
-        private LineData _greenLineData;
 
-        //Global Time Extension
+        //Routing Tool
+        /// <summary>
+        /// Enumeration of Route methods.
+        /// </summary>
+        private enum RoutingMode
+        {
+            Dispatch,
+            Update
+        }
 
-        //routing variables
+        public event EventHandler<RoutingToolEventArgs> RoutingToolResponse;
         private bool _inRoutingPoint;
         private LayoutCellDataContainer _lastRightClickContainer;
-        private EventHandler _layoutPiece_MouseHover;
-        private int _newAuthority;
-        private double _newSpeed;
-        private LineData _redLineData;
         private RoutingTool _routeTool;
         private RoutingMode _routeToolMode;
         private bool _routingToolOpen;
+
+        //Speed Tool
         private SpeedTool _speedTool;
         private bool _speedToolOpen;
-        private double _tickCount;
-        public event EventHandler<EventArgs> RoutingToolResponse;
 
-        //authoritytool vars
+        //Key / Legend 
+        private bool _keyOpen;
+        private Form _keyForm;
 
+        private bool _loginState;
 
+        //Public Events To Hook to the Environment
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
 
-        private void parseLineData()
+        #endregion
+
+        #region Constructor + Environment Tick
+
+        public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
+        {
+            InitializeComponent();
+            //set refs to ctc office and environment
+            _ctcOffice = ctc;
+            _environment = env;
+            _speedState = 0;
+
+            _res = _ctcOffice.Resource;
+
+            _ctcOffice.LoadData += new EventHandler<EventArgs>(_ctcOffice_LoadData);
+            _ctcOffice.UnlockLogin += new EventHandler<EventArgs>(_ctcOffice_UnlockLogin);
+            _ctcOffice.MessagesReady += new EventHandler<EventArgs>(_ctcOffice_MessagesReady);
+            _ctcOffice.UpdatedData += new EventHandler<EventArgs>(_ctcOffice_UpdatedData);
+            _loginState = false;
+
+            _btnLoginLogout.Enabled = _loginState;
+            _txtPassword.Enabled = _loginState;
+            _txtUsername.Enabled = _loginState;
+
+            _rate = 100;
+            _tickCount = 0;
+
+            //init routing vars
+            _routeTool = null;
+            _inRoutingPoint = false;
+            _routingToolOpen = false;
+            _routeToolMode = RoutingMode.Dispatch;
+
+            _lastRightClickContainer = null;
+
+            _keyForm = null;
+            _keyOpen = false;
+
+            //subscribe to Environment Tick
+            _environment.Tick += _environment_Tick;
+
+            //ensure the user is logged out
+            _ctcOffice.Logout();
+            //change button text
+            _btnLoginLogout.Text = "Login";
+
+
+            //show team logo (block out user)
+            MainDisplayLogo();
+            DisableUserControls();
+            _loginStatusImage.Image = _res.RedLight;
+            _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
+
+            UpdateMetrics();
+            RefreshStatus();
+
+            //populate red line and green line panel
+            //parseLineData();
+
+            //enables double buffering for control drawings
+            //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
+
+            //post to log that the gui has loaded
+            _environment.sendLogEntry("CTCOffice: GUI Loaded");
+        }
+
+        /// <summary>
+        /// Function to handle Environment Tick
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _environment_Tick(object sender, TickEventArgs e)
+        {
+            _tickCount++;
+            RefreshStatus();
+            if ((_tickCount >= _rate))
+            {
+                UpdateMetrics();
+
+                _tickCount = 0;
+            }
+        }
+        #endregion
+
+        #region Load Line Information
+        void _ctcOffice_LoadData(object sender, EventArgs e)
+        {
+            ParseLineData();
+        }
+
+
+        /// <summary>
+        /// Takes Line Data From CTC Office and makes interaction possible
+        /// </summary>
+        private void ParseLineData()
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(parseLineData));
+                BeginInvoke(new Action(ParseLineData));
                 return;
             }
-
-            watch.Reset();
-            watch.Start();
 
             int x = 0;
             int y = 0;
 
 
-            LineData red = _ctcOffice.getLine(0);
-            LineData green = _ctcOffice.getLine(1);
+            LineData red = _ctcOffice.GetLine(0);
+            LineData green = _ctcOffice.GetLine(1);
 
             if (_redLineData != red)
             {
@@ -72,7 +179,11 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _redLineData.Layout.GetUpperBound(1); j++)
                     {
-                        var pane = new PictureBox();
+                        LayoutCellDataContainer container = _redLineData.Layout[i, j];
+                        MakePane(i, j, x, y, container, _panelRedLine);
+
+                        /*
+                        MyPictureBox pane = new MyPictureBox(_panelRedLine,this);
                         _panelRedLine.Controls.Add(pane);
                         pane.Name = "_imgGridRed_" + i + "_" + j;
                         pane.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -80,8 +191,10 @@ namespace CTCOffice
                         pane.Location = new Point(x, y);
                         pane.Image = _redLineData.Layout[i, j].Tile;
                         pane.Tag = _redLineData.Layout[i, j];
+                        _redLineData.Layout[i, j].Panel = pane;
                         pane.MouseClick += _layoutPiece_MouseClick;
                         //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                         */
                         x += 20;
                     }
                     y += 20;
@@ -100,135 +213,152 @@ namespace CTCOffice
                 {
                     for (int j = 0; j <= _greenLineData.Layout.GetUpperBound(1); j++)
                     {
-                        var pane = new PictureBox();
+                        LayoutCellDataContainer container = _greenLineData.Layout[i, j];
+                        MakePane(i, j, x, y, container, _panelGreenLine);
+                        /*
+                        MyPictureBox pane = new MyPictureBox(_panelGreenLine,this);
                         _panelGreenLine.Controls.Add(pane);
                         pane.Name = "_imgGridGreen_" + i + "_" + j;
                         pane.SizeMode = PictureBoxSizeMode.CenterImage;
                         pane.Size = new Size(20, 20);
                         pane.Location = new Point(x, y);
+
                         pane.Image = _greenLineData.Layout[i, j].Tile;
                         pane.Tag = _greenLineData.Layout[i, j];
+
+
+                        _greenLineData.Layout[i, j].Panel = pane;
+
                         pane.MouseClick += _layoutPiece_MouseClick;
                         //pane.MouseHover += new EventHandler(this._layoutPiece_MouseHover);
+                         */
                         x += 20;
                     }
                     y += 20;
                     x = 0;
                 }
             } //end process green
-            watch.Stop();
-            Console.WriteLine(string.Format("{0} seconds {1} ms", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds));
+        }//end ParseLineData
+
+        public MyPictureBox MakePane(int i, int j, int x, int y, LayoutCellDataContainer c, Panel drawingPanel)
+        {
+            if (this.InvokeRequired)
+            {
+                //this.Invoke(new Action(this.MakePane(i,j,x,y,c,drawingPanel)));
+                //return;
+            }
+
+            MyPictureBox pane = new MyPictureBox(drawingPanel, this);
+            pane.Name = "_imgGridGreen_" + i + "_" + j;
+            pane.SizeMode = PictureBoxSizeMode.CenterImage;
+            pane.Size = new Size(20, 20);
+            pane.Location = new Point(x, y);
+            pane.Tag = c;
+            pane.Image = c.Tile;
+            c.Panel = pane;
+            TileContainerStats attribs = new TileContainerStats(i, j, x, y, c, drawingPanel);
+            pane.Attributes = attribs;
+            pane.MouseClick += _layoutPiece_MouseClick;
+            pane.ForceRedraw += _layoutPiece_ForceRedraw;
+            drawingPanel.Controls.Add(pane);
+            return pane;
         }
 
-//end ParseLineData
+        private void _layoutPiece_ForceRedraw(object sender, MyPictureBoxEventArgs e)
+        {
+            //get layout stats
+            TileContainerStats attribs = e.Attributes;
+            //remove current control from layout panel
+            attribs.LayoutPanel.Controls.Remove((Control)sender);
+            //make a new panel (automatically adds to appropriate panel)
+            MakePane(attribs.I,attribs.J,attribs.X,attribs.Y,attribs.Container,attribs.LayoutPanel);
+            //cast sender as a control
+            Control s = (Control)sender;
+            //dispose of sender
+            s.Dispose();
+        }
+
+        #endregion
+
+        #region Refresh Controls and Functions
+
+        private void _ctcOffice_MessagesReady(object sender, EventArgs e)
+        {
+            if (listSystemNotifications.Items.Count > 100)
+            {
+                listSystemNotifications.Items.Clear();
+            }
+            listSystemNotifications.Items.AddRange(_ctcOffice.SystemMessages.ToArray());
+            _ctcOffice.SystemMessages.Clear();
+        }
+
+        private void _ctcOffice_UpdatedData(object sender, EventArgs e)
+        {
+            _ctcOffice.PopulateTrack();
+        }
 
         /// <summary>
-        ///     Function to handle Environment Tick
+        /// Button To force Refresh GUI (may not be needed)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _environment_Tick(object sender, TickEventArgs e)
-        {
-            _tickCount++;
-            if (_tickCount >= _rate)
-            {
-                //updateMetrics();
-                _ctcOffice.PopulateTrack();
-                parseLineData();
-                _tickCount = 0;
-            }
-        }
-
-        private void _btnLoginLogout_Click(object sender, EventArgs e)
-        {
-            if (_ctcOffice.isAuth())
-            {
-                //if logged in.. log out
-                _ctcOffice.Logout();
-                //disable user controls (lock out op)
-                disableUserControls();
-                _loginStatusImage.Image = Resources.red;
-                _btnLoginLogout.Text = "Login";
-                mainDisplayLogo();
-                //post to log
-                _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
-            }
-            else
-            {
-                //if logged out, login
-                if (_ctcOffice.Login(_txtUsername.Text, _txtPassword.Text))
-                {
-                    //if login pass (enable controls)
-                    enableUserControls();
-                    _loginStatusImage.Image = Resources.green;
-                    //show red line tab
-                    showRedLine();
-                    //remove password
-                    _txtPassword.Text = "";
-                    //change button txt
-                    _btnLoginLogout.Text = "Logout";
-                }
-                else
-                {
-                    //if login fail (disable controls)
-                    disableUserControls();
-                    _loginStatusImage.Image = Resources.red;
-                    _btnLoginLogout.Text = "Login";
-                    //post to log
-                    _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
-                    //show logo
-                    mainDisplayLogo();
-                    //tell user invalid creds
-                    MessageBox.Show("Invalid Credentials", "Unauthorized", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-//end button LoginLogout
-
-        private void _btnDispatchTrain_Click(object sender, EventArgs e)
-        {
-            if (!_routingToolOpen)
-            {
-                //Todo -> verify Yard Line
-                IBlock block = _environment.TrackModel.requestBlockInfo(0, "Red");
-                OpenRoutingTool(block, RoutingMode.Dispatch);
-            }
-            //_ctcOffice.dispatchTrainRequest(route);
-        }
-
         private void _btnRefreshView_Click(object sender, EventArgs e)
         {
-            //TODO
-        }
-
-        private void _btnSchedule_1_Click(object sender, EventArgs e)
-        {
-            //TODO
-            //show system scheduker
-            if (ShowSchedule != null)
+            if (_systemViewTabs.SelectedIndex == 0)
             {
-                ShowSchedule(this, EventArgs.Empty);
+                //refresh red line
+                foreach (Control c in _panelRedLine.Controls)
+                {
+                    c.Refresh();
+                }
             }
-        }
 
-        private void _btnSchedule_2_Click(object sender, EventArgs e)
-        {
-            //TODO
-            //show system scheduler
-            if (ShowSchedule != null)
+            if (_systemViewTabs.SelectedIndex == 1)
             {
-                ShowSchedule(this, EventArgs.Empty);
+                //refresh green line
+                foreach (Control c in _panelGreenLine.Controls)
+                {
+                    c.Refresh();
+                }
             }
+
+            UpdateMetrics();
+            RefreshStatus();
         }
 
+        /// <summary>
+        /// Button to refresh system metrics
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _btnRefreshMetrics_Click(object sender, EventArgs e)
         {
-            updateMetrics();
+            UpdateMetrics();
         }
 
-        private void updateMetrics()
+        /// <summary>
+        /// Override Graphics Refresh (Possibly Not Needed)
+        /// </summary>
+        public override void Refresh()
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(Refresh));
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Function to update System Metrics
+        /// </summary>
+        private void UpdateMetrics()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(UpdateMetrics));
+                return;
+            }
+
             int max = 0;
             int sumPass = 0;
             int sumCrew = 0;
@@ -246,6 +376,100 @@ namespace CTCOffice
             _lblTotalMetrics.Text = (sumPass + sumCrew).ToString() + " / " + max.ToString();
         }
 
+        private void RefreshStatus()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(RefreshStatus));
+                return;
+            }
+
+            #region Environment Status
+            if (_environment != null)
+            {
+                _imgSysStatusEnvironment.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusEnvironment.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region Track Model Status
+            if (_environment.TrackModel != null)
+            {
+                if (_environment.TrackModel.RedLoaded && _environment.TrackModel.GreenLoaded)
+                {
+                    _imgSysStatusTrackModel.Image = _res.GreenLight;
+                }
+                else if (_environment.TrackModel.RedLoaded || _environment.TrackModel.GreenLoaded)
+                {
+                    _imgSysStatusTrackModel.Image = _res.YellowLight;
+                }
+                else
+                {
+                    _imgSysStatusTrackModel.Image = _res.RedLight;
+                }
+            }
+            else
+            {
+                _imgSysStatusTrackModel.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region Primary Track Controller (Red) Status
+            if (_environment.PrimaryTrackControllerRed != null)
+            {
+                _imgSysStatusTrackControllerRed.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusTrackControllerRed.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region Primary Track Controller (Green) Status
+            if (_environment.PrimaryTrackControllerGreen != null)
+            {
+                _imgSysStatusTrackControllerGreen.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusTrackControllerGreen.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region CTC Office Status
+            if (_environment.CTCOffice != null)
+            {
+                _imgSysStatusCTCOffice.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusCTCOffice.Image = _res.RedLight;
+            }
+            #endregion
+
+            #region System Scheduler Status
+            if (_environment.SystemScheduler != null)
+            {
+                _imgSysStatusSystemScheduler.Image = _res.GreenLight;
+            }
+            else
+            {
+                _imgSysStatusSystemScheduler.Image = _res.RedLight;
+            }
+            #endregion
+        }
+
+        #endregion
+
+        #region Login Control Functions
+        /// <summary>
+        /// Handles Keyboard "Enter" while in Username field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _txtUsername_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char) 13)
@@ -255,6 +479,11 @@ namespace CTCOffice
             }
         }
 
+        /// <summary>
+        /// Handles Keyboard "Enter" while in Password field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char) 13)
@@ -264,45 +493,128 @@ namespace CTCOffice
             }
         }
 
-        private void _checkAutomatedScheduling_CheckedChanged(object sender, EventArgs e)
+        private void _ctcOffice_UnlockLogin(object sender, EventArgs e)
         {
-            if (_checkAutomatedScheduling.Checked)
+            LocalUnlockLogin();
+        }
+
+        private void LocalUnlockLogin()
+        {
+            if (this.InvokeRequired)
             {
-                _ctcOffice.StartScheduling();
+                this.BeginInvoke(new Action(LocalUnlockLogin));
+                return;
+            }
+
+            if (!_loginState)
+            {
+                _loginState = true;
+                _btnLoginLogout.Enabled = _loginState;
+                _txtPassword.Enabled = _loginState;
+                _txtUsername.Enabled = _loginState;
+                //unsubscribe from unlock event
+                _ctcOffice.UnlockLogin -= _ctcOffice_UnlockLogin;
+            }
+        }
+
+        /// <summary>
+        /// Handles User interaction with login section of form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnLoginLogout_Click(object sender, EventArgs e)
+        {
+            if (_ctcOffice.IsAuth())
+            {
+                //if logged in.. log out
+                _ctcOffice.Logout();
+                //disable user controls (lock out op)
+                DisableUserControls();
+                _loginStatusImage.Image = _res.RedLight;
+                _btnLoginLogout.Text = "Login";
+                MainDisplayLogo();
+                //post to log
+                _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
             }
             else
             {
-                _ctcOffice.StopScheduling();
+                //if logged out, login
+                if (_ctcOffice.Login(_txtUsername.Text, _txtPassword.Text))
+                {
+                    //if login pass (enable controls)
+                    EnableUserControls();
+                    _loginStatusImage.Image = _res.GreenLight;
+                    //show red line tab
+                    ShowRedLine();
+                    //remove password
+                    _txtPassword.Text = "";
+                    //change button txt
+                    _btnLoginLogout.Text = "Logout";
+                }
+                else
+                {
+                    //if login fail (disable controls)
+                    DisableUserControls();
+                    _loginStatusImage.Image = _res.RedLight;
+                    _btnLoginLogout.Text = "Login";
+                    //post to log
+                    _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
+                    //show logo
+                    MainDisplayLogo();
+                    //tell user invalid creds
+                    MessageBox.Show("Invalid Credentials", "Unauthorized", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-        }
+        }//end login/logout button click
+        #endregion
 
-        private void disableUserControls()
+        #region Control Enable/Disable Functions
+        /// <summary>
+        /// Disables User controls (Except Login Controls)
+        /// </summary>
+        private void DisableUserControls()
         {
-            mainDisplayLogo();
-            setControlState(false);
+            MainDisplayLogo();
+            SetControlState(false);
         }
 
-        private void enableUserControls()
+        /// <summary>
+        /// Enables User controls
+        /// </summary>
+        private void EnableUserControls()
         {
-            setControlState(true);
+            SetControlState(true);
         }
 
-        private void mainDisplayLogo()
+        /// <summary>
+        /// Forces tab view to show Terminal Velocity Logo
+        /// </summary>
+        private void MainDisplayLogo()
         {
             _systemViewTabs.SelectedIndex = 2; //Terminal Velocity Tab
         }
 
-        private void showRedLine()
+        /// <summary>
+        /// Forces Red Line Tab View to Display
+        /// </summary>
+        private void ShowRedLine()
         {
             _systemViewTabs.SelectedIndex = 0; //Red line
         }
 
-        private void showGreenLine()
+        /// <summary>
+        /// Forces Green Line Tab View To Show
+        /// </summary>
+        private void ShowGreenLine()
         {
             _systemViewTabs.SelectedIndex = 1; //Green Line
         }
 
-        private void setControlState(bool state)
+        /// <summary>
+        /// Method to set enabled state of most controls in GUI
+        /// </summary>
+        /// <param name="state"></param>
+        private void SetControlState(bool state)
         {
             _btnDispatchTrain.Enabled = state;
             _btnSchedule_1.Enabled = state;
@@ -313,9 +625,14 @@ namespace CTCOffice
             _systemViewTabs.Enabled = state;
             _btnGlobalTime10WallSpeed.Enabled = state;
             _btnGlobalTimeWallSpeed.Enabled = state;
+            _btnShowKey.Enabled = state;
 
+            //handle simulation time event handlers
             if (state)
             {
+                _btnGlobalTimeWallSpeed.Click += new EventHandler(_btnGlobalTimeWallSpeed_Click);
+                _btnGlobalTime10WallSpeed.Click += new EventHandler(_btnGlobalTime10WallSpeed_Click);
+
                 if (_speedState == 0)
                 {
                     //at wall speed, show 10x
@@ -327,21 +644,69 @@ namespace CTCOffice
                     _btnGlobalTimeWallSpeed.Enabled = true;
                 }
             }
+            else
+            {
+                _btnGlobalTimeWallSpeed.Click -= new EventHandler(_btnGlobalTimeWallSpeed_Click);
+                _btnGlobalTime10WallSpeed.Click -= new EventHandler(_btnGlobalTime10WallSpeed_Click);
+            }
+        }
+        #endregion
+
+        #region Global Time Button Handler
+        /// <summary>
+        ///     Function to set simulation speed to normal (wall speed)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
+        {
+            _environment.setInterval(_environment.getInterval()*10);
+            _btnGlobalTimeWallSpeed.Enabled = false;
         }
 
+        /// <summary>
+        ///     Function to set simulation speed to 10x normal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
+        {
+            _environment.setInterval(_environment.getInterval()/10);
+            _btnGlobalTimeWallSpeed.Enabled = true;
+        }
+
+        /// <summary>
+        /// Handles only displaying 1 button at a time
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnGlobalTimeWallSpeed_EnabledChanged(object sender, EventArgs e)
+        {
+            //only allow 1 button to be controllable
+            _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
+        }
+        #endregion
+
+        #region Mouse Actions
+        /// <summary>
+        /// Handle Mouse Clicks in the Graphics Panel (generates Context Menus)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _layoutPiece_MouseClick(object sender, MouseEventArgs e)
         {
+            //TODO - REVIEW AND VERIFY
             if (e.Button == MouseButtons.Right && !_routingToolOpen)
             {
                 //cast sender as picturebox
-                var s = (PictureBox) sender;
+                var s = (PictureBox)sender;
 
                 //if sender data is not null (valid track piece / train piece)
                 if (s.Tag != null)
                 {
                     //TODO check if block is null
                     //Cast Tag to Data Container
-                    var c = (LayoutCellDataContainer) s.Tag;
+                    var c = (LayoutCellDataContainer)s.Tag;
 
                     if (c.Block != null)
                     {
@@ -353,8 +718,16 @@ namespace CTCOffice
                         var trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
                         trackItem.Tag = c;
 
-                        trackMenuTitles.Add("Open Track");
-                        trackMenuTitles.Add("Close Track");
+                        if (c.Block.State == StateEnum.Healthy)
+                        {
+                            trackMenuTitles.Add("Close Track");
+                        }
+                        else
+                        {
+                            trackMenuTitles.Add("Open Track");
+                        }
+                        
+                        
                         //trackMenuTitles.Add("Display Track Info");
 
                         foreach (string t in trackMenuTitles)
@@ -400,7 +773,7 @@ namespace CTCOffice
                             cm.MenuItems.Add(trainItem);
                         }
                         //Show the context menu at cursor click
-                        cm.Show((Control) sender, new Point(e.X, e.Y));
+                        cm.Show((Control)sender, new Point(e.X, e.Y));
                     }
                 } //end if tag != null
             } //end if right click
@@ -409,16 +782,19 @@ namespace CTCOffice
                 //only process info if in sub menu
                 if (_inRoutingPoint && _routeTool != null && _routingToolOpen)
                 {
-                    var s = (PictureBox) sender;
+                    var s = (PictureBox)sender;
                     //if sender data is not null (valid track piece / train piece)
                     if (s.Tag != null)
                     {
                         //Cast Tag to Data Container
-                        var c = (LayoutCellDataContainer) s.Tag;
+                        var c = (LayoutCellDataContainer)s.Tag;
                         if (c.Block != null)
                         {
                             _routeTool.EndBlock = c.Block;
-                            RoutingToolResponse(this, EventArgs.Empty);
+                            if (RoutingToolResponse != null)
+                            {
+                                RoutingToolResponse(this, new RoutingToolEventArgs(null, c.Block));
+                            }
                         }
                         else
                         {
@@ -433,12 +809,15 @@ namespace CTCOffice
             } //end if Mouse Button
         }
 
-//end event
-
+        /// <summary>
+        /// Creates the request that is sent to the PTC's
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleMenuClick(object sender, EventArgs e)
         {
-            var s = (MenuItem) sender;
-            var c = (LayoutCellDataContainer) s.Tag;
+            var s = (MenuItem)sender;
+            var c = (LayoutCellDataContainer)s.Tag;
 
             //assing last right click container
             _lastRightClickContainer = c;
@@ -459,6 +838,7 @@ namespace CTCOffice
             else if (s.Text.CompareTo("Assign Train Route") == 0)
             {
                 //get route somehow
+                //TODO
                 OpenRoutingTool(c.Block, RoutingMode.Update);
                 //_ctcOffice.assignTrainRouteRequest(c.Train.TrainID, c.Block.TrackCirID, null, c.Block);
             }
@@ -476,7 +856,6 @@ namespace CTCOffice
             }
             else if (s.Text.CompareTo("Display Train Info") == 0)
             {
-                //TODO
                 if (ShowTrain != null)
                 {
                     ShowTrain(this, new ShowTrainEventArgs(c.Train));
@@ -485,48 +864,73 @@ namespace CTCOffice
             //else do noting
         }
 
-        public override void Refresh()
+        #endregion
+
+        #region Dispatch / Scheduler Controls
+
+        /// <summary>
+        /// HandlesvButton to dispatch train
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnDispatchTrain_Click(object sender, EventArgs e)
         {
-            if (InvokeRequired)
+            if (!_routingToolOpen)
             {
-                BeginInvoke(new Action(Refresh));
-                return;
+                //Todo -> verify Yard Line
+                IBlock block = _environment.TrackModel.requestBlockInfo(0, "Red");
+                OpenRoutingTool(block, RoutingMode.Dispatch);
+            }
+            //_ctcOffice.dispatchTrainRequest(route);
+        }
+
+        /// <summary>
+        /// Throws enent to show the system scheduler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnSchedule_1_Click(object sender, EventArgs e)
+        {
+            //show system scheduker
+            if (ShowSchedule != null)
+            {
+                ShowSchedule(this, EventArgs.Empty);
             }
         }
 
-        #region Global Time Button Handlers
-
         /// <summary>
-        ///     Function to set simulation speed to normal (wall speed)
+        /// Throws enent to show the system scheduler (calles _btnSchedule_1_Clcik)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
+        private void _btnSchedule_2_Click(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()*10);
-            _btnGlobalTimeWallSpeed.Enabled = false;
+            _btnSchedule_1_Click(sender, e);
         }
 
         /// <summary>
-        ///     Function to set simulation speed to 10x normal
+        /// Handles Scheduling Checkbox and sends message to CTC Office to enable automated scheduling
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
+        private void _checkAutomatedScheduling_CheckedChanged(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()/10);
-            _btnGlobalTimeWallSpeed.Enabled = true;
-        }
+            if (_checkAutomatedScheduling.Checked)
+            {
+                _ctcOffice.StartScheduling();
+                _systemSchedulerIndicator.Image = _res.GreenLight;
+            }
+            else
+            {
+                _ctcOffice.StopScheduling();
+                _systemSchedulerIndicator.Image = null;
 
-        private void _btnGlobalTimeWallSpeed_EnabledChanged(object sender, EventArgs e)
-        {
-            //only allow 1 button to be controllable
-            _btnGlobalTime10WallSpeed.Enabled = (!_btnGlobalTimeWallSpeed.Enabled);
+            }
         }
 
         #endregion
 
-        #region Route Tool
+        #region Routing Tool
 
         private void OpenRoutingTool(IBlock start, RoutingMode requestMode)
         {
@@ -534,19 +938,17 @@ namespace CTCOffice
             _routeToolMode = requestMode;
 
             var popup = new Form();
-            var rt = new RoutingTool(this, _ctcOffice, _environment, start);
-
-            //set ctc gui ref
-            _routeTool = rt;
-
-            rt.EnablePointSelection += rt_EnablePointSelection;
-            rt.SubmitRoute += rt_SubmitRoute;
-
-            popup.Controls.Add(rt);
             popup.Text = "Routing Tool";
             popup.AutoSize = true;
+            popup.FormClosed += Popup_RoutingTool_FormClosed;
 
-            popup.FormClosed += popup_RoutingTool_FormClosed;
+            var rt = new RoutingTool(this, _ctcOffice, _environment, start);
+            //set ctc gui ref
+            _routeTool = rt;
+            _routeTool.EnablePointSelection += Rt_EnablePointSelection;
+            _routeTool.SubmitRoute += Rt_SubmitRoute;
+
+            popup.Controls.Add(_routeTool);
             popup.Show();
         }
 
@@ -555,14 +957,14 @@ namespace CTCOffice
         /// </summary>
         /// <param name="sender">RoutingTool</param>
         /// <param name="e">Standard Event Args</param>
-        private void rt_EnablePointSelection(object sender, EventArgs e)
+        private void Rt_EnablePointSelection(object sender, EventArgs e)
         {
             //enable left clicking on the blocks
             _inRoutingPoint = true;
             MessageBox.Show("Please select an end block for the point route");
         }
 
-        private void rt_SubmitRoute(object sender, RoutingToolEventArgs e)
+        private void Rt_SubmitRoute(object sender, RoutingToolEventArgs e)
         {
             IRoute r = e.Route;
 
@@ -570,6 +972,7 @@ namespace CTCOffice
             {
                 //dispatch train request
                 _ctcOffice.dispatchTrainRequest(r);
+                MessageBox.Show("Routing Selection Complete (Dispatch). Sending Request");
 
                 //close routing tool
                 if (_routeTool != null)
@@ -587,6 +990,8 @@ namespace CTCOffice
                     _lastRightClickContainer.Block
                     );
 
+                MessageBox.Show("Routing Selection Complete. Sending Request");
+
                 //close routing tool
                 if (_routeTool != null)
                 {
@@ -595,10 +1000,12 @@ namespace CTCOffice
             }
         }
 
-        private void popup_RoutingTool_FormClosed(object sender, FormClosedEventArgs e)
+        private void Popup_RoutingTool_FormClosed(object sender, FormClosedEventArgs e)
         {
             _routeTool = null;
             _routingToolOpen = false;
+            _popupIndicatorCTC.Image = null;
+            
         }
 
         #endregion
@@ -609,40 +1016,45 @@ namespace CTCOffice
         {
             if (_speedToolOpen)
             {
-                popup_SpeedTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
+                Popup_SpeedTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
             }
 
             _speedToolOpen = true;
             var popup = new Form();
-            var st = new SpeedTool(this, _ctcOffice, _environment);
-            _speedTool = st;
-
-            st.SubmitSpeed += st_SubmitSpeed;
-            popup.Controls.Add(st);
             popup.Text = "Speed Tool";
             popup.AutoSize = true;
+            popup.FormClosed += Popup_SpeedTool_FormClosed;
 
-            popup.FormClosed += popup_SpeedTool_FormClosed;
+            var st = new SpeedTool(this, _ctcOffice, _environment);
+            _speedTool = st;
+            st.SubmitSpeed += St_SubmitSpeed;
+
+            popup.Controls.Add(st);
+            _popupIndicatorCTC.Image = _res.GreenLight;
             popup.Show();
         }
 
-        private void st_SubmitSpeed(object sender, SpeedToolEventArgs e)
+        private void St_SubmitSpeed(object sender, SpeedToolEventArgs e)
         {
             double speed = e.Speed;
 
             _ctcOffice.setTrainSpeedRequest(_lastRightClickContainer.Train.TrainID,
                                             _lastRightClickContainer.Block.TrackCirID, speed,
                                             _lastRightClickContainer.Block);
+
+            MessageBox.Show("New Speed Request Sent");
+
             if (_speedTool != null)
             {
                 _speedTool.ParentForm.Close();
             }
         }
 
-        private void popup_SpeedTool_FormClosed(object sender, FormClosedEventArgs e)
+        private void Popup_SpeedTool_FormClosed(object sender, FormClosedEventArgs e)
         {
             _speedTool = null;
             _speedToolOpen = false;
+            _popupIndicatorCTC.Image = null;
         }
 
         #endregion
@@ -653,91 +1065,79 @@ namespace CTCOffice
         {
             if (_authorityToolOpen)
             {
-                popup_AuthorityTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
+                Popup_AuthorityTool_FormClosed(this, new FormClosedEventArgs(CloseReason.None));
             }
 
             _authorityToolOpen = true;
 
             var popup = new Form();
-            var at = new AuthorityTool(this, _ctcOffice, _environment);
-
-            _authorityTool = at;
-            at.SubmitAuthority += at_SubmitAuthority;
-            popup.Controls.Add(at);
-            popup.Text = "Authority Tool";
             popup.AutoSize = true;
+            popup.Text = "Authority Tool";
+            popup.FormClosed += Popup_AuthorityTool_FormClosed;
 
+            var at = new AuthorityTool(this, _ctcOffice, _environment);
+            _authorityTool = at;
+            at.SubmitAuthority += At_SubmitAuthority;
 
-            popup.FormClosed += popup_AuthorityTool_FormClosed;
+            popup.Controls.Add(at);
+            _popupIndicatorCTC.Image = _res.GreenLight;
             popup.Show();
         }
 
-        private void at_SubmitAuthority(object sender, AuthorityToolEventArgs e)
+        private void At_SubmitAuthority(object sender, AuthorityToolEventArgs e)
         {
             int authority = e.Authority;
             _ctcOffice.setTrainAuthorityRequest(_lastRightClickContainer.Train.TrainID,
                                                 _lastRightClickContainer.Block.TrackCirID, authority,
                                                 _lastRightClickContainer.Block);
+
+            MessageBox.Show("New Authority Request Sent");
+
+            if (_authorityTool != null)
+            {
+                _authorityTool.ParentForm.Close();
+            }
         }
 
-        private void popup_AuthorityTool_FormClosed(object sender, FormClosedEventArgs e)
+        private void Popup_AuthorityTool_FormClosed(object sender, FormClosedEventArgs e)
         {
             _authorityTool = null;
             _authorityToolOpen = false;
+            _popupIndicatorCTC.Image = null;
         }
 
         #endregion
 
-        #region Constructor
-
-        public CTCOfficeGUI(ISimulationEnvironment env, CTCOffice ctc)
+        #region Key / Legend Tool
+        private void _btnShowKey_Click(object sender, EventArgs e)
         {
-            InitializeComponent();
-            //set refs to ctc office and environment
-            _ctcOffice = ctc;
-            _environment = env;
-            _speedState = 0;
-
-            _rate = 100;
-            _tickCount = 0;
-
-            //init routing vars
-            _routeTool = null;
-            _inRoutingPoint = false;
-            _routingToolOpen = false;
-            _routeToolMode = RoutingMode.Dispatch;
-
-            _lastRightClickContainer = null;
-
-            //subscribe to Environment Tick
-            _environment.Tick += _environment_Tick;
-
-            //ensure the user is logged out
-            _ctcOffice.Logout();
-            //change button text
-            _btnLoginLogout.Text = "Login";
-
-
-            //show team logo (block out user)
-            mainDisplayLogo();
-            disableUserControls();
-            _loginStatusImage.Image = Resources.red;
-            _imageTeamLogo.Image = Properties.Resources.TerminalVelocity;
-
-            //populate red line and green line panel
-            parseLineData();
-
-            //post to log that the gui has loaded
-            _environment.sendLogEntry("CTCOffice: GUI Loaded");
+            if (!_keyOpen)
+            {
+                _keyForm = new Form();
+                UserControl keyInfo = new KeyInfo(_res);
+                _keyForm.AutoSize = true;
+                _keyForm.Text = "CTC Office Legend Key";
+                _keyForm.FormClosed += new FormClosedEventHandler(_keyForm_FormClosed);
+                _keyForm.Controls.Add(keyInfo);
+                _keyOpen = true;
+                _popupIndicatorCTC.Image = _res.GreenLight;
+                _keyForm.Show();
+            }
+            else
+            {
+                //display if already open
+                _keyForm.TopMost = true;
+                _keyForm.TopMost = false;
+            }
         }
 
+        private void _keyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _keyOpen = false;
+            _keyForm = null;
+            _popupIndicatorCTC.Image = null;
+        }
         #endregion
-
-        private enum RoutingMode
-        {
-            Dispatch,
-            Update
-        }
     }
 
 //end ctc gui

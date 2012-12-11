@@ -6,23 +6,64 @@ namespace CTCOffice
 {
     public class TestingTrackController : ITrackController
     {
-        private readonly List<IBlock> _blocks;
+        private int _id;
+        private List<IBlock> _blocks;
+        private List<ITrainModel> _trains;
+        private TestingTrackModel _tm;
+        private ISimulationEnvironment _env;
 
-        private readonly int _id;
-        private readonly List<IRoute> _routes;
-        private readonly List<ITrainModel> _trains;
-
-        public TestingTrackController(int id)
+        public TestingTrackController(int id, TestingTrackModel tm, ISimulationEnvironment env)
         {
             _id = id;
-            _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
-            _routes = new List<IRoute>();
+            _trains = new List<ITrainModel>();
+            _tm = tm;
+            _env = env;
         }
 
         public IRequest Request
         {
-            set { handleRequest(value); }
+            set 
+            {
+                if (TransferRequest != null)
+                {
+                    Request r = (Request)value;
+                    bool safetyCheck = true;
+                    if (r.RequestType == RequestTypes.TrackMaintenanceOpen)
+                    {
+                        IBlock b = r.Block;
+                        foreach (ITrainModel t in _env.AllTrains)
+                        {
+                            if (b.BlockID == t.CurrentBlock.BlockID)
+                            {
+                                safetyCheck = false;
+                            }
+                        }
+
+                        if (safetyCheck)
+                        {
+                            r.Block.State = StateEnum.Healthy;
+                        }
+                    }
+                    else if (r.RequestType == RequestTypes.TrackMaintenanceClose)
+                    {
+                        IBlock b = r.Block;
+                        foreach (ITrainModel t in _env.AllTrains)
+                        {
+                            if (b.BlockID == t.CurrentBlock.BlockID)
+                            {
+                                safetyCheck = false;
+                            }
+                        }
+
+                        if (safetyCheck)
+                        {
+                            r.Block.State = StateEnum.PowerFailure;
+                        }
+                    }
+                    TransferRequest(this, new RequestEventArgs(value));
+                }
+            }
         }
 
         public int ID
@@ -32,19 +73,25 @@ namespace CTCOffice
 
         public ITrackController Previous
         {
-            get { return this; }
+            get
+            {
+                return null;
+            }
             set
             {
-                //do nothing
+                //do nothing for ctc simulation
             }
         }
 
         public ITrackController Next
         {
-            get { return this; }
+            get
+            {
+                return null;
+            }
             set
             {
-                //do nothing
+                //do nothing for ctc simulation
             }
         }
 
@@ -60,27 +107,20 @@ namespace CTCOffice
 
         public List<IRoute> Routes
         {
-            get { return _routes; }
+            get { return null; }
         }
 
         public void LoadPLCProgram(string filename)
         {
-            //not used for CTC Testing. Required for interface
+            //
         }
 
-        public event EventHandler<RequestEventArgs> RequestRec;
+        public event EventHandler<EventArgs> TransferRequest;
 
-        private void handleRequest(IRequest value)
-        {
-            if (RequestRec != null)
-            {
-                RequestRec(this, new RequestEventArgs(value));
-            }
-        }
 
-        public void Recieve(object data)
+        Dictionary<int, List<IBlock>> ITrackController.Routes
         {
-            //not used for CTC Testing. Required for interface
+            get { throw new NotImplementedException(); }
         }
     }
 }

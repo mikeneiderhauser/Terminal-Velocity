@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Interfaces;
+using System.Windows.Forms;
 
 namespace CTCOffice
 {
@@ -10,6 +11,8 @@ namespace CTCOffice
             Block = null;
             Tile = null;
             Train = null;
+            BaseTile = null;
+            Panel = null;
         }
 
         public ITrainModel Train { get; set; }
@@ -17,5 +20,9 @@ namespace CTCOffice
         public IBlock Block { get; set; }
 
         public Image Tile { get; set; }
+
+        public Image BaseTile { get; set; }
+
+        public MyPictureBox Panel { get; set; }
     }
 }

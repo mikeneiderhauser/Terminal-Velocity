@@ -84,10 +84,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Environment\SimulationEnvironment.csproj">
-      <Project>{5E2B56A2-F4EE-4044-BA42-80808D162BAA}</Project>
-      <Name>SimulationEnvironment</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
@@ -100,9 +96,6 @@
       <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
       <Name>Utility</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ladder.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

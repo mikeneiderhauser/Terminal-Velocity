@@ -29,29 +29,25 @@
         private void InitializeComponent()
         {
             this.okButton = new System.Windows.Forms.Button();
-            this.loadButton = new System.Windows.Forms.Button();
             this.tcComboBox = new System.Windows.Forms.ComboBox();
             this.trainInformation = new System.Windows.Forms.GroupBox();
             this.blockGrid = new System.Windows.Forms.DataGridView();
-            this.switchGrid = new System.Windows.Forms.DataGridView();
+            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SwitchDest = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainGrid = new System.Windows.Forms.DataGridView();
-            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RouteID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcListBoxInfo = new System.Windows.Forms.ListBox();
             this.nextButton = new System.Windows.Forms.Button();
             this.prevButton = new System.Windows.Forms.Button();
             this.messageTextBox = new System.Windows.Forms.RichTextBox();
             this.tcCountBox = new System.Windows.Forms.TextBox();
             this.selectTCLabel = new System.Windows.Forms.Label();
-            this.StateBlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BlockID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RouteBlocks = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.switchGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trainGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,16 +60,6 @@
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             // 
-            // loadButton
-            // 
-            this.loadButton.Enabled = false;
-            this.loadButton.Location = new System.Drawing.Point(525, 95);
-            this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(75, 23);
-            this.loadButton.TabIndex = 1;
-            this.loadButton.Text = "Load PLC";
-            this.loadButton.UseVisualStyleBackColor = true;
-            // 
             // tcComboBox
             // 
             this.tcComboBox.FormattingEnabled = true;
@@ -85,7 +71,6 @@
             // trainInformation
             // 
             this.trainInformation.Controls.Add(this.blockGrid);
-            this.trainInformation.Controls.Add(this.switchGrid);
             this.trainInformation.Controls.Add(this.trainGrid);
             this.trainInformation.Controls.Add(this.tcListBoxInfo);
             this.trainInformation.Controls.Add(this.nextButton);
@@ -99,27 +84,35 @@
             // 
             // blockGrid
             // 
+            this.blockGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.blockGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.blockGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.BlockID,
-            this.Status});
-            this.blockGrid.Location = new System.Drawing.Point(240, 437);
+            this.StateBlockID,
+            this.State,
+            this.SwitchDest});
+            this.blockGrid.Location = new System.Drawing.Point(6, 437);
             this.blockGrid.Name = "blockGrid";
             this.blockGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.blockGrid.Size = new System.Drawing.Size(220, 150);
-            this.blockGrid.TabIndex = 12;
+            this.blockGrid.Size = new System.Drawing.Size(453, 150);
+            this.blockGrid.TabIndex = 11;
             // 
-            // switchGrid
+            // StateBlockID
             // 
-            this.switchGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.switchGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.StateBlockID,
-            this.State});
-            this.switchGrid.Location = new System.Drawing.Point(6, 437);
-            this.switchGrid.Name = "switchGrid";
-            this.switchGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.switchGrid.Size = new System.Drawing.Size(220, 150);
-            this.switchGrid.TabIndex = 11;
+            this.StateBlockID.HeaderText = "Block ID";
+            this.StateBlockID.Name = "StateBlockID";
+            this.StateBlockID.ReadOnly = true;
+            // 
+            // State
+            // 
+            this.State.HeaderText = "State";
+            this.State.Name = "State";
+            this.State.ReadOnly = true;
+            // 
+            // SwitchDest
+            // 
+            this.SwitchDest.HeaderText = "Switch Destination";
+            this.SwitchDest.Name = "SwitchDest";
+            this.SwitchDest.ReadOnly = true;
             // 
             // trainGrid
             // 
@@ -127,7 +120,7 @@
             this.trainGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.trainGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TrainID,
-            this.RouteID,
+            this.RouteBlocks,
             this.Authority,
             this.Speed});
             this.trainGrid.Location = new System.Drawing.Point(6, 292);
@@ -136,30 +129,6 @@
             this.trainGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.trainGrid.Size = new System.Drawing.Size(453, 139);
             this.trainGrid.TabIndex = 10;
-            // 
-            // TrainID
-            // 
-            this.TrainID.HeaderText = "Train ID";
-            this.TrainID.Name = "TrainID";
-            this.TrainID.ReadOnly = true;
-            // 
-            // RouteID
-            // 
-            this.RouteID.HeaderText = "Route ID";
-            this.RouteID.Name = "RouteID";
-            this.RouteID.ReadOnly = true;
-            // 
-            // Authority
-            // 
-            this.Authority.HeaderText = "Authority";
-            this.Authority.Name = "Authority";
-            this.Authority.ReadOnly = true;
-            // 
-            // Speed
-            // 
-            this.Speed.HeaderText = "Speed";
-            this.Speed.Name = "Speed";
-            this.Speed.ReadOnly = true;
             // 
             // tcListBoxInfo
             // 
@@ -177,7 +146,7 @@
             this.nextButton.TabIndex = 8;
             this.nextButton.Text = "Next TC";
             this.nextButton.UseVisualStyleBackColor = true;
-            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            this.nextButton.Click += new System.EventHandler(this.NextButtonClick);
             // 
             // prevButton
             // 
@@ -187,7 +156,7 @@
             this.prevButton.TabIndex = 7;
             this.prevButton.Text = "Prev TC";
             this.prevButton.UseVisualStyleBackColor = true;
-            this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
+            this.prevButton.Click += new System.EventHandler(this.PrevButtonClick);
             // 
             // messageTextBox
             // 
@@ -215,31 +184,31 @@
             this.selectTCLabel.TabIndex = 6;
             this.selectTCLabel.Text = "Select Track Controller";
             // 
-            // StateBlockID
+            // TrainID
             // 
-            this.StateBlockID.HeaderText = "Block ID";
-            this.StateBlockID.Name = "StateBlockID";
-            this.StateBlockID.ReadOnly = true;
+            this.TrainID.HeaderText = "Train ID";
+            this.TrainID.Name = "TrainID";
+            this.TrainID.ReadOnly = true;
             // 
-            // State
+            // RouteBlocks
             // 
-            this.State.HeaderText = "State";
-            this.State.Name = "State";
-            this.State.ReadOnly = true;
+            this.RouteBlocks.HeaderText = "Route Blocks";
+            this.RouteBlocks.Name = "RouteBlocks";
+            this.RouteBlocks.ReadOnly = true;
             // 
-            // BlockID
+            // Authority
             // 
-            this.BlockID.HeaderText = "Block ID";
-            this.BlockID.Name = "BlockID";
-            this.BlockID.ReadOnly = true;
+            this.Authority.HeaderText = "Authority";
+            this.Authority.Name = "Authority";
+            this.Authority.ReadOnly = true;
             // 
-            // Status
+            // Speed
             // 
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
+            this.Speed.HeaderText = "Speed";
+            this.Speed.Name = "Speed";
+            this.Speed.ReadOnly = true;
             // 
-            // TrackControllerUI
+            // TrackControllerUi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -248,13 +217,11 @@
             this.Controls.Add(this.messageTextBox);
             this.Controls.Add(this.trainInformation);
             this.Controls.Add(this.tcComboBox);
-            this.Controls.Add(this.loadButton);
             this.Controls.Add(this.okButton);
             this.Name = "TrackControllerUi";
             this.Size = new System.Drawing.Size(600, 600);
             this.trainInformation.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.switchGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trainGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -264,11 +231,9 @@
         #endregion
 
         private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.ComboBox tcComboBox;
         private System.Windows.Forms.GroupBox trainInformation;
         private System.Windows.Forms.DataGridView blockGrid;
-        private System.Windows.Forms.DataGridView switchGrid;
         private System.Windows.Forms.DataGridView trainGrid;
         private System.Windows.Forms.ListBox tcListBoxInfo;
         private System.Windows.Forms.Button nextButton;
@@ -276,13 +241,12 @@
         private System.Windows.Forms.RichTextBox messageTextBox;
         private System.Windows.Forms.TextBox tcCountBox;
         private System.Windows.Forms.Label selectTCLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TrainID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RouteID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Authority;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Speed;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BlockID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn StateBlockID;
         private System.Windows.Forms.DataGridViewTextBoxColumn State;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SwitchDest;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrainID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RouteBlocks;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Authority;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Speed;
     }
 }

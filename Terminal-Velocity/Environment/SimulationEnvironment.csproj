@@ -56,16 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SimulationEnvironment.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28c944f8-df4a-498b-987f-cead8c41e028}</Project>
       <Name>Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{13141eb7-9f8e-4685-899f-5c1e26e69c46}</Project>
     </ProjectReference>
     <Compile Include="Route.cs" />
     <Compile Include="Status.cs" />
@@ -94,6 +90,10 @@
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{28C944F8-DF4A-498B-987F-CEAD8C41E028}</Project>
       <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrainModel\TrainModel.csproj">
+      <Project>{66EE0E67-8ABC-4764-B68D-AE0CCDB63128}</Project>
+      <Name>TrainModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{13141EB7-9F8E-4685-899F-5C1E26E69C46}</Project>

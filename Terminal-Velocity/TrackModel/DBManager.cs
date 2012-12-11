@@ -11,13 +11,23 @@ namespace TrackModel
         //Private parameters
         private readonly SQLiteConnection _dbCon;
 
+        /// <summary>
+        /// A public constructor allowing the Track Model or outside modules to create a DB Manager
+        /// </summary>
+        /// <param name="con">A connection to an SQLite database</param>
         public DBManager(SQLiteConnection con)
         {
             _dbCon = con;
         }
 
 
-        //Public methods
+        /// <summary>
+        /// A public method which creates a SQL query for use on the database
+        /// </summary>
+        /// <param name="qType">A string representing the query type: either BLOCK or ROUTE</param>
+        /// <param name="ID"> The ID of the object required</param>
+        /// <param name="line">The name of the line required: either "Red" or "Green"</param>
+        /// <returns>The SQL query stored as a string</returns>
         public String createQueryString(string qType, int ID, string line)
         {
             //Check basic ID validity
@@ -95,15 +105,15 @@ namespace TrackModel
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close(); //Close reader
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //tempReader.Close(); //Close reader
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return false;
             }
         }
@@ -122,15 +132,15 @@ namespace TrackModel
             {
                 SQLiteDataReader tempReader = selCom.ExecuteReader();
                 bool exists = tempReader.HasRows;
-                tempReader.Close(); //Close reader
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //tempReader.Close(); //Close reader
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 return exists;
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return false;
             }
         }
@@ -138,6 +148,13 @@ namespace TrackModel
         //Allows updates types of "SWITCH" or "BLOCK"
         //	SWITCH updates only affect the switch
         //	BLOCK updates are allowed to update state info, track circuit info, heater info
+
+        /// <summary>
+        /// A public method allowing modules to create an SQL update statement
+        /// </summary>
+        /// <param name="updateType">A string representing the update type: either "SWITCH" or "BLOCK"</param>
+        /// <param name="bToUpdate">An IBlock object holding changed values needed to update the database</param>
+        /// <returns>A SQL update statement in the form of a string</returns>
         public String createUpdate(string updateType, IBlock bToUpdate)
         {
             //Check that block isnt null
@@ -147,7 +164,7 @@ namespace TrackModel
             //Get block ID and check that it exists
             int bID = bToUpdate.BlockID;
             string line = bToUpdate.Line;
-            bool exists = blockExists(bID, "Red");
+            bool exists = blockExists(bID,line);
             if (!exists)
                 return null;
 
@@ -161,7 +178,7 @@ namespace TrackModel
             {
                 //Create switch update string
                 string updateString = "UPDATE BLOCKS " +
-                                      "SET dest1=" + bToUpdate.SwitchDest2 + ", dest2=" + bToUpdate.SwitchDest1 +
+                                      "SET dest1=" + bToUpdate.SwitchDest1 + ", dest2=" + bToUpdate.SwitchDest2 +
                                       " WHERE blockID=" + bID + " AND line='" + line + "'";
                 return updateString;
             }
@@ -190,6 +207,13 @@ namespace TrackModel
             }
         }
 
+        /// <summary>
+        /// A public method used for creating valid insert statements on the database.  This method was
+        /// deprecated early on, and should not be used.  The DBCreator class should instead by used for
+        /// inserting into the database.
+        /// </summary>
+        /// <param name="b">The block to be inserted into the database</param>
+        /// <returns>A SQL insert statement stored as a string</returns>
         public String createInsert(Block b)
         {
             //Looking back, im not sure why I thought I needed this method.
@@ -200,9 +224,12 @@ namespace TrackModel
         }
 
 
-        //Return type should be changed into some sort of
-        //SQLResults object after I examine the libraries
-        //and classes used for this type of thing in C#
+        /// <summary>
+        /// A public method allowing outside modules to run valid SQL queries.  The only supported queries
+        /// are those created with the create* methods included in this DBManager class
+        /// </summary>
+        /// <param name="sqlQuery">A sqlQuery provided by the createQuery method</param>
+        /// <returns>A SQLiteDataReader object holding the results of the query</returns>
         public SQLiteDataReader runQuery(string sqlQuery)
         {
             if (_dbCon.State != ConnectionState.Open)
@@ -218,13 +245,18 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return null;
             }
         }
 
 
+        /// <summary>
+        /// A public method allowing outside modules, and the Track Model to run updates to the database
+        /// </summary>
+        /// <param name="sqlUpdate">A SQL Update provided by the createUpdate method in the DBManager</param>
+        /// <returns>A boolean value denoting the success or failure of the update</returns>
         public bool runUpdate(string sqlUpdate)
         {
             if (_dbCon == null)
@@ -238,8 +270,8 @@ namespace TrackModel
             {
                 int res = updateCom.ExecuteNonQuery(); //Exec CREATE
                 //Console.WriteLine(res);
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -247,13 +279,19 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
         }
 
+        /// <summary>
+        /// A public method allowing outside modules to run insertion statements
+        /// on the database.
+        /// </summary>
+        /// <param name="sqlInsert">This is a valid SQL insert provided by the createInsert method</param>
+        /// <returns>A boolean denoting the success or failure of the insert operation.</returns>
         public bool runInsert(string sqlInsert)
         {
             if (_dbCon == null)
@@ -267,8 +305,8 @@ namespace TrackModel
             {
                 int res = insertCom.ExecuteNonQuery(); //Exec insert
                 //Console.WriteLine(res);
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close(); //CLOSE DB
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close(); //CLOSE DB
                 if (res != 1)
                     return false;
                 else
@@ -276,8 +314,8 @@ namespace TrackModel
             }
             catch (Exception)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 //Console.WriteLine(crap.Message.ToStrin
                 return false;
             }
@@ -287,6 +325,13 @@ namespace TrackModel
         //Argument to this function shouldbe changed
         //into the SQLResults object returned from
         //runQuery() above
+
+        /// <summary>
+        /// A public method allowing the track model and other modules to format 
+        /// database query results into coherent Block objects
+        /// </summary>
+        /// <param name="bR">The SQLiteDataReader containing the results of the query</param>
+        /// <returns>A valid Block object, or null in the case of an error</returns>
         public Block formatBlockQueryResults(SQLiteDataReader bR)
         {
             Block tempBlock = null;
@@ -296,13 +341,14 @@ namespace TrackModel
                 while (bR.Read())
                 {
                     //Get all fields for a given block
-                    string line = null, infra = null, grade = null, locX = null, locY = null, bSize = null, dir = null;
-                    string state = null, prev = null, dest1 = null, dest2 = null, trackCirID = null;
+                    string line = null, infra = null, dir = null;
+                    string state = null;
 
                     int bIDFinal = -1, locXFinal = -1, locYFinal = -1;
                     double sEFinal = -1.0, gradeFinal = -1.0, bSizeFinal = -1.0;
                     int prevFinal = -1, dest1Final = -1, dest2Final = -1;
                     int trackCirIDFinal = -1;
+                    int speedLimitFinal = -1;
                     try
                     {
                         bIDFinal = bR.GetInt32(bR.GetOrdinal("blockID"));
@@ -321,6 +367,7 @@ namespace TrackModel
                             dest1Final = bR.GetInt32(bR.GetOrdinal("dest1"));
                             dest2Final = bR.GetInt32(bR.GetOrdinal("dest2"));
                             trackCirIDFinal = bR.GetInt32(bR.GetOrdinal("trackCirID"));
+                            speedLimitFinal = bR.GetInt32(bR.GetOrdinal("speedLimit"));
                         }
                     }
                     catch (Exception e)
@@ -339,7 +386,7 @@ namespace TrackModel
                     locFinal[1] = locYFinal;
 
                     tempBlock = new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
-                                          dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line);
+                                          dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line,speedLimitFinal);
                     i++; //Inc counter
                 }
             }
@@ -357,6 +404,13 @@ namespace TrackModel
         //Argument to this function should be changed
         //into the SQLResults object returned from
         //runQuery above (and used in fQR above)
+
+        /// <summary>
+        /// A public method allowing the Track Model and external modules to format 
+        /// database queries into coherent RouteInfo objects
+        /// </summary>
+        /// <param name="rr">A SQLiteDataReader object provided by the runQuery method in the DBManager</param>
+        /// <returns>A valid RouteInfo object, or null in the case of a database error.</returns>
         public RouteInfo formatRouteQueryResults(SQLiteDataReader rr)
         {
             if (rr == null)
@@ -371,6 +425,7 @@ namespace TrackModel
             double sEFinal = -1.0, gradeFinal = -0.0, bSizeFinal = -1.0;
             int dest1Final = -1, dest2Final = -1, prevFinal = -1;
             int trackCirIDFinal = -1;
+            int speedLimitFinal =-1;
             while (rr.Read())
             {
                 //Get all fields for a given block
@@ -379,20 +434,17 @@ namespace TrackModel
                 string infra = rr.GetString(rr.GetOrdinal("infra"));
                 string dir = rr.GetString(rr.GetOrdinal("dir"));
                 string state = rr.GetString(rr.GetOrdinal("state"));
-                if (bIDFinal != 0)
-                {
-                    sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
-                    gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
-                    locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
-                    locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
+                sEFinal = rr.GetDouble(rr.GetOrdinal("starting_elev"));
+                gradeFinal = rr.GetDouble(rr.GetOrdinal("grade"));
+                bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
+                trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
+                speedLimitFinal = rr.GetInt32(rr.GetOrdinal("speedLimit"));
+                locXFinal = rr.GetInt32(rr.GetOrdinal("locX"));
+                locYFinal = rr.GetInt32(rr.GetOrdinal("locY"));
 
-                    bSizeFinal = rr.GetDouble(rr.GetOrdinal("bSize"));
-
-                    prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
-                    dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
-                    dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
-                    trackCirIDFinal = rr.GetInt32(rr.GetOrdinal("trackCirID"));
-                }
+                prevFinal = rr.GetInt32(rr.GetOrdinal("prev"));
+                dest1Final = rr.GetInt32(rr.GetOrdinal("dest1"));
+                dest2Final = rr.GetInt32(rr.GetOrdinal("dest2"));
 
                 //////////////////////////////////////////////////////////////////////
                 //Parse fields that must be provided as a different type
@@ -405,15 +457,15 @@ namespace TrackModel
                 locFinal[1] = locYFinal;
 
                 blockList.Add(new Block(bIDFinal, stateFinal, prevFinal, sEFinal, gradeFinal, locFinal, bSizeFinal,
-                                        dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line));
+                                        dirFinal, infraFinal, dest1Final, dest2Final, trackCirIDFinal, line,speedLimitFinal));
                 nBlocks++;
             }
 
             //If we didnt find any blocks, give up.
             if (nBlocks == 0)
             {
-                if (_dbCon.State != ConnectionState.Closed)
-                    _dbCon.Close();
+                //if (_dbCon.State != ConnectionState.Closed)
+                  //  _dbCon.Close();
                 return null;
             }
 
@@ -432,8 +484,8 @@ namespace TrackModel
             int eID = 0;
 
             var tempRoute = new RouteInfo(rID, rName, nBlocks, blocks, sID, eID);
-            if (_dbCon.State != ConnectionState.Closed)
-                _dbCon.Close();
+            //if (_dbCon.State != ConnectionState.Closed)
+              //  _dbCon.Close();
             return tempRoute;
         }
 

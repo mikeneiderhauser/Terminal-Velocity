@@ -12,8 +12,6 @@ namespace Interfaces
 
         List<ITrainModel> Trains { get; }
         List<IBlock> Blocks { get; }
-        List<IRoute> Routes { get; }
-
-        void LoadPLCProgram(string filename);
+        Dictionary<int, List<IBlock>>  Routes { get; }
     }
 }
