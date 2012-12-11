@@ -13,9 +13,9 @@ namespace TrackController
         private List<ITrainModel> _trains;
         private TrackController _current;
 
-        public TrackControllerUi(ISimulationEnvironment e)
+        public TrackControllerUi(ISimulationEnvironment e, ITrackController primary)
         {
-            _current = (TrackController) e.PrimaryTrackControllerGreen;
+            _current = (TrackController) primary;
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
             _routes = Tc.Routes;

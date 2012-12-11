@@ -14,9 +14,11 @@ namespace TerminalVelocity
 {
     public class Program
     {
-        static Form ctcForm;
-        static Form schedulerForm;
-        static Form trackModelForm;
+        static Form _ctcForm;
+        static Form _schedulerForm;
+        static Form _trackModelForm;
+        static Form _redTrackControllerForm;
+        static Form _greenTrackControllerForm;
 
         [STAThread]
         static void Main()
@@ -39,23 +41,42 @@ namespace TerminalVelocity
             SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(e, ctcOffice);
             SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
 
+            // TrackControllerUI
+            if (e.PrimaryTrackControllerRed != null)
+            {
+                TrackControllerUi redTrackControllerGui = new TrackControllerUi(e, e.PrimaryTrackControllerRed);
+                _redTrackControllerForm = new Form() { Controls = { redTrackControllerGui }, TopLevel = true, AutoSize = true, Parent = null };
+            }
+            if (e.PrimaryTrackControllerGreen != null)
+            {
+                TrackControllerUi greenTrackControllerGui = new TrackControllerUi(e, e.PrimaryTrackControllerGreen);
+                _greenTrackControllerForm = new Form() { Controls = { greenTrackControllerGui }, TopLevel = true, AutoSize = true, Parent = null };
+            }
+
             // Setup environment
             e.SystemScheduler = scheduler;
             e.TrackModel = trackModel;
 
-            ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
-            schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
-            trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null };
+            _ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
+            _schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
+            _trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null };
+           
+            
 
-            ctcForm.Shown += new EventHandler(ctcForm_Shown);
+            _ctcForm.Shown += new EventHandler(CtcFormShown);
 
-            Application.Run(ctcForm);
+            Application.Run(_ctcForm);
         }
 
-        static void ctcForm_Shown(object sender, EventArgs e)
+        static void CtcFormShown(object sender, EventArgs e)
         {
             //schedulerForm.ShowDialog(ctcForm);
-            trackModelForm.Show();
+            _trackModelForm.Show();
+
+            if (_redTrackControllerForm != null)
+                _redTrackControllerForm.Show();
+            if (_greenTrackControllerForm != null)
+                _greenTrackControllerForm.Show();
         }
     }
 }

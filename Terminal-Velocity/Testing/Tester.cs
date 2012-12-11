@@ -194,7 +194,7 @@ namespace Testing
 
                     prevCircuit.Trains.Add(0, t);
 
-                    control = new TrackControllerUi(environment);
+                    control = new TrackControllerUi(environment, environment.PrimaryTrackControllerRed);
                     break;
                 case 4: // TrainModel
                     var loc = new int[2];
