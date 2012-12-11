@@ -83,6 +83,7 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
+            this._btnOpenUserManual = new System.Windows.Forms.Button();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
@@ -178,6 +179,7 @@
             // 
             // _groupOperatorControls
             // 
+            this._groupOperatorControls.Controls.Add(this._btnOpenUserManual);
             this._groupOperatorControls.Controls.Add(this._btnShowKey);
             this._groupOperatorControls.Controls.Add(this._btnRefreshView);
             this._groupOperatorControls.Controls.Add(this._btnDispatchTrain);
@@ -664,6 +666,15 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
+            // _btnOpenUserManual
+            // 
+            this._btnOpenUserManual.Location = new System.Drawing.Point(112, 58);
+            this._btnOpenUserManual.Name = "_btnOpenUserManual";
+            this._btnOpenUserManual.Size = new System.Drawing.Size(100, 23);
+            this._btnOpenUserManual.TabIndex = 4;
+            this._btnOpenUserManual.Text = "User Manual";
+            this._btnOpenUserManual.UseVisualStyleBackColor = true;
+            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -762,6 +773,7 @@
         private System.Windows.Forms.PictureBox _popupIndicatorCTC;
         private System.Windows.Forms.Button _btnShowKey;
         private System.Windows.Forms.PictureBox _systemSchedulerIndicator;
+        private System.Windows.Forms.Button _btnOpenUserManual;
 
     }
 }

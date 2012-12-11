@@ -71,7 +71,7 @@
             this.Controls.Add(this._panelRequestGreen);
             this.Controls.Add(this._panelCTC);
             this.Name = "OfficeGUITest";
-            this.Size = new System.Drawing.Size(1525, 780);
+            this.Size = new System.Drawing.Size(1525, 813);
             this.ResumeLayout(false);
 
         }
