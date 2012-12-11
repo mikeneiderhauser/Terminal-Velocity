@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTCGUITest.cs" />
     <Compile Include="CTCOffice.Test.cs" />
     <Compile Include="GUITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,6 +161,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)"
 "$(TargetDir)\Testing.exe" unit</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)" "$(TargetDir)\Testing.exe" unit</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

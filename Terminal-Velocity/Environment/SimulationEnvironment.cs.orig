@@ -35,6 +35,8 @@ namespace SimulationEnvironment
 
         #endregion
 
+<<<<<<< HEAD
+=======
         /// <summary>
         /// Allows explicitly starting the Tick event
         /// Thhis is only available in debug builds and is suitable for testing
@@ -59,6 +61,7 @@ namespace SimulationEnvironment
             #endif
         }
 
+>>>>>>> master
         #region Public Property
 
         public ICTCOffice CTCOffice
@@ -142,14 +145,29 @@ namespace SimulationEnvironment
 
         public void stopTick()
         {
-            _timer.Stop();
-            sendLogEntry("Environment: Envoked Timer Stop");
+            try
+            {
+                _timer.Stop();
+                sendLogEntry("Environment: Envoked Timer Stop");
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void startTick()
         {
-            _timer.Start();
-            sendLogEntry("Environment: Envoked Timer Start");
+            try
+            {
+                _timer.Start();
+                sendLogEntry("Environment: Envoked Timer Start");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
         public void Dispatch(IRequest request)

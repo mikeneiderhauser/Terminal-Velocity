@@ -124,7 +124,7 @@ namespace TrackModel
         {
             for (int i = 0; i < _attributes.Length; i++)
             {
-                if (_attributes[i].Equals("TUNNEL", StringComparison.Ordinal))
+                if (_attributes[i].Equals("UNDERGROUND", StringComparison.Ordinal))
                 {
                     return true;
                 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Interfaces;
+using Utility.Properties;
 
 namespace CTCOffice
 {
@@ -10,17 +11,25 @@ namespace CTCOffice
         private ISimulationEnvironment _env;
         private LayoutCellDataContainer[,] _layout;
         private List<ITrainModel> _trains;
-        private ResourceWrapper _res;
 
-        public LineData(IBlock[,] layout, ISimulationEnvironment env, ResourceWrapper res)
+        private static Bitmap _redTrack;
+        private static Bitmap _greenTrack;
+        private static Bitmap _unpopulated;
+        private static Bitmap _trackError;
+
+        public LineData(IBlock[,] layout, ISimulationEnvironment env)
         {
+            // mds
+            _redTrack = Resources.RedTrack;
+            _greenTrack = Resources.GreenTrack;
+            _unpopulated = Resources.Unpopulated;
+            _trackError = Resources.TrackError;
+
             _env = env;
-            _res = res;
             _trains = new List<ITrainModel>();
             _blocks = new List<IBlock>();
             _layout = new LayoutCellDataContainer[layout.GetUpperBound(0) + 1,layout.GetUpperBound(1) + 1];
 
-            
             //for each item in the 1st dimension (row)
             for (int i = 0; i <= layout.GetUpperBound(0); i++)
             {
@@ -34,8 +43,11 @@ namespace CTCOffice
                     if (layout[i, j] == null)
                     {
                         //null container
-                        container.BaseTile = _res.Unpopulated;
-                        container.Tile = container.BaseTile;
+<<<<<<< HEAD
+                        container.BaseTile = Resources.Unpopulated;
+=======
+                        container.Tile = _unpopulated;
+>>>>>>> master
                         container.Block = null;
                         container.Train = null;
                     }
@@ -50,20 +62,31 @@ namespace CTCOffice
                             layout[i, j].Line.CompareTo("R") == 0 || layout[i, j].Line.CompareTo("r") == 0)
                         {
                             //red line
-                            container.BaseTile = GetBlockType(container.Block);
-                            container.Tile = container.BaseTile;
+<<<<<<< HEAD
+                            //container.BaseTile = Resources.RedTrack;
+                            container.BaseTile = ParseTrackType(layout[i, j]);
+=======
+                            container.Tile = _redTrack;
+>>>>>>> master
                         }
                         else if (layout[i, j].Line.CompareTo("Green") == 0 || layout[i, j].Line.CompareTo("green") == 0 ||
                                  layout[i, j].Line.CompareTo("G") == 0 || layout[i, j].Line.CompareTo("g") == 0)
                         {
                             //green line
-                            container.BaseTile = GetBlockType(container.Block);
-                            container.Tile = container.BaseTile;
+<<<<<<< HEAD
+                            container.BaseTile = Resources.GreenTrack;
+                            container.BaseTile = ParseTrackType(layout[i, j]);
                         }
                         else
                         {
-                            container.BaseTile = _res.TrackError;
-                            container.Tile = container.BaseTile;
+                            container.BaseTile = Resources.TrackError;
+=======
+                            container.Tile = _greenTrack;
+                        }
+                        else
+                        {
+                            container.Tile = _trackError;
+>>>>>>> master
                             env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
@@ -73,6 +96,34 @@ namespace CTCOffice
                     _layout[i, j] = container;
                 } //end for 2nd dimension
             } //end for 1st dimentsion
+        }
+
+        private System.Drawing.Image ParseTrackType(IBlock block)
+        {
+            if(block.Line.CompareTo("Red")!=0)
+            {
+                //red
+                if (block.hasSwitch()) { return Resources.RedTrack_Switch; }
+                if (block.hasTunnel()) { return Resources.RedTrack_Tunnel; }
+                if (block.hasHeater()) { return Resources.RedTrack_Heater; }
+                if (block.hasCrossing()) { return Resources.RedTrack_Crossing; }
+                if (block.hasStation()) { return Resources.RedTrack_Station; }
+                return Resources.Unpopulated;
+            }
+            else if (block.Line.CompareTo("Green") != 0)
+            {
+                //green
+                if (block.hasSwitch()) { return Resources.GreenTrack_Switch; }
+                if (block.hasTunnel()) { return Resources.GreenTrack_Tunnel; }
+                if (block.hasHeater()) { return Resources.GreenTrack_Heater; }
+                if (block.hasCrossing()) { return Resources.GreenTrack_Crossing; }
+                if (block.hasStation()) { return Resources.GreenTrack_Station; }
+                return Resources.Unpopulated;
+            }
+            else
+            {
+                return Resources.Unpopulated;
+            }
         }
 
 //end constructor
@@ -107,7 +158,7 @@ namespace CTCOffice
             foreach (ITrainModel t in _trains)
             {
                 //check if train ID's match.. need ITrain class to implement
-                if (train.TrainID == t.TrainID)
+                if (toRemove.TrainID == t.TrainID)
                 {
                     toRemove = t;
                     break;
@@ -122,59 +173,45 @@ namespace CTCOffice
             _blocks.Add(block);
         }
 
-        public Bitmap GetBlockType(IBlock block)
+        public void RemoveBlock(IBlock block)
         {
-
-            if (block.Line.CompareTo("Red") == 0)
+            if (block != null)
             {
-                //red
-                if (block.State != StateEnum.Healthy) 
-                { 
-                    return _res.RedTrackClosed; 
+                if (_blocks.Contains(block))
+                {
+                    _blocks.Remove(block);
                 }
-                if (block.hasSwitch()) { return _res.RedTrackSwitch; }
-                if (block.hasTunnel()) { return _res.RedTrackTunnel; }
-                if (block.hasHeater()) { return _res.RedTrackHeater; }
-                if (block.hasCrossing()) { return _res.RedTrackCrossing; }
-                if (block.hasStation()) { return _res.RedTrackStation; }
-                return _res.RedTrack;
-            }
-            else if (block.Line.CompareTo("Green") == 0)
-            {
-                //green
-                if (block.State != StateEnum.Healthy) { return _res.GreenTrackClosed; }
-                if (block.hasSwitch()) { return _res.GreenTrackSwitch; }
-                if (block.hasTunnel()) { return _res.GreenTrackTunnel; }
-                if (block.hasHeater()) { return _res.GreenTrackHeater; }
-                if (block.hasCrossing()) { return _res.GreenTrackCrossing; }
-                if (block.hasStation()) { return _res.GreenTrackStation; }
-                return _res.GreenTrack;
-            }
-            else
-            {
-                return _res.TrackError;
             }
         }
 
-        public LayoutCellDataContainer TriangulateContainer(IBlock block)
+        public int[] TriangulateBlock(IBlock block)
         {
-            //for each item in the 1st dimension (row)
-            for (int i = 0; i <= _layout.GetUpperBound(0); i++)
+            int[] index = new int[2]{-1,-1};
+
+            int i = 0;
+            int j = 0;
+            for (i = 0; i <= _layout.GetUpperBound(0); i++)
             {
-                //for each item in the 2nd dimension (col)
-                for (int j = 0; j <= _layout.GetUpperBound(1); j++)
+                for (j = 0; j <= _layout.GetUpperBound(1); j++)
                 {
-                    if (_layout[i, j].Block != null)
+                    if (_layout[i, j] != null)
                     {
                         if (block.BlockID == _layout[i, j].Block.BlockID)
                         {
-                            return _layout[i, j];
+                            index[0] = i;
+                            index[1] = j;
+                            return index;
                         }
                     }
                 }
             }
 
             return null;
+        }//end triangulate block
+
+        public void UpdateBlock(int listIndex, int layoutX, int layoutY, StateEnum state)
+        {
+
         }
     }
 }

@@ -109,6 +109,39 @@
   <ItemGroup>
     <None Include="Resources\RedTrack_Closed.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Tunnel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Switch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Station.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Heater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedTrack_Crossing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Tunnel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Switch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Station.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Heater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTrack_Crossing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Train.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
