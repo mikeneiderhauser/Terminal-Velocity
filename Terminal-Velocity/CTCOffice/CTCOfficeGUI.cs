@@ -40,7 +40,7 @@ namespace CTCOffice
             Update
         }
 
-        public event EventHandler<EventArgs> RoutingToolResponse;
+        public event EventHandler<RoutingToolEventArgs> RoutingToolResponse;
         private bool _inRoutingPoint;
         private LayoutCellDataContainer _lastRightClickContainer;
         private RoutingTool _routeTool;
@@ -791,7 +791,10 @@ namespace CTCOffice
                         if (c.Block != null)
                         {
                             _routeTool.EndBlock = c.Block;
-                            RoutingToolResponse(this, EventArgs.Empty);
+                            if (RoutingToolResponse != null)
+                            {
+                                RoutingToolResponse(this, new RoutingToolEventArgs(null, c.Block));
+                            }
                         }
                         else
                         {
@@ -942,10 +945,10 @@ namespace CTCOffice
             var rt = new RoutingTool(this, _ctcOffice, _environment, start);
             //set ctc gui ref
             _routeTool = rt;
-            rt.EnablePointSelection += Rt_EnablePointSelection;
-            rt.SubmitRoute += Rt_SubmitRoute;
+            _routeTool.EnablePointSelection += Rt_EnablePointSelection;
+            _routeTool.SubmitRoute += Rt_SubmitRoute;
 
-            popup.Controls.Add(rt);
+            popup.Controls.Add(_routeTool);
             popup.Show();
         }
 

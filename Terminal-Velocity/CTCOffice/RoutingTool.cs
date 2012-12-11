@@ -43,25 +43,30 @@ namespace CTCOffice
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _ctcGui_RoutingToolResponse(object sender, EventArgs e)
+        private void _ctcGui_RoutingToolResponse(object sender, RoutingToolEventArgs e)
         {
-            if (SubmitRoute != null)
+            if (e.Block != null)
             {
-                //TODO - populate list of block inbetween current and dest
-                string line;
-                if (_startBlock.Line.CompareTo("Red") == 0)
-                {
-                    line = "Red";
-                }
-                else
-                {
-                    line = "Green";
-                }
+                _endBlock = e.Block;
 
-                IBlock[] b = _env.TrackModel.requestPath(_startBlock.BlockID, _endBlock.BlockID, line);
-                List<IBlock> routeBlocks = b.ToList<IBlock>();
-                IRoute r = new Route(RouteTypes.PointRoute, _endBlock, -1, routeBlocks);
-                SubmitRoute(this, new RoutingToolEventArgs(r));
+                if (SubmitRoute != null)
+                {
+                    //TODO - populate list of block inbetween current and dest
+                    string line;
+                    if (_startBlock.Line.CompareTo("Red") == 0)
+                    {
+                        line = "Red";
+                    }
+                    else
+                    {
+                        line = "Green";
+                    }
+
+                    IBlock[] b = _env.TrackModel.requestPath(_startBlock.BlockID, _endBlock.BlockID, line);
+                    List<IBlock> routeBlocks = b.ToList<IBlock>();
+                    IRoute r = new Route(RouteTypes.PointRoute, _endBlock, -1, routeBlocks);
+                    SubmitRoute(this, new RoutingToolEventArgs(r,null));
+                }
             }
         }
 
@@ -77,7 +82,7 @@ namespace CTCOffice
                 IRouteInfo routeInfo = _env.TrackModel.requestRouteInfo(0);
                 IBlock endBlock = _env.TrackModel.requestBlockInfo(routeInfo.EndBlock, routeInfo.RouteName);
                 IRoute r = new Route(RouteTypes.DefinedRoute, endBlock, routeInfo.RouteID, routeInfo.BlockList.ToList());
-                SubmitRoute(this, new RoutingToolEventArgs(r));
+                SubmitRoute(this, new RoutingToolEventArgs(r,null));
             }
         }
 
@@ -93,7 +98,7 @@ namespace CTCOffice
                 IRouteInfo routeInfo = _env.TrackModel.requestRouteInfo(1);
                 IBlock endBlock = _env.TrackModel.requestBlockInfo(routeInfo.EndBlock, routeInfo.RouteName);
                 IRoute r = new Route(RouteTypes.DefinedRoute, endBlock, routeInfo.RouteID, routeInfo.BlockList.ToList());
-                SubmitRoute(this, new RoutingToolEventArgs(r));
+                SubmitRoute(this, new RoutingToolEventArgs(r,null));
             }
         }
 
