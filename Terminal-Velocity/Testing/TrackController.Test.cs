@@ -17,7 +17,7 @@ namespace Testing
 
         const int MaxTrainCount = 1;
 
-        const int Min = 300;
+        const int Min = 5000;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
         static int _elapsed = 0;
@@ -33,12 +33,12 @@ namespace Testing
             // Create 100 blocks for the red line
             var blocks = new List<IBlock>();
             // First block
-            blocks.Add(new Block(1, StateEnum.Healthy, 100, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, 2, 0, 0, "Red", 100));
+            blocks.Add(new Block(1, StateEnum.Healthy, 100, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, 2, 0, 0, "Red", 20));
             // Next 99 blocks
             for (var i = 2; i < 100; i++)
-                blocks.Add(new Block(i, StateEnum.Healthy, i - 1, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, i + 1, 0, 0, "Red", 100));
+                blocks.Add(new Block(i, StateEnum.Healthy, i - 1, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, i + 1, 0, 0, "Red", 20));
             // Last block
-            blocks.Add(new Block(100, StateEnum.Healthy, 99, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, 1, 0, 0, "Red", 100));
+            blocks.Add(new Block(100, StateEnum.Healthy, 99, 0, 0, new[] { 0, 0 }, 100, DirEnum.East, new[] { "" }, 1, 0, 0, "Red", 20));
 
             // Environment object
             ISimulationEnvironment environment = new global::SimulationEnvironment.SimulationEnvironment();
@@ -100,7 +100,7 @@ namespace Testing
 
             // Give the train(s) time to move
             {
-                System.Threading.Thread.Sleep(120000);
+                System.Threading.Thread.Sleep(20000);
             }
 
             // Ensure that the trains have the correct authority and speeds

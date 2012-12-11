@@ -8,7 +8,7 @@ namespace SimulationEnvironment
 {
     public class SimulationEnvironment : ISimulationEnvironment
     {
-        private const long Interval = 250;
+        private const long Interval = 5;
 
         #region Private Variables
 

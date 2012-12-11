@@ -92,7 +92,7 @@ namespace TrackController
             _mutex.ReleaseMutex();
 
             // Randomly create broken blocks
-            if (Random.Next(Max) > Max * 0.95)
+            if (Random.Next(Max) > Max * 0.999)
             {
                 IBlock broken;
                 if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
