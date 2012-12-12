@@ -3,7 +3,7 @@ using Interfaces;
 
 namespace CTCOffice
 {
-    internal class TestingBlock : IBlock
+    public class TestingBlock : IBlock
     {
         private readonly int _id;
         private readonly string _line;

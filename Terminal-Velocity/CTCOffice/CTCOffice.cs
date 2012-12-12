@@ -795,7 +795,6 @@ namespace CTCOffice
         public void passRequest(IRequest request)
         {
             //add request to queue to send to Track Controller
-            //while the scheduler is on, the CTCOffice is (blocked/unblocked?)
             if (request != null)
             {
                 _requestsOut.Enqueue(request);
