@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 using Interfaces;
 
@@ -158,12 +159,15 @@ namespace CTCOffice
 
         public LayoutCellDataContainer TriangulateContainer(IBlock block)
         {
+            List<LayoutCellDataContainer> cells = new List<LayoutCellDataContainer>();
+
             //for each item in the 1st dimension (row)
             for (int i = 0; i <= _layout.GetUpperBound(0); i++)
             {
                 //for each item in the 2nd dimension (col)
                 for (int j = 0; j <= _layout.GetUpperBound(1); j++)
                 {
+                    /*
                     if (_layout[i, j].Block != null)
                     {
                         if (block.BlockID == _layout[i, j].Block.BlockID)
@@ -171,9 +175,17 @@ namespace CTCOffice
                             return _layout[i, j];
                         }
                     }
+                    */
+                    if (_layout[i, j].Block != null)
+                    {
+                        cells.Add(_layout[i, j]);
+                    }
                 }
             }
 
+            var b = cells.Where(x => x.Block.BlockID == block.BlockID);
+            if (b.Any())
+                return b.First();
             return null;
         }
     }
