@@ -1,0 +1,181 @@
+Repo,Title,Description,Date created,Date modified,Issue type,Milestone,State,Open/Closed,Reporter,URL
+MDSchechtman/Terminal-Velocity,CTC Office Routing Tool Bug,"_endBlock is set, but then becomes null.  Further Investigation needed.  
+
+Bug is reproducable",12/11/2012 15:59,12/11/2012 18:02,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/51
+MDSchechtman/Terminal-Velocity,Triangulate returns Null on Yard Block,"this is due the the yard not being in the actual track layout. 
+Yard unique identifier is having a speed limit of 500.  
+I check the block for this unique id before requesting for triangulating the block.
+
+",12/11/2012 14:27,12/11/2012 14:30,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/50
+MDSchechtman/Terminal-Velocity,CTC Office - Fix Routes In Request,fix routes in requests passed to track controllers,12/9/2012 13:42,12/9/2012 13:52,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/49
+MDSchechtman/Terminal-Velocity,CTC Office- Lock Out Operator if Track is not loaded,TODO: lock out operator if track model has no valid data.. will unlock if 1 of 2 lines are done,12/9/2012 13:11,12/10/2012 1:03,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/48
+MDSchechtman/Terminal-Velocity,Track Model - Track Changed,"Does this ever get reset back to none?  If so, when does this happen?",12/9/2012 13:09,12/11/2012 10:10,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/47
+MDSchechtman/Terminal-Velocity,CTC Office - Show Image Key ,show key of different images,12/9/2012 13:08,12/9/2012 14:51,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/46
+MDSchechtman/Terminal-Velocity,CTC Office - Refresh Algorithm / Testing,Test and verify the population algorithm,12/9/2012 13:07,12/11/2012 11:23,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/45
+MDSchechtman/Terminal-Velocity,Finding a track failure after a switch,"One way to avoid this issue is to make sure a there is only one track controller per switch and that the switch is always the first or last block the track controller sees.
+
+The issue I am having is that it is incredibly difficult for me to find if there is a broken block beyond a switch; that is if the broken block is somewhere past SwitchDest1 or SwitchDest2.  I am requesting either a better way to find the broken block, or some way to avoid the issue entire, as I already mentioned.",12/6/2012 21:41,12/11/2012 18:06,New feature,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/44
+MDSchechtman/Terminal-Velocity,Train Model incorrectly calculates acceleration change due to grade,,12/6/2012 20:55,12/6/2012 22:11,Bug,None,,closed,dcf11,https://github.com/MDSchechtman/Terminal-Velocity/issues/43
+MDSchechtman/Terminal-Velocity,TrackModel - High memory usage,"When the program loads, it consumes ~300-800mb.  This was found to be caused by LineData.cs where, instead of creating one instance of each Resource, created a new instance for each block.  
+
+Please verify that the fix in place does not interfere with any other code.",12/6/2012 12:18,12/9/2012 22:25,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/42
+MDSchechtman/Terminal-Velocity,Null reference occurs if Train Model cannot find the next block during change,"If there is not a next block for the train, the Train Model throws a null reference exception when it reaches the end of the current block",12/5/2012 17:47,12/6/2012 20:55,Bug,None,,closed,dcf11,https://github.com/MDSchechtman/Terminal-Velocity/issues/40
+MDSchechtman/Terminal-Velocity,Current acceleration not displaying correctly on Train Model GUI,The current acceleration is not showing up as anything.,12/5/2012 17:45,12/5/2012 17:45,Bug,None,,closed,dcf11,https://github.com/MDSchechtman/Terminal-Velocity/issues/39
+MDSchechtman/Terminal-Velocity,Train Model GUI adds duplicate trains,"The Train Model GUI, upon adding a new train, re adds all the trains to the combo box without clearing them, resulting in duplicates in the list.",12/5/2012 16:57,12/5/2012 17:34,,None,,closed,dcf11,https://github.com/MDSchechtman/Terminal-Velocity/issues/38
+MDSchechtman/Terminal-Velocity,Track Model Route Generation,"Feature needed by both the CTCOffice and Track Controller.
+
+Given a start block (or a block the train is currently on) and an end block (Destination of point route), we need the Track Model to return a ""List<IBlock>"" of the blocks in order of traversal.",12/5/2012 13:54,12/11/2012 10:17,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/37
+MDSchechtman/Terminal-Velocity,TrackController does not handle Routes,Implement handling of routes and switches,12/1/2012 17:12,12/10/2012 20:39,New feature,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/36
+MDSchechtman/Terminal-Velocity,ThreadStateException,"Hey guys,
+
+I'm getting a ThreadStateException exception when I'm trying to pop-up a window to let the user select a file.
+
+I remember this being discussed earlier, as it came up in some of your modules as well.
+
+Is there a quick fix for this guy?  If it's complicated, I'll just ask you on Tuesday, but if you know an easy fix or a quick workaround, I'd love to hear it before then.",12/1/2012 16:34,12/5/2012 13:51,Bug,None,,closed,jeg90,https://github.com/MDSchechtman/Terminal-Velocity/issues/35
+MDSchechtman/Terminal-Velocity,Cleanup master,Cleanup / refactor master to meet coding standards.,11/30/2012 11:41,11/30/2012 12:57,,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/34
+MDSchechtman/Terminal-Velocity,Environment Feature Request,Add abstraction and interface to have a yard that handles dispatching,11/29/2012 20:03,11/29/2012 20:09,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/33
+MDSchechtman/Terminal-Velocity,Track Model Feature Request,"Add to interface Property that is set to true if the track model changed since getLayout.  False if no change.
+
+This feature will help with implementation of the CTC GUI and will aid in overall system performance",11/29/2012 20:02,12/1/2012 0:11,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/32
+MDSchechtman/Terminal-Velocity,TrackController Needs handle request dispatch - FOR PROTOTYPE DEMO,"had dispatch request to switch case, handle appropriately, add newly dispatched train to env.alltrains
+
+ktnks",11/29/2012 14:33,11/29/2012 20:01,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/31
+MDSchechtman/Terminal-Velocity,Block missing speed limit,A given block should have a speed limit associated with it.,11/29/2012 13:03,12/1/2012 13:51,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/30
+MDSchechtman/Terminal-Velocity,_line is null when creating a Block(int blockID),"Currently, I'm adding trains to the yard and giving them a starting block by declaring them as
+
+environment.addTrain(new TrainModel.Train(0, new TrackModel.Block(0), environment));
+
+When I run my program, it gives me a null pointer exception at line 55 of Block.cs.
+
+Ideally, I want to continue to set the starting block of a train in this manner, simply by giving it the ID of the block I want, without using your giant constructor. Maybe you could add a constructor that also takes the line it is on? Up to you.",11/28/2012 15:50,11/29/2012 15:18,Bug,None,,closed,dcf11,https://github.com/MDSchechtman/Terminal-Velocity/issues/29
+MDSchechtman/Terminal-Velocity,TrackModel Throwing Errors?,"Not quite sure what is wrong now or how to go about fixing it:
+
+""Mixed mode assembly is built against version 'v2.0.50727' of the runtime and cannot be loaded in the 4.0 runtime without additional configuration information.""
+
+Kind of at a loss here guys.",11/28/2012 2:51,11/28/2012 14:48,,None,,closed,PityOnU,https://github.com/MDSchechtman/Terminal-Velocity/issues/28
+MDSchechtman/Terminal-Velocity,TrackModel - RouteInfo,"Can we put this Class in the Simulate Environment?  I need to be able to construct this class without adding a reference to the track model.
+
+Is the RouteInfo Class up to date and finished in the Track Model?  If so, I can transfer it",11/28/2012 1:03,11/28/2012 10:05,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/27
+MDSchechtman/Terminal-Velocity,Merged Prototype into CTC MAJOR Problem,"I merged prototype into CTC and I get build errors regarding interfaces.  Is this a bad pull request or is there something wrong?  I cleaned the solution prior to the build that gave me the errors below:
+
+Error	1	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.CurrentBlock'. 'TrainController.TrainController.CurrentBlock' cannot implement an interface member because it is not public.	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	2	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.AuthorityBlocks'. 'TrainController.TrainController.AuthorityBlocks' cannot implement an interface member because it is not public.	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	3	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.Train'. 'TrainController.TrainController.Train' cannot implement an interface member because it is not public.	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	4	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.commit()'	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	5	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.lightsOff()'	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	6	'TrainController.TrainController' does not implement interface member 'Interfaces.ITrainController.lightsOn()'	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\TrainController.cs	10	18	TrainController
+
+Error	7	'TrackController.TrackCircuit' does not implement interface member 'Interfaces.ITrackCircuit.ToTrain(int, int, int)'	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackController\TrackCircuit.cs	11	18	TrackController
+
+Error	8	'TrackModel.TrackModel' does not implement interface member 'Interfaces.ITrackModel.requestBlockInfo(int)'	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackModel\TrackModel.cs	13	18	TrackModel
+
+Error	9	Metadata file 'D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\bin\Debug\TrainController.dll' could not be found	TrainModel
+
+Error	10	Metadata file 'D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\bin\Debug\TrainController.dll' could not be found	CTCOffice
+
+Error	11	Metadata file 'D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainModel\bin\Debug\TrainModel.dll' could not be found	CTCOffice
+
+Error	12	The referenced assembly ""D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\CTCOffice\bin\Debug\CTCOffice.dll"" was not found. If this assembly is produced by another one of your projects, please make sure to build that project before building this one.	Testing
+
+Error	13	The referenced assembly ""D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackController\bin\Debug\TrackController.dll"" was not found. If this assembly is produced by another one of your projects, please make sure to build that project before building this one.	Testing
+
+Error	14	The referenced assembly ""D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackModel\bin\Debug\TrackModel.dll"" was not found. If this assembly is produced by another one of your projects, please make sure to build that project before building this one.	Testing
+
+Error	15	The referenced assembly ""D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainController\bin\Debug\TrainController.dll"" was not found. If this assembly is produced by another one of your projects, please make sure to build that project before building this one.	Testing
+
+Error	16	The referenced assembly ""D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrainModel\bin\Debug\TrainModel.dll"" was not found. If this assembly is produced by another one of your projects, please make sure to build that project before building this one.	Testing
+
+Error	17	The type or namespace name 'TrainModel' could not be found (are you missing a using directive or an assembly reference?)	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\Testing\Tester.cs	161	46	Testing
+
+Error	18	The type or namespace name 'TrainModel' could not be found (are you missing a using directive or an assembly reference?)	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\Testing\Tester.cs	162	46	Testing
+
+Error	19	The type or namespace name 'TrainModel' could not be found (are you missing a using directive or an assembly reference?)	D:\Users\Mike\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\Testing\Tester.cs	163	35	Testing
+
+",11/28/2012 0:27,11/28/2012 0:40,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/26
+MDSchechtman/Terminal-Velocity,Request.cs - If statements always evaluate to true,"In Request.cs, the following lines produce warnings as they are not correct:
+
+if (request.RequestType != null)
+...
+if (request.TrainAuthority != null)
+...
+ if (request.TrainID != null)
+...
+
+The values are doubles and ints which can never be null.  I do not know what these if checks are for, but they will always evaluate to true.  
+
+You can make an int/double/etc nullable by defining it as ""int?"", or ""double?"".",11/28/2012 0:10,11/28/2012 10:04,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/25
+MDSchechtman/Terminal-Velocity,SQLite Link,"http://sourceforge.net/projects/sqlite-dotnet2/
+
+this is needed for the TrackModel Database. 
+
+Download and install",11/27/2012 23:02,11/27/2012 23:02,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/24
+MDSchechtman/Terminal-Velocity,TrackController Feature Request,Add / remove train from Environment when train is dispatched or removed from the system,11/27/2012 18:21,11/27/2012 20:17,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/23
+MDSchechtman/Terminal-Velocity,Request Class,Make Request public so that I can construct one pls,11/27/2012 14:36,12/5/2012 13:50,,None,,closed,PityOnU,https://github.com/MDSchechtman/Terminal-Velocity/issues/22
+MDSchechtman/Terminal-Velocity,Passing null Arguments to the Route Constructor,"With the Route class, depending on the ""RouteType"" attribute, only some of the values in the constructor are required. Currently, passing a ""null"" parameter causes it to break. As a placeholder, I'm just passing trivial clumps of useless data where things aren't needed, but this may need to be resolved (at least I think so, depending on how you check for this kind of thing).",11/27/2012 13:50,11/27/2012 14:31,,None,,closed,PityOnU,https://github.com/MDSchechtman/Terminal-Velocity/issues/21
+MDSchechtman/Terminal-Velocity,The Route Class Being Public,"I need to create a Route object to pass with my requests to the CTCOffice. I just made the ""Route"" class public so that I can access it. Let me know if that is a problem/if there is a better way to do it.",11/27/2012 13:47,11/27/2012 14:19,,None,,closed,PityOnU,https://github.com/MDSchechtman/Terminal-Velocity/issues/20
+MDSchechtman/Terminal-Velocity,VS-2012,"This isn't an issue, just a general note
+
+Please don't build in VS2012.
+
+The solution files b/w VS2012 and VS2010 aren't backwards compatible, and to get it to build in 2010 after a 2012 build, you need to manually edit the solution file.  Which can be a pain.
+
+So if you can avoid using VS2012, please do.",11/26/2012 21:50,11/26/2012 21:52,,None,,closed,jeg90,https://github.com/MDSchechtman/Terminal-Velocity/issues/19
+MDSchechtman/Terminal-Velocity,Where is SystemScheduler Instantiated?,"Potentially stupid question, but I just cloned from the prototype build earlier tonight so that I could have the most up to date code, but I'm not seeing where the SystemScheduler is instantiated. I would like to find it so that I can see what references I'm being passed (hopefully one to the environment) because I need to talk with Jason's TrackModel to get Blocks from block ID's.",11/26/2012 21:38,11/27/2012 13:46,,None,,closed,PityOnU,https://github.com/MDSchechtman/Terminal-Velocity/issues/18
+MDSchechtman/Terminal-Velocity,ITrackModel,"We may need to change the interface to ITrackModel (with regards to the 2D track layout).  the IBlock[][] is declaring an array of arrays.. not a 2D array.  The proper datatype should be.... IBlock[ , ] 
+
+I am working on implementing a testing interface for the office and made ""dummy classes"".. This is giving me problems..",11/24/2012 13:21,11/26/2012 21:27,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/17
+MDSchechtman/Terminal-Velocity,Track Model -> CTC Request Passing,"anytime you return a request to the CTC Office, you need to call ctc.handleResponse().  The functionality of this is ""function for Track Controller to send response to CTC"".  This is directly from the ICTCOffice.cs file.  the ctc.pass request is used by the System scheduler to pass requests from the Scheduler to the CTC (then CTC sends to track controller(s)).  This bug is causing an endless loop of requests being passed between the ctc and track controller.  
+
+Please let me know when you have fixed this bug.
+
+(First hit of this bug that I detected ""TrackController.cs LN173 in Method Handle Request"")
+
+Mike",11/20/2012 16:34,11/20/2012 18:04,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/16
+MDSchechtman/Terminal-Velocity,Replace ITrain with ITrainModel,Verify ITrainModel contains the necessary functionality and just replace.,11/18/2012 21:03,11/19/2012 17:52,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/15
+MDSchechtman/Terminal-Velocity,ITrain to ITrainModel,"If ITrainModel is to replace ITrain, it must be able to accept information from the TrackCircuit, specifically SetAuthority and SetSpeedLimit.",11/18/2012 21:01,11/29/2012 13:23,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/14
+MDSchechtman/Terminal-Velocity,Prototype Does Not Build,"Error	6	The type or namespace name 'DisplayManager' could not be found (are you missing a using directive or an assembly reference?)	C:\Users\matt\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackModel\TrackModel.cs	16	11	TrackModel
+Error	5	The type or namespace name 'DBManager' could not be found (are you missing a using directive or an assembly reference?)	C:\Users\matt\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackModel\TrackModel.cs	15	11	TrackModel
+Error	7	The type or namespace name 'DBCreatorLoader' could not be found (are you missing a using directive or an assembly reference?)	C:\Users\matt\Documents\GitHub\Terminal-Velocity\Terminal-Velocity\TrackModel\TrackModel.cs	17	11	TrackModel
+",11/18/2012 20:20,11/19/2012 20:12,Bug,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/13
+MDSchechtman/Terminal-Velocity,Track Controller - Track Model - IBlock,"Does the block need to know what track controller is controlling it? The IBlock Interface currently does not have this information, however, the TrackModel creates the Track Controllers. ITrackModel also does not contain information about the Track Controllers it creates. However the Track Controller has a dictionary of Blocks that it contains..
+
+Can someone please clear this up, I essentially need to know how to get a track controller ID from a Block.",11/17/2012 16:51,11/28/2012 9:35,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/12
+MDSchechtman/Terminal-Velocity,TrackModel - IBlock,"Does the block need to know what track controller is controlling it?  The IBlock Interface currently does not have this information, however, the TrackModel creates the Track Controllers.  ITrackModel also does not contain information about the Track Controllers it creates.  However the Track Controller has a dictionary of Blocks that it contains..
+
+Can someone please clear this up, I essentially need to know how to get a track controller ID from a Block.",11/17/2012 16:50,11/18/2012 20:40,Bug,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/11
+MDSchechtman/Terminal-Velocity,Track Model -> Route ID's,"red = 0
+green = 1",11/16/2012 15:44,11/16/2012 15:45,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/10
+MDSchechtman/Terminal-Velocity,Prototype Disappearing ,"Prototype disappears when Jason commits/merges.  I witnessed this at 10:25am on Nov. 16.  Jason, for the time being, DO NOT commit anything to Prototype.",11/16/2012 10:31,11/16/2012 13:53,,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/9
+MDSchechtman/Terminal-Velocity,Prototype Branch,"What happened to the Prototype Branch?  If I want to update my interface (as I need to), where am I pushing that code to?",11/16/2012 8:19,11/16/2012 10:35,,None,,closed,jeg90,https://github.com/MDSchechtman/Terminal-Velocity/issues/8
+MDSchechtman/Terminal-Velocity,Grid Layout,since you are giving me a 2D array of IBlock... what is contained by an entry when you do not have a block in that slot,11/15/2012 20:25,11/16/2012 8:37,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/7
+MDSchechtman/Terminal-Velocity,We need your interfaces,"Please create a branch for the Track Model (from prototype) so we can continue to develop.  I am waiting on the IBlock Interface, and the ITrackModel Interface.",11/15/2012 1:21,11/16/2012 7:07,,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/6
+MDSchechtman/Terminal-Velocity,Environment ToDo,"Add property for list of Track Controllers (per line… so 2 properties)
+Add property for all trains in the system (possibly per line, but not necessary)
+Add property for TrackModel
+Add property for SystemLog
+
+?(Create Global Time Class)?
+?(Add property for Global Time)?",11/15/2012 1:18,11/28/2012 0:07,New feature,None,,closed,mikeneiderhauser,https://github.com/MDSchechtman/Terminal-Velocity/issues/5
+MDSchechtman/Terminal-Velocity,TrackController - CTCOffice Communication,"The CTCOffice references the first Track Controller.  Track Controllers check their request object on each tick - this is okay.
+
+After a request object propagates through every track controller, it needs to be returned to the CTCOffice.  This needs to be implemented.
+
+The CTCOffice should also check for an updated or changed Recieved_Request object every tick.
+
+It does not make sense to create an event for this feature.",11/13/2012 17:14,11/15/2012 1:02,,Created,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/4
+MDSchechtman/Terminal-Velocity,CTCOffice - TrackController Communication,"The CTCOffice references the first Track Controller.  Track Controllers check their request object on each tick - this is okay.
+
+After a request object propagates through every track controller, it needs to be returned to the CTCOffice.  This needs to be implemented.
+
+The CTCOffice should also check for an updated or changed Recieved_Request object every tick.
+
+It does not make sense to create an event for this feature.",11/13/2012 17:13,11/15/2012 1:03,,Created,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/3
+MDSchechtman/Terminal-Velocity,Ctc office prototype,Synchronization step - Testing and implementation of TrackController cannot continue without CTCOffice,11/12/2012 20:04,11/12/2012 20:10,,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/2
+MDSchechtman/Terminal-Velocity,Derek Is Tired,Derek is always tired.,9/28/2012 14:05,9/28/2012 14:08,,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/1
+MDSchechtman/Terminal-Velocity,Vital Decisions in the Track Controller,"We don't want our trains crashing, I suppose.",12/6/2012 8:41,12/11/2012 18:00,New feature,None,,closed,MDSchechtman,https://github.com/MDSchechtman/Terminal-Velocity/issues/41

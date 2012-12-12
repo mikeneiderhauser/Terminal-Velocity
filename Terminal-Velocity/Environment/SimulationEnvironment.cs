@@ -175,6 +175,7 @@ namespace SimulationEnvironment
             if ((PrimaryTrackControllerRed.Trains.Count == 0 && start.Line.CompareTo("Red") == 0) || (PrimaryTrackControllerGreen.Trains.Count == 0 && start.Line.CompareTo("Green") == 0))
             {
                 this.addTrain(new TrainModel.Train(randomNumber, start, this));
+                _CTCOffice.ExternalRefresh();
             }
         }
 

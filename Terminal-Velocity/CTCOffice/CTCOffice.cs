@@ -101,6 +101,16 @@ namespace CTCOffice
                 IsTrackUp();
             }
 
+            if (_primaryTrackControllerRed == null)
+            {
+                _primaryTrackControllerRed = _env.PrimaryTrackControllerRed;
+            }
+
+            if (_primaryTrackControllerGreen == null)
+            {
+                _primaryTrackControllerGreen = _env.PrimaryTrackControllerGreen;
+            }
+
             _tickCount++;
             if (_tickCount >= _rate)
             {
@@ -169,13 +179,16 @@ namespace CTCOffice
                 if (b.SpeedLimit != 500)
                 {
                     LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _redLineData.GetBlockType(b);
-                    if (c.Panel != null)
+                    if (c != null)
                     {
-                        string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
-                        _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
-                        c.Panel.ReDrawMe();
+                        c.Tile = _redLineData.GetBlockType(b);
+                        if (c.Panel != null)
+                        {
+                            string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                            _messages.Add(msg);
+                            _env.sendLogEntry("CTC Office: " + msg);
+                            c.Panel.ReDrawMe();
+                        }
                     }
                 }
             }
@@ -193,13 +206,16 @@ namespace CTCOffice
             {
                 //find block in layout and change image
                 LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
-                c.Tile = _redLineData.GetBlockType(b);
-                if (c.Panel != null)
+                if (c != null)
                 {
-                    string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
-                    _messages.Add(msg);
-                    _env.sendLogEntry("CTC Office: " + msg);
-                    c.Panel.ReDrawMe();
+                    c.Tile = _redLineData.GetBlockType(b);
+                    if (c.Panel != null)
+                    {
+                        string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                        _messages.Add(msg);
+                        _env.sendLogEntry("CTC Office: " + msg);
+                        c.Panel.ReDrawMe();
+                    }
                 }
             }
             rtnfo = null;
@@ -344,22 +360,28 @@ namespace CTCOffice
                 IBlock b = _containedTrainAndBlock[i].Block;
                 if (b.Line.CompareTo("Red") == 0)
                 {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _redLineData.GetBlockType(b);
-                    c.Train = null;
-                    if (c.Panel != null)
+                    if (!(b.SpeedLimit == 500 || b.SpeedLimit == -1))
                     {
-                        c.Panel.ReDrawMe();
+                        LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
+                        c.Tile = _redLineData.GetBlockType(b);
+                        c.Train = null;
+                        if (c.Panel != null)
+                        {
+                            c.Panel.ReDrawMe();
+                        }
                     }
                 }//end if
                 else
                 {
-                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
-                    c.Tile = _greenLineData.GetBlockType(b);
-                    c.Train = null;
-                    if (c.Panel != null)
+                    if (!(b.SpeedLimit == 500 || b.SpeedLimit == -1))
                     {
-                        c.Panel.ReDrawMe();
+                        LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
+                        c.Tile = _greenLineData.GetBlockType(b);
+                        c.Train = null;
+                        if (c.Panel != null)
+                        {
+                            c.Panel.ReDrawMe();
+                        }
                     }
                 }//end if
             }//end foreach
@@ -383,30 +405,36 @@ namespace CTCOffice
                 TrainAndBlock tb = _containedTrainAndBlock[i];
                 if (tb.Block.Line.CompareTo("Red") == 0)
                 {
-                    LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
-                    c.Tile = _res.Train;
-                    c.Train = tb.Train;
-                    
-                    if (c.Panel != null)
+                    if (!(tb.Block.SpeedLimit == 500 || tb.Block.SpeedLimit == -1))
                     {
-                        string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
-                        _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
-                        c.Panel.ReDrawMe();
+                        LayoutCellDataContainer c = _redLineData.TriangulateContainer(tb.Block);
+                        c.Tile = _res.Train;
+                        c.Train = tb.Train;
+
+                        if (c.Panel != null)
+                        {
+                            string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
+                            _messages.Add(msg);
+                            _env.sendLogEntry("CTC Office: " + msg);
+                            c.Panel.ReDrawMe();
+                        }
                     }
 
                 }//end if
                 else
                 {
-                    LayoutCellDataContainer c = _greenLineData.TriangulateContainer(tb.Block);
-                    c.Tile = _res.Train;
-                    c.Train = tb.Train;
-                    if (c.Panel != null)
+                    if (!(tb.Block.SpeedLimit == 500 || tb.Block.SpeedLimit == -1))
                     {
-                        string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
-                        _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
-                        c.Panel.ReDrawMe();
+                        LayoutCellDataContainer c = _greenLineData.TriangulateContainer(tb.Block);
+                        c.Tile = _res.Train;
+                        c.Train = tb.Train;
+                        if (c.Panel != null)
+                        {
+                            string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
+                            _messages.Add(msg);
+                            _env.sendLogEntry("CTC Office: " + msg);
+                            c.Panel.ReDrawMe();
+                        }
                     }
                 }//end if
             }//end for each
@@ -776,11 +804,19 @@ namespace CTCOffice
 
         #endregion
 
-        #region Public Properties (Interface)
+        #region Public Properties / Methods (Interface)
 
         public event EventHandler<EventArgs> StartAutomation;
 
         public event EventHandler<EventArgs> StopAutomation;
+
+        /// <summary>
+        /// Method to allow any other module refresh the Trains in view of CTC
+        /// </summary>
+        public void ExternalRefresh()
+        {
+            PopulateTrack();
+        }
 
         /// <summary>
         ///     Pass request from System Scheduler to Track Controller via send request
@@ -789,7 +825,6 @@ namespace CTCOffice
         public void passRequest(IRequest request)
         {
             //add request to queue to send to Track Controller
-            //while the scheduler is on, the CTCOffice is (blocked/unblocked?)
             if (request != null)
             {
                 _requestsOut.Enqueue(request);

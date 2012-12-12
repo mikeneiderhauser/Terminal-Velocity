@@ -14,11 +14,10 @@ namespace TerminalVelocity
 {
     public class Program
     {
-        static Form _ctcForm;
-        static Form _schedulerForm;
-        static Form _trackModelForm;
-        static Form _redTrackControllerForm;
-        static Form _greenTrackControllerForm;
+        static Form ctcForm;
+        static Form schedulerForm;
+        static Form trackModelForm;
+        static SimulationEnvironment.SimulationEnvironment env;
 
         [STAThread]
         static void Main()
@@ -27,57 +26,65 @@ namespace TerminalVelocity
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Environment
-            SimulationEnvironment.SimulationEnvironment e = new SimulationEnvironment.SimulationEnvironment();
+            env = new SimulationEnvironment.SimulationEnvironment();
             
             // TrackModel
-            TrackModel.TrackModel trackModel = new TrackModel.TrackModel(e);
-            TrackModel.TrackModelGUI trackModelGui = new TrackModelGUI(e, trackModel);
-
-            e.TrackModel = trackModel;
+            TrackModel.TrackModel trackModel = new TrackModel.TrackModel(env);
+            env.TrackModel = trackModel;
+            TrackModel.TrackModelGUI trackModelGui = new TrackModelGUI(env, trackModel);
 
             // CTCOffice
-            CTCOffice.CTCOffice ctcOffice = new CTCOffice.CTCOffice(e, e.PrimaryTrackControllerRed, e.PrimaryTrackControllerGreen);
-            CTCOffice.CTCOfficeGUI ctcOfficeGui = new CTCOfficeGUI(e, ctcOffice);
+            CTCOffice.CTCOffice ctcOffice = new CTCOffice.CTCOffice(env, env.PrimaryTrackControllerRed, env.PrimaryTrackControllerGreen);
+            env.CTCOffice = ctcOffice;
+            CTCOffice.CTCOfficeGUI ctcOfficeGui = new CTCOfficeGUI(env, ctcOffice);
+            ctcOfficeGui.ShowTrain += new EventHandler<ShowTrainEventArgs>(ctcOfficeGui_ShowTrain);
+            ctcOfficeGui.ShowSchedule += new EventHandler<EventArgs>(ctcOfficeGui_ShowSchedule);
+
 
             // Scheduler
-            SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(e, ctcOffice);
-            SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(e, scheduler, ctcOffice);
+            SystemScheduler.SystemScheduler scheduler = new SystemScheduler.SystemScheduler(env, ctcOffice);
+            env.SystemScheduler = scheduler;
+            SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(env, scheduler, ctcOffice);
 
-            // Setup environment
-            e.SystemScheduler = scheduler;
+            ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true, Text="Terminal Velocity - CTC Office"};
+            schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - System Scheduler" };
+            trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - Track Model"};
 
-            // TrackControllerUI
-            if (e.PrimaryTrackControllerRed != null)
-            {
-                TrackControllerUi redTrackControllerGui = new TrackControllerUi(e, e.PrimaryTrackControllerRed);
-                _redTrackControllerForm = new Form() { Controls = { redTrackControllerGui }, TopLevel = true, AutoSize = true, Parent = null };
-            }
-            if (e.PrimaryTrackControllerGreen != null)
-            {
-                TrackControllerUi greenTrackControllerGui = new TrackControllerUi(e, e.PrimaryTrackControllerGreen);
-                _greenTrackControllerForm = new Form() { Controls = { greenTrackControllerGui }, TopLevel = true, AutoSize = true, Parent = null };
-            }
+            //TODO
+            /*
+             * Train Controller Form(s)
+             * Train Model Form 
+            */
 
-            _ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true };
-            _schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null };
-            _trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null };
-           
-            
+            ctcForm.Shown += new EventHandler(ctcForm_Shown);
 
-            _ctcForm.Shown += new EventHandler(CtcFormShown);
-
-            Application.Run(_ctcForm);
+            Application.Run(ctcForm);
         }
 
-        static void CtcFormShown(object sender, EventArgs e)
+        static void ctcOfficeGui_ShowSchedule(object sender, EventArgs e)
         {
-            //schedulerForm.ShowDialog(ctcForm);
-            _trackModelForm.Show();
+            schedulerForm.ShowDialog();
+        }
 
-            if (_redTrackControllerForm != null)
-                _redTrackControllerForm.Show();
-            if (_greenTrackControllerForm != null)
-                _greenTrackControllerForm.Show();
+        static void ctcOfficeGui_ShowTrain(object sender, ShowTrainEventArgs e)
+        {
+            var formTrainController = new Form();
+            UserControl controlTrainController = null;
+            var tc = (TrainController.TrainController)e.TrainModel.TrainController;
+            controlTrainController = new TrainControllerUI(tc,env);
+            formTrainController.Text = "Terminal Velocity - Train Controller (ID:"+e.TrainModel.TrainID+")";
+            formTrainController.Controls.Add(controlTrainController);
+            formTrainController.AutoSize = true;
+            formTrainController.ShowDialog();
+        }
+
+        static void ctcForm_Shown(object sender, EventArgs ea)
+        {
+            //start global timer
+            env.startTick();
+
+            //schedulerForm.ShowDialog(ctcForm);
+            trackModelForm.Show();
         }
     }
 }
