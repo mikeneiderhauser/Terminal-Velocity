@@ -109,7 +109,7 @@ namespace TrainController
             }
         }
 
-        public bool hasStation
+        public bool StationIncoming
         {
             set
             {
