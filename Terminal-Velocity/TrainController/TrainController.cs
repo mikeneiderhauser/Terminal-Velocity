@@ -19,7 +19,7 @@ namespace TrainController
         private double _speedLimit;
         private double _speedInput;
         private int _announcement;
-        private bool _hasStation;
+        private int _distanceToStation;
         private int _temperature;
         private string _log;
         private double integral = 0;
@@ -28,6 +28,7 @@ namespace TrainController
 
         #region Constant values
         private const double MaxValue = 120000;
+        #endregion
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
         {
@@ -64,21 +65,21 @@ namespace TrainController
             set { _environment = value; }
         }
 
-
+        public int DistanceToStation
+        {
+            set { _distanceToStation = value; }
+        }
         private void processTick()
         {
             if (AuthorityLimit == 0)
             {
                 SpeedInput = 0;
             }
-            if (_hasStation)
+            if (_distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
-            if (Train.CurrentVelocity < 0.05)
-            {
-                _hasStation = false;
-            }
+           
             if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
             {
                 if (SpeedInput > SpeedLimit)
@@ -118,13 +119,7 @@ namespace TrainController
             }
         }
 
-        public bool StationIncoming
-        {
-            set
-            {
-                _hasStation = value;
-            }
-        }
+        
 
         public double SpeedLimit
         {
