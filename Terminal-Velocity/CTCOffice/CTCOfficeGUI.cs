@@ -304,12 +304,14 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnRefreshView_Click(object sender, EventArgs e)
         {
+            /*
             if (_systemViewTabs.SelectedIndex == 0)
             {
                 //refresh red line
                 foreach (Control c in _panelRedLine.Controls)
                 {
-                    c.Refresh();
+                    MyPictureBox b = (MyPictureBox)c;
+                    b.ReDrawMe();
                 }
             }
 
@@ -318,10 +320,13 @@ namespace CTCOffice
                 //refresh green line
                 foreach (Control c in _panelGreenLine.Controls)
                 {
-                    c.Refresh();
+                    MyPictureBox b = (MyPictureBox)c;
+                    b.ReDrawMe();
                 }
             }
+            */
 
+            _ctcOffice.PopulateTrack();
             UpdateMetrics();
             RefreshStatus();
         }

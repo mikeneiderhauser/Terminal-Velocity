@@ -804,11 +804,19 @@ namespace CTCOffice
 
         #endregion
 
-        #region Public Properties (Interface)
+        #region Public Properties / Methods (Interface)
 
         public event EventHandler<EventArgs> StartAutomation;
 
         public event EventHandler<EventArgs> StopAutomation;
+
+        /// <summary>
+        /// Method to allow any other module refresh the Trains in view of CTC
+        /// </summary>
+        public void ExternalRefresh()
+        {
+            PopulateTrack();
+        }
 
         /// <summary>
         ///     Pass request from System Scheduler to Track Controller via send request
