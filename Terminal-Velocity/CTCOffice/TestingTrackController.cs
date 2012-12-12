@@ -121,5 +121,11 @@ namespace CTCOffice
         }
 
         public event EventHandler<EventArgs> TransferRequest;
+
+
+        Dictionary<int, List<IBlock>> ITrackController.Routes
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

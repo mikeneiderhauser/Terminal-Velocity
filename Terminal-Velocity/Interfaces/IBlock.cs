@@ -196,6 +196,7 @@
         PowerFailure,
         BrokenTrackFailure,
         CircuitFailure,
-        Healthy
+        Healthy,
+        BlockClosed
     }
 }

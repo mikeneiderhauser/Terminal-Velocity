@@ -8,8 +8,7 @@ namespace SimulationEnvironment
 {
     public class SimulationEnvironment : ISimulationEnvironment
     {
-
-        private const long _interval = 250;
+        private const long Interval = 100;
 
         #region Private Variables
 
@@ -26,7 +25,7 @@ namespace SimulationEnvironment
 
         public SimulationEnvironment()
         {
-            _timer.Interval = _interval;
+            _timer.Interval = Interval;
             _timer.Elapsed += _timer_Elapsed;
 
             _allTrains = new List<ITrainModel>();
@@ -104,7 +103,7 @@ namespace SimulationEnvironment
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _total += _interval;
+            _total += Interval;
             OnTick(new TickEventArgs(_total));
         }
 
