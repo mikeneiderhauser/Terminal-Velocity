@@ -75,7 +75,7 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
-            if (_distanceToStation < 5 && !_currentBlock.hasStation())
+            if (CurrentBlock != null && _distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
