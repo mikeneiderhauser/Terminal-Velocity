@@ -169,13 +169,16 @@ namespace CTCOffice
                 if (b.SpeedLimit != 500)
                 {
                     LayoutCellDataContainer c = _redLineData.TriangulateContainer(b);
-                    c.Tile = _redLineData.GetBlockType(b);
-                    if (c.Panel != null)
+                    if (c != null)
                     {
-                        string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
-                        _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
-                        c.Panel.ReDrawMe();
+                        c.Tile = _redLineData.GetBlockType(b);
+                        if (c.Panel != null)
+                        {
+                            string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                            _messages.Add(msg);
+                            _env.sendLogEntry("CTC Office: " + msg);
+                            c.Panel.ReDrawMe();
+                        }
                     }
                 }
             }
@@ -193,13 +196,16 @@ namespace CTCOffice
             {
                 //find block in layout and change image
                 LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
-                c.Tile = _redLineData.GetBlockType(b);
-                if (c.Panel != null)
+                if (c != null)
                 {
-                    string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
-                    _messages.Add(msg);
-                    _env.sendLogEntry("CTC Office: " + msg);
-                    c.Panel.ReDrawMe();
+                    c.Tile = _redLineData.GetBlockType(b);
+                    if (c.Panel != null)
+                    {
+                        string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
+                        _messages.Add(msg);
+                        _env.sendLogEntry("CTC Office: " + msg);
+                        c.Panel.ReDrawMe();
+                    }
                 }
             }
             rtnfo = null;
