@@ -48,8 +48,8 @@ namespace Testing
             _trackMod = new TestingTrackModel(_env);
 
             //creating testing track controllers
-            _red = new TestingTrackController(0, _trackMod, _env);
-            _green = new TestingTrackController(1, _trackMod, _env);
+            _red = new TestingTrackController(0, _trackMod, _env, false);
+            _green = new TestingTrackController(1, _trackMod, _env, false);
 
             //hook to environment
             _env.PrimaryTrackControllerRed = _red;
