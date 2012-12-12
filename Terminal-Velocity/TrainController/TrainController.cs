@@ -9,20 +9,25 @@ namespace TrainController
 {
     public class TrainController : ITrainController
     {
+        #region Global variables
         private TrainControllerUI _tcGUI;
         private ISimulationEnvironment _environment;
         private ITrainModel _train;
         private IBlock _currentBlock;
         private String[] _announcements = { "Approaching station A", "Station A", "Approaching station B", "Station B" };
         private int _authorityLimit;
-        private double _speedLimit = 40;
+        private double _speedLimit;
         private double _speedInput;
         private int _announcement;
         private bool _hasStation;
         private int _temperature;
         private string _log;
         private double integral = 0;
-        private const double MaxValue = 1000;
+        #endregion
+
+
+        #region Constant values
+        private const double MaxValue = 120000;
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
         {
@@ -70,6 +75,10 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
+            if (Train.CurrentVelocity < 0.05)
+            {
+                _hasStation = false;
+            }
             if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
             {
                 if (SpeedInput > SpeedLimit)
@@ -113,7 +122,7 @@ namespace TrainController
         {
             set
             {
-                hasStation = value;
+                _hasStation = value;
             }
         }
 
