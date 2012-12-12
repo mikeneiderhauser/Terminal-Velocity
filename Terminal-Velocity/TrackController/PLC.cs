@@ -56,7 +56,7 @@ namespace TrackController
                 // If there is a station, give its block id to the trainController
                 if (station.Length > 0)
                 {
-                    //t.TrainController.Station = station[0].BlockID;
+                    t.TrainController.DistanceToStation = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, station[0].BlockID, t.CurrentBlock.Line).Length;
                 }
 
                 // Adjust train speed to match that of the track speed limit
