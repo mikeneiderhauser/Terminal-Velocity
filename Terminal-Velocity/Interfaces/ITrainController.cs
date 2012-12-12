@@ -6,7 +6,7 @@
         double SpeedLimit { get; set; }
         int Announcement { set; }
         double SpeedInput { get; set; }
-        bool StationIncoming { set; }
+        int DistanceToStation { set; }
 
         void addPassengers();
         void removePassengers();
