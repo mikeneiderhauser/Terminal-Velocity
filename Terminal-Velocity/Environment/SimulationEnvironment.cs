@@ -97,7 +97,9 @@ namespace SimulationEnvironment
         {
             if (Tick != null)
             {
+                Stop();
                 Tick(this, e);
+                Start();
             }
         }
 
