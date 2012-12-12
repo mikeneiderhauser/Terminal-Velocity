@@ -49,7 +49,7 @@ namespace TrackController
             // Set train speeds an authorities
             foreach (var t in trains)
             {
-                var distanceToEnd = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, blocks[blocks.Count].BlockID, t.CurrentBlock.Line).Length;
+                var distanceToEnd = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, blocks[blocks.Count - 1].BlockID, t.CurrentBlock.Line).Length;
                 var speedLim = t.CurrentBlock.SpeedLimit;
                 var authority = 3;
 

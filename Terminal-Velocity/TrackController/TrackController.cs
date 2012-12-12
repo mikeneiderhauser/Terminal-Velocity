@@ -215,8 +215,18 @@ namespace TrackController
             var st = Trains;
             var sr = Routes;
 
-            var proximityBlock = Next.Blocks.Any(x => x.BlockID < Next.Blocks[0].BlockID + 3 && (x.State == StateEnum.BrokenTrackFailure) || (x.State == StateEnum.BlockClosed));
-            var proximityTrain = Next.Trains.Any(t => t.CurrentBlock.BlockID < Next.Blocks[0].BlockID + 3);
+            var proximityBlock = false;
+            var proximityTrain = false;
+
+            if (Next != null)
+            {
+                proximityBlock =
+                    Next.Blocks.Any(
+                        x =>
+                        x.BlockID < Next.Blocks[0].BlockID + 3 && (x.State == StateEnum.BrokenTrackFailure) ||
+                        (x.State == StateEnum.BlockClosed));
+                proximityTrain = Next.Trains.Any(t => t.CurrentBlock.BlockID < Next.Blocks[0].BlockID + 3);
+            }
 
             _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
             _plc.ToggleSwitches(sb, st, sr, _messages);
