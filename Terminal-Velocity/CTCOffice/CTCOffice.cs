@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Interfaces;
 using Utility;
 using Utility.Properties;
@@ -37,11 +38,19 @@ namespace CTCOffice
 
         //messages for gui
         private List<string> _messages;
+
+        //Mutex for updating
+        private Mutex _populateTrackMutex;
+        private Mutex _updateTrackMutex;
+        private Mutex _loadTrackMutex;
         #endregion
 
         #region Constructor and Environment Tick Handler
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
+            _populateTrackMutex = new Mutex(false);
+            _updateTrackMutex = new Mutex(false);
+            _loadTrackMutex = new Mutex(false);
             _rate = 100; //num of ticks
             _tickCount = 0;
             _rate = env.getInterval();
@@ -170,6 +179,7 @@ namespace CTCOffice
         /// </summary>
         private void UpdateRed()
         {
+            _updateTrackMutex.WaitOne();
             //request blocks in red line
             IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(0);
             foreach (IBlock b in rtnfo.BlockList)
@@ -193,6 +203,7 @@ namespace CTCOffice
                 }
             }
             rtnfo = null;
+            _updateTrackMutex.ReleaseMutex();
         }
 
         /// <summary>
@@ -200,6 +211,7 @@ namespace CTCOffice
         /// </summary>
         private void UpdateGreen()
         {
+            _updateTrackMutex.WaitOne();
             //request blocks in green line
             IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(1);
             foreach (IBlock b in rtnfo.BlockList)
@@ -219,6 +231,7 @@ namespace CTCOffice
                 }
             }
             rtnfo = null;
+            _updateTrackMutex.ReleaseMutex();
         }
 
         #endregion
@@ -353,6 +366,9 @@ namespace CTCOffice
         /// </summary>
         public void PopulateTrack()
         {
+            _populateTrackMutex.WaitOne();
+            //_env.stopTick();
+            //_env.Tick -= _env_Tick;
             //clear current trains
             //foreach(IBlock b in _containedBlocks)
             for (int i = 0; i < _containedTrainAndBlock.Count; i++)
@@ -438,6 +454,10 @@ namespace CTCOffice
                     }
                 }//end if
             }//end for each
+
+            _populateTrackMutex.ReleaseMutex();
+            //_env.Tick += _env_Tick;
+            //_env.startTick();
         }//End Populate Track
 
         /// <summary>
@@ -486,6 +506,7 @@ namespace CTCOffice
 
         private void IsTrackUp()
         {
+            _loadTrackMutex.WaitOne();
             //Checks the environment to see if a Track Models exists
             if (_env.TrackModel != null)
             {
@@ -538,6 +559,7 @@ namespace CTCOffice
             {
                 _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
+            _loadTrackMutex.ReleaseMutex();
         }
 
         /// <summary>
