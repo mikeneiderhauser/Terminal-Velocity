@@ -62,6 +62,10 @@ namespace TrackController
                             Length;
                     t.TrainController.Announcement = station[0].BlockID;
                 }
+                else
+                {
+                    t.TrainController.DistanceToStation = -1;
+                }
 
                 // Adjust train speed to match that of the track speed limit
                 // or if the train is too close to another train

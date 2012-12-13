@@ -332,6 +332,28 @@ namespace CTCOffice
             _ctcOffice.PopulateTrack();
         }
 
+        /*
+        public List<MyPictureBox> GetRed()
+        {
+            List<MyPictureBox> l = new List<MyPictureBox>();
+            foreach (MyPictureBox p in _panelRedLine.Controls)
+            {
+                l.Add(p);
+            }
+            return l;
+        }
+
+        public List<MyPictureBox> GetGreen()
+        {
+            List<MyPictureBox> l = new List<MyPictureBox>();
+            foreach (MyPictureBox p in _panelGreenLine.Controls)
+            {
+                l.Add(p);
+            }
+            return l;
+        }
+        */
+
         /// <summary>
         /// Button To force Refresh GUI (may not be needed)
         /// </summary>
@@ -666,6 +688,7 @@ namespace CTCOffice
             _btnGlobalTime10WallSpeed.Enabled = state;
             _btnGlobalTimeWallSpeed.Enabled = state;
             _btnShowKey.Enabled = state;
+            _btnRefreshTrack.Enabled = state;
 
             //handle simulation time event handlers
             if (state)
@@ -761,14 +784,15 @@ namespace CTCOffice
                         //Add Track Menu
                         var trackItem = new MenuItem("Track (ID: " + c.Block.BlockID + ")");
                         trackItem.Tag = c;
+                        c.Block = _environment.TrackModel.requestBlockInfo(c.Block.BlockID, c.Block.Line);
 
-                        if (c.Block.State == StateEnum.Healthy)
-                        {
-                            trackMenuTitles.Add("Close Track");
-                        }
-                        else
+                        if(c.Block.State == StateEnum.BlockClosed)
                         {
                             trackMenuTitles.Add("Open Track");
+                        }
+                        else
+                        { 
+                            trackMenuTitles.Add("Close Track");
                         }
                         
                         
@@ -1227,6 +1251,40 @@ namespace CTCOffice
         private void _btnOpenUserManual_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(_res.CTCGuide.FullName);
+        }
+
+        private void _btnRefreshTrack_Click(object sender, EventArgs e)
+        {
+            _ctcOffice.ForceTrackUpdate();
+            if (_systemViewTabs.SelectedIndex == 0)
+            {
+                foreach (MyPictureBox p in _panelRedLine.Controls)
+                {
+                    if (((LayoutCellDataContainer)p.Tag).Tile == _res.Unpopulated)
+                    {
+
+                    }
+                    else
+                    {
+                        p.ReDrawMe();
+                    }
+                }
+            }
+            else if (_systemViewTabs.SelectedIndex == 1)
+            {
+                foreach (MyPictureBox p in _panelGreenLine.Controls)
+                {
+                    if (((LayoutCellDataContainer)p.Tag).Tile == _res.Unpopulated)
+                    {
+
+                    }
+                    else
+                    {
+                        p.ReDrawMe();
+                    }
+                      
+                }
+            }
         }
     }
 
