@@ -585,6 +585,11 @@ namespace TrackModel
             if (fName == null)
                 return false;
 
+            if (!fName.EndsWith(".csv"))
+            {
+                return false;
+            }
+
             //Check if file is already in db, if so return true
             if (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red"))
             {
