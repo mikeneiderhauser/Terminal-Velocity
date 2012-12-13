@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTCOffice.cs" />
     <Compile Include="Dispatch.cs" />
     <Compile Include="DispatchDatabase.cs" />
     <Compile Include="SystemScheduler.cs" />
