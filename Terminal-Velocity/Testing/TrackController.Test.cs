@@ -16,7 +16,7 @@ namespace Testing
 
         const int MaxTrainCount = 3;
 
-        const int Min = 5000;
+        const int Min = 1000;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
         static int _elapsed = 0;
