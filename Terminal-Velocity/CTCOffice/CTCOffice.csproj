@@ -190,6 +190,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\CTC_Office_Users_Guide.pdf" />
     <None Include="Resources\green.png" />
   </ItemGroup>
   <ItemGroup>

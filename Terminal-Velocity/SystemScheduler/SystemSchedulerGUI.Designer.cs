@@ -35,14 +35,15 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.lblTest = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(576, 22);
+            this.btnBrowse.Location = new System.Drawing.Point(576, 53);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(103, 26);
+            this.btnBrowse.Size = new System.Drawing.Size(103, 35);
             this.btnBrowse.TabIndex = 0;
             this.btnBrowse.Text = "Browse...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -50,7 +51,7 @@
             // 
             // txtFilepath
             // 
-            this.txtFilepath.Location = new System.Drawing.Point(15, 22);
+            this.txtFilepath.Location = new System.Drawing.Point(15, 57);
             this.txtFilepath.Name = "txtFilepath";
             this.txtFilepath.ReadOnly = true;
             this.txtFilepath.Size = new System.Drawing.Size(555, 26);
@@ -60,24 +61,26 @@
             // 
             this.grdDispatches.AllowUserToAddRows = false;
             this.grdDispatches.AllowUserToDeleteRows = false;
+            this.grdDispatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdDispatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdDispatches.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.grdDispatches.Location = new System.Drawing.Point(15, 66);
+            this.grdDispatches.Location = new System.Drawing.Point(15, 101);
             this.grdDispatches.MultiSelect = false;
             this.grdDispatches.Name = "grdDispatches";
             this.grdDispatches.ReadOnly = true;
+            this.grdDispatches.RowHeadersVisible = false;
             this.grdDispatches.RowTemplate.Height = 28;
+            this.grdDispatches.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdDispatches.Size = new System.Drawing.Size(664, 208);
             this.grdDispatches.TabIndex = 2;
             this.grdDispatches.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdDispatches_CellClick);
-
             // 
             // btnDelete
             // 
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(15, 291);
+            this.btnDelete.Location = new System.Drawing.Point(15, 326);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(210, 27);
+            this.btnDelete.Size = new System.Drawing.Size(210, 35);
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -86,9 +89,9 @@
             // btnEdit
             // 
             this.btnEdit.Enabled = false;
-            this.btnEdit.Location = new System.Drawing.Point(242, 291);
+            this.btnEdit.Location = new System.Drawing.Point(242, 326);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(210, 27);
+            this.btnEdit.Size = new System.Drawing.Size(210, 35);
             this.btnEdit.TabIndex = 4;
             this.btnEdit.Text = "Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
@@ -97,9 +100,9 @@
             // btnAdd
             // 
             this.btnAdd.Enabled = false;
-            this.btnAdd.Location = new System.Drawing.Point(469, 291);
+            this.btnAdd.Location = new System.Drawing.Point(469, 326);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(210, 27);
+            this.btnAdd.Size = new System.Drawing.Size(210, 35);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "Add...";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -109,10 +112,22 @@
             // 
             this.dlgOpen.Filter = "CSV|*.csv";
             // 
+            // lblTest
+            // 
+            this.lblTest.AutoSize = true;
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Location = new System.Drawing.Point(242, 15);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(53, 22);
+            this.lblTest.TabIndex = 6;
+            this.lblTest.Text = "label1";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SystemSchedulerGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblTest);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnDelete);
@@ -120,7 +135,7 @@
             this.Controls.Add(this.txtFilepath);
             this.Controls.Add(this.btnBrowse);
             this.Name = "SystemSchedulerGUI";
-            this.Size = new System.Drawing.Size(693, 333);
+            this.Size = new System.Drawing.Size(693, 377);
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -136,5 +151,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
+        private System.Windows.Forms.Label lblTest;
     }
 }
