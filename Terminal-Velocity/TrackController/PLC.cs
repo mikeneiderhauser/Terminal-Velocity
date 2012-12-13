@@ -137,6 +137,7 @@ namespace TrackController
                 foreach (IBlock b in blocks.Where(b => b.hasCrossing()))
                 {
                     // TODO lower crossing bars
+                    _env.TrackModel.requestUpdateBlock(b);
                 }
             }
         }
