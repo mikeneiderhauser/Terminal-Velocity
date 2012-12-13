@@ -84,6 +84,7 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
+            this._btnRefreshTrack = new System.Windows.Forms.Button();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
@@ -179,6 +180,7 @@
             // 
             // _groupOperatorControls
             // 
+            this._groupOperatorControls.Controls.Add(this._btnRefreshTrack);
             this._groupOperatorControls.Controls.Add(this._btnOpenUserManual);
             this._groupOperatorControls.Controls.Add(this._btnShowKey);
             this._groupOperatorControls.Controls.Add(this._btnRefreshView);
@@ -676,6 +678,16 @@
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
             // 
+            // _btnRefreshTrack
+            // 
+            this._btnRefreshTrack.Location = new System.Drawing.Point(112, 87);
+            this._btnRefreshTrack.Name = "_btnRefreshTrack";
+            this._btnRefreshTrack.Size = new System.Drawing.Size(100, 23);
+            this._btnRefreshTrack.TabIndex = 0;
+            this._btnRefreshTrack.Text = "Refresh Track";
+            this._btnRefreshTrack.UseVisualStyleBackColor = true;
+            this._btnRefreshTrack.Click += new System.EventHandler(this._btnRefreshTrack_Click);
+            // 
             // CTCOfficeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -775,6 +787,7 @@
         private System.Windows.Forms.Button _btnShowKey;
         private System.Windows.Forms.PictureBox _systemSchedulerIndicator;
         private System.Windows.Forms.Button _btnOpenUserManual;
+        private System.Windows.Forms.Button _btnRefreshTrack;
 
     }
 }

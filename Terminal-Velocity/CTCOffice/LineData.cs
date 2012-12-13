@@ -143,7 +143,7 @@ namespace CTCOffice
             else if (block.Line.CompareTo("Green") == 0)
             {
                 //green
-                if (block.State != StateEnum.Healthy) { return _res.GreenTrackClosed; }
+                if (block.State == StateEnum.BlockClosed) { return _res.GreenTrackClosed; }
                 if (block.hasSwitch()) { return _res.GreenTrackSwitch; }
                 if (block.hasTunnel()) { return _res.GreenTrackTunnel; }
                 if (block.hasHeater()) { return _res.GreenTrackHeater; }
