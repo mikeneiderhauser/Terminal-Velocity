@@ -50,6 +50,7 @@ namespace TrackController
                 int distanceToEnd =
                     _env.TrackModel.requestPath(t.CurrentBlock.BlockID, blocks[blocks.Count - 1].BlockID,
                                                 t.CurrentBlock.Line).Length;
+
                 int speedLim = t.CurrentBlock.SpeedLimit;
                 int authority = 3;
 
@@ -59,6 +60,7 @@ namespace TrackController
                     t.TrainController.DistanceToStation =
                         _env.TrackModel.requestPath(t.CurrentBlock.BlockID, station[0].BlockID, t.CurrentBlock.Line).
                             Length;
+                    t.TrainController.Announcement = station[0].BlockID;
                 }
 
                 // Adjust train speed to match that of the track speed limit
@@ -135,6 +137,7 @@ namespace TrackController
                 foreach (IBlock b in blocks.Where(b => b.hasCrossing()))
                 {
                     // TODO lower crossing bars
+                    _env.TrackModel.requestUpdateBlock(b);
                 }
             }
         }

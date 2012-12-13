@@ -164,25 +164,12 @@ namespace TrainModel
             }
             else
             {
-                appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
+                appendInformationLog("NOTIFICATION: Velocity was zero. Defaulted to maximum acceleration.");
             }
 
-            // check that the new acceleration does not exceed the physical limit
-            if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
-            {
-                appendInformationLog("ERROR: Power level caused acceleration to exceed physical limit. Power ignored.");
-                return false;
-            }
-            // check that the new deceleration does not exceed the physical limit
-            else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
-            {
-                appendInformationLog("ERROR: Power level caused deceleration to exceed physical limit. Power ignored.");
-                return false;
-            }
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
-                _brakeFailure = true;
                 appendInformationLog("WARNING: Brakes applied but train not slowing down.");
             }
 
@@ -441,11 +428,12 @@ namespace TrainModel
             get { return _lightsOn; }
             set
             {
+                bool previousValue = _lightsOn;
                 _lightsOn = value;
 
-                if (_lightsOn)
+                if (_lightsOn && (_lightsOn != previousValue))
                     appendInformationLog("Lights turned on.");
-                else
+                else if(!_lightsOn && (_lightsOn != previousValue))
                     appendInformationLog("Lights turned off.");
             }
         }
@@ -458,11 +446,12 @@ namespace TrainModel
             get { return _doorsOpen; }
             set
             {
+                bool previousValue = _doorsOpen;
                 _doorsOpen = value;
 
-                if (_doorsOpen)
+                if (_doorsOpen && (_doorsOpen != previousValue))
                     appendInformationLog("Doors opened.");
-                else
+                else if (!_doorsOpen && (_doorsOpen != previousValue))
                     appendInformationLog("Doors closed.");
             }
         }

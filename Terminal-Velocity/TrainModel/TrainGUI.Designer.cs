@@ -66,6 +66,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pauseButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -85,9 +86,9 @@
             // allTrainComboBox
             // 
             this.allTrainComboBox.FormattingEnabled = true;
-            this.allTrainComboBox.Location = new System.Drawing.Point(501, 48);
+            this.allTrainComboBox.Location = new System.Drawing.Point(454, 48);
             this.allTrainComboBox.Name = "allTrainComboBox";
-            this.allTrainComboBox.Size = new System.Drawing.Size(121, 21);
+            this.allTrainComboBox.Size = new System.Drawing.Size(103, 21);
             this.allTrainComboBox.TabIndex = 1;
             this.allTrainComboBox.DropDown += new System.EventHandler(this.allTrainComboBox_DropDown);
             this.allTrainComboBox.SelectedIndexChanged += new System.EventHandler(this.allTrainComboBox_SelectedIndexChanged);
@@ -353,10 +354,11 @@
             // 
             this.trainLabel.AutoSize = true;
             this.trainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.trainLabel.Location = new System.Drawing.Point(305, 18);
+            this.trainLabel.Location = new System.Drawing.Point(161, 36);
             this.trainLabel.Name = "trainLabel";
-            this.trainLabel.Size = new System.Drawing.Size(0, 33);
+            this.trainLabel.Size = new System.Drawing.Size(87, 33);
             this.trainLabel.TabIndex = 3;
+            this.trainLabel.Text = "Train";
             // 
             // buttonBrakeFailure
             // 
@@ -459,14 +461,25 @@
             // userManualToolStripMenuItem
             // 
             this.userManualToolStripMenuItem.Name = "userManualToolStripMenuItem";
-            this.userManualToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.userManualToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.userManualToolStripMenuItem.Text = "User Manual";
             this.userManualToolStripMenuItem.Click += new System.EventHandler(this.userManualToolStripMenuItem_Click);
+            // 
+            // pauseButton
+            // 
+            this.pauseButton.Location = new System.Drawing.Point(580, 48);
+            this.pauseButton.Name = "pauseButton";
+            this.pauseButton.Size = new System.Drawing.Size(71, 21);
+            this.pauseButton.TabIndex = 19;
+            this.pauseButton.Text = "Pause";
+            this.pauseButton.UseVisualStyleBackColor = true;
+            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
             // 
             // TrainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pauseButton);
             this.Controls.Add(this.emergencyBrakeLabel);
             this.Controls.Add(this.brakeFailureLabel);
             this.Controls.Add(this.engineFailureLabel);
@@ -528,6 +541,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userManualToolStripMenuItem;
+        private System.Windows.Forms.Button pauseButton;
 
     }
 }
