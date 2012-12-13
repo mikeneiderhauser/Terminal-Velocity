@@ -20,8 +20,8 @@ namespace TrainController
         {
             InitializeComponent();
             _currentTrainController = tc;
-            SpeedInput.Text = "0.0";
-            TemperatureInput.Text = "70";
+            SpeedLimitInput.Text = tc.SpeedLimit.ToString();
+            AuthorityLimitInput.Text = tc.AuthorityLimit.ToString();
             String[] announcements = { "0", "1", "2", "3" };
             AnnouncementComboBox.DataSource = announcements;
             AnnouncementComboBox.Enabled = false;
@@ -81,9 +81,8 @@ namespace TrainController
         {
 
             _currentTrainController.SpeedInput = Double.Parse(SpeedInput.Text);
-            _currentTrainController.Temperature = Int16.Parse(TemperatureInput.Text);
-            SpeedInput.Text = "0.0";
-            TemperatureInput.Text = "70";
+            _currentTrainController.Temperature = Int16.TryParse(TemperatureInput.Text);
+        
 
         }
 
@@ -160,9 +159,9 @@ namespace TrainController
 
         private void SubmitTrackButton_Click(object sender, EventArgs e)
         {
-            _currentTrainController.SpeedLimit = Double.Parse(SpeedLimitInput.Text);
-            _currentTrainController.AuthorityLimit = Int16.Parse(AuthorityLimitInput.Text);
-            _currentTrainController.Announcement = Int16.Parse(AnnouncementComboBox.SelectedValue.ToString());
+            _currentTrainController.SpeedLimit = !SpeedLimitInput.Text.Equals("") ? Double.Parse(SpeedLimitInput.Text):_currentTrainController.SpeedLimit;
+            _currentTrainController.AuthorityLimit = SpeedLimitInput.Text.Equals("") ? Int32.Parse(AuthorityLimitInput.Text):_currentTrainController.AuthorityLimit;
+            _currentTrainController.Announcement = SpeedLimitInput.Text.Equals("") ? Int32.Parse(AnnouncementComboBox.SelectedValue.ToString()) : _currentTrainController.Announcement;
            
 
         }

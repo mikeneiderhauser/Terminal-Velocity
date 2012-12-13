@@ -27,7 +27,7 @@ namespace TrainController
 
 
         #region Constant values
-        private const double MaxValue = 120000;
+        private const double MaxValue = 110000;
         #endregion
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
@@ -71,11 +71,12 @@ namespace TrainController
         }
         private void processTick()
         {
+
             if (AuthorityLimit == 0)
             {
                 SpeedInput = 0;
             }
-            if (CurrentBlock != null && _distanceToStation < 5 && !_currentBlock.hasStation())
+            if (_distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
@@ -174,8 +175,14 @@ namespace TrainController
 
         public int Announcement
         {
-            set { _announcement = value;
-            returnFeedback(_announcements[value]);
+            set 
+            { 
+                _announcement = value;
+                returnFeedback(_announcements[value]);
+            }
+            get
+            {
+                return _announcement;
             }
         }
 
@@ -212,6 +219,10 @@ namespace TrainController
         public void returnFeedback(string Feedback)
         {
             _environment.SendLogEntry(Feedback);
+            if (_log.Length > 1000)
+            {
+                _log = "";
+            }
             _log += Feedback;
             
 
@@ -284,7 +295,7 @@ namespace TrainController
             }
             return ret; 
         }
-
+ 
         public void LightsOn()
         {
             Train.LightsOn = true;
