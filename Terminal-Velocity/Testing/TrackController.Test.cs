@@ -14,7 +14,7 @@ namespace Testing
         static global::SimulationEnvironment.SimulationEnvironment _env;
         static IBlock _startBlock;
 
-        const int MaxTrainCount = 1;
+        const int MaxTrainCount = 3;
 
         const int Min = 5000;
         const int Max = 3 * Min;
@@ -96,7 +96,7 @@ namespace Testing
 
             // Give the train(s) time to move
             {
-                System.Threading.Thread.Sleep(5000);
+                System.Threading.Thread.Sleep(60000);
             }
 
             // Ensure that the trains have the correct authority and speeds
