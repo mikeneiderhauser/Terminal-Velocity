@@ -115,12 +115,14 @@ namespace Testing
                             if (length < 3)
                             {
                                 pass++;
+                                messages.Add(string.Format("[Pass] Train {0}: authority was {1}, expected {2}",
+                                                            t.TrainID, t.AuthorityLimit, 1));
                             }
                             // The train, being too close to another, did not correctly stop
                             else
                             {
                                 fail++;
-                                messages.Add(string.Format("[Error] Train {0}: authority was {1}, expected {2}",
+                                messages.Add(string.Format("[Fail] Train {0}: authority was {1}, expected {2}",
                                                            t.TrainID, t.AuthorityLimit, 1));
                             }
                         }
@@ -134,11 +136,15 @@ namespace Testing
                         {
                             fail++;
                             messages.Add(string.Format(
-                                "[Error] Train {0} did not stop for a broken block: Block {1} (no switches)", t.TrainID, current));
+                                "[Fail] Train {0} did not stop for a broken block: Block {1}", t.TrainID, current));
                         }
                         // The train did not stop for a broken block with no switches
                         else
+                        {
                             pass++;
+                            messages.Add(string.Format(
+                                "[Pass] Train {0} stopped for a broken block: Block {1}", t.TrainID, current));
+                        }
 
                     }
 
@@ -156,11 +162,13 @@ namespace Testing
                                 if (length < 5)
                                 {
                                     pass++;
+                                    messages.Add(string.Format("[Pass] Train {0}: speed limit was {1}, expected {2}",
+                                                                t.TrainID, t.SpeedLimit, 100));
                                 }
                                 else if (length > 5)
                                 {
                                     fail++;
-                                    messages.Add(string.Format("[Error] Train {0}: speed limit was {1}, expected {2}",
+                                    messages.Add(string.Format("[Fail] Train {0}: speed limit was {1}, expected {2}",
                                                                t.TrainID, t.SpeedLimit, 100));
                                 }
                                 else
@@ -168,7 +176,7 @@ namespace Testing
                                     fail++;
                                     messages.Add(
                                         string.Format(
-                                            "[Error] Train {0}: speed limit was {1}, expected {2} (too close to another train)",
+                                            "[Fail] Train {0}: speed limit was {1}, expected {2} (too close to another train)",
                                             t.TrainID, t.SpeedLimit, 50));
                                 }
                             }
