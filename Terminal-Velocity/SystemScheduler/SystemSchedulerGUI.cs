@@ -276,17 +276,23 @@ namespace SystemScheduler
         //When we recieve a tick from the environment
         private void EnvironmentTickHandler(object sender, EventArgs e)
         {
-            Draw();
+
+            //Update our clock on the form
+            UpdateClock();
         }
 
-        private void Draw()
+        //Method to update the clock on the form
+        private void UpdateClock()
         {
+
+            //Thread safety, muthafuckas
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action(Draw));
+                this.BeginInvoke(new Action(UpdateClock));
                 return;
             }
 
+            //Update the time to the one that is stored in the system scheduler
             lblTest.Text = "Current Time: " + _systemScheduler.SchedulerTime.ToLongTimeString();
         }
        
