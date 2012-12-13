@@ -35,6 +35,7 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.lblTest = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).BeginInit();
             this.SuspendLayout();
             // 
@@ -111,10 +112,20 @@
             // 
             this.dlgOpen.Filter = "CSV|*.csv";
             // 
+            // lblTest
+            // 
+            this.lblTest.AutoSize = true;
+            this.lblTest.Location = new System.Drawing.Point(156, 371);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(51, 20);
+            this.lblTest.TabIndex = 6;
+            this.lblTest.Text = "label1";
+            // 
             // SystemSchedulerGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblTest);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnDelete);
@@ -122,7 +133,7 @@
             this.Controls.Add(this.txtFilepath);
             this.Controls.Add(this.btnBrowse);
             this.Name = "SystemSchedulerGUI";
-            this.Size = new System.Drawing.Size(693, 342);
+            this.Size = new System.Drawing.Size(693, 456);
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -138,5 +149,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
+        private System.Windows.Forms.Label lblTest;
     }
 }

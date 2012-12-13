@@ -47,6 +47,9 @@ namespace SystemScheduler
             _environment = env;
             _ctcOffice = ctc;
             _systemScheduler = systemScheduler;
+
+            //Subscribed to the environment tick event
+            //_environment.Tick += EnvironmentTickHandler;
         }
 
         # endregion
@@ -268,6 +271,15 @@ namespace SystemScheduler
             //Check to see if we should still enable all of our buttons
             CheckButtonEnable();
         }
+
+        /*
+        //When we recieve a tick from the environment
+        private void EnvironmentTickHandler(object sender, EventArgs e)
+        {
+            string temporary = _systemScheduler.SchedulerTime.ToLongTimeString();
+            lblTest.Text = temporary;
+        }
+        */
 
         # endregion
     }

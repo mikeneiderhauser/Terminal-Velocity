@@ -126,7 +126,7 @@ namespace SystemScheduler
             //d. Dispatch type is either 0 or 1
             //e. The line is either the green or the red line
             //f. If present, the waypoints are delimited correctly
-            if (!(input.Length == 5) || !(int.TryParse(input[0], out tempInt)) || !(DateTime.TryParse(input[1], out tempTime)) || !(input[2].Equals("0") || input[2].Equals("1")) || !(input[3].Equals("Red") || input[3].Equals("Green")) || !(System.Text.RegularExpressions.Regex.IsMatch(input[4], "[0-9](:Sm[0-9])*")))
+            if (!(input.Length == 5) || !(int.TryParse(input[0], out tempInt)) || !(DateTime.TryParse(input[1], out tempTime)) || !(input[2].Equals("0") || input[2].Equals("1")) || !(input[3].Equals("Red") || input[3].Equals("Green")) || !(System.Text.RegularExpressions.Regex.IsMatch(input[4], @"[0-9](\|[0-9])*")))
             {
                 //Return false if any of these assumptions are wrong
                 return false;

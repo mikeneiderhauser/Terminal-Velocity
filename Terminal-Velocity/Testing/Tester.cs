@@ -78,10 +78,10 @@ namespace Testing
             // Environment object
             var environment = new SimulationEnvironment.SimulationEnvironment();
 
-            IBlock b0 = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
-            IBlock b1 = new Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
-            IBlock b2 = new Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
-            IBlock b3 = new Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b0 = new TrackModel.Block(1, StateEnum.Healthy, 0, 0, 0, new[] {0, 0}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b1 = new TrackModel.Block(2, StateEnum.Healthy, 1, 0, 0, new[] {1, 1}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b2 = new TrackModel.Block(3, StateEnum.Healthy, 2, 0, 0, new[] {2, 2}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
+            IBlock b3 = new TrackModel.Block(4, StateEnum.BrokenTrackFailure, 3, 0, 0, new[] {3, 3}, 10, DirEnum.East, new[] {""}, 0, 0, 0, "Red",70);
 
             var sectionA = new List<IBlock> {b0};
             var sectionB = new List<IBlock> {b1, b2};

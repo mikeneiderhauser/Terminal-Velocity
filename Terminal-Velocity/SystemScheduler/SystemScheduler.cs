@@ -74,6 +74,12 @@ namespace SystemScheduler
             get { return _enabled; }
         }
 
+        //Accessor for the current time
+        public DateTime SchedulerTime
+        {
+            get { return _currentTime; }
+        }
+
         #endregion
 
         #region Public Methods

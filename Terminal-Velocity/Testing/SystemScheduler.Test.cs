@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interfaces;
 using SystemScheduler;
+using System;
 
 namespace Testing
 {
@@ -52,8 +53,8 @@ namespace Testing
             /////////////////////////////////
             //Test 3
             //Attempt to load a database that isn't properly formatted
-            testSystemScheduler.NewFile("..\\..\\Computer Benchmarks.csv");
-            if (testSystemScheduler.DispatchDatabase.SuccessfulParse == false)
+            testSystemScheduler.NewFile("..\\..\\Resources\\Computer Benchmarks.csv");
+            if (testSystemScheduler.DispatchDatabase == null)
             {
                 pass++;
                 message.Add("Pass: The scheduler responded correctly to an attempt to load an improperly formatted file.");
@@ -86,7 +87,7 @@ namespace Testing
             /////////////////////////////////
             //Test 5
             //Attempt to load a correctly formatted database
-            testSystemScheduler.NewFile("..\\..\\Correct File.csv");
+            testSystemScheduler.NewFile("..\\..\\Resources\\Correct File.csv");
             if (testSystemScheduler.DispatchDatabase.SuccessfulParse == true)
             {
                 pass++;
@@ -170,23 +171,6 @@ namespace Testing
 
             /////////////////////////////////
             //Test 10
-            //Can it add to the database without generating a new ID
-            testSystemScheduler.DispatchDatabase.AddDispatch("7", "3:00 AM", "1", "Green", "1");
-            if (testSystemScheduler.DispatchDatabase.DispatchList.Count == 7)
-            {
-                pass++;
-                message.Add("Pass: The scheduler was able to add a dispatch order without generating and ID to its database.");
-            }
-            else
-            {
-                fail++;
-                message.Add("Fail: Your scheduler did not add records to the database as would occur in an edit. If test 7 works, you can probably guess where this is broken.");
-            }
-            //End test 10
-            /////////////////////////////////
-
-            /////////////////////////////////
-            //Test 11
             //Attempt to enable the scheduler with a database loaded - it should be ok
             fakeCTC.StartScheduling();
             if (testSystemScheduler.IsEnabled == true)
@@ -199,11 +183,11 @@ namespace Testing
                 fail++;
                 message.Add("Fail: The scheduler was not enabled after a call was made for it to do just that. For shame.");
             }
-            //End test 11
+            //End test 10
             /////////////////////////////////
 
             /////////////////////////////////
-            //Test 12
+            //Test 11
             //Attempt to disable the scheduler with a database loaded - it should be ok
             fakeCTC.StopScheduling();
             if (testSystemScheduler.IsEnabled == false)
@@ -216,22 +200,23 @@ namespace Testing
                 fail++;
                 message.Add("Fail: The scheduler was not disabled after a call was made for it to do just that. For shame. Again.");
             }
-            //End test 12
+            //End test 11
             /////////////////////////////////
 
             /////////////////////////////////
             //Test 12
             //Check to see if time is running for the scheduler
-            fakeCTC.StopScheduling();
-            if (testSystemScheduler.IsEnabled == false)
+            DateTime temporaryTime = testSystemScheduler.SchedulerTime;
+            System.Threading.Thread.Sleep(5000);
+            if (!testSystemScheduler.SchedulerTime.Equals(temporaryTime))
             {
                 pass++;
-                message.Add("Pass: The scheduler responded correctly to an attempt to disable automated scheduling.");
+                message.Add("Pass: The scheduler is incrementing the time correctly. Thank god for that.");
             }
             else
             {
                 fail++;
-                message.Add("Fail: The scheduler was not disabled after a call was made for it to do just that. For shame. Again.");
+                message.Add("Fail: The scheduler is not incrementing time correctly. You are so screwed.");
             }
             //End test 12
             /////////////////////////////////
