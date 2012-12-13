@@ -9,20 +9,26 @@ namespace TrainController
 {
     public class TrainController : ITrainController
     {
+        #region Global variables
         private TrainControllerUI _tcGUI;
         private ISimulationEnvironment _environment;
         private ITrainModel _train;
         private IBlock _currentBlock;
         private String[] _announcements = { "Approaching station A", "Station A", "Approaching station B", "Station B" };
         private int _authorityLimit;
-        private double _speedLimit = 40;
+        private double _speedLimit;
         private double _speedInput;
         private int _announcement;
-        private bool _hasStation;
+        private int _distanceToStation;
         private int _temperature;
         private string _log;
         private double integral = 0;
-        private const double MaxValue = 1000;
+        #endregion
+
+
+        #region Constant values
+        private const double MaxValue = 120000;
+        #endregion
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
         {
@@ -59,17 +65,21 @@ namespace TrainController
             set { _environment = value; }
         }
 
-
+        public int DistanceToStation
+        {
+            set { _distanceToStation = value; }
+        }
         private void processTick()
         {
             if (AuthorityLimit == 0)
             {
                 SpeedInput = 0;
             }
-            if (_hasStation)
+            if (CurrentBlock != null && _distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
+           
             if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
             {
                 if (SpeedInput > SpeedLimit)
@@ -109,13 +119,7 @@ namespace TrainController
             }
         }
 
-        public bool hasStation
-        {
-            set
-            {
-                hasStation = value;
-            }
-        }
+        
 
         public double SpeedLimit
         {

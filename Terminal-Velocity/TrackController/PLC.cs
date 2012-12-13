@@ -32,12 +32,16 @@ namespace TrackController
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
-        // TODO: This method assumes a switch can only be found at the END of a section controlled by a TrackController
-        public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
+        /// <param name="proximityTrain">Whether a train is within 3 blocks past the start of the next TC</param>
+        /// <param name="proximityBlock">Whether a broken block is within 3 blocks past the start of the next TC</param>
+        public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages, bool proximityTrain, bool proximityBlock)
         {
+            // Get the station location, if any
+            var station = blocks.Where(x => x.hasStation()).ToArray();
+            
             // Update the trackModel
-            //foreach (var b in blocks)
-            //    _env.TrackModel.requestUpdateBlock(b);
+            foreach (var b in blocks)
+                _env.TrackModel.requestUpdateBlock(b);
 
             // Collection of broken blocks
             _broken = blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure)).ToList();
@@ -45,8 +49,15 @@ namespace TrackController
             // Set train speeds an authorities
             foreach (var t in trains)
             {
+                var distanceToEnd = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, blocks[blocks.Count - 1].BlockID, t.CurrentBlock.Line).Length;
                 var speedLim = t.CurrentBlock.SpeedLimit;
                 var authority = 3;
+
+                // If there is a station, give its block id to the trainController
+                if (station.Length > 0)
+                {
+                    t.TrainController.DistanceToStation = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, station[0].BlockID, t.CurrentBlock.Line).Length;
+                }
 
                 // Adjust train speed to match that of the track speed limit
                 // or if the train is too close to another train
@@ -55,14 +66,14 @@ namespace TrackController
                     // Number of blocks till the next train (assumes the Route accounted for)
                     var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
                     // Stop the train for now
-                    if (length < 3)
+                    if (length < 3 || (distanceToEnd < 3 && proximityBlock))
                     {
                         authority = 0;
                         messages.Add(string.Format("Train {0} is near train {1} (stopping)", t.TrainID, n.TrainID));
                     }
 
-                    // Slow the train by half
-                    if (length < 5)
+                    // Slow the train by half if close to another (in this section or the next)
+                    if (length < 5 || (distanceToEnd < 3 && proximityTrain))
                     {
                         speedLim = t.CurrentBlock.SpeedLimit / 2;
                         messages.Add(string.Format("Train {0} is near train {1} (slowing)", t.TrainID, n.TrainID));
@@ -70,6 +81,7 @@ namespace TrackController
                 }
 
                 // Handle broken blocks
+                // Overrides previous authority
                 if (_broken.Count > 0)
                 {
                     foreach (var b in _broken)
@@ -78,7 +90,6 @@ namespace TrackController
                         var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count();
 
                         // Stop the train if a broken block is too close
-                        // TODO: The block may be behind the train
                         if (length < 3)
                         {
                             authority = 0;
