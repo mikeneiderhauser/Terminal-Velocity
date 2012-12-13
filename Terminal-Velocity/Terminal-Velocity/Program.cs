@@ -18,6 +18,8 @@ namespace TerminalVelocity
         static Form schedulerForm;
         static Form trackModelForm;
         static Form trainModelForm;
+        static Form trackControllerRedForm;
+        static Form trackControllerGreenForm;
         static SimulationEnvironment.SimulationEnvironment env;
 
         [STAThread]
@@ -47,13 +49,22 @@ namespace TerminalVelocity
             env.SystemScheduler = scheduler;
             SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(env, scheduler, ctcOffice);
 
-            //train model form
+            // train model form
             TrainModel.TrainGUI trainGui = new TrainGUI(env);
+
+            // Track Controllers
+            TrackController.TrackController red = (TrackController.TrackController) env.PrimaryTrackControllerRed;
+            TrackController.TrackController green = (TrackController.TrackController) env.PrimaryTrackControllerGreen;
+            TrackControllerUi redTcGui = new TrackControllerUi(env, red);
+            TrackControllerUi greenTcGui = new TrackControllerUi(env, green);
+
 
             ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true, Text="Terminal Velocity - CTC Office"};
             schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - System Scheduler" };
             trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - Track Model"};
             trainModelForm = new Form() { Controls = { trainGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Trains" };
+            trackControllerRedForm = new Form() { Controls = { redTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Red" };
+            trackControllerGreenForm = new Form() { Controls = { greenTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Green" };
             //TODO
             /*
              * Train Controller Form(s)
@@ -91,6 +102,9 @@ namespace TerminalVelocity
             trackModelForm.Show();
 
             trainModelForm.Show();
+
+            trackControllerGreenForm.Show();
+            trackControllerRedForm.Show();
         }
     }
 }
