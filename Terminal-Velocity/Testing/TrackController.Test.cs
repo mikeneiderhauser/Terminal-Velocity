@@ -14,8 +14,7 @@ namespace Testing
         static global::SimulationEnvironment.SimulationEnvironment _env;
         static IBlock _startBlock;
 
-        const int MaxTrainCount = 3;
-
+        const int MaxTrainCount = 5;
         const int Min = 1000;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
@@ -88,15 +87,13 @@ namespace Testing
                 while (_env.AllTrains.Count < MaxTrainCount && _elapsed < Timeout)
                     System.Threading.Thread.Sleep(500);
 
-                if (_elapsed >= Timeout) return false;
-
                 timer.Stop();
                 timer.Elapsed -= TimerElapsed;
             }
 
             // Give the train(s) time to move
             {
-                System.Threading.Thread.Sleep(5000);
+                System.Threading.Thread.Sleep(30000);
             }
 
             // Ensure that the trains have the correct authority and speeds
