@@ -71,8 +71,6 @@ namespace TrackController
 
         #region Events
 
-        private static readonly Random Random = new Random((int) DateTime.Now.ToBinary());
-        private const int Max = 1000;
         private Mutex _mutex = new Mutex(false);
         private void EnvTick(object sender, TickEventArgs e)
         {
@@ -90,16 +88,6 @@ namespace TrackController
                 }
             }
             _mutex.ReleaseMutex();
-
-            // Randomly create broken blocks
-            if (Random.Next(Max) > Max * 0.999)
-            {
-                IBlock broken;
-                if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
-                {
-                    broken.State = StateEnum.BrokenTrackFailure;
-                }
-            }
         }
 
         #endregion // Events
