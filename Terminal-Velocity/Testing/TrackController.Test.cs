@@ -15,7 +15,7 @@ namespace Testing
         static IBlock _startBlock;
 
         const int MaxTrainCount = 5;
-        const int Min = 1000;
+        const int Min = 800;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
         static int _elapsed = 0;
@@ -119,8 +119,8 @@ namespace Testing
                             else
                             {
                                 fail++;
-                                messages.Add(string.Format("[Fail] Train {0}: authority was {1}, expected {2}",
-                                                           t.TrainID, t.AuthorityLimit, 1));
+                                messages.Add(string.Format("[Fail] Train {0}: authority was {1}, expected {2} ({3} blocks to next train)",
+                                                           t.TrainID, t.AuthorityLimit, 1, length));
                             }
                         }
 
