@@ -45,43 +45,43 @@ namespace Interfaces
         ///     Function to add train to AllTrains
         /// </summary>
         /// <param name="train">train to add</param>
-        void addTrain(ITrainModel train);
+        void AddTrain(ITrainModel train);
 
         /// <summary>
         ///     Function to remove train from AllTrains
         /// </summary>
         /// <param name="train">train to remove</param>
-        void removeTrain(ITrainModel train);
+        void RemoveTrain(ITrainModel train);
 
         /// <summary>
         ///     Send message to environment to log
         /// </summary>
         /// <param name="msg"></param>
-        void sendLogEntry(string msg);
+        void SendLogEntry(string msg);
 
         /// <summary>
         ///     Set speed to timer
         /// </summary>
         /// <param name="speed"></param>
-        void setInterval(long interval);
+        void SetInterval(long interval);
 
         /// <summary>
         ///     get speed of timer
         /// </summary>
         /// <returns></returns>
-        long getInterval();
+        long GetInterval();
 
         /// <summary>
         ///     Function to stop the environment timer
         /// </summary>
         /// <param name="sender">ref to caller</param>
-        void stopTick();
+        void StopTick();
 
         /// <summary>
         ///     Function to start environment timer
         /// </summary>
         /// <param name="sender">ref to caller</param>
-        void startTick();
+        void StartTick();
 
         /// <summary>
         ///     Function to dispatch train (sim yard)

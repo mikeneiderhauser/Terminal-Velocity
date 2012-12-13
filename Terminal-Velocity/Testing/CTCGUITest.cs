@@ -68,7 +68,7 @@ namespace Testing
                 MyTestingControls
                 );
 
-            _env.startTick();
+            _env.StartTick();
 
             Form f = new Form();
             f.AutoSize = true;

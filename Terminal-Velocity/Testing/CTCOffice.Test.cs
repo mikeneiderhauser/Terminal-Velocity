@@ -78,7 +78,7 @@ namespace Testing
             _ctc.MessagesReady += new EventHandler<EventArgs>(_ctc_MessagesReady);
             _ctc.UnlockLogin += new EventHandler<EventArgs>(_ctc_UnlockLogin);
             _ctc.UpdatedData += new EventHandler<EventArgs>(_ctc_UpdatedData);
-            _env.startTick();
+            _env.StartTick();
 
             _trackMod.ThrowTrackChanged();
 

@@ -126,7 +126,7 @@ namespace CTCOffice
             //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
 
             //post to log that the gui has loaded
-            _environment.sendLogEntry("CTCOffice: GUI Loaded");
+            _environment.SendLogEntry("CTCOffice: GUI Loaded");
 
             _tt = null;
         }
@@ -568,7 +568,7 @@ namespace CTCOffice
                 _btnLoginLogout.Text = "Login";
                 MainDisplayLogo();
                 //post to log
-                _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
+                _environment.SendLogEntry("CTCOffice: Operator Logged Out!");
             }
             else
             {
@@ -592,7 +592,7 @@ namespace CTCOffice
                     _loginStatusImage.Image = _res.RedLight;
                     _btnLoginLogout.Text = "Login";
                     //post to log
-                    _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
+                    _environment.SendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
                     //show logo
                     MainDisplayLogo();
                     //tell user invalid creds
@@ -694,7 +694,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()*10);
+            _environment.SetInterval(_environment.GetInterval()*10);
             _btnGlobalTimeWallSpeed.Enabled = false;
         }
 
@@ -705,7 +705,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()/10);
+            _environment.SetInterval(_environment.GetInterval()/10);
             _btnGlobalTimeWallSpeed.Enabled = true;
         }
 

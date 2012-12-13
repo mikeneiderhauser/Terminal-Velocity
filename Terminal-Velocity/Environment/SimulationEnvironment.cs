@@ -113,17 +113,17 @@ namespace SimulationEnvironment
 
         #region Functions
 
-        public void addTrain(ITrainModel train)
+        public void AddTrain(ITrainModel train)
         {
             _allTrains.Add(train);
         }
 
-        public void removeTrain(ITrainModel train)
+        public void RemoveTrain(ITrainModel train)
         {
             _allTrains.Remove(train);
         }
 
-        public void sendLogEntry(string msg)
+        public void SendLogEntry(string msg)
         {
             if (_sysLog != null)
             {
@@ -131,26 +131,26 @@ namespace SimulationEnvironment
             }
         }
 
-        public void setInterval(long interval)
+        public void SetInterval(long interval)
         {
             _timer.Interval = interval;
         }
 
-        public long getInterval()
+        public long GetInterval()
         {
             return (long) _timer.Interval;
         }
 
-        public void stopTick()
+        public void StopTick()
         {
             _timer.Stop();
-            sendLogEntry("Environment: Envoked Timer Stop");
+            SendLogEntry("Environment: Envoked Timer Stop");
         }
 
-        public void startTick()
+        public void StartTick()
         {
             _timer.Start();
-            sendLogEntry("Environment: Envoked Timer Start");
+            SendLogEntry("Environment: Envoked Timer Start");
         }
 
         public void Dispatch(IRequest request)
@@ -176,7 +176,7 @@ namespace SimulationEnvironment
             //detect collision on dispatch
             if ((PrimaryTrackControllerRed.Trains.Count == 0 && start.Line.CompareTo("Red") == 0) || (PrimaryTrackControllerGreen.Trains.Count == 0 && start.Line.CompareTo("Green") == 0))
             {
-                this.addTrain(new TrainModel.Train(randomNumber, start, this));
+                this.AddTrain(new TrainModel.Train(randomNumber, start, this));
                 _CTCOffice.ExternalRefresh();
             }
         }

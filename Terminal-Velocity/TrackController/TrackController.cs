@@ -238,12 +238,14 @@ namespace TrackController
             }
 
             // Disable time while the PLC performs its analysis
+            _env.StopTick();
             {
                 _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
                 _plc.ToggleSwitches(sb, st, sr, _messages);
                 _plc.ToggleLights(sb, st, sr, _messages);
                 _plc.UpdateBlocks(up);
             }
+            _env.StartTick();
 
             _updateBlocks.Clear();
         }

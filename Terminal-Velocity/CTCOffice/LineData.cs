@@ -65,7 +65,7 @@ namespace CTCOffice
                         {
                             container.BaseTile = _res.TrackError;
                             container.Tile = container.BaseTile;
-                            env.sendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
+                            env.SendLogEntry("CTC Office: Line Data - IBlock.Line is invalid");
                         }
                     } //end determine tile
 
