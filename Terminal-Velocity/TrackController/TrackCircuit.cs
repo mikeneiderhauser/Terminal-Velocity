@@ -9,6 +9,7 @@ namespace TrackController
     public class TrackCircuit : ITrackCircuit
     {
         private readonly Dictionary<int, IBlock> _blocks;
+        private readonly string _line;
         private readonly ISimulationEnvironment _env;
 
         private readonly Dictionary<int, ITrainModel> _trains;
@@ -22,6 +23,11 @@ namespace TrackController
 
             foreach (var b in blocks)
                 _blocks.Add(b.BlockID, b);
+
+            if (blocks.Count > 0)
+                _line = blocks[0].Line;
+            else
+                _line = "Red";
 
             _env = env;
             _env.Tick += EnvTick;
@@ -83,7 +89,8 @@ namespace TrackController
                 foreach (var t in _env.AllTrains)
                 {
                     if (!_trains.ContainsKey(t.TrainID) &&
-                        _blocks.ContainsKey(t.CurrentBlock.BlockID))
+                        _blocks.ContainsKey(t.CurrentBlock.BlockID) &&
+                        String.Compare(t.CurrentBlock.Line, _line, StringComparison.Ordinal) == 0)
                         _trains.Add(t.TrainID, t);
                 }
             }
