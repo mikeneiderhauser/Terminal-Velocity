@@ -167,18 +167,6 @@ namespace TrainModel
                 appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
             }
 
-            // check that the new acceleration does not exceed the physical limit
-            if (newAcceleration > 0 && newAcceleration > _physicalAccelerationLimit)
-            {
-                appendInformationLog("ERROR: Power level caused acceleration to exceed physical limit. Power ignored.");
-                return false;
-            }
-            // check that the new deceleration does not exceed the physical limit
-            else if (newAcceleration < 0 && newAcceleration < _physicalDecelerationLimit)
-            {
-                appendInformationLog("ERROR: Power level caused deceleration to exceed physical limit. Power ignored.");
-                return false;
-            }
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
@@ -211,6 +199,8 @@ namespace TrainModel
         public void updateMovement()
         {
             _timeInterval = (_environment.GetInterval() / 1000.0); // milliseconds to seconds
+
+            double previousAcceleration = _currentAcceleration;
 
             // can't accelerate or decelerate if engine has failed
             if (_engineFailure)
