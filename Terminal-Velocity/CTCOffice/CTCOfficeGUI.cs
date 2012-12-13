@@ -284,6 +284,17 @@ namespace CTCOffice
 
         private void _ctcOffice_MessagesReady(object sender, EventArgs e)
         {
+            AddMessagesToConsole();
+        }
+
+        private void AddMessagesToConsole()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(AddMessagesToConsole));
+                return;
+            }
+
             if (listSystemNotifications.Items.Count > 100)
             {
                 listSystemNotifications.Items.Clear();
@@ -291,6 +302,8 @@ namespace CTCOffice
             listSystemNotifications.Items.AddRange(_ctcOffice.SystemMessages.ToArray());
             _ctcOffice.SystemMessages.Clear();
         }
+
+
 
         private void _ctcOffice_UpdatedData(object sender, EventArgs e)
         {

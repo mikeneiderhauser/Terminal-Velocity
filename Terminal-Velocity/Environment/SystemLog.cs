@@ -70,7 +70,7 @@ namespace SimulationEnvironment
         /// <param name="msg">exact message to write to the log file</param>
         private void appendSystemLog(string msg)
         {
-            //return;
+            return;
             if (!File.Exists(_currentLogFile))
             {
                 log = new StreamWriter(_currentLogFile);
