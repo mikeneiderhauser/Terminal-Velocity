@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using Interfaces;
 using Utility;
 using Utility.Properties;
+using System.Diagnostics;
+using CTCOffice;
 
 namespace CTCOffice
 {
@@ -1217,6 +1219,11 @@ namespace CTCOffice
             _popupIndicatorCTC.Image = null;
         }
         #endregion
+
+        private void _btnOpenUserManual_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(_res.CTCGuide.FullName);
+        }
     }
 
 //end ctc gui
