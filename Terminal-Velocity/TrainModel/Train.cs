@@ -386,6 +386,7 @@ namespace TrainModel
             if (_informationCount > 2000)
             {
                 _informationLog = ""; // clear the log
+                _informationCount = 0;
             }
 
             _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
