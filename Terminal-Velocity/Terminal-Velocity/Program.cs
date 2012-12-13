@@ -17,6 +17,7 @@ namespace TerminalVelocity
         static Form ctcForm;
         static Form schedulerForm;
         static Form trackModelForm;
+        static Form trainModelForm;
         static SimulationEnvironment.SimulationEnvironment env;
 
         [STAThread]
@@ -46,10 +47,13 @@ namespace TerminalVelocity
             env.SystemScheduler = scheduler;
             SystemScheduler.SystemSchedulerGUI schedulerGui = new SystemScheduler.SystemSchedulerGUI(env, scheduler, ctcOffice);
 
+            //train model form
+            TrainModel.TrainGUI trainGui = new TrainGUI(env);
+
             ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true, Text="Terminal Velocity - CTC Office"};
             schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - System Scheduler" };
             trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - Track Model"};
-
+            trainModelForm = new Form() { Controls = { trainGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Trains" };
             //TODO
             /*
              * Train Controller Form(s)
@@ -85,6 +89,8 @@ namespace TerminalVelocity
 
             //schedulerForm.ShowDialog(ctcForm);
             trackModelForm.Show();
+
+            trainModelForm.Show();
         }
     }
 }

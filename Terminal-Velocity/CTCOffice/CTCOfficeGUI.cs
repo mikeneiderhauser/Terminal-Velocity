@@ -266,13 +266,17 @@ namespace CTCOffice
             pane.Attributes = attribs;
             pane.MouseClick += _layoutPiece_MouseClick;
 
-            if (c.Block != null)
+            if (c.Train != null)
+            {
+                pane.MouseHover += new EventHandler(pane_MouseHover);
+                pane.MouseLeave += new EventHandler(pane_MouseLeave);
+            }
+            else if (c.Block != null)
             {
                 if (c.Block.hasStation())
                 {
                     pane.MouseHover += new EventHandler(pane_MouseHover);
                     pane.MouseLeave += new EventHandler(pane_MouseLeave);
-                    //_tt.SetToolTip(pane,c.Block.AttrArray[1]);
                 }
             }
             
@@ -907,16 +911,21 @@ namespace CTCOffice
             _tt.ReshowDelay = 500;
             _tt.ShowAlways = true;
             LayoutCellDataContainer c = (LayoutCellDataContainer)b.Tag;
-            string station = "";
-            if (c.Block.AttrArray.Length > 1)
+            string hoverText = "";
+
+            if (c.Train != null)
             {
-                station = c.Block.AttrArray[1];
+                hoverText = c.Train.ToString();
+            }
+            else if (c.Block.AttrArray.Length > 1)
+            {
+                hoverText = c.Block.AttrArray[1];
             }
             else
             {
-                station = "Error Getting Station Name";
+                hoverText = "Error Getting Station Name";
             }
-            _tt.Show(station, b);
+            _tt.Show(hoverText, b);
         }
 
         private void pane_MouseLeave(object sender, EventArgs e)
