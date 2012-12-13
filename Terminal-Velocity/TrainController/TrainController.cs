@@ -38,6 +38,7 @@ namespace TrainController
             _environment.Tick += _environment_Tick;
             _tcGUI = null;
             Train = tm;
+            _log = "";
             _announcements = new Dictionary<int, string>();
             _announcements.Add(8, "Arrived at Shadyside Station\r\n");
             _announcements.Add(16, "Arrived at Herron Station\r\n");
@@ -98,6 +99,7 @@ namespace TrainController
         }
         private void processTick()
         {
+            CurrentBlock = _train.CurrentBlock;
             if (CurrentBlock.hasStation())
             {
                 loadPassengers();

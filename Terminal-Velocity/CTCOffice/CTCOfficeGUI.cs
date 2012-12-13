@@ -700,8 +700,10 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
         {
+            _environment.StopTick();
             _environment.SetInterval(_environment.GetInterval()*10);
             _btnGlobalTimeWallSpeed.Enabled = false;
+            _environment.StartTick();
         }
 
         /// <summary>
@@ -711,8 +713,10 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
         {
+            _environment.StopTick();
             _environment.SetInterval(_environment.GetInterval()/10);
             _btnGlobalTimeWallSpeed.Enabled = true;
+            _environment.StartTick();
         }
 
         /// <summary>
