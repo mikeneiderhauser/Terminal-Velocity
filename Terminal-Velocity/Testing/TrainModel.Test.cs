@@ -2,6 +2,7 @@
 using Interfaces;
 using TrackModel;
 using TrainModel;
+using System.Linq;
 using System;
 
 namespace Testing
@@ -10,6 +11,8 @@ namespace Testing
     {
         ISimulationEnvironment _environment;
 
+        const float BlockLengh = 0.5F;
+
         public bool DoTest(out int pass, out int fail, out List<string> message)
         {
             pass = 0;
@@ -17,6 +20,18 @@ namespace Testing
             message = new List<string>();
 
             _environment = new SimulationEnvironment.SimulationEnvironment();
+
+            // Create 100 blocks for the red line
+            var blocks = new List<IBlock>();
+            // First block
+            blocks.Add(new Block(1, StateEnum.Healthy, 100, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 2, 0, 0, "Red", 100));
+            // Next 99 blocks
+            for (var i = 2; i < 100; i++)
+                blocks.Add(new Block(i, StateEnum.Healthy, i - 1, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, i + 1, 0, 0, "Red", 100));
+            // Last block
+            blocks.Add(new Block(100, StateEnum.Healthy, 99, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 1, 0, 0, "Red", 100));
+
+            _environment.TrackModel = new DummyTrackModel(blocks);
             
             Block noGrade = new Block(1, StateEnum.Healthy, 0, 0, 0, new[] { 0, 0 }, 10, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 70);
             Block withPositiveGrade = new Block(1, StateEnum.Healthy, 0, 0, 0.01, new[] { 0, 0 }, 10, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 70);
@@ -431,5 +446,57 @@ namespace Testing
             return true;
         }
 
+        internal class DummyTrackModel : ITrackModel
+        {
+            readonly List<IBlock> _blocks;
+
+            public DummyTrackModel(List<IBlock> blocks)
+            {
+                _blocks = blocks;
+
+                RedLoaded = true;
+                GreenLoaded = false;
+            }
+
+            public TrackChanged ChangeFlag { get; private set; }
+            public IBlock requestBlockInfo(int blockID, string line)
+            {
+                return _blocks.First(x => x.BlockID == blockID);
+            }
+
+            public IRouteInfo requestRouteInfo(int routeID)
+            {
+                throw new NotImplementedException();
+            }
+
+            public event EventHandler<EventArgs> TrackChangedEvent;
+            public IBlock[] requestPath(int startBlockID, int endBlockID, string line)
+            {
+                return _blocks.Where(x => x.BlockID >= startBlockID && x.BlockID <= endBlockID).ToArray();
+            }
+
+            public IBlock[,] requestTrackGrid(int routeID)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool requestUpdateSwitch(IBlock bToUpdate)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool requestUpdateBlock(IBlock blockToChange)
+            {
+                for (var i = 0; i < _blocks.Count; i++)
+                {
+                    if (_blocks[i].BlockID == blockToChange.BlockID)
+                        _blocks[i] = blockToChange;
+                }
+                return true;
+            }
+
+            public bool RedLoaded { get; private set; }
+            public bool GreenLoaded { get; private set; }
+        }
     }
 }
