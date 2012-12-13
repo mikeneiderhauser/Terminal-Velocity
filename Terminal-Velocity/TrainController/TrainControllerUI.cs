@@ -22,8 +22,8 @@ namespace TrainController
             _currentTrainController = tc;
             SpeedLimitInput.Text = tc.SpeedLimit.ToString();
             AuthorityLimitInput.Text = tc.AuthorityLimit.ToString();
-            String[] announcements = { "0", "1", "2", "3" };
-            AnnouncementComboBox.DataSource = announcements;
+         //   String[] announcements = { "0", "1", "2", "3" };
+            AnnouncementComboBox.DataSource = tc.Announcements;
             AnnouncementComboBox.Enabled = false;
             timer = 0;
 

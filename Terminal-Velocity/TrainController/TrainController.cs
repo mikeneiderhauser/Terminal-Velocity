@@ -20,6 +20,7 @@ namespace TrainController
         private double _speedLimit;
         private double _speedInput;
         private int _announcement;
+        private bool _passengersFlag;
         private int _distanceToStation;
         private int _temperature;
         private string _log;
@@ -97,6 +98,10 @@ namespace TrainController
         }
         private void processTick()
         {
+            if (CurrentBlock.hasStation())
+            {
+                loadPassengers();
+            }
 
             if (AuthorityLimit == 0)
             {
@@ -106,6 +111,7 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
+            
            
             if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
             {
@@ -122,6 +128,18 @@ namespace TrainController
                 
             } 
 
+        }
+
+        private void loadPassengers()
+        {
+            if (_passengersFlag && Train.CurrentVelocity == 0)
+            {
+                removePassengers();
+                addPassengers();
+                doorClose();
+                _passengersFlag = false;
+            }
+         
         }
 
 
@@ -190,6 +208,10 @@ namespace TrainController
             set
             {
                 _currentBlock = value;
+                if (_currentBlock.hasStation())
+                {
+                    _passengersFlag = true;
+                }
             }
         }
 
@@ -211,6 +233,14 @@ namespace TrainController
             get
             {
                 return _announcement;
+            }
+        }
+        public int[] Announcements
+        {
+           
+            get
+            {
+                return _announcements.Keys.ToArray();
             }
         }
 
