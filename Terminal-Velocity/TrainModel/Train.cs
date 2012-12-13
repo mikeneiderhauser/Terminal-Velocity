@@ -441,11 +441,12 @@ namespace TrainModel
             get { return _lightsOn; }
             set
             {
+                bool previousValue = _lightsOn;
                 _lightsOn = value;
 
-                if (_lightsOn)
+                if (_lightsOn && (_lightsOn != previousValue))
                     appendInformationLog("Lights turned on.");
-                else
+                else if(!_lightsOn && (_lightsOn != previousValue))
                     appendInformationLog("Lights turned off.");
             }
         }
@@ -458,11 +459,12 @@ namespace TrainModel
             get { return _doorsOpen; }
             set
             {
+                bool previousValue = _doorsOpen;
                 _doorsOpen = value;
 
-                if (_doorsOpen)
+                if (_doorsOpen && (_doorsOpen != previousValue))
                     appendInformationLog("Doors opened.");
-                else
+                else if (!_doorsOpen && (_doorsOpen != previousValue))
                     appendInformationLog("Doors closed.");
             }
         }
