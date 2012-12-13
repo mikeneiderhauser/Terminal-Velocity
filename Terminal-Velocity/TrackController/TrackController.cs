@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Interfaces;
 using Utility;
@@ -13,6 +14,7 @@ namespace TrackController
         private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, List<IBlock>> _routes;
         private Dictionary<int, IBlock> _blocks;
+        private Dictionary<int, IBlock> _updateBlocks;
 
         private List<string> _messages;
         private ITrackController _next;
@@ -32,6 +34,7 @@ namespace TrackController
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
             _routes = new Dictionary<int, List<IBlock>>();
+            _updateBlocks = new Dictionary<int, IBlock>();
 
             _env = env;
             _env.Tick += EnvTick;
@@ -102,7 +105,7 @@ namespace TrackController
         }
 
         /// <summary>
-        /// Returns a list of Blocks for this TrackController
+        ///     Returns a list of Blocks for this TrackController
         /// </summary>
         public List<IBlock> Blocks
         {
@@ -110,11 +113,19 @@ namespace TrackController
         }
 
         /// <summary>
-        /// Returnes a list of Routes this TrackController interacts with
+        ///     Returnes a list of Routes this TrackController interacts with
         /// </summary>
         public Dictionary<int, List<IBlock>> Routes
         {
             get { return _routes; }
+        }
+
+        /// <summary>
+        ///     Retuns the line this TrackController is associated with
+        /// </summary>
+        public string Line
+        {
+            get { return _circuit.Line; }
         }
 
         #endregion // Public Properties
@@ -143,7 +154,7 @@ namespace TrackController
                     {
                         if (_routes.ContainsKey(request.TrainID))
                             _routes.Remove(request.TrainID);
-                        _routes.Add(request.TrainID, request.Info.Blocks);
+                        _routes.Add(request.TrainID, request.TrainRoute.RouteBlocks);
                     }
                     break;
                 case RequestTypes.TrackControllerData:
@@ -161,7 +172,10 @@ namespace TrackController
                         {
                             IBlock b;
                             if (_blocks.TryGetValue(request.Block.BlockID, out b))
+                            {
                                 b.State = StateEnum.BlockClosed;
+                                _updateBlocks.Add(b.BlockID, b);
+                            }
                         }
                     }
                     break;
@@ -174,6 +188,8 @@ namespace TrackController
                             {
                                 if (b.State == StateEnum.BlockClosed)
                                     b.State = StateEnum.Healthy;
+
+                                _updateBlocks.Add(b.BlockID, b);
                             }
                         }
                     }
@@ -214,15 +230,40 @@ namespace TrackController
             var sb = Blocks;
             var st = Trains;
             var sr = Routes;
+            var up = _updateBlocks.Values.ToList();
 
-            _plc.IsSafe(sb, st, sr, _messages);
-            _plc.ToggleSwitches(sb, st, sr, _messages);
-            _plc.ToggleLights(sb, st, sr, _messages);
+            var proximityBlock = false;
+            var proximityTrain = false;
+
+            if (Next != null)
+            {
+                proximityBlock =
+                    Next.Blocks.Any(
+                        x =>
+                        x.BlockID < Next.Blocks[0].BlockID + 3 && (x.State == StateEnum.BrokenTrackFailure) ||
+                        (x.State == StateEnum.BlockClosed));
+                proximityTrain = Next.Trains.Any(t => t.CurrentBlock.BlockID < Next.Blocks[0].BlockID + 3);
+            }
+
+            // Disable time while the PLC performs its analysis
+            _env.StopTick();
+            {
+                _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
+                _plc.ToggleSwitches(sb, st, sr, _messages);
+                _plc.ToggleLights(sb, st, sr, _messages);
+                _plc.UpdateBlocks(up);
+            }
+            _env.StartTick();
+
+            _updateBlocks.Clear();
         }
 
         #endregion // Private Methods
 
         #region Events
+
+        private static readonly Random Random = new Random((int)DateTime.Now.ToBinary());
+        private const int Max = 1000;
 
         // A tick has elasped so we need to do work
         private void EnvTick(object sender, TickEventArgs e)
@@ -242,6 +283,18 @@ namespace TrackController
 
             _trains = _circuit.Trains;
             _blocks = _circuit.Blocks;
+
+
+            // Randomly create broken blocks
+            if (Random.Next(Max) > Max * 0.999)
+            {
+                IBlock broken;
+                if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
+                {
+                    broken.State = StateEnum.BrokenTrackFailure;
+                    _updateBlocks.Add(broken.BlockID, broken);
+                }
+            }
 
             PlcDoWork();
         }

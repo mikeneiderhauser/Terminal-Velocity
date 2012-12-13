@@ -36,16 +36,16 @@
             this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SwitchDest = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainGrid = new System.Windows.Forms.DataGridView();
+            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RouteBlocks = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcListBoxInfo = new System.Windows.Forms.ListBox();
             this.nextButton = new System.Windows.Forms.Button();
             this.prevButton = new System.Windows.Forms.Button();
             this.messageTextBox = new System.Windows.Forms.RichTextBox();
             this.tcCountBox = new System.Windows.Forms.TextBox();
             this.selectTCLabel = new System.Windows.Forms.Label();
-            this.TrainID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RouteBlocks = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Authority = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Speed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trainInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blockGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trainGrid)).BeginInit();
@@ -95,6 +95,8 @@
             this.blockGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.blockGrid.Size = new System.Drawing.Size(453, 150);
             this.blockGrid.TabIndex = 11;
+            this.blockGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.BlockGridScroll);
+            this.blockGrid.Leave += new System.EventHandler(this.BlockGridLeave);
             // 
             // StateBlockID
             // 
@@ -129,6 +131,32 @@
             this.trainGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.trainGrid.Size = new System.Drawing.Size(453, 139);
             this.trainGrid.TabIndex = 10;
+            this.trainGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.TrainGridScroll);
+            this.trainGrid.Leave += new System.EventHandler(this.TrainGridLeave);
+            // 
+            // TrainID
+            // 
+            this.TrainID.HeaderText = "Train ID";
+            this.TrainID.Name = "TrainID";
+            this.TrainID.ReadOnly = true;
+            // 
+            // RouteBlocks
+            // 
+            this.RouteBlocks.HeaderText = "Route Blocks";
+            this.RouteBlocks.Name = "RouteBlocks";
+            this.RouteBlocks.ReadOnly = true;
+            // 
+            // Authority
+            // 
+            this.Authority.HeaderText = "Authority";
+            this.Authority.Name = "Authority";
+            this.Authority.ReadOnly = true;
+            // 
+            // Speed
+            // 
+            this.Speed.HeaderText = "Speed";
+            this.Speed.Name = "Speed";
+            this.Speed.ReadOnly = true;
             // 
             // tcListBoxInfo
             // 
@@ -183,30 +211,6 @@
             this.selectTCLabel.Size = new System.Drawing.Size(115, 13);
             this.selectTCLabel.TabIndex = 6;
             this.selectTCLabel.Text = "Select Track Controller";
-            // 
-            // TrainID
-            // 
-            this.TrainID.HeaderText = "Train ID";
-            this.TrainID.Name = "TrainID";
-            this.TrainID.ReadOnly = true;
-            // 
-            // RouteBlocks
-            // 
-            this.RouteBlocks.HeaderText = "Route Blocks";
-            this.RouteBlocks.Name = "RouteBlocks";
-            this.RouteBlocks.ReadOnly = true;
-            // 
-            // Authority
-            // 
-            this.Authority.HeaderText = "Authority";
-            this.Authority.Name = "Authority";
-            this.Authority.ReadOnly = true;
-            // 
-            // Speed
-            // 
-            this.Speed.HeaderText = "Speed";
-            this.Speed.Name = "Speed";
-            this.Speed.ReadOnly = true;
             // 
             // TrackControllerUi
             // 

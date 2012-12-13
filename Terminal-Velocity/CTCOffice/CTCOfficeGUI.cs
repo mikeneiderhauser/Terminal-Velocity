@@ -61,6 +61,8 @@ namespace CTCOffice
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
 
+        //Tool Tip
+        private ToolTip _tt;
         #endregion
 
         #region Constructor + Environment Tick
@@ -124,7 +126,9 @@ namespace CTCOffice
             //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
 
             //post to log that the gui has loaded
-            _environment.sendLogEntry("CTCOffice: GUI Loaded");
+            _environment.SendLogEntry("CTCOffice: GUI Loaded");
+
+            _tt = null;
         }
 
         /// <summary>
@@ -242,11 +246,13 @@ namespace CTCOffice
 
         public MyPictureBox MakePane(int i, int j, int x, int y, LayoutCellDataContainer c, Panel drawingPanel)
         {
+            /*
             if (this.InvokeRequired)
             {
                 //this.Invoke(new Action(this.MakePane(i,j,x,y,c,drawingPanel)));
                 //return;
             }
+             */
 
             MyPictureBox pane = new MyPictureBox(drawingPanel, this);
             pane.Name = "_imgGridGreen_" + i + "_" + j;
@@ -259,6 +265,21 @@ namespace CTCOffice
             TileContainerStats attribs = new TileContainerStats(i, j, x, y, c, drawingPanel);
             pane.Attributes = attribs;
             pane.MouseClick += _layoutPiece_MouseClick;
+
+            if (c.Train != null)
+            {
+                pane.MouseHover += new EventHandler(pane_MouseHover);
+                pane.MouseLeave += new EventHandler(pane_MouseLeave);
+            }
+            else if (c.Block != null)
+            {
+                if (c.Block.hasStation())
+                {
+                    pane.MouseHover += new EventHandler(pane_MouseHover);
+                    pane.MouseLeave += new EventHandler(pane_MouseLeave);
+                }
+            }
+            
             pane.ForceRedraw += _layoutPiece_ForceRedraw;
             drawingPanel.Controls.Add(pane);
             return pane;
@@ -273,17 +294,27 @@ namespace CTCOffice
             //make a new panel (automatically adds to appropriate panel)
             MakePane(attribs.I,attribs.J,attribs.X,attribs.Y,attribs.Container,attribs.LayoutPanel);
             //cast sender as a control
-            Control s = (Control)sender;
+            Control c = (Control)sender;
             //dispose of sender
-            s.Dispose();
+            c.Dispose();
         }
-
         #endregion
 
         #region Refresh Controls and Functions
 
         private void _ctcOffice_MessagesReady(object sender, EventArgs e)
         {
+            AddMessagesToConsole();
+        }
+
+        private void AddMessagesToConsole()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(AddMessagesToConsole));
+                return;
+            }
+
             if (listSystemNotifications.Items.Count > 100)
             {
                 listSystemNotifications.Items.Clear();
@@ -291,6 +322,8 @@ namespace CTCOffice
             listSystemNotifications.Items.AddRange(_ctcOffice.SystemMessages.ToArray());
             _ctcOffice.SystemMessages.Clear();
         }
+
+
 
         private void _ctcOffice_UpdatedData(object sender, EventArgs e)
         {
@@ -539,7 +572,7 @@ namespace CTCOffice
                 _btnLoginLogout.Text = "Login";
                 MainDisplayLogo();
                 //post to log
-                _environment.sendLogEntry("CTCOffice: Operator Logged Out!");
+                _environment.SendLogEntry("CTCOffice: Operator Logged Out!");
             }
             else
             {
@@ -563,7 +596,7 @@ namespace CTCOffice
                     _loginStatusImage.Image = _res.RedLight;
                     _btnLoginLogout.Text = "Login";
                     //post to log
-                    _environment.sendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
+                    _environment.SendLogEntry("CTCOffice: Operator Login Failed -> UnAuthorized!");
                     //show logo
                     MainDisplayLogo();
                     //tell user invalid creds
@@ -665,7 +698,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTimeWallSpeed_Click(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()*10);
+            _environment.SetInterval(_environment.GetInterval()*10);
             _btnGlobalTimeWallSpeed.Enabled = false;
         }
 
@@ -676,7 +709,7 @@ namespace CTCOffice
         /// <param name="e"></param>
         private void _btnGlobalTime10WallSpeed_Click(object sender, EventArgs e)
         {
-            _environment.setInterval(_environment.getInterval()/10);
+            _environment.SetInterval(_environment.GetInterval()/10);
             _btnGlobalTimeWallSpeed.Enabled = true;
         }
 
@@ -867,6 +900,41 @@ namespace CTCOffice
                 }
             }
             //else do noting
+        }//mouse click
+
+        private void pane_MouseHover(object sender, EventArgs e)
+        {
+            MyPictureBox b = (MyPictureBox)sender;
+            _tt = new ToolTip();
+            _tt.AutoPopDelay = 10000;
+            _tt.InitialDelay = 200;
+            _tt.ReshowDelay = 500;
+            _tt.ShowAlways = true;
+            LayoutCellDataContainer c = (LayoutCellDataContainer)b.Tag;
+            string hoverText = "";
+
+            if (c.Train != null)
+            {
+                hoverText = c.Train.ToString();
+            }
+            else if (c.Block.AttrArray.Length > 1)
+            {
+                hoverText = c.Block.AttrArray[1];
+            }
+            else
+            {
+                hoverText = "Error Getting Station Name";
+            }
+            _tt.Show(hoverText, b);
+        }
+
+        private void pane_MouseLeave(object sender, EventArgs e)
+        {
+            if (_tt != null)
+            {
+                _tt.Dispose();
+                _tt = null;
+            }
         }
 
         #endregion
@@ -946,8 +1014,14 @@ namespace CTCOffice
             popup.Text = "Routing Tool";
             popup.AutoSize = true;
             popup.FormClosed += Popup_RoutingTool_FormClosed;
+            var rt = new RoutingTool(this, _ctcOffice, _environment, start, false);
 
-            var rt = new RoutingTool(this, _ctcOffice, _environment, start);
+            //create special for dispatch
+            if (requestMode == RoutingMode.Dispatch)
+            {
+                rt = new RoutingTool(this, _ctcOffice, _environment, start, true);
+            }
+            
             //set ctc gui ref
             _routeTool = rt;
             _routeTool.EnablePointSelection += Rt_EnablePointSelection;

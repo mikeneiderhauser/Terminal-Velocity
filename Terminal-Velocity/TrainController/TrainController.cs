@@ -75,7 +75,7 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
-            if (_distanceToStation < 5 && !_currentBlock.hasStation())
+            if (CurrentBlock != null && _distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
@@ -211,7 +211,7 @@ namespace TrainController
 
         public void returnFeedback(string Feedback)
         {
-            _environment.sendLogEntry(Feedback);
+            _environment.SendLogEntry(Feedback);
             _log += Feedback;
             
 
@@ -252,7 +252,7 @@ namespace TrainController
         public void sendPower(double speed)
         {
 
-                double _timeInterval = (double)Environment.getInterval() / 1000;
+                double _timeInterval = (double)Environment.GetInterval() / 1000;
                 double finalPower = 0;
                double speedInMetersPerSecond = (speed / 3.6);
                 double e = speedInMetersPerSecond - Train.CurrentVelocity;

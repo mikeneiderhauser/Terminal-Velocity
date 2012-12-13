@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Interfaces;
 using Utility;
 using Utility.Properties;
@@ -37,14 +38,22 @@ namespace CTCOffice
 
         //messages for gui
         private List<string> _messages;
+
+        //Mutex for updating
+        private Mutex _populateTrackMutex;
+        private Mutex _updateTrackMutex;
+        private Mutex _loadTrackMutex;
         #endregion
 
         #region Constructor and Environment Tick Handler
         public CTCOffice(ISimulationEnvironment env, ITrackController redTC, ITrackController greenTC)
         {
+            _populateTrackMutex = new Mutex(false);
+            _updateTrackMutex = new Mutex(false);
+            _loadTrackMutex = new Mutex(false);
             _rate = 100; //num of ticks
             _tickCount = 0;
-            _rate = env.getInterval();
+            _rate = env.GetInterval();
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
@@ -83,7 +92,7 @@ namespace CTCOffice
 
             if (_env.TrackModel == null)
             {
-                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                _env.SendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
 
         }//Constructor
@@ -170,6 +179,7 @@ namespace CTCOffice
         /// </summary>
         private void UpdateRed()
         {
+            _updateTrackMutex.WaitOne();
             //request blocks in red line
             IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(0);
             foreach (IBlock b in rtnfo.BlockList)
@@ -186,13 +196,14 @@ namespace CTCOffice
                         {
                             string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
                 }
             }
             rtnfo = null;
+            _updateTrackMutex.ReleaseMutex();
         }
 
         /// <summary>
@@ -200,6 +211,7 @@ namespace CTCOffice
         /// </summary>
         private void UpdateGreen()
         {
+            _updateTrackMutex.WaitOne();
             //request blocks in green line
             IRouteInfo rtnfo = _env.TrackModel.requestRouteInfo(1);
             foreach (IBlock b in rtnfo.BlockList)
@@ -208,17 +220,18 @@ namespace CTCOffice
                 LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
                 if (c != null)
                 {
-                    c.Tile = _redLineData.GetBlockType(b);
+                    c.Tile = _greenLineData.GetBlockType(b);
                     if (c.Panel != null)
                     {
                         string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                         _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
+                        _env.SendLogEntry("CTC Office: " + msg);
                         c.Panel.ReDrawMe();
                     }
                 }
             }
             rtnfo = null;
+            _updateTrackMutex.ReleaseMutex();
         }
 
         #endregion
@@ -310,7 +323,7 @@ namespace CTCOffice
             status = _op.IsAuth();
             if (status)
             {
-                _env.sendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
+                _env.SendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
                 if (LoadData != null)
                 {
                     LoadData(this, EventArgs.Empty);
@@ -318,7 +331,7 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: User Logged out.");
+                _env.SendLogEntry("CTCOffice: User Logged out.");
             }
             return status;
         }
@@ -353,6 +366,9 @@ namespace CTCOffice
         /// </summary>
         public void PopulateTrack()
         {
+            _populateTrackMutex.WaitOne();
+            //_env.stopTick();
+            //_env.Tick -= _env_Tick;
             //clear current trains
             //foreach(IBlock b in _containedBlocks)
             for (int i = 0; i < _containedTrainAndBlock.Count; i++)
@@ -415,7 +431,7 @@ namespace CTCOffice
                         {
                             string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
@@ -432,12 +448,16 @@ namespace CTCOffice
                         {
                             string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
                 }//end if
             }//end for each
+
+            _populateTrackMutex.ReleaseMutex();
+            //_env.Tick += _env_Tick;
+            //_env.startTick();
         }//End Populate Track
 
         /// <summary>
@@ -486,6 +506,7 @@ namespace CTCOffice
 
         private void IsTrackUp()
         {
+            _loadTrackMutex.WaitOne();
             //Checks the environment to see if a Track Models exists
             if (_env.TrackModel != null)
             {
@@ -536,8 +557,9 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                _env.SendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
+            _loadTrackMutex.ReleaseMutex();
         }
 
         /// <summary>
@@ -676,7 +698,7 @@ namespace CTCOffice
             {
                 string msg = "Request Sent: " + request.RequestType.ToString();
                 _messages.Add(msg);
-                _env.sendLogEntry("CTC Office: " + msg);
+                _env.SendLogEntry("CTC Office: " + msg);
             }
         }
 
@@ -699,7 +721,7 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
+                _env.SendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
             }
 
             //change block from null to yard
