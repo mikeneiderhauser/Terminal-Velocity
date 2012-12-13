@@ -12,7 +12,7 @@ namespace TrainController
         private IBlock[,] _redLineLayout;
         private IBlock[] _redPath;
         private IBlock[] _greenPath;
-        private ISimulationEnvironment _env;
+        private ISimulationEnvironment _env; 
 
         public TestingTrackModel(ISimulationEnvironment env)
         {

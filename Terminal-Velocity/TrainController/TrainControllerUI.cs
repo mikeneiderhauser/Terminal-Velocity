@@ -80,8 +80,8 @@ namespace TrainController
         private void _btnSubmit_Click(object sender, EventArgs e)
         {
 
-            _currentTrainController.SpeedInput = Double.Parse(SpeedInput.Text);
-            _currentTrainController.Temperature = Int16.TryParse(TemperatureInput.Text);
+            _currentTrainController.SpeedInput = !SpeedInput.Text.Equals("") ? Double.Parse(SpeedInput.Text) : _currentTrainController.SpeedInput;
+            _currentTrainController.Temperature = !TemperatureInput.Text.Equals("") ? Int32.Parse(TemperatureInput.Text) : _currentTrainController.Temperature; 
         
 
         }
@@ -160,8 +160,8 @@ namespace TrainController
         private void SubmitTrackButton_Click(object sender, EventArgs e)
         {
             _currentTrainController.SpeedLimit = !SpeedLimitInput.Text.Equals("") ? Double.Parse(SpeedLimitInput.Text):_currentTrainController.SpeedLimit;
-            _currentTrainController.AuthorityLimit = SpeedLimitInput.Text.Equals("") ? Int32.Parse(AuthorityLimitInput.Text):_currentTrainController.AuthorityLimit;
-            _currentTrainController.Announcement = SpeedLimitInput.Text.Equals("") ? Int32.Parse(AnnouncementComboBox.SelectedValue.ToString()) : _currentTrainController.Announcement;
+            _currentTrainController.AuthorityLimit = !AuthorityLimitInput.Text.Equals("") ? Int32.Parse(AuthorityLimitInput.Text):_currentTrainController.AuthorityLimit;
+            _currentTrainController.Announcement = Int32.Parse(AnnouncementComboBox.SelectedValue.ToString());
            
 
         }
