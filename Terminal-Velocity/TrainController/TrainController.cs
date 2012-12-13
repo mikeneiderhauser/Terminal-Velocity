@@ -189,9 +189,12 @@ namespace TrainController
             {
                 if (!checkSpeedLimit(value))
                 {
-                    _speedInput = value;
-                    integral = 0;
-                    sendPower(value);
+                    if (_speedInput != value)
+                    {
+                        _speedInput = value;
+                        integral = 0;
+                        sendPower(value);
+                    }
                 }
                 else
                     returnFeedback("Speed not implemented because it was over the speed limit\r\n");
