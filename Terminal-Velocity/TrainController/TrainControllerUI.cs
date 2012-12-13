@@ -193,6 +193,11 @@ namespace TrainController
             }
         }
 
+        private void LightsOn_Click(object sender, EventArgs e)
+        {
+
+        }
+
        
 
       
