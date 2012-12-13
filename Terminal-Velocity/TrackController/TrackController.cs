@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Interfaces;
 using Utility;
@@ -13,6 +14,7 @@ namespace TrackController
         private Dictionary<int, ITrainModel> _trains;
         private Dictionary<int, List<IBlock>> _routes;
         private Dictionary<int, IBlock> _blocks;
+        private Dictionary<int, IBlock> _updateBlocks;
 
         private List<string> _messages;
         private ITrackController _next;
@@ -32,6 +34,7 @@ namespace TrackController
             _trains = new Dictionary<int, ITrainModel>();
             _blocks = new Dictionary<int, IBlock>();
             _routes = new Dictionary<int, List<IBlock>>();
+            _updateBlocks = new Dictionary<int, IBlock>();
 
             _env = env;
             _env.Tick += EnvTick;
@@ -161,7 +164,10 @@ namespace TrackController
                         {
                             IBlock b;
                             if (_blocks.TryGetValue(request.Block.BlockID, out b))
+                            {
                                 b.State = StateEnum.BlockClosed;
+                                _updateBlocks.Add(b.BlockID, b);
+                            }
                         }
                     }
                     break;
@@ -174,6 +180,8 @@ namespace TrackController
                             {
                                 if (b.State == StateEnum.BlockClosed)
                                     b.State = StateEnum.Healthy;
+
+                                _updateBlocks.Add(b.BlockID, b);
                             }
                         }
                     }
@@ -214,6 +222,7 @@ namespace TrackController
             var sb = Blocks;
             var st = Trains;
             var sr = Routes;
+            var up = _updateBlocks.Values.ToList();
 
             var proximityBlock = false;
             var proximityTrain = false;
@@ -231,11 +240,15 @@ namespace TrackController
             _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
             _plc.ToggleSwitches(sb, st, sr, _messages);
             _plc.ToggleLights(sb, st, sr, _messages);
+            _plc.UpdateBlocks(up);
         }
 
         #endregion // Private Methods
 
         #region Events
+
+        private static readonly Random Random = new Random((int)DateTime.Now.ToBinary());
+        private const int Max = 1000;
 
         // A tick has elasped so we need to do work
         private void EnvTick(object sender, TickEventArgs e)
@@ -255,6 +268,18 @@ namespace TrackController
 
             _trains = _circuit.Trains;
             _blocks = _circuit.Blocks;
+
+
+            // Randomly create broken blocks
+            if (Random.Next(Max) > Max * 0.999)
+            {
+                IBlock broken;
+                if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
+                {
+                    broken.State = StateEnum.BrokenTrackFailure;
+                    _updateBlocks.Add(broken.BlockID, broken);
+                }
+            }
 
             PlcDoWork();
         }
