@@ -61,6 +61,8 @@ namespace CTCOffice
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
 
+        //Station Hover
+        private ToolTip _tt;
         #endregion
 
         #region Constructor + Environment Tick
@@ -125,6 +127,12 @@ namespace CTCOffice
 
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
+
+            _tt = new ToolTip();
+            _tt.AutoPopDelay = 5000;
+            _tt.InitialDelay = 1000;
+            _tt.ReshowDelay = 500;
+            _tt.ShowAlways = true;
         }
 
         /// <summary>
@@ -242,11 +250,13 @@ namespace CTCOffice
 
         public MyPictureBox MakePane(int i, int j, int x, int y, LayoutCellDataContainer c, Panel drawingPanel)
         {
+            /*
             if (this.InvokeRequired)
             {
                 //this.Invoke(new Action(this.MakePane(i,j,x,y,c,drawingPanel)));
                 //return;
             }
+             */
 
             MyPictureBox pane = new MyPictureBox(drawingPanel, this);
             pane.Name = "_imgGridGreen_" + i + "_" + j;
@@ -259,6 +269,17 @@ namespace CTCOffice
             TileContainerStats attribs = new TileContainerStats(i, j, x, y, c, drawingPanel);
             pane.Attributes = attribs;
             pane.MouseClick += _layoutPiece_MouseClick;
+
+            if (c.Block != null)
+            {
+                if (c.Block.hasStation())
+                {
+                    //pane.MouseHover += new EventHandler(pane_MouseHover);
+                    //pane.MouseLeave += new EventHandler(pane_MouseLeave);
+                    //_tt.SetToolTip(pane,c.Block.AttrArray[1]);
+                }
+            }
+            
             pane.ForceRedraw += _layoutPiece_ForceRedraw;
             drawingPanel.Controls.Add(pane);
             return pane;
@@ -277,7 +298,6 @@ namespace CTCOffice
             //dispose of sender
             s.Dispose();
         }
-
         #endregion
 
         #region Refresh Controls and Functions
@@ -880,6 +900,18 @@ namespace CTCOffice
                 }
             }
             //else do noting
+        }//mouse click
+
+        void pane_MouseHover(object sender, EventArgs e)
+        {
+            MyPictureBox b = (MyPictureBox)sender;
+            ToolTip tt = new ToolTip();
+        }
+
+        void pane_MouseLeave(object sender, EventArgs e)
+        {
+            MyPictureBox b = (MyPictureBox)sender;
+            //if(
         }
 
         #endregion
