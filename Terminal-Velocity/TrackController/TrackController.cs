@@ -286,15 +286,15 @@ namespace TrackController
 
 
             // Randomly create broken blocks
-            if (Random.Next(Max) > Max * 0.999)
-            {
-                IBlock broken;
-                if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
-                {
-                    broken.State = StateEnum.BrokenTrackFailure;
-                    _updateBlocks.Add(broken.BlockID, broken);
-                }
-            }
+            //if (Random.Next(Max) > Max * 0.999)
+            //{
+            //    IBlock broken;
+            //    if (_blocks.TryGetValue(Random.Next(_blocks.Count - 1), out broken))
+            //    {
+            //        broken.State = StateEnum.BrokenTrackFailure;
+            //        _updateBlocks.Add(broken.BlockID, broken);
+            //    }
+            //}
 
             PlcDoWork();
         }
