@@ -53,18 +53,26 @@ namespace TerminalVelocity
             TrainModel.TrainGUI trainGui = new TrainGUI(env);
 
             // Track Controllers
-            TrackController.TrackController red = (TrackController.TrackController) env.PrimaryTrackControllerRed;
-            TrackController.TrackController green = (TrackController.TrackController) env.PrimaryTrackControllerGreen;
-            TrackControllerUi redTcGui = new TrackControllerUi(env, red);
-            TrackControllerUi greenTcGui = new TrackControllerUi(env, green);
+            if (env.PrimaryTrackControllerRed != null)
+            {
+                TrackController.TrackController red = (TrackController.TrackController)env.PrimaryTrackControllerRed;
+                TrackControllerUi redTcGui = new TrackControllerUi(env, red);
+                trackControllerRedForm = new Form() { Controls = { redTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Red" };
+            }
 
+            if (env.PrimaryTrackControllerGreen != null)
+            {
+                TrackController.TrackController green = (TrackController.TrackController)env.PrimaryTrackControllerGreen;
+                TrackControllerUi greenTcGui = new TrackControllerUi(env, green);
+                trackControllerGreenForm = new Form() { Controls = { greenTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Green" };
+            }
 
             ctcForm = new Form() { Controls = { ctcOfficeGui }, AutoSize = true, Text="Terminal Velocity - CTC Office"};
             schedulerForm = new Form() { Controls = { schedulerGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - System Scheduler" };
             trackModelForm = new Form() { Controls = { trackModelGui }, TopLevel = true, AutoSize = true, Parent = null, Text="Terminal Velocity - Track Model"};
             trainModelForm = new Form() { Controls = { trainGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Trains" };
-            trackControllerRedForm = new Form() { Controls = { redTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Red" };
-            trackControllerGreenForm = new Form() { Controls = { greenTcGui }, TopLevel = true, AutoSize = true, Parent = null, Text = "Terminal Velocity - Track Controller Green" };
+
+
             //TODO
             /*
              * Train Controller Form(s)
@@ -103,8 +111,10 @@ namespace TerminalVelocity
 
             trainModelForm.Show();
 
-            trackControllerGreenForm.Show();
-            trackControllerRedForm.Show();
+            if (trackControllerGreenForm != null)
+                trackControllerGreenForm.Show();
+            if (trackControllerRedForm != null)
+                trackControllerRedForm.Show();
         }
     }
 }
