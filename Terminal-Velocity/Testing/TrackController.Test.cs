@@ -93,7 +93,7 @@ namespace Testing
 
             // Give the train(s) time to move
             {
-                System.Threading.Thread.Sleep(30000);
+                System.Threading.Thread.Sleep(5000);
             }
 
             // Ensure that the trains have the correct authority and speeds
