@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using Interfaces;
 using Utility;
+using Timer = System.Timers.Timer;
 
 namespace SimulationEnvironment
 {
@@ -77,7 +78,13 @@ namespace SimulationEnvironment
 
         public List<ITrainModel> AllTrains
         {
-            get { return _allTrains; }
+            get
+            {
+                lock (_allTrains)
+                {
+                    return _allTrains;
+                }
+            }
         }
 
         #endregion

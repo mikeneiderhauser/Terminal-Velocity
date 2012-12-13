@@ -76,25 +76,18 @@ namespace TrackController
         #endregion // Public Methods
 
         #region Events
-
-        private Mutex _mutex = new Mutex(false);
         private void EnvTick(object sender, TickEventArgs e)
         {
             _trains.Clear();
 
-
-            _mutex.WaitOne();
+            // Find all the trains within the TrackCircuits area
+            foreach (var t in _env.AllTrains)
             {
-                // Find all the trains within the TrackCircuits area
-                foreach (var t in _env.AllTrains)
-                {
-                    if (!_trains.ContainsKey(t.TrainID) &&
-                        _blocks.ContainsKey(t.CurrentBlock.BlockID) &&
-                        String.Compare(t.CurrentBlock.Line, _line, StringComparison.Ordinal) == 0)
-                        _trains.Add(t.TrainID, t);
-                }
+                if (!_trains.ContainsKey(t.TrainID) &&
+                    _blocks.ContainsKey(t.CurrentBlock.BlockID) &&
+                    String.Compare(t.CurrentBlock.Line, _line, StringComparison.Ordinal) == 0)
+                    _trains.Add(t.TrainID, t);
             }
-            _mutex.ReleaseMutex();
         }
 
         #endregion // Events
