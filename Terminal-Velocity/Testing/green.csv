@@ -14,7 +14,7 @@ Green,C,12,100,-3,55,SWITCH,,-3,0,8,13,11,1,East_AND_West
 Green,D,13,150,0,70,,,0,0,9,12,14,-1,East_AND_West
 Green,D,14,150,0,70,,,0,0,9,13,15,-1,East_AND_West
 Green,D,15,150,0,70,,,0,0,9,14,16,-1,East_AND_West
-Green,D,16,150,0,70,STATION,,0,0,9,15,17,-1,East_AND_West
+Green,D,16,150,0,70,STATION; Made_Up_Station_Name,,0,0,9,15,17,-1,East_AND_West
 Green,E,17,150,0,60,,,0,0,9,16,18,-1,Northeast_AND_Southwest
 Green,E,18,150,0,60,,,0,0,9,17,19,-1,Northeast_AND_Southwest
 Green,E,19,150,0,60,RAILWAY CROSSING,,0,0,9,18,20,-1,Northeast_AND_Southwest

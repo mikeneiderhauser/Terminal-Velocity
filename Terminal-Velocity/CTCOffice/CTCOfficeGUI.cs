@@ -61,6 +61,8 @@ namespace CTCOffice
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
 
+        //Tool Tip
+        private ToolTip _tt;
         #endregion
 
         #region Constructor + Environment Tick
@@ -125,6 +127,8 @@ namespace CTCOffice
 
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
+
+            _tt = null;
         }
 
         /// <summary>
@@ -242,11 +246,13 @@ namespace CTCOffice
 
         public MyPictureBox MakePane(int i, int j, int x, int y, LayoutCellDataContainer c, Panel drawingPanel)
         {
+            /*
             if (this.InvokeRequired)
             {
                 //this.Invoke(new Action(this.MakePane(i,j,x,y,c,drawingPanel)));
                 //return;
             }
+             */
 
             MyPictureBox pane = new MyPictureBox(drawingPanel, this);
             pane.Name = "_imgGridGreen_" + i + "_" + j;
@@ -259,6 +265,17 @@ namespace CTCOffice
             TileContainerStats attribs = new TileContainerStats(i, j, x, y, c, drawingPanel);
             pane.Attributes = attribs;
             pane.MouseClick += _layoutPiece_MouseClick;
+
+            if (c.Block != null)
+            {
+                if (c.Block.hasStation())
+                {
+                    pane.MouseHover += new EventHandler(pane_MouseHover);
+                    pane.MouseLeave += new EventHandler(pane_MouseLeave);
+                    //_tt.SetToolTip(pane,c.Block.AttrArray[1]);
+                }
+            }
+            
             pane.ForceRedraw += _layoutPiece_ForceRedraw;
             drawingPanel.Controls.Add(pane);
             return pane;
@@ -273,11 +290,10 @@ namespace CTCOffice
             //make a new panel (automatically adds to appropriate panel)
             MakePane(attribs.I,attribs.J,attribs.X,attribs.Y,attribs.Container,attribs.LayoutPanel);
             //cast sender as a control
-            Control s = (Control)sender;
+            Control c = (Control)sender;
             //dispose of sender
-            s.Dispose();
+            c.Dispose();
         }
-
         #endregion
 
         #region Refresh Controls and Functions
@@ -880,6 +896,28 @@ namespace CTCOffice
                 }
             }
             //else do noting
+        }//mouse click
+
+        private void pane_MouseHover(object sender, EventArgs e)
+        {
+            MyPictureBox b = (MyPictureBox)sender;
+            _tt = new ToolTip();
+            _tt.AutoPopDelay = 10000;
+            _tt.InitialDelay = 200;
+            _tt.ReshowDelay = 500;
+            _tt.ShowAlways = true;
+            LayoutCellDataContainer c = (LayoutCellDataContainer)b.Tag;
+            //string line = c.Block.AttrArray[1];
+            _tt.Show("This is a test", b);
+        }
+
+        private void pane_MouseLeave(object sender, EventArgs e)
+        {
+            if (_tt != null)
+            {
+                _tt.Dispose();
+                _tt = null;
+            }
         }
 
         #endregion

@@ -538,6 +538,19 @@ namespace TrackModel
             if (bToUpdate.BlockID == 0)
                 return false;
 
+            IBlock oldBlock=this.requestBlockInfo(bToUpdate.BlockID, bToUpdate.Line);
+            if (oldBlock == null)//If it doesnt exist, return false
+            {
+                return false;
+            }
+
+            
+            //Check state between the oldBlock and the newBlock.  If nothing changes, dont update, just return true
+            if (oldBlock.State == bToUpdate.State)
+            {
+                return true;
+            }
+
             string updateString = _dbManager.createUpdate("BLOCK", bToUpdate);
             if (updateString == null)
                 return false;
@@ -572,6 +585,11 @@ namespace TrackModel
         {
             if (fName == null)
                 return false;
+
+            if (!fName.EndsWith(".csv"))
+            {
+                return false;
+            }
 
             //Check if file is already in db, if so return true
             if (fName.Contains("red") || fName.Contains("RED") || fName.Contains("Red"))
