@@ -342,7 +342,7 @@ namespace TrainController
         }
 
 
-        private bool checkSpeedLimit(double speed)
+        private bool checkSpeedLimit(double speed)  
         {
             return speed > SpeedLimit;
         }
