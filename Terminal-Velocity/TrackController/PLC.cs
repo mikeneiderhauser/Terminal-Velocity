@@ -60,7 +60,7 @@ namespace TrackController
                     t.TrainController.DistanceToStation =
                         _env.TrackModel.requestPath(t.CurrentBlock.BlockID, station[0].BlockID, t.CurrentBlock.Line).
                             Length;
-                    //t.TrainController.StationID = station[0].BlockID;
+                    t.TrainController.Announcement = station[0].BlockID;
                 }
 
                 // Adjust train speed to match that of the track speed limit
