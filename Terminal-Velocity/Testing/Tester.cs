@@ -181,8 +181,8 @@ namespace Testing
                     loc[0] = 10;
                     loc[1] = 10;
                     var start = new Block(0, StateEnum.Healthy, 0, 0, -0.02, loc, 100, DirEnum.East, null, 1, 2, 0, "Red",70);
-                    environment.addTrain(new Train(0, start, environment));
-                    environment.addTrain(new Train(1, start, environment));
+                    environment.AddTrain(new Train(0, start, environment));
+                    environment.AddTrain(new Train(1, start, environment));
 
                     var train0 = (Train)environment.AllTrains[0];
                     train0.ChangeMovement(200);
@@ -202,7 +202,7 @@ namespace Testing
 
             if (environment != null)
             {
-                environment.startTick();
+                environment.StartTick();
             }
 
             if (form != null)

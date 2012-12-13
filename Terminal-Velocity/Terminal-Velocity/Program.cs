@@ -85,7 +85,7 @@ namespace TerminalVelocity
         static void ctcForm_Shown(object sender, EventArgs ea)
         {
             //start global timer
-            env.startTick();
+            env.StartTick();
 
             //schedulerForm.ShowDialog(ctcForm);
             trackModelForm.Show();

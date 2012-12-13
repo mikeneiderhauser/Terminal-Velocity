@@ -146,7 +146,7 @@ namespace TrackController
                     {
                         if (_routes.ContainsKey(request.TrainID))
                             _routes.Remove(request.TrainID);
-                        _routes.Add(request.TrainID, request.Info.Blocks);
+                        _routes.Add(request.TrainID, request.TrainRoute.RouteBlocks);
                     }
                     break;
                 case RequestTypes.TrackControllerData:
@@ -237,10 +237,17 @@ namespace TrackController
                 proximityTrain = Next.Trains.Any(t => t.CurrentBlock.BlockID < Next.Blocks[0].BlockID + 3);
             }
 
-            _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
-            _plc.ToggleSwitches(sb, st, sr, _messages);
-            _plc.ToggleLights(sb, st, sr, _messages);
-            _plc.UpdateBlocks(up);
+            // Disable time while the PLC performs its analysis
+            _env.StopTick();
+            {
+                _plc.IsSafe(sb, st, sr, _messages, proximityTrain, proximityBlock);
+                _plc.ToggleSwitches(sb, st, sr, _messages);
+                _plc.ToggleLights(sb, st, sr, _messages);
+                _plc.UpdateBlocks(up);
+            }
+            _env.StartTick();
+
+            _updateBlocks.Clear();
         }
 
         #endregion // Private Methods

@@ -9,6 +9,7 @@ namespace TrackController
     public class TrackCircuit : ITrackCircuit
     {
         private readonly Dictionary<int, IBlock> _blocks;
+        private readonly string _line;
         private readonly ISimulationEnvironment _env;
 
         private readonly Dictionary<int, ITrainModel> _trains;
@@ -22,6 +23,11 @@ namespace TrackController
 
             foreach (var b in blocks)
                 _blocks.Add(b.BlockID, b);
+
+            if (blocks.Count > 0)
+                _line = blocks[0].Line;
+            else
+                _line = "Red";
 
             _env = env;
             _env.Tick += EnvTick;
@@ -70,24 +76,18 @@ namespace TrackController
         #endregion // Public Methods
 
         #region Events
-
-        private Mutex _mutex = new Mutex(false);
         private void EnvTick(object sender, TickEventArgs e)
         {
             _trains.Clear();
 
-
-            _mutex.WaitOne();
+            // Find all the trains within the TrackCircuits area
+            foreach (var t in _env.AllTrains)
             {
-                // Find all the trains within the TrackCircuits area
-                foreach (var t in _env.AllTrains)
-                {
-                    if (!_trains.ContainsKey(t.TrainID) &&
-                        _blocks.ContainsKey(t.CurrentBlock.BlockID))
-                        _trains.Add(t.TrainID, t);
-                }
+                if (!_trains.ContainsKey(t.TrainID) &&
+                    _blocks.ContainsKey(t.CurrentBlock.BlockID) &&
+                    String.Compare(t.CurrentBlock.Line, _line, StringComparison.Ordinal) == 0)
+                    _trains.Add(t.TrainID, t);
             }
-            _mutex.ReleaseMutex();
         }
 
         #endregion // Events

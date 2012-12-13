@@ -53,7 +53,7 @@ namespace CTCOffice
             _loadTrackMutex = new Mutex(false);
             _rate = 100; //num of ticks
             _tickCount = 0;
-            _rate = env.getInterval();
+            _rate = env.GetInterval();
             _env = env;
             _primaryTrackControllerGreen = greenTC;
             _primaryTrackControllerRed = redTC;
@@ -92,7 +92,7 @@ namespace CTCOffice
 
             if (_env.TrackModel == null)
             {
-                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                _env.SendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
 
         }//Constructor
@@ -196,7 +196,7 @@ namespace CTCOffice
                         {
                             string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
@@ -225,7 +225,7 @@ namespace CTCOffice
                     {
                         string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();
                         _messages.Add(msg);
-                        _env.sendLogEntry("CTC Office: " + msg);
+                        _env.SendLogEntry("CTC Office: " + msg);
                         c.Panel.ReDrawMe();
                     }
                 }
@@ -323,7 +323,7 @@ namespace CTCOffice
             status = _op.IsAuth();
             if (status)
             {
-                _env.sendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
+                _env.SendLogEntry("CTCOffice: User Logged in with username->" + username + ".");
                 if (LoadData != null)
                 {
                     LoadData(this, EventArgs.Empty);
@@ -331,7 +331,7 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: User Logged out.");
+                _env.SendLogEntry("CTCOffice: User Logged out.");
             }
             return status;
         }
@@ -431,7 +431,7 @@ namespace CTCOffice
                         {
                             string msg = "Red Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
@@ -448,7 +448,7 @@ namespace CTCOffice
                         {
                             string msg = "Green Line: Train ID: " + c.Train.TrainID + " is now on Block: " + c.Block.BlockID + ".";
                             _messages.Add(msg);
-                            _env.sendLogEntry("CTC Office: " + msg);
+                            _env.SendLogEntry("CTC Office: " + msg);
                             c.Panel.ReDrawMe();
                         }
                     }
@@ -557,7 +557,7 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: NULL Reference to TrackModel");
+                _env.SendLogEntry("CTCOffice: NULL Reference to TrackModel");
             }
             _loadTrackMutex.ReleaseMutex();
         }
@@ -698,7 +698,7 @@ namespace CTCOffice
             {
                 string msg = "Request Sent: " + request.RequestType.ToString();
                 _messages.Add(msg);
-                _env.sendLogEntry("CTC Office: " + msg);
+                _env.SendLogEntry("CTC Office: " + msg);
             }
         }
 
@@ -721,7 +721,7 @@ namespace CTCOffice
             }
             else
             {
-                _env.sendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
+                _env.SendLogEntry("CTCOffice: INVALID ROUTE IN DISPATCH TRAIN REQUEST");
             }
 
             //change block from null to yard

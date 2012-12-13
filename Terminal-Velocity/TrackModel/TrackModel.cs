@@ -85,7 +85,14 @@ namespace TrackModel
                 {
                     if (blockArr[i].BlockID != 0)//Dont add 0 block to Track Controllers responsibility
                     {
-                        blockList[blockArr[i].TrackCirID].Add(blockArr[i]);
+                        try
+                        {
+                            blockList[blockArr[i].TrackCirID].Add(blockArr[i]);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
                 }
                 return blockList;

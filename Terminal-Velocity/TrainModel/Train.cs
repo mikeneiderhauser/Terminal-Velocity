@@ -110,7 +110,7 @@ namespace TrainModel
             // set allTrains equal to list contained in environment
             allTrains = environment.AllTrains;
 
-            _timeInterval = (environment.getInterval() / 1000.0);
+            _timeInterval = (environment.GetInterval() / 1000.0);
 
             appendInformationLog("Created on block " + _currentBlockID + ".");
         }
@@ -206,7 +206,7 @@ namespace TrainModel
         /// </summary>
         public void updateMovement()
         {
-            _timeInterval = (_environment.getInterval() / 1000.0); // milliseconds to seconds
+            _timeInterval = (_environment.GetInterval() / 1000.0); // milliseconds to seconds
 
             // can't accelerate or decelerate if engine has failed
             if (_engineFailure)
@@ -382,7 +382,7 @@ namespace TrainModel
             _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
             _informationLog += s + "\r\n";
 
-            _environment.sendLogEntry("For " + this.ToString() + ": " + s);
+            _environment.SendLogEntry("For " + this.ToString() + ": " + s);
         }
 
         #endregion
