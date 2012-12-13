@@ -23,7 +23,10 @@ namespace TrainModel
         private double _currentPosition;
         private double _currentVelocity;
         private bool _doorsOpen;
+
         private string _informationLog;
+        private int _informationCount;
+
         private bool _lightsOn;
         private int _numCrew;
         private int _numPassengers;
@@ -76,6 +79,7 @@ namespace TrainModel
             _trainID = trainID;
             _totalMass = calculateMass();
             _informationLog = "";
+            _informationCount = 0;
             _lightsOn = false;
             _doorsOpen = false;
             _temperature = 32;
@@ -379,10 +383,17 @@ namespace TrainModel
         /// <param name="s">The string to to append.</param>
         private void appendInformationLog(string s)
         {
+            if (_informationCount > 2000)
+            {
+                _informationLog = ""; // clear the log
+            }
+
             _informationLog += "(" + DateTime.Now.ToString("h\\:mm\\:ss tt") + ") ";
             _informationLog += s + "\r\n";
 
             _environment.SendLogEntry("For " + this.ToString() + ": " + s);
+
+            _informationCount++;
         }
 
         #endregion
