@@ -27,7 +27,7 @@ namespace TrainController
 
 
         #region Constant values
-        private const double MaxValue = 120000;
+        private const double MaxValue = 110000;
         #endregion
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
@@ -71,11 +71,12 @@ namespace TrainController
         }
         private void processTick()
         {
+
             if (AuthorityLimit == 0)
             {
                 SpeedInput = 0;
             }
-            if (CurrentBlock != null && _distanceToStation < 5 && !_currentBlock.hasStation())
+            if (_distanceToStation < 5 && _currentBlock != null && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
@@ -91,6 +92,7 @@ namespace TrainController
             {
                 AuthorityLimit--;
                 CurrentBlock = Train.CurrentBlock;
+                checkLightsOn();
                 
             } 
 
@@ -173,8 +175,14 @@ namespace TrainController
 
         public int Announcement
         {
-            set { _announcement = value;
-            returnFeedback(_announcements[value]);
+            set 
+            { 
+                _announcement = value;
+                returnFeedback(_announcements[value]);
+            }
+            get
+            {
+                return _announcement;
             }
         }
 
@@ -184,7 +192,7 @@ namespace TrainController
             {
                 Random r = new Random();
                 int newPassengers = r.Next(Train.NumPassengers, Train.MaxCapacity + 1);
-                returnFeedback((newPassengers - Train.NumPassengers) + " added to the train");
+                returnFeedback((newPassengers - Train.NumPassengers) + " added to the train\r\n");
                 Train.NumPassengers = newPassengers;
             }
                     }
@@ -195,7 +203,7 @@ namespace TrainController
             {
                 Random r = new Random();
                 int newPassengers = r.Next(0, Train.NumPassengers + 1);
-                returnFeedback((Train.NumPassengers - newPassengers) + " removed from the train");
+                returnFeedback((Train.NumPassengers - newPassengers) + " removed from the train\r\n");
                 Train.NumPassengers = newPassengers;
             }
         }
@@ -203,6 +211,7 @@ namespace TrainController
         public void checkLightsOn()
         {
             Train.LightsOn = CurrentBlock.hasTunnel();
+            returnFeedback("Lights automatically turned on/off because of the presence/abscense of tunnel\r\n");
         }
 
 
@@ -274,13 +283,25 @@ namespace TrainController
             bool ret = Train.CurrentVelocity == 0;
             if(!ret)
             {
-                returnFeedback("Doors can't open because the train is in movement.");
+                returnFeedback("Doors can't open because the train is in movement.\r\n");
             }
             else
             {
-                returnFeedback("Doors opened.");
+                returnFeedback("Doors opened.\r\n");
             }
             return ret; 
+        }
+ 
+        public void LightsOn()
+        {
+            Train.LightsOn = true;
+            returnFeedback("Lights turned on manually.\r\n");
+        }
+
+        public void LightsOff()
+        {
+            Train.LightsOn = false;
+            returnFeedback("Lights turned off manually.\r\n");
         }
 
         public void EmergencyBrakes()
