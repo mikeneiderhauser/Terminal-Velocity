@@ -48,7 +48,7 @@ namespace SystemScheduler
 
             //Get the current time
             _currentTime = DateTime.Now;
-            _currentTime.AddMilliseconds(_currentTime.Millisecond*-1);
+            _currentTime.AddMilliseconds(_currentTime.Millisecond * -1);
 
             //Subscribed to the environment tick event
             _env.Tick += _environment_Bollocks;
@@ -107,30 +107,27 @@ namespace SystemScheduler
             foreach (Dispatch singleDispatch in _dispatchDatabase.DispatchList)
             {
                 //If the dispatch time matches the current time
-                if (singleDispatch.DispatchTime == currentTime)
+                if ((singleDispatch.DispatchTime.Hour == currentTime.Hour) && (singleDispatch.DispatchTime.Minute == currentTime.Minute))
                 {
-                    //If the dispatch is 
-                    //if (singleDispatch.DispatchRoute.RouteID == 0)
-                    //{
 
-                        //If the dispatch is for the red line
-                        if (singleDispatch.Color.Equals("Red"))
-                        {
-                            //Pass a new request calling for the red line primary controller
-                            _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID,
-                                                         -1, 10, 10, singleDispatch.DispatchRoute,
-                                                         _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
-                        }
 
-                        //If the dispatch is for the green line
-                        else
-                        {
-                            //Pass a new request calling for the green line primary controller
-                            _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerGreen.ID,
-                                                         -1, 10, 10, singleDispatch.DispatchRoute,
-                                                         _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
-                        }
-                    //}
+                    //If the dispatch is for the red line
+                    if (singleDispatch.Color.Equals("Red"))
+                    {
+                        //Pass a new request calling for the red line primary controller
+                        _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID,
+                                                     -1, 10, 10, singleDispatch.DispatchRoute,
+                                                     _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                    }
+
+                    //If the dispatch is for the green line
+                    else
+                    {
+                        //Pass a new request calling for the green line primary controller
+                        _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerGreen.ID,
+                                                     -1, 10, 10, singleDispatch.DispatchRoute,
+                                                     _env.TrackModel.requestBlockInfo(0, singleDispatch.Color)));
+                    }
                 }
             }
         }
@@ -149,7 +146,7 @@ namespace SystemScheduler
             if (_enabled)
             {
                 //Check if this is a 15 minute mark
-                if (((_currentTime.Minute%15) == 0) && (_currentTime.Second == 0) && (_currentTime.Millisecond == 0))
+                if (((_currentTime.Minute % 15) == 0) && (_currentTime.Second == 0))
                 {
                     //If so, check if we have to dispatch anything
                     CheckForDispatches(_currentTime);
@@ -172,17 +169,12 @@ namespace SystemScheduler
             {
                 //Enable us
                 _enabled = true;
-                /*
-                _ctc.passRequest(new Request(RequestTypes.DispatchTrain, _env.PrimaryTrackControllerRed.ID, -1, 10, 10,
-                                             _dispatchDatabase.DispatchList[0].DispatchRoute,
-                                             _env.TrackModel.requestBlockInfo(0, _dispatchDatabase.DispatchList[0].Color)));
-                 */
             }
 
             //Otherwise
             else
             {
-                
+
                 //Tell the user to load a database into us before enabling
                 MessageBox.Show("Please load a dispatch database file before\nenabling the automated System Scheduler.");
             }
