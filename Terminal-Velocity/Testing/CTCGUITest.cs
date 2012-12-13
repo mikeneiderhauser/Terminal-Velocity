@@ -35,8 +35,8 @@ namespace Testing
             _trackMod = new TestingTrackModel(_env);
 
             //creating testing track controllers
-            _red = new TestingTrackController(0,_trackMod,_env);
-            _green = new TestingTrackController(1,_trackMod,_env);
+            _red = new TestingTrackController(0,_trackMod,_env, true);
+            _green = new TestingTrackController(1,_trackMod,_env, true);
 
             //hook to environment
             _env.PrimaryTrackControllerRed = _red;
@@ -68,7 +68,7 @@ namespace Testing
                 MyTestingControls
                 );
 
-            _env.startTick();
+            _env.StartTick();
 
             Form f = new Form();
             f.AutoSize = true;

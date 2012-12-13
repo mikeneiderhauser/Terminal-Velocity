@@ -24,6 +24,8 @@ namespace SimulationEnvironment
 
         private ISimulationEnvironment _env;
 
+        private static object sync = new object();
+
         #endregion
 
         #region Constructor
@@ -70,14 +72,16 @@ namespace SimulationEnvironment
         /// <param name="msg">exact message to write to the log file</param>
         private void appendSystemLog(string msg)
         {
-            //return;
             if (!File.Exists(_currentLogFile))
             {
                 log = new StreamWriter(_currentLogFile);
             }
             else
             {
-                log = File.AppendText(_currentLogFile);
+                lock (sync)
+                {
+                    log = File.AppendText(_currentLogFile);
+                }
             }
             log.WriteLine(msg);
             log.Close();

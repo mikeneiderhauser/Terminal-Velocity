@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 
 namespace TrackController
@@ -32,57 +32,73 @@ namespace TrackController
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
-        // TODO: This method assumes a switch can only be found at the END of a section controlled by a TrackController
-        public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
+        /// <param name="proximityTrain">Whether a train is within 3 blocks past the start of the next TC</param>
+        /// <param name="proximityBlock">Whether a broken block is within 3 blocks past the start of the next TC</param>
+        public void IsSafe(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes,
+                           List<string> messages, bool proximityTrain, bool proximityBlock)
         {
-            // Update the trackModel
-            //foreach (var b in blocks)
-            //    _env.TrackModel.requestUpdateBlock(b);
+            // Get the station location, if any
+            IBlock[] station = blocks.Where(x => x.hasStation()).ToArray();
 
             // Collection of broken blocks
-            _broken = blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure)).ToList();
+            _broken =
+                blocks.Where(o => (o.State == StateEnum.BlockClosed || o.State == StateEnum.BrokenTrackFailure)).ToList();
 
             // Set train speeds an authorities
-            foreach (var t in trains)
+            foreach (ITrainModel t in trains)
             {
-                var speedLim = t.CurrentBlock.SpeedLimit;
-                var authority = 3;
+                int distanceToEnd =
+                    _env.TrackModel.requestPath(t.CurrentBlock.BlockID, blocks[blocks.Count - 1].BlockID,
+                                                t.CurrentBlock.Line).Length;
+                int speedLim = t.CurrentBlock.SpeedLimit;
+                int authority = 3;
+
+                // If there is a station, give its block id to the trainController
+                if (station.Length > 0)
+                {
+                    t.TrainController.DistanceToStation =
+                        _env.TrackModel.requestPath(t.CurrentBlock.BlockID, station[0].BlockID, t.CurrentBlock.Line).
+                            Length;
+                }
 
                 // Adjust train speed to match that of the track speed limit
                 // or if the train is too close to another train
-                foreach (var n in trains.Where(x => x.TrainID != t.TrainID))
+                foreach (ITrainModel n in trains.Where(x => x.TrainID != t.TrainID))
                 {
                     // Number of blocks till the next train (assumes the Route accounted for)
-                    var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line).Length;
+                    int length =
+                        _env.TrackModel.requestPath(t.CurrentBlock.BlockID, n.CurrentBlock.BlockID, t.CurrentBlock.Line)
+                            .Length;
                     // Stop the train for now
-                    if (length < 3)
+                    if (length < 3 || (distanceToEnd < 3 && proximityBlock))
                     {
                         authority = 0;
                         messages.Add(string.Format("Train {0} is near train {1} (stopping)", t.TrainID, n.TrainID));
                     }
 
-                    // Slow the train by half
-                    if (length < 5)
+                    // Slow the train by half if close to another (in this section or the next)
+                    if (length < 5 || (distanceToEnd < 3 && proximityTrain))
                     {
-                        speedLim = t.CurrentBlock.SpeedLimit / 2;
+                        speedLim = t.CurrentBlock.SpeedLimit/2;
                         messages.Add(string.Format("Train {0} is near train {1} (slowing)", t.TrainID, n.TrainID));
                     }
                 }
 
                 // Handle broken blocks
+                // Overrides previous authority
                 if (_broken.Count > 0)
                 {
-                    foreach (var b in _broken)
+                    foreach (IBlock b in _broken)
                     {
                         // Length of the path to the next broken block
-                        var length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count();
+                        int length = _env.TrackModel.requestPath(t.CurrentBlock.BlockID, b.BlockID, b.Line).Count();
 
                         // Stop the train if a broken block is too close
-                        // TODO: The block may be behind the train
                         if (length < 3)
                         {
                             authority = 0;
-                            messages.Add(string.Format("Train {0} is too close to broken block {1}", t.TrainID, b.BlockID));
+                            messages.Add(string.Format("Train {0} is too close to broken block {1}", t.TrainID,
+                                                       b.BlockID));
                         }
                     }
                 }
@@ -106,16 +122,17 @@ namespace TrackController
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
-        public void ToggleLights(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
+        public void ToggleLights(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes,
+                                 List<string> messages)
         {
-            foreach (var t in trains)
+            foreach (ITrainModel t in trains)
             {
                 t.LightsOn = t.CurrentBlock.hasTunnel();
             }
 
             if (trains.Count > 0)
             {
-                foreach (var b in blocks.Where(b => b.hasCrossing()))
+                foreach (IBlock b in blocks.Where(b => b.hasCrossing()))
                 {
                     // TODO lower crossing bars
                 }
@@ -129,30 +146,42 @@ namespace TrackController
         /// <param name="trains">The trains in question</param>
         /// <param name="routes">The routes ub quetstion</param>
         /// <param name="messages">A list of messages set by the PLC</param>
-        public void ToggleSwitches(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes, List<string> messages)
+        public void ToggleSwitches(List<IBlock> blocks, List<ITrainModel> trains, Dictionary<int, List<IBlock>> routes,
+                                   List<string> messages)
         {
-            foreach (var t in trains)
+            foreach (ITrainModel t in trains)
             {
                 List<IBlock> trainRoute;
                 if (routes.TryGetValue(t.TrainID, out trainRoute))
                 {
-                    var switchBlock = trainRoute.First(b => b.hasSwitch());
-                    var nextBlock = trainRoute.First(b => b.PrevBlockID == switchBlock.BlockID);
+                    IBlock switchBlock = trainRoute.First(b => b.hasSwitch());
+                    IBlock nextBlock = trainRoute.First(b => b.PrevBlockID == switchBlock.BlockID);
 
                     // Switch the block destinations and update the trackModel
                     if (switchBlock.SwitchDest1 != nextBlock.BlockID)
                     {
-                        var dest1 = switchBlock.SwitchDest1;
+                        int dest1 = switchBlock.SwitchDest1;
 
                         switchBlock.SwitchDest1 = nextBlock.BlockID;
                         switchBlock.SwitchDest2 = dest1;
 
                         _env.TrackModel.requestUpdateSwitch(switchBlock);
 
-                        messages.Add(string.Format("Block {0} switched: dest {1}, dest {2}", switchBlock.BlockID, switchBlock.SwitchDest1, switchBlock.SwitchDest2));
+                        messages.Add(string.Format("Block {0} switched: dest {1}, dest {2}", switchBlock.BlockID,
+                                                   switchBlock.SwitchDest1, switchBlock.SwitchDest2));
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the given blocks
+        /// </summary>
+        /// <param name="blocks">The blocks to update</param>
+        public void UpdateBlocks(List<IBlock> blocks)
+        {
+            foreach (var b in blocks)
+                _env.TrackModel.requestUpdateBlock(b);
         }
     }
 }

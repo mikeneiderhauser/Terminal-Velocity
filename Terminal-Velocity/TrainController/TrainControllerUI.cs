@@ -1,27 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
-using Interfaces;
 using Utility;
 
 namespace TrainController
 {
     public partial class TrainControllerUI : UserControl
     {
-        private readonly TrainController _currentTrainController;
-        private readonly ISimulationEnvironment _environment;
+        private TrainController _currentTrainController;
         private int timer;
+        private Interfaces.ISimulationEnvironment _environment;
 
-        public TrainControllerUI(TrainController tc, ISimulationEnvironment env)
+        public TrainControllerUI(TrainController tc, Interfaces.ISimulationEnvironment env)
         {
             InitializeComponent();
             _currentTrainController = tc;
-
-
+            SpeedInput.Text = "0.0";
+            TemperatureInput.Text = "70";
+            String[] announcements = { "0", "1", "2", "3" };
+            AnnouncementComboBox.DataSource = announcements;
+            AnnouncementComboBox.Enabled = false;
             timer = 0;
 
+            
 
             _environment = env;
-            _environment.Tick += _environment_Tick;
+            _environment.Tick += new EventHandler<TickEventArgs>(_environment_Tick);
+            
         }
 
 
@@ -29,7 +39,7 @@ namespace TrainController
         {
             timer++;
 
-            if (timer%10 == 0)
+            if (timer % 10 == 0)
             {
                 timer = 0;
                 UpdateGUI(sender, e);
@@ -47,6 +57,8 @@ namespace TrainController
 
             _logOutput.Text = _currentTrainController.Log;
         }
+
+   
 
 
         private void _btnEmergencyBrake_Click(object sender, EventArgs e)
@@ -67,10 +79,123 @@ namespace TrainController
 
         private void _btnSubmit_Click(object sender, EventArgs e)
         {
+
             _currentTrainController.SpeedInput = Double.Parse(SpeedInput.Text);
             _currentTrainController.Temperature = Int16.Parse(TemperatureInput.Text);
             SpeedInput.Text = "0.0";
             TemperatureInput.Text = "70";
+
         }
+
+        private void SpeedInput_Key_press(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+       && !char.IsDigit(e.KeyChar)
+       && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if (e.KeyChar == '.'
+                && (sender as TextBox).Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TemperatureInput_Keypress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+       && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+        }
+
+        private void TrackControllerInput_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TrackControllerInput.Checked)
+            {
+                SpeedLimitInput.Enabled = true;
+                AuthorityLimitInput.Enabled = true;
+                AnnouncementComboBox.Enabled = true;
+                SubmitTrackButton.Enabled = true;
+                SpeedInput.Enabled = false;
+                TemperatureInput.Enabled = false;
+                _btnDoorOpen.Enabled = false;
+                _btnDoorClose.Enabled = false;
+                AddPassengerButton.Enabled = false;
+                RemovePassengersButton.Enabled = false;
+                _btnSubmit.Enabled = false;
+
+
+            }
+            else
+            {
+                SpeedLimitInput.Enabled = false;
+                AuthorityLimitInput.Enabled = false;
+                AnnouncementComboBox.Enabled = false;
+                SubmitTrackButton.Enabled = false;
+                SpeedInput.Enabled = true;
+                TemperatureInput.Enabled = true;
+                _btnDoorOpen.Enabled = true;
+                _btnDoorClose.Enabled = true;
+                AddPassengerButton.Enabled = true;
+                RemovePassengersButton.Enabled = true;
+                _btnSubmit.Enabled = true;
+            }
+        }
+
+        private void AddPassengerButton_Click(object sender, EventArgs e)
+        {
+            _currentTrainController.addPassengers();
+        }
+
+        private void RemovePassengersButton_Click(object sender, EventArgs e)
+        {
+            _currentTrainController.removePassengers();
+        }
+
+        private void SubmitTrackButton_Click(object sender, EventArgs e)
+        {
+            _currentTrainController.SpeedLimit = Double.Parse(SpeedLimitInput.Text);
+            _currentTrainController.AuthorityLimit = Int16.Parse(AuthorityLimitInput.Text);
+            _currentTrainController.Announcement = Int16.Parse(AnnouncementComboBox.SelectedValue.ToString());
+           
+
+        }
+
+        private void SpeedLimitInput_keypress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+       && !char.IsDigit(e.KeyChar)
+       && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if (e.KeyChar == '.'
+                && (sender as TextBox).Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AuthorityLimitInput_keypress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+      && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+       
+
+      
+    
     }
 }

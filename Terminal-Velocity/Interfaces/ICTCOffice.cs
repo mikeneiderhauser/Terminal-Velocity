@@ -15,6 +15,11 @@ namespace Interfaces
         event EventHandler<EventArgs> StopAutomation;
 
         /// <summary>
+        /// Method to allow any other module refresh the Trains in view of CTC
+        /// </summary>
+        void ExternalRefresh();
+
+        /// <summary>
         ///     function for System Scheduler to CTC to send request through CTC to Track Controller
         /// </summary>
         /// <param name="request">request sent to the track controller</param>
