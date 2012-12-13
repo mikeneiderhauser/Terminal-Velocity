@@ -164,13 +164,12 @@ namespace TrainModel
             }
             else
             {
-                appendInformationLog("NOTIFICATION: Velocity was zero. Ignored given power and defaulted to maximum acceleration.");
+                appendInformationLog("NOTIFICATION: Velocity was zero. Defaulted to maximum acceleration.");
             }
 
 
             if ((newAcceleration > 0) && (power < 0)) // acceleration positive despite using brakes
             {
-                _brakeFailure = true;
                 appendInformationLog("WARNING: Brakes applied but train not slowing down.");
             }
 
@@ -199,8 +198,6 @@ namespace TrainModel
         public void updateMovement()
         {
             _timeInterval = (_environment.GetInterval() / 1000.0); // milliseconds to seconds
-
-            double previousAcceleration = _currentAcceleration;
 
             // can't accelerate or decelerate if engine has failed
             if (_engineFailure)
