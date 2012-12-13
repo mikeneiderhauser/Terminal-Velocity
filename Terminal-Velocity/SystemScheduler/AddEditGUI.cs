@@ -182,7 +182,7 @@ namespace SystemScheduler
         private void btnOK_Click(object sender, EventArgs e)
         {
             //Make sure the text entered into the custom waypoint field is correctly formatted before doing anything
-            if ((rdbCustom.Checked == true) && (System.Text.RegularExpressions.Regex.IsMatch(txtCustom.Text, @"[0-9](\|[0-9])*")) || (rdbCustom.Checked == false))
+            if (((rdbCustom.Checked == true) && (System.Text.RegularExpressions.Regex.IsMatch(txtCustom.Text, @"^[0-9](\|[0-9])*$"))) || (rdbCustom.Checked == false))
             {
                 //If this was an edit of an existing route
                 if (_isEdit)
