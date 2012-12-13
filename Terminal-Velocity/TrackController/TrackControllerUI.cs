@@ -13,17 +13,28 @@ namespace TrackController
         private List<ITrainModel> _trains;
         private Dictionary<int, List<IBlock>> _routes; 
         private TrackController _current;
+        private readonly TrackController _primary;
 
         private long _tickCount;
 
         public TrackControllerUi(ISimulationEnvironment e, ITrackController primary)
         {
             _current = (TrackController) primary;
+            _primary = (TrackController) primary;
             _trains = Tc.Trains;
             _blocks = Tc.Blocks;
             _routes = Tc.Routes;
 
             InitializeComponent();
+
+            ITrackController c = _primary;
+            while (c != null)
+            {
+                tcComboBox.Items.Add(string.Format("Track Controller {0}", c.ID));
+                tcCountBox.Text = string.Format("{0} Track Controllers", c.ID + 1);
+                c = c.Next;
+            }
+            okButton.Click += OkButtonClick;
 
             _tickCount = 0;
             e.Tick += ETick;
@@ -115,6 +126,23 @@ namespace TrackController
             }
         }
 
+        private void OkButtonClick(object sender, EventArgs e)
+        {
+            string i = tcComboBox.SelectedItem.ToString();
+            if (String.Compare(i, string.Empty, StringComparison.Ordinal) != 0)
+            {
+                int controller = Int32.Parse(i.Split(' ')[2]);
+                ITrackController c = _primary;
+                while (c != null && c.ID <= controller)
+                {
+                    Tc = (TrackController)c;
+                    c = c.Next;
+                }
+
+                Draw();
+            }
+        }
+
         private void ETick(object sender, TickEventArgs e)
         {
             _routes = Tc.Routes;
@@ -128,24 +156,35 @@ namespace TrackController
                 _blocks = Tc.Blocks;
                 Draw();
             }
-
-            for (var i = 0; i < _trains.Count; i++)
+            else
             {
-                if (_trains[i].TrainID != newTrains[i].TrainID)
+                for (var i = 0; i < _trains.Count; i++)
                 {
-                    _trains = Tc.Trains;
-                    _blocks = Tc.Blocks;
-                    Draw();
+                    if (_trains[i].TrainID != newTrains[i].TrainID)
+                    {
+                        _trains = Tc.Trains;
+                        _blocks = Tc.Blocks;
+                        Draw();
+                    }
                 }
             }
 
-            for (var i = 0; i < _blocks.Count; i++)
+            if (newBlocks.Count != _blocks.Count)
             {
-                if (_blocks[i].State != newBlocks[i].State)
+                _trains = Tc.Trains;
+                _blocks = Tc.Blocks;
+                Draw();
+            }
+            else
+            {
+                for (var i = 0; i < _blocks.Count; i++)
                 {
-                    _trains = Tc.Trains;
-                    _blocks = Tc.Blocks;
-                    Draw();
+                    if (_blocks[i].State != newBlocks[i].State)
+                    {
+                        _trains = Tc.Trains;
+                        _blocks = Tc.Blocks;
+                        Draw();
+                    }
                 }
             }
 
