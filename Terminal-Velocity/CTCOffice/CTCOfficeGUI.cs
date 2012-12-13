@@ -1014,8 +1014,14 @@ namespace CTCOffice
             popup.Text = "Routing Tool";
             popup.AutoSize = true;
             popup.FormClosed += Popup_RoutingTool_FormClosed;
+            var rt = new RoutingTool(this, _ctcOffice, _environment, start, false);
 
-            var rt = new RoutingTool(this, _ctcOffice, _environment, start);
+            //create special for dispatch
+            if (requestMode == RoutingMode.Dispatch)
+            {
+                rt = new RoutingTool(this, _ctcOffice, _environment, start, true);
+            }
+            
             //set ctc gui ref
             _routeTool = rt;
             _routeTool.EnablePointSelection += Rt_EnablePointSelection;

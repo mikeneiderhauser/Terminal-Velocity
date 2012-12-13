@@ -15,9 +15,13 @@ namespace CTCOffice
         private CTCOffice _ctc;
         private IBlock _startBlock;
 
-        public RoutingTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env, IBlock sBlock)
+        public RoutingTool(CTCOfficeGUI ctcgui, CTCOffice ctc, ISimulationEnvironment env, IBlock sBlock, bool mode)
         {
             InitializeComponent();
+
+            //mode = true for dispatch, mode = flase for update
+            _btnPoint.Enabled = !mode;
+
             _ctc = ctc;
             _ctcGui = ctcgui;
             _env = env;
