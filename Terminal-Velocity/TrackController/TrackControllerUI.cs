@@ -61,6 +61,9 @@ namespace TrackController
                 return;
             }
 
+            if (trainGrid.Columns.Count == 0) return;
+            if (blockGrid.Columns.Count == 0) return;
+
             foreach (var s in _current.Messages)
                 messageTextBox.Text = string.Format("{0}\n{1}", messageTextBox.Text, s);
             _current.Messages = new List<string>();
@@ -193,8 +196,33 @@ namespace TrackController
                 }
             }
 
-            if (_tickCount % 4 == 0) Draw();
+            if (_tickCount % 4 == 0)
+            {
+                if (!_disableDraw)
+                    Draw();
+            }
             _tickCount++;
+        }
+
+        bool _disableDraw = false;
+        private void TrainGridScroll(object sender, ScrollEventArgs e)
+        {
+            _disableDraw = true;
+        }
+
+        private void BlockGridScroll(object sender, ScrollEventArgs e)
+        {
+            _disableDraw = true;
+        }
+
+        private void TrainGridLeave(object sender, EventArgs e)
+        {
+            _disableDraw = false;
+        }
+
+        private void BlockGridLeave(object sender, EventArgs e)
+        {
+            _disableDraw = false;
         }
     }
 }
