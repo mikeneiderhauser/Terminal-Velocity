@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 using Interfaces;
@@ -35,6 +36,10 @@ namespace TrackController
                 c = c.Next;
             }
             okButton.Click += OkButtonClick;
+            tcCountBox.BackColor = (String.Compare(_primary.Line, "Green", StringComparison.Ordinal) == 0)
+                                       ? Color.Green
+                                       : Color.Red;
+            tcCountBox.ForeColor = Color.White;
 
             _tickCount = 0;
             e.Tick += ETick;
@@ -88,7 +93,7 @@ namespace TrackController
                 {
                     blockGrid.Rows.Add();
                     blockGrid.Rows[i].SetValues(_blocks[i].BlockID.ToString(),
-                                                Enum.GetName(typeof (StateEnum), _blocks[i].SwitchDest1));
+                                                Enum.GetName(typeof (StateEnum), _blocks[i].State), _blocks[i].SwitchDest1);
                 }
             }
 
