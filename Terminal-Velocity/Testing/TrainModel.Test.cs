@@ -24,12 +24,12 @@ namespace Testing
             // Create 100 blocks for the red line
             var blocks = new List<IBlock>();
             // First block
-            blocks.Add(new Block(1, StateEnum.Healthy, 100, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 2, 0, 0, "Red", 100));
+            blocks.Add(new Block(0, StateEnum.Healthy, 99, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 2, 0, 0, "Red", 100));
             // Next 99 blocks
-            for (var i = 2; i < 100; i++)
+            for (var i = 1; i < 99; i++)
                 blocks.Add(new Block(i, StateEnum.Healthy, i - 1, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, i + 1, 0, 0, "Red", 100));
             // Last block
-            blocks.Add(new Block(100, StateEnum.Healthy, 99, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 1, 0, 0, "Red", 100));
+            blocks.Add(new Block(99, StateEnum.Healthy, 98, 0, 0, new[] { 0, 0 }, BlockLengh, DirEnum.East, new[] { "" }, 0, 0, 0, "Red", 100));
 
             _environment.TrackModel = new DummyTrackModel(blocks);
             
