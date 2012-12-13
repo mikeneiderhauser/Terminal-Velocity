@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.IO;
 
 using Interfaces;
 using Utility;
+using CTCOffice;
 
 namespace CTCOffice
 {
@@ -36,6 +38,8 @@ namespace CTCOffice
         private Bitmap _greenTrackStation;
         private Bitmap _greenTrackSwitch;
         private Bitmap _greenTrackTunnel;
+
+        private FileInfo _CTCGuide;
         
         #endregion
 
@@ -66,6 +70,18 @@ namespace CTCOffice
             _greenTrackStation = Utility.Properties.Resources.GreenTrack_Station;
             _greenTrackSwitch = Utility.Properties.Resources.GreenTrack_Switch;
             _greenTrackTunnel = Utility.Properties.Resources.GreenTrack_Tunnel;
+
+            if (!File.Exists(@"CTC_Users_Guide.pdf"))
+            {
+                byte[] fileContainer = global::CTCOffice.Properties.Resources.CTC_Office_Users_Guide;
+                File.WriteAllBytes(@"CTC_Users_Guide.pdf", fileContainer);
+            }
+
+                _CTCGuide = new FileInfo(@"CTC_Users_Guide.pdf");
+            
+            
+            
+        
         }
         #endregion
 
@@ -190,6 +206,9 @@ namespace CTCOffice
         /// </summary>
         public Bitmap GreenTrackTunnel
         { get { return _greenTrackTunnel; } }
+
+        public FileInfo CTCGuide
+        { get { return _CTCGuide; } }
         #endregion
     }
 }

@@ -36,6 +36,7 @@
             this._lblUsername = new System.Windows.Forms.Label();
             this._txtUsername = new System.Windows.Forms.TextBox();
             this._groupOperatorControls = new System.Windows.Forms.GroupBox();
+            this._btnOpenUserManual = new System.Windows.Forms.Button();
             this._btnShowKey = new System.Windows.Forms.Button();
             this._btnRefreshView = new System.Windows.Forms.Button();
             this._btnDispatchTrain = new System.Windows.Forms.Button();
@@ -83,7 +84,6 @@
             this._panelGreenLine = new System.Windows.Forms.Panel();
             this._tabTeamLogo = new System.Windows.Forms.TabPage();
             this._imageTeamLogo = new System.Windows.Forms.PictureBox();
-            this._btnOpenUserManual = new System.Windows.Forms.Button();
             this._groupLoginLogout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._loginStatusImage)).BeginInit();
             this._groupOperatorControls.SuspendLayout();
@@ -190,6 +190,16 @@
             this._groupOperatorControls.TabIndex = 2;
             this._groupOperatorControls.TabStop = false;
             this._groupOperatorControls.Text = "Operator Controls";
+            // 
+            // _btnOpenUserManual
+            // 
+            this._btnOpenUserManual.Location = new System.Drawing.Point(112, 58);
+            this._btnOpenUserManual.Name = "_btnOpenUserManual";
+            this._btnOpenUserManual.Size = new System.Drawing.Size(100, 23);
+            this._btnOpenUserManual.TabIndex = 4;
+            this._btnOpenUserManual.Text = "User Manual";
+            this._btnOpenUserManual.UseVisualStyleBackColor = true;
+            this._btnOpenUserManual.Click += new System.EventHandler(this._btnOpenUserManual_Click);
             // 
             // _btnShowKey
             // 
@@ -665,15 +675,6 @@
             this._imageTeamLogo.Size = new System.Drawing.Size(979, 760);
             this._imageTeamLogo.TabIndex = 0;
             this._imageTeamLogo.TabStop = false;
-            // 
-            // _btnOpenUserManual
-            // 
-            this._btnOpenUserManual.Location = new System.Drawing.Point(112, 58);
-            this._btnOpenUserManual.Name = "_btnOpenUserManual";
-            this._btnOpenUserManual.Size = new System.Drawing.Size(100, 23);
-            this._btnOpenUserManual.TabIndex = 4;
-            this._btnOpenUserManual.Text = "User Manual";
-            this._btnOpenUserManual.UseVisualStyleBackColor = true;
             // 
             // CTCOfficeGUI
             // 

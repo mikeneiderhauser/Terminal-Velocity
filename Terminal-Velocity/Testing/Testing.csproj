@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SystemScheduler.Test.cs" />
     <Compile Include="CTCGUITest.cs" />
     <Compile Include="CTCOffice.Test.cs" />
     <Compile Include="GUITest.cs" />
@@ -148,6 +149,8 @@
   <ItemGroup>
     <None Include="green.csv" />
     <None Include="red.csv" />
+    <None Include="Resources\Computer Benchmarks.csv" />
+    <None Include="Resources\Correct File.csv" />
     <None Include="Resources\green.csv" />
     <None Include="Resources\red.csv" />
   </ItemGroup>
@@ -163,8 +166,8 @@
 "$(TargetDir)\Testing.exe" unit</PostBuildEvent>
     <PostBuildEvent>copy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)" "$(TargetDir)\Testing.exe" unit</PostBuildEvent>
     <PostBuildEvent>copy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)"
-"$(TargetDir)\Testing.exe" unit 
 </PostBuildEvent>
+    <PostBuildEvent>copy /y "$(SolutionDir)\TrackModel\SQLite\*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

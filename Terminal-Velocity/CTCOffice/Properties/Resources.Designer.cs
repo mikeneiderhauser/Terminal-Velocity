@@ -61,6 +61,16 @@ namespace CTCOffice.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] CTC_Office_Users_Guide {
+            get {
+                object obj = ResourceManager.GetObject("CTC_Office_Users_Guide", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap TerminalVelocity {

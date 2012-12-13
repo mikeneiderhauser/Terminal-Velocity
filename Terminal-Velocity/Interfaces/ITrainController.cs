@@ -23,7 +23,6 @@
         /// </summary>
         int DistanceToStation { set; }
 
-        int StationID { set; }
 
     }
 }

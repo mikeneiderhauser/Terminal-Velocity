@@ -14,9 +14,8 @@ namespace Testing
         static global::SimulationEnvironment.SimulationEnvironment _env;
         static IBlock _startBlock;
 
-        const int MaxTrainCount = 1;
-
-        const int Min = 5000;
+        const int MaxTrainCount = 5;
+        const int Min = 800;
         const int Max = 3 * Min;
         const int Timeout = 3 * Max;
         static int _elapsed = 0;
@@ -88,8 +87,6 @@ namespace Testing
                 while (_env.AllTrains.Count < MaxTrainCount && _elapsed < Timeout)
                     System.Threading.Thread.Sleep(500);
 
-                if (_elapsed >= Timeout) return false;
-
                 timer.Stop();
                 timer.Elapsed -= TimerElapsed;
             }
@@ -116,14 +113,14 @@ namespace Testing
                             {
                                 pass++;
                                 messages.Add(string.Format("[Pass] Train {0}: authority was {1}, expected {2}",
-                                                            t.TrainID, t.AuthorityLimit, 1));
+                                                            t.TrainID, t.AuthorityLimit, 0));
                             }
                             // The train, being too close to another, did not correctly stop
                             else
                             {
                                 fail++;
-                                messages.Add(string.Format("[Fail] Train {0}: authority was {1}, expected {2}",
-                                                           t.TrainID, t.AuthorityLimit, 1));
+                                messages.Add(string.Format("[Fail] Train {0}: authority was {1}, expected {2} ({3} blocks to next train)",
+                                                           t.TrainID, t.AuthorityLimit, 1, length));
                             }
                         }
 
