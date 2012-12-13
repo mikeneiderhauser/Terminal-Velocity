@@ -467,9 +467,9 @@
             // 
             // pauseButton
             // 
-            this.pauseButton.Location = new System.Drawing.Point(591, 48);
+            this.pauseButton.Location = new System.Drawing.Point(580, 48);
             this.pauseButton.Name = "pauseButton";
-            this.pauseButton.Size = new System.Drawing.Size(56, 21);
+            this.pauseButton.Size = new System.Drawing.Size(71, 21);
             this.pauseButton.TabIndex = 19;
             this.pauseButton.Text = "Pause";
             this.pauseButton.UseVisualStyleBackColor = true;
