@@ -220,7 +220,7 @@ namespace CTCOffice
                 LayoutCellDataContainer c = _greenLineData.TriangulateContainer(b);
                 if (c != null)
                 {
-                    c.Tile = _redLineData.GetBlockType(b);
+                    c.Tile = _greenLineData.GetBlockType(b);
                     if (c.Panel != null)
                     {
                         string msg = "Red Line: Block ID: " + c.Block.BlockID + " is now " + c.Block.State.ToString();

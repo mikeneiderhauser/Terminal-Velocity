@@ -907,8 +907,16 @@ namespace CTCOffice
             _tt.ReshowDelay = 500;
             _tt.ShowAlways = true;
             LayoutCellDataContainer c = (LayoutCellDataContainer)b.Tag;
-            //string line = c.Block.AttrArray[1];
-            _tt.Show("This is a test", b);
+            string station = "";
+            if (c.Block.AttrArray.Length > 1)
+            {
+                station = c.Block.AttrArray[1];
+            }
+            else
+            {
+                station = "Error Getting Station Name";
+            }
+            _tt.Show(station, b);
         }
 
         private void pane_MouseLeave(object sender, EventArgs e)
