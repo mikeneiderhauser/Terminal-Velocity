@@ -19,6 +19,7 @@ namespace TrainModel
         private int _timer;
 
         private bool _dropDownOpen;
+        private bool _GUIPaused;
 
         #endregion
 
@@ -33,6 +34,7 @@ namespace TrainModel
             InitializeComponent();
 
             _dropDownOpen = false;
+            _GUIPaused = false;
 
             allTrainComboBox.SelectedIndexChanged += allTrainComboBox_SelectedIndexChanged;
             _allTrains = environment.AllTrains;
@@ -68,7 +70,7 @@ namespace TrainModel
         }
 
         /// <summary>
-        ///     Updates the GUI every 10 ticks. HARDCODED
+        ///     Updates the GUI.
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Tick event args</param>
@@ -80,7 +82,7 @@ namespace TrainModel
             {
                 _timer = 0;
 
-                if (!_dropDownOpen)
+                if (!_dropDownOpen && !_GUIPaused)
                 {
                     UpdateGUI();
                 }
@@ -300,7 +302,19 @@ namespace TrainModel
             MessageBox.Show("Please see TrainModelUserManual.docx located in the install directory", 
                 "User Manual", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
+        
+        private void pauseButton_Click(object sender, EventArgs e)
+        {
+            _GUIPaused = !_GUIPaused;
+
+            if (_GUIPaused)
+                pauseButton.Text = "Unpause";
+            else
+                pauseButton.Text = "Pause";
+        }
 
         #endregion
+
+        
     }
 }
