@@ -96,7 +96,7 @@ namespace Testing
 
             // Give the train(s) time to move
             {
-                System.Threading.Thread.Sleep(60000);
+                System.Threading.Thread.Sleep(5000);
             }
 
             // Ensure that the trains have the correct authority and speeds
@@ -116,7 +116,7 @@ namespace Testing
                             {
                                 pass++;
                                 messages.Add(string.Format("[Pass] Train {0}: authority was {1}, expected {2}",
-                                                            t.TrainID, t.AuthorityLimit, 1));
+                                                            t.TrainID, t.AuthorityLimit, 0));
                             }
                             // The train, being too close to another, did not correctly stop
                             else
