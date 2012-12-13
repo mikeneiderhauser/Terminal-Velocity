@@ -30,6 +30,8 @@ namespace TrainController
 
         #region Constant values
         private const double MaxValue = 110000;
+        private const int highestTemperature = 75;
+        private const int lowestTemperature = 65;
         #endregion
 
         public TrainController(ISimulationEnvironment env, ITrainModel tm)
@@ -84,8 +86,7 @@ namespace TrainController
         }
 
 
-        private const int highestTemperature = 75;
-        private const int lowestTemperature = 65;
+       
 
         public ISimulationEnvironment Environment
         {
@@ -109,7 +110,7 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
-            if (_distanceToStation > 0 && _distanceToStation < 5 && !_currentBlock.hasStation())
+            if (_distanceToStation > 0 && _distanceToStation < 3 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
