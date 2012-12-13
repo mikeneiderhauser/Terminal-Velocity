@@ -76,7 +76,7 @@ namespace TrainController
             {
                 SpeedInput = 0;
             }
-            if (_distanceToStation < 5 && !_currentBlock.hasStation())
+            if (_distanceToStation < 5 && _currentBlock != null && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
@@ -219,10 +219,6 @@ namespace TrainController
         public void returnFeedback(string Feedback)
         {
             _environment.SendLogEntry(Feedback);
-            if (_log.Length > 1000)
-            {
-                _log = "";
-            }
             _log += Feedback;
             
 
