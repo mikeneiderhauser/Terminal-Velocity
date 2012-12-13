@@ -41,7 +41,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(576, 18);
+            this.btnBrowse.Location = new System.Drawing.Point(576, 53);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(103, 35);
             this.btnBrowse.TabIndex = 0;
@@ -51,7 +51,7 @@
             // 
             // txtFilepath
             // 
-            this.txtFilepath.Location = new System.Drawing.Point(15, 22);
+            this.txtFilepath.Location = new System.Drawing.Point(15, 57);
             this.txtFilepath.Name = "txtFilepath";
             this.txtFilepath.ReadOnly = true;
             this.txtFilepath.Size = new System.Drawing.Size(555, 26);
@@ -64,7 +64,7 @@
             this.grdDispatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdDispatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdDispatches.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.grdDispatches.Location = new System.Drawing.Point(15, 66);
+            this.grdDispatches.Location = new System.Drawing.Point(15, 101);
             this.grdDispatches.MultiSelect = false;
             this.grdDispatches.Name = "grdDispatches";
             this.grdDispatches.ReadOnly = true;
@@ -78,7 +78,7 @@
             // btnDelete
             // 
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(15, 291);
+            this.btnDelete.Location = new System.Drawing.Point(15, 326);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(210, 35);
             this.btnDelete.TabIndex = 3;
@@ -89,7 +89,7 @@
             // btnEdit
             // 
             this.btnEdit.Enabled = false;
-            this.btnEdit.Location = new System.Drawing.Point(242, 291);
+            this.btnEdit.Location = new System.Drawing.Point(242, 326);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(210, 35);
             this.btnEdit.TabIndex = 4;
@@ -100,7 +100,7 @@
             // btnAdd
             // 
             this.btnAdd.Enabled = false;
-            this.btnAdd.Location = new System.Drawing.Point(469, 291);
+            this.btnAdd.Location = new System.Drawing.Point(469, 326);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(210, 35);
             this.btnAdd.TabIndex = 5;
@@ -115,11 +115,13 @@
             // lblTest
             // 
             this.lblTest.AutoSize = true;
-            this.lblTest.Location = new System.Drawing.Point(156, 371);
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Location = new System.Drawing.Point(242, 15);
             this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(51, 20);
+            this.lblTest.Size = new System.Drawing.Size(53, 22);
             this.lblTest.TabIndex = 6;
             this.lblTest.Text = "label1";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SystemSchedulerGUI
             // 
@@ -133,7 +135,7 @@
             this.Controls.Add(this.txtFilepath);
             this.Controls.Add(this.btnBrowse);
             this.Name = "SystemSchedulerGUI";
-            this.Size = new System.Drawing.Size(693, 456);
+            this.Size = new System.Drawing.Size(693, 377);
             ((System.ComponentModel.ISupportInitialize)(this.grdDispatches)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

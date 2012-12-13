@@ -137,7 +137,7 @@ namespace Testing
 
                     var testSystemScheduler = new SystemScheduler.SystemScheduler(environment, office);
                     control = new SystemSchedulerGUI(environment, testSystemScheduler, office);
-
+                    environment.StartTick();
                     break;
                 case 1: // CTCOffice
                     environment = null;

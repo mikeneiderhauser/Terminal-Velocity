@@ -49,7 +49,7 @@ namespace SystemScheduler
             _systemScheduler = systemScheduler;
 
             //Subscribed to the environment tick event
-            //_environment.Tick += EnvironmentTickHandler;
+            _environment.Tick += EnvironmentTickHandler;
         }
 
         # endregion
@@ -272,14 +272,24 @@ namespace SystemScheduler
             CheckButtonEnable();
         }
 
-        /*
+       
         //When we recieve a tick from the environment
         private void EnvironmentTickHandler(object sender, EventArgs e)
         {
-            string temporary = _systemScheduler.SchedulerTime.ToLongTimeString();
-            lblTest.Text = temporary;
+            Draw();
         }
-        */
+
+        private void Draw()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(Draw));
+                return;
+            }
+
+            lblTest.Text = "Current Time: " + _systemScheduler.SchedulerTime.ToLongTimeString();
+        }
+       
 
         # endregion
     }

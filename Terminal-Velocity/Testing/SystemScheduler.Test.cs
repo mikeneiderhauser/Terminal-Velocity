@@ -13,10 +13,15 @@ namespace Testing
             fail = 0;
             message = new List<string>();
 
+            
             ISimulationEnvironment environment = new SimulationEnvironment.SimulationEnvironment();
-            SystemScheduler.CTCOffice fakeCTC = new SystemScheduler.CTCOffice();
+            SystemScheduler.CTC_Dummy fakeCTC = new SystemScheduler.CTC_Dummy(environment);
+            CTCOffice.TestingTrackModel tm = new CTCOffice.TestingTrackModel(environment);
+            environment.TrackModel = tm;
             var testSystemScheduler = new SystemScheduler.SystemScheduler(environment, fakeCTC);
+            environment.StartTick();
 
+            
             /////////////////////////////////
             //Test 1
             //Check that there is no initial dispatch database loaded
@@ -221,7 +226,7 @@ namespace Testing
             //End test 12
             /////////////////////////////////
 
-
+            
             return true;
 
         }

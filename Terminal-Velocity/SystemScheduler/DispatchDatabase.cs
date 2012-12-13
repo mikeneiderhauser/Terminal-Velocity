@@ -85,6 +85,11 @@ namespace SystemScheduler
             //Parse the .csv file into string arrays
             List<string[]> fileData = ParseCSV(filename);
 
+            if (fileData == null)
+            {
+                return false;
+            }
+
             //Store this information to our global
             _dispatchDataSource = fileData;
 
@@ -171,6 +176,7 @@ namespace SystemScheduler
             {
                 //Tell the user
                 MessageBox.Show(e.Message);
+                return null;
             }
 
             //Give back all of the now parsed and formatted data
