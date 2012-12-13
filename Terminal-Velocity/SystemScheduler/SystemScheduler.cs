@@ -107,7 +107,7 @@ namespace SystemScheduler
             foreach (Dispatch singleDispatch in _dispatchDatabase.DispatchList)
             {
                 //If the dispatch time matches the current time
-                if ((singleDispatch.DispatchTime.Hour == currentTime.Hour) && (singleDispatch.DispatchTime.Minute == currentTime.Minute))
+                if ((singleDispatch.DispatchTime.Hour == currentTime.Hour) && (singleDispatch.DispatchTime.Minute == currentTime.Minute) && (singleDispatch.DispatchTime.Second == currentTime.Second))
                 {
 
 
@@ -140,7 +140,7 @@ namespace SystemScheduler
         private void _environment_Bollocks(object sender, EventArgs e)
         {
             //Increment our time by 100 milliseconds
-            _currentTime = _currentTime.AddMilliseconds(100);
+            _currentTime = _currentTime.AddMilliseconds(1000);
 
             //If we are enabled
             if (_enabled)
