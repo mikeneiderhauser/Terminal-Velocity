@@ -154,8 +154,30 @@ namespace TrainModel
 
             appendInformationLog("Given power of " + Math.Round(power, 3) + " W.");
 
+            // acceleration changes due to elevation
+            double absGrade = Math.Abs(_currentBlock.Grade);
+            double angle = Math.Atan(absGrade);
+            
+            double accelerationChange;
+            double newAcceleration;
+
+            if (_currentBlock.Grade > 0) // up hill
+            {
+                accelerationChange = -1 * _accelerationGravity * Math.Sin(angle);
+                newAcceleration = _physicalAccelerationLimit + accelerationChange;
+            }
+            else if (_currentBlock.Grade < 0) // down hill
+            {
+                accelerationChange = _accelerationGravity * Math.Sin(angle);
+                newAcceleration = _physicalAccelerationLimit + accelerationChange;
+            }
+            else // no grade
+            {
+                accelerationChange = 0;
+                newAcceleration = _physicalAccelerationLimit + accelerationChange;
+            }
+
             double currentForce = 0;
-            double newAcceleration = _physicalAccelerationLimit;
 
             if (_currentVelocity > 0)
             {
