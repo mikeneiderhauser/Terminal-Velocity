@@ -194,7 +194,8 @@ namespace TrackModel
                 string[] tempArr = bToUpdate.AttrArray;
                 for (int i = 0; i < tempArr.Length; i++)
                 {
-                    attrString = attrString + tempArr[i] + "; ";
+                    if(string.IsNullOrWhiteSpace(tempArr[i])==false)
+                        attrString = attrString + tempArr[i] + "; ";
                 }
 
 
