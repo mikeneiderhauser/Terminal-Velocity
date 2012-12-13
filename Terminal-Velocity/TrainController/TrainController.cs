@@ -103,7 +103,7 @@ namespace TrainController
                 loadPassengers();
             }
 
-            if (AuthorityLimit == 0)
+            if (AuthorityLimit <= 1)
             {
                 SpeedInput = 0;
             }
