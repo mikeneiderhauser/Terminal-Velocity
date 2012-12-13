@@ -7,7 +7,7 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>  
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -48,6 +48,8 @@
             this.RemovePassengersButton = new System.Windows.Forms.Button();
             this.SubmitTrackButton = new System.Windows.Forms.Button();
             this.AnnouncementComboBox = new System.Windows.Forms.ComboBox();
+            this.LightsOn = new System.Windows.Forms.Button();
+            this.LightsOff = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // _btnEmergencyBrakes
@@ -82,7 +84,7 @@
             // 
             // _btnSubmit
             // 
-            this._btnSubmit.Location = new System.Drawing.Point(158, 308);
+            this._btnSubmit.Location = new System.Drawing.Point(158, 354);
             this._btnSubmit.Name = "_btnSubmit";
             this._btnSubmit.Size = new System.Drawing.Size(75, 23);
             this._btnSubmit.TabIndex = 6;
@@ -215,7 +217,7 @@
             // 
             // RemovePassengersButton
             // 
-            this.RemovePassengersButton.Location = new System.Drawing.Point(199, 266);
+            this.RemovePassengersButton.Location = new System.Drawing.Point(224, 266);
             this.RemovePassengersButton.Name = "RemovePassengersButton";
             this.RemovePassengersButton.Size = new System.Drawing.Size(158, 23);
             this.RemovePassengersButton.TabIndex = 22;
@@ -226,7 +228,7 @@
             // SubmitTrackButton
             // 
             this.SubmitTrackButton.Enabled = false;
-            this.SubmitTrackButton.Location = new System.Drawing.Point(528, 308);
+            this.SubmitTrackButton.Location = new System.Drawing.Point(528, 354);
             this.SubmitTrackButton.Name = "SubmitTrackButton";
             this.SubmitTrackButton.Size = new System.Drawing.Size(75, 23);
             this.SubmitTrackButton.TabIndex = 23;
@@ -242,10 +244,31 @@
             this.AnnouncementComboBox.Size = new System.Drawing.Size(121, 24);
             this.AnnouncementComboBox.TabIndex = 24;
             // 
+            // LightsOn
+            // 
+            this.LightsOn.Location = new System.Drawing.Point(92, 308);
+            this.LightsOn.Name = "LightsOn";
+            this.LightsOn.Size = new System.Drawing.Size(86, 23);
+            this.LightsOn.TabIndex = 25;
+            this.LightsOn.Text = "Lights On";
+            this.LightsOn.UseVisualStyleBackColor = true;
+            this.LightsOn.Click += new System.EventHandler(this.LightsOn_Click);
+            // 
+            // LightsOff
+            // 
+            this.LightsOff.Location = new System.Drawing.Point(224, 308);
+            this.LightsOff.Name = "LightsOff";
+            this.LightsOff.Size = new System.Drawing.Size(89, 23);
+            this.LightsOff.TabIndex = 26;
+            this.LightsOff.Text = "Lights Off";
+            this.LightsOff.UseVisualStyleBackColor = true;
+            // 
             // TrainControllerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LightsOff);
+            this.Controls.Add(this.LightsOn);
             this.Controls.Add(this.AnnouncementComboBox);
             this.Controls.Add(this.SubmitTrackButton);
             this.Controls.Add(this.RemovePassengersButton);
@@ -295,5 +318,7 @@
         private System.Windows.Forms.Button RemovePassengersButton;
         private System.Windows.Forms.Button SubmitTrackButton;
         private System.Windows.Forms.ComboBox AnnouncementComboBox;
+        private System.Windows.Forms.Button LightsOn;
+        private System.Windows.Forms.Button LightsOff;
     }
 }

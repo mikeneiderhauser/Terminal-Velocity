@@ -23,5 +23,6 @@
         /// </summary>
         int DistanceToStation { set; }
 
+
     }
 }

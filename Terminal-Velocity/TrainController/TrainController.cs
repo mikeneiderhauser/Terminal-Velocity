@@ -14,11 +14,13 @@ namespace TrainController
         private ISimulationEnvironment _environment;
         private ITrainModel _train;
         private IBlock _currentBlock;
-        private String[] _announcements = { "Approaching station A", "Station A", "Approaching station B", "Station B" };
+        private Dictionary<int, string> _announcements;
+        //private String[] _announcements = { "Approaching station A", "Station A", "Approaching station B", "Station B" };
         private int _authorityLimit;
         private double _speedLimit;
         private double _speedInput;
         private int _announcement;
+        private bool _passengersFlag;
         private int _distanceToStation;
         private int _temperature;
         private string _log;
@@ -36,6 +38,31 @@ namespace TrainController
             _environment.Tick += _environment_Tick;
             _tcGUI = null;
             Train = tm;
+            _announcements = new Dictionary<int, string>();
+            _announcements.Add(8, "Arrived at Shadyside Station\r\n");
+            _announcements.Add(16, "Arrived at Herron Station\r\n");
+            _announcements.Add(21, "Arrived at Swissville Station\r\n");
+            _announcements.Add(25, "Arrived at Penn Station\r\n");
+            _announcements.Add(35, "Arrived at Steel Plaza Station\r\n");
+            _announcements.Add(45, "Arrived at First Avenue Station\r\n");
+            _announcements.Add(60, "Arrived at South Hills Junction\r\n");
+            _announcements.Add(2, "Arrived at Pioneer Station\r\n");
+            _announcements.Add(9, "Arrived at Edgebrook Station\r\n");
+            _announcements.Add(22, "Arrived at Whited Station\r\n");
+            _announcements.Add(31, "Arrived at South Bank Station\r\n");
+            _announcements.Add(39, "Arrived at Central Station\r\n");
+            _announcements.Add(48, "Arrived at Inglewood Station\r\n");
+            _announcements.Add(57, "Arrived at Overbrook Station\r\n");
+            _announcements.Add(65, "Arrived at Glenbury Junction\r\n");
+            _announcements.Add(73, "Arrived at Dormont Station\r\n");
+            _announcements.Add(77, "Arrived at Mt. Lebanon Station\r\n");
+            _announcements.Add(96, "Arrived at Castle Shannon Station\r\n");
+            _announcements.Add(105, "Arrived at Dormont Station\r\n");
+            _announcements.Add(114, "Arrived at Glenbury Junction\r\n"); 
+            _announcements.Add(123, "Arrived at Overbrook Station\r\n");
+            _announcements.Add(132, "Arrived at Inglewood Station\r\n");
+            _announcements.Add(141, "Arrived at Central Station\r\n");
+       
         }
 
         void _environment_Tick(object sender, Utility.TickEventArgs e)
@@ -71,15 +98,20 @@ namespace TrainController
         }
         private void processTick()
         {
+            if (CurrentBlock.hasStation())
+            {
+                loadPassengers();
+            }
 
-            if (AuthorityLimit == 0)
+            if (AuthorityLimit <= 1)
             {
                 SpeedInput = 0;
             }
-            if (_distanceToStation < 5 && _currentBlock != null && !_currentBlock.hasStation())
+            if (_distanceToStation < 5 && !_currentBlock.hasStation())
             {
                 SpeedInput = 0;
             }
+            
            
             if (Train.CurrentVelocity < SpeedInput && Train.CurrentVelocity < SpeedLimit || Train.CurrentVelocity > SpeedInput && Train.CurrentVelocity > SpeedLimit)
             {
@@ -96,6 +128,18 @@ namespace TrainController
                 
             } 
 
+        }
+
+        private void loadPassengers()
+        {
+            if (_passengersFlag && Train.CurrentVelocity == 0)
+            {
+                removePassengers();
+                addPassengers();
+                doorClose();
+                _passengersFlag = false;
+            }
+         
         }
 
 
@@ -145,9 +189,12 @@ namespace TrainController
             {
                 if (!checkSpeedLimit(value))
                 {
-                    _speedInput = value;
-                    integral = 0;
-                    sendPower(value);
+                    if (_speedInput != value)
+                    {
+                        _speedInput = value;
+                        integral = 0;
+                        sendPower(value);
+                    }
                 }
                 else
                     returnFeedback("Speed not implemented because it was over the speed limit\r\n");
@@ -164,6 +211,10 @@ namespace TrainController
             set
             {
                 _currentBlock = value;
+                if (_currentBlock.hasStation())
+                {
+                    _passengersFlag = true;
+                }
             }
         }
 
@@ -178,11 +229,21 @@ namespace TrainController
             set 
             { 
                 _announcement = value;
-                returnFeedback(_announcements[value]);
+                String feedback = "";
+                _announcements.TryGetValue(value, out feedback);
+                returnFeedback(feedback);
             }
             get
             {
                 return _announcement;
+            }
+        }
+        public int[] Announcements
+        {
+           
+            get
+            {
+                return _announcements.Keys.ToArray();
             }
         }
 
@@ -219,6 +280,10 @@ namespace TrainController
         public void returnFeedback(string Feedback)
         {
             _environment.SendLogEntry(Feedback);
+            if (_log.Length > 1000)
+            {
+                _log = "";
+            }
             _log += Feedback;
             
 
