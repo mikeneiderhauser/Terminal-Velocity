@@ -234,6 +234,16 @@ namespace CTCOffice
             _updateTrackMutex.ReleaseMutex();
         }
 
+        /// <summary>
+        /// Method that handles forced track gui update
+        /// </summary>
+        public void ForceTrackUpdate()
+        {
+            UpdateRed();
+            UpdateGreen();
+            PopulateTrack();
+        }
+        
         #endregion
 
         #region Request Queues
