@@ -241,6 +241,8 @@ namespace TrackController
             _plc.ToggleSwitches(sb, st, sr, _messages);
             _plc.ToggleLights(sb, st, sr, _messages);
             _plc.UpdateBlocks(up);
+
+            _updateBlocks.Clear();
         }
 
         #endregion // Private Methods
