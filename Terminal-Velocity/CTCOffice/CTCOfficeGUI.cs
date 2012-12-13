@@ -61,7 +61,7 @@ namespace CTCOffice
         public event EventHandler<ShowTrainEventArgs> ShowTrain;
         public event EventHandler<EventArgs> ShowSchedule;
 
-        //Station Hover
+        //Tool Tip
         private ToolTip _tt;
         #endregion
 
@@ -128,11 +128,7 @@ namespace CTCOffice
             //post to log that the gui has loaded
             _environment.sendLogEntry("CTCOffice: GUI Loaded");
 
-            _tt = new ToolTip();
-            _tt.AutoPopDelay = 5000;
-            _tt.InitialDelay = 1000;
-            _tt.ReshowDelay = 500;
-            _tt.ShowAlways = true;
+            _tt = null;
         }
 
         /// <summary>
@@ -274,8 +270,8 @@ namespace CTCOffice
             {
                 if (c.Block.hasStation())
                 {
-                    //pane.MouseHover += new EventHandler(pane_MouseHover);
-                    //pane.MouseLeave += new EventHandler(pane_MouseLeave);
+                    pane.MouseHover += new EventHandler(pane_MouseHover);
+                    pane.MouseLeave += new EventHandler(pane_MouseLeave);
                     //_tt.SetToolTip(pane,c.Block.AttrArray[1]);
                 }
             }
@@ -294,9 +290,9 @@ namespace CTCOffice
             //make a new panel (automatically adds to appropriate panel)
             MakePane(attribs.I,attribs.J,attribs.X,attribs.Y,attribs.Container,attribs.LayoutPanel);
             //cast sender as a control
-            Control s = (Control)sender;
+            Control c = (Control)sender;
             //dispose of sender
-            s.Dispose();
+            c.Dispose();
         }
         #endregion
 
@@ -902,16 +898,26 @@ namespace CTCOffice
             //else do noting
         }//mouse click
 
-        void pane_MouseHover(object sender, EventArgs e)
+        private void pane_MouseHover(object sender, EventArgs e)
         {
             MyPictureBox b = (MyPictureBox)sender;
-            ToolTip tt = new ToolTip();
+            _tt = new ToolTip();
+            _tt.AutoPopDelay = 10000;
+            _tt.InitialDelay = 200;
+            _tt.ReshowDelay = 500;
+            _tt.ShowAlways = true;
+            LayoutCellDataContainer c = (LayoutCellDataContainer)b.Tag;
+            //string line = c.Block.AttrArray[1];
+            _tt.Show("This is a test", b);
         }
 
-        void pane_MouseLeave(object sender, EventArgs e)
+        private void pane_MouseLeave(object sender, EventArgs e)
         {
-            MyPictureBox b = (MyPictureBox)sender;
-            //if(
+            if (_tt != null)
+            {
+                _tt.Dispose();
+                _tt = null;
+            }
         }
 
         #endregion
