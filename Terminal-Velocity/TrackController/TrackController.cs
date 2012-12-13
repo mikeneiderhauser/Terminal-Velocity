@@ -146,7 +146,7 @@ namespace TrackController
                     {
                         if (_routes.ContainsKey(request.TrainID))
                             _routes.Remove(request.TrainID);
-                        _routes.Add(request.TrainID, request.Info.Blocks);
+                        _routes.Add(request.TrainID, request.TrainRoute.RouteBlocks);
                     }
                     break;
                 case RequestTypes.TrackControllerData:
