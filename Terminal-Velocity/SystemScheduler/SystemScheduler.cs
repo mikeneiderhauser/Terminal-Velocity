@@ -68,6 +68,12 @@ namespace SystemScheduler
             get { return _dispatchDatabase; }
         }
 
+        //Accessor for the enabled boolean
+        public bool IsEnabled
+        {
+            get { return _enabled; }
+        }
+
         #endregion
 
         #region Public Methods
