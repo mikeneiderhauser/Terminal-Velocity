@@ -244,7 +244,7 @@ namespace TrainModel
                 _currentAcceleration = _currentAcceleration + (_accelerationGravity * Math.Sin(angle));
             }
 
-            appendInformationLog("Acceleration set to " + Math.Round(newAcceleration, 3) + " m/s^2.");
+            appendInformationLog("Acceleration set to " + Math.Round(_currentAcceleration, 3) + " m/s^2.");
 
             // stops acceleration due to slope when emergency brake is on
             if ((_currentAcceleration > 0) && (_emergencyBrakePulled))
