@@ -40,14 +40,28 @@ namespace TrackController
         public ITrackController TrackController { get; set; }
         public int ID { get; set; }
 
+        /// <summary>
+        ///     Gets the Trains associated with this TrackCircuit
+        /// </summary>
         public Dictionary<int, ITrainModel> Trains
         {
             get { return _trains; }
         }
 
+        /// <summary>
+        ///     Gets the blocks associated with this TrackCircuit
+        /// </summary>
         public Dictionary<int, IBlock> Blocks
         {
             get { return _blocks; }
+        }
+
+        /// <summary>
+        ///     Gets the line this TrackCircuit exists on
+        /// </summary>
+        public string Line
+        {
+            get { return _line; }
         }
 
         #endregion // Public Properties

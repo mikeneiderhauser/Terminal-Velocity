@@ -105,7 +105,7 @@ namespace TrackController
         }
 
         /// <summary>
-        /// Returns a list of Blocks for this TrackController
+        ///     Returns a list of Blocks for this TrackController
         /// </summary>
         public List<IBlock> Blocks
         {
@@ -113,11 +113,19 @@ namespace TrackController
         }
 
         /// <summary>
-        /// Returnes a list of Routes this TrackController interacts with
+        ///     Returnes a list of Routes this TrackController interacts with
         /// </summary>
         public Dictionary<int, List<IBlock>> Routes
         {
             get { return _routes; }
+        }
+
+        /// <summary>
+        ///     Retuns the line this TrackController is associated with
+        /// </summary>
+        public string Line
+        {
+            get { return _circuit.Line; }
         }
 
         #endregion // Public Properties
