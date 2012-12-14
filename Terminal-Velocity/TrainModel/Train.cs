@@ -163,12 +163,12 @@ namespace TrainModel
 
             if (_currentBlock.Grade > 0) // up hill
             {
-                accelerationChange = -1 * _accelerationGravity * Math.Sin(angle);
+                accelerationChange = _accelerationGravity * Math.Sin(angle);
                 newAcceleration = _physicalAccelerationLimit + accelerationChange;
             }
             else if (_currentBlock.Grade < 0) // down hill
             {
-                accelerationChange = _accelerationGravity * Math.Sin(angle);
+                accelerationChange = -1*_accelerationGravity * Math.Sin(angle);
                 newAcceleration = _physicalAccelerationLimit + accelerationChange;
             }
             else // no grade

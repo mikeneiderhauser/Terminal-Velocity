@@ -332,28 +332,7 @@ namespace CTCOffice
             _ctcOffice.PopulateTrack();
         }
 
-        /*
-        public List<MyPictureBox> GetRed()
-        {
-            List<MyPictureBox> l = new List<MyPictureBox>();
-            foreach (MyPictureBox p in _panelRedLine.Controls)
-            {
-                l.Add(p);
-            }
-            return l;
-        }
-
-        public List<MyPictureBox> GetGreen()
-        {
-            List<MyPictureBox> l = new List<MyPictureBox>();
-            foreach (MyPictureBox p in _panelGreenLine.Controls)
-            {
-                l.Add(p);
-            }
-            return l;
-        }
-        */
-
+       
         /// <summary>
         /// Button To force Refresh GUI (may not be needed)
         /// </summary>

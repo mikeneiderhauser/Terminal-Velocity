@@ -336,6 +336,7 @@ namespace TrainController
                 double kp = 200.0;
                 double ki = 1;
                 finalPower = ki * integral + kp * e;
+                finalPower = finalPower * 10;
                 Train.ChangeMovement(finalPower);
                 returnFeedback(finalPower + "W of power sent to the engine\r\n");
             
